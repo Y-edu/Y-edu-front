@@ -1,6 +1,6 @@
 import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
-import Home from "../app/page";
+import Home from "../app/(route)/page";
 
 describe("Home", () => {
   it("renders single div tag", () => {
