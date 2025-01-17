@@ -2,13 +2,16 @@
   "extends": [
     "@titicaca/eslint-config-triple",
     "@titicaca/eslint-config-triple/requiring-type-checking",
-    "@titicaca/eslint-config-triple/frontend"
+    "@titicaca/eslint-config-triple/frontend",
+    "plugin:tailwindcss/recommended"
   ],
   "parserOptions": {
     "project": "./tsconfig.json"
   },
   "rules": {
     "react/no-unescaped-entities": 0,
-    "@next/next/no-page-custom-font": "off"
+    "@next/next/no-page-custom-font": "off",
+    "tailwindcss/no-custom-classname":"off",
+    "tailwindcss/classnames-order":"off"
   }
 }
