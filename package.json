@@ -4,13 +4,19 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "yarn lint:fix && next build",
     "start": "next start",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "test": "jest",
     "test:watch": "jest-watch"
   },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "eslint . --fix"
+    ]
+  },
+  
   "dependencies": {
     "@tanstack/react-query": "^5.64.1",
     "@titicaca/eslint-config-triple": "^5.3.1",
