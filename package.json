@@ -16,7 +16,6 @@
       "eslint . --fix"
     ]
   },
-  
   "dependencies": {
     "@tanstack/react-query": "^5.64.1",
     "@titicaca/eslint-config-triple": "^5.3.1",
@@ -45,6 +44,8 @@
     "jest-environment-jsdom": "^29.7.0",
     "msw": "^2.7.0",
     "postcss": "^8",
+    "prettier": "^3.4.2",
+    "prettier-plugin-tailwindcss": "^0.6.10",
     "tailwindcss": "^3.4.1",
     "ts-node": "^10.9.2",
     "typescript": "^5"

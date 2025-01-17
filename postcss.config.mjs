@@ -1,8 +1,8 @@
 /** @type {import('postcss-load-config').Config} */
 const config = {
-  plugins: {
-    tailwindcss: {},
-  },
-};
-
-export default config;
+  plugins: [
+    require('tailwindcss'),
+    require('prettier-plugin-tailwindcss')
+  ]
+}
+export default config
