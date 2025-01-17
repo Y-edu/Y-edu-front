@@ -1,3 +1,14 @@
 {
-  "extends": ["next/core-web-vitals", "next/typescript"]
+  "extends": [
+    "@titicaca/eslint-config-triple",
+    "@titicaca/eslint-config-triple/requiring-type-checking",
+    "@titicaca/eslint-config-triple/frontend"
+  ],
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  },
+  "rules": {
+    "react/no-unescaped-entities": 0,
+    "@next/next/no-page-custom-font": "off"
+  }
 }
