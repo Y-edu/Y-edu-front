@@ -3,7 +3,8 @@
     "@titicaca/eslint-config-triple",
     "@titicaca/eslint-config-triple/requiring-type-checking",
     "@titicaca/eslint-config-triple/frontend",
-    "plugin:tailwindcss/recommended"
+    "plugin:tailwindcss/recommended",
+    "plugin:prettier/recommended"
   ],
   "parserOptions": {
     "project": "./tsconfig.json"
@@ -11,7 +12,7 @@
   "rules": {
     "react/no-unescaped-entities": 0,
     "@next/next/no-page-custom-font": "off",
-    "tailwindcss/no-custom-classname":"off",
-    "tailwindcss/classnames-order":"off"
+    "tailwindcss/no-custom-classname": "off",
+    "tailwindcss/classnames-order": "off"
   }
 }
