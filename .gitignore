@@ -9,6 +9,8 @@
 # testing
 /coverage
 
+http:localhost:3000/
+
 # next.js
 /.next/
 /out/
