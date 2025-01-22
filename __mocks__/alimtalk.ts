@@ -3,7 +3,7 @@ import { HttpResponse, http } from "msw";
 export const alimtalkhandlers: ReturnType<
   typeof http.get | typeof http.post | typeof http.patch
 >[] = [
-  http.get("/api/matching/:id", () => {
+  http.get("http://localhost:3000/api/matching/:id", () => {
     return HttpResponse.json({
       status: "SUCCESS",
       data: {
@@ -14,7 +14,7 @@ export const alimtalkhandlers: ReturnType<
       },
     });
   }),
-  http.get("/api/matching/:id/acceptance", () => {
+  http.get("http://localhost:3000/api/matching/:id/acceptance", () => {
     const acceptanceData = Array.from({ length: 25 }, (_, index) => {
       const isAccepted = index % 2 === 0;
       return {
@@ -40,34 +40,43 @@ export const alimtalkhandlers: ReturnType<
       data: acceptanceData,
     });
   }),
-  http.post("/api/matching/:id/acceptance", async ({ request }) => {
-    const response = await request.json();
-    if (!response) {
-      return HttpResponse.json({
-        status: "ERROR",
-        data: null,
-      });
-    }
-    return HttpResponse.json({ status: "SUCCESS", data: null });
-  }),
-  http.post("/api/matching/:id/acceptance/new", async ({ request }) => {
-    const response = await request.json();
-    if (!response) {
-      return HttpResponse.json({
-        status: "ERROR",
-        data: null,
-      });
-    }
-    return HttpResponse.json({ status: "SUCCESS", data: null });
-  }),
-  http.patch("/api/matching/:id/display_name", async ({ request }) => {
-    const response = await request.json();
-    if (!response) {
-      return HttpResponse.json({
-        status: "ERROR",
-        data: null,
-      });
-    }
-    return HttpResponse.json({ status: "SUCCESS", data: null });
-  }),
+  http.post(
+    "http://localhost:3000/api/matching/:id/acceptance",
+    async ({ request }) => {
+      const response = await request.json();
+      if (!response) {
+        return HttpResponse.json({
+          status: "ERROR",
+          data: null,
+        });
+      }
+      return HttpResponse.json({ status: "SUCCESS", data: null });
+    },
+  ),
+  http.post(
+    "http://localhost:3000/api/matching/:id/acceptance/new",
+    async ({ request }) => {
+      const response = await request.json();
+      if (!response) {
+        return HttpResponse.json({
+          status: "ERROR",
+          data: null,
+        });
+      }
+      return HttpResponse.json({ status: "SUCCESS", data: null });
+    },
+  ),
+  http.patch(
+    "http://localhost:3000/api/matching/:id/display_name",
+    async ({ request }) => {
+      const response = await request.json();
+      if (!response) {
+        return HttpResponse.json({
+          status: "ERROR",
+          data: null,
+        });
+      }
+      return HttpResponse.json({ status: "SUCCESS", data: null });
+    },
+  ),
 ];

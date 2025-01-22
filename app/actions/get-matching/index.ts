@@ -1,10 +1,11 @@
 "use server";
 
 import { z } from "zod";
-import axios, { AxiosError } from "axios";
+import { AxiosError } from "axios";
 
+import { httpService } from "../../utils/httpService";
 const matchingSchema = z.object({
-  status: z.union([z.literal("ACCEPTED"), z.literal("REJECTED")]),
+  status: z.union([z.literal("SUCCESS"), z.literal("REJECTED")]),
   data: z.object({
     subject: z.array(z.string()),
     displayName: z.string(),
@@ -17,9 +18,10 @@ type MatchingResponse = z.infer<typeof matchingSchema>;
 
 export async function getMatching(matchingId: string) {
   try {
-    const response = await axios.get<MatchingResponse>(
+    const response = await httpService.get<MatchingResponse>(
       `/api/matching/${matchingId}`,
     );
+    console.log(response.data);
     const parseResult = matchingSchema.safeParse(response.data);
 
     if (!parseResult.success) {

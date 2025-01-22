@@ -1,10 +1,11 @@
 "use server";
 
 import { z } from "zod";
-import axios, { AxiosError } from "axios";
+import { AxiosError } from "axios";
+import { httpService } from "../../utils/httpService";
 
 const acceptanceSchema = z.object({
-  status: z.union([z.literal("ACCEPTED"), z.literal("REJECTED")]),
+  status: z.union([z.literal("SUCCESS"), z.literal("REJECTED")]),
   data: z.object({
     nickname: z.string(),
     userId: z.number(),
@@ -22,7 +23,7 @@ type AcceptanceSchema = z.infer<typeof acceptanceSchema>;
 export async function getAcceptance(matchingId: string) {
   ///api/matching/:id/acceptance
   try {
-    const response = await axios.get<AcceptanceSchema>(
+    const response = await httpService.get<AcceptanceSchema>(
       `/api/matching/${matchingId}/acceptance`,
     );
     const parseResult = acceptanceSchema.safeParse(response.data);
