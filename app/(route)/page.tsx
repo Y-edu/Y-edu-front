@@ -1,6 +1,10 @@
 "use client";
 
+import { useGetMatchingInfo } from "../hooks/query/useGetMatchingInfo";
+
 export default function Home() {
+  const { data } = useGetMatchingInfo("1");
+  console.log(data);
   return (
     <div className="p-4 pt-2 font-pretendard">
       <h1 className="rounded bg-blue-500 px-4 py-2 font-pretendard text-base font-bold text-white">
