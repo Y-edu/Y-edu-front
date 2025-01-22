@@ -7,7 +7,7 @@ import { httpService } from "../../utils/httpService";
 const displayNameSchema = z.object({
   status: z.union([z.literal("SUCCESS"), z.literal("REJECTED")]),
   data: z.object({
-    display_nname: z.string().optional(),
+    display_name: z.string().optional(),
   }),
 });
 
