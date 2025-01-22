@@ -12,7 +12,7 @@ const matchingAccptanceSchema = z.object({
 
 type MatchingAccptanceResponse = z.infer<typeof matchingAccptanceSchema>;
 
-export async function postMatchingAcceptance({
+export async function postNewMatchingAcceptance({
   matchingId,
   userIds,
 }: {
@@ -21,7 +21,7 @@ export async function postMatchingAcceptance({
 }) {
   try {
     const response = await httpService.post<MatchingAccptanceResponse>(
-      `/api/matching/${matchingId}/acceptance`,
+      `/api/matching/${matchingId}/acceptance/new`,
       {
         user: userIds,
       },

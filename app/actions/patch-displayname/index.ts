@@ -4,25 +4,30 @@ import { z } from "zod";
 import { AxiosError } from "axios";
 
 import { httpService } from "../../utils/httpService";
-const matchingSchema = z.object({
+const displayNameSchema = z.object({
   status: z.union([z.literal("SUCCESS"), z.literal("REJECTED")]),
   data: z.object({
-    subject: z.array(z.string()),
-    displayName: z.string(),
-    createdAt: z.string(),
-    location: z.array(z.string()),
+    display_nname: z.string().optional(),
   }),
 });
 
-type MatchingResponse = z.infer<typeof matchingSchema>;
+type displayNameResponse = z.infer<typeof displayNameSchema>;
 
-export async function getMatching(matchingId: string) {
+export async function patchMatchingDisplayName({
+  matchingId,
+  displayName,
+}: {
+  matchingId: string;
+  displayName: string;
+}) {
   try {
-    const response = await httpService.get<MatchingResponse>(
-      `/api/matching/${matchingId}`,
+    const response = await httpService.patch<displayNameResponse>(
+      `/api/matching/${matchingId}/display_name`,
+      {
+        display_name: displayName,
+      },
     );
-    console.log(response.data);
-    const parseResult = matchingSchema.safeParse(response.data);
+    const parseResult = displayNameSchema.safeParse(response.data);
 
     if (!parseResult.success) {
       throw new Error("서버 데이터 형식과 일치하지 않습니다.");

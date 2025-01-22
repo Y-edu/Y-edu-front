@@ -76,7 +76,12 @@ export const alimtalkhandlers: ReturnType<
           data: null,
         });
       }
-      return HttpResponse.json({ status: "SUCCESS", data: null });
+      return HttpResponse.json({
+        status: "SUCCESS",
+        data: {
+          display_name: "매칭닉네임1222131232",
+        },
+      });
     },
   ),
 ];
