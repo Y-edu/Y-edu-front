@@ -15,9 +15,11 @@ const matchingSchema = z.object({
 
 type MatchingResponse = z.infer<typeof matchingSchema>;
 
-export async function getMatching(id: string): Promise<MatchingResponse> {
+export async function getMatching(matchingId: string) {
   try {
-    const response = await axios.get<MatchingResponse>(`/api/matching/${id}`);
+    const response = await axios.get<MatchingResponse>(
+      `/api/matching/${matchingId}`,
+    );
     const parseResult = matchingSchema.safeParse(response.data);
 
     if (!parseResult.success) {
