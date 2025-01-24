@@ -30,7 +30,7 @@ export async function getParentsRequest(macthingId: string) {
       `/api/users/request/${macthingId}`,
     );
 
-    return response.data;
+    return parentsRequestSchema.parse(response.data);
   } catch (error) {
     if (error instanceof AxiosError) {
       throw new Error(`Axios Error: ${error.message}`);
