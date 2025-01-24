@@ -5,7 +5,7 @@ interface TitleDescProps {
   direction: "vertical" | "horizontal";
 }
 
-function TitleDesc(props: TitleDescProps) {
+export function TitleDesc(props: TitleDescProps) {
   const { title, desc, maxWidth, direction } = props;
 
   return (
@@ -17,5 +17,3 @@ function TitleDesc(props: TitleDescProps) {
     </div>
   );
 }
-
-export default TitleDesc;

@@ -1,8 +1,8 @@
 "use client";
 
 import { useGetParentsRequest } from "../../hooks/query/useGetParentsRequest";
-import Accordion from "../../ui/Accordion";
-import TitleDesc from "../../ui/TitleDesc";
+import { Accordion } from "../../ui";
+import { TitleDesc } from "../../ui";
 import { PARENTS_REQUEST_TITLE } from "../../constants/parentsRequest";
 
 function ParentsRequest() {

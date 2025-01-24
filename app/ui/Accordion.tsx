@@ -6,7 +6,7 @@ interface AccordionProps {
   hiddenContent: React.ReactNode;
 }
 
-function Accordion(props: AccordionProps) {
+export function Accordion(props: AccordionProps) {
   const { visibleContent, hiddenContent } = props;
   const [isOpen, setIsOpen] = useState(false);
 
@@ -31,5 +31,3 @@ function Accordion(props: AccordionProps) {
     </div>
   );
 }
-
-export default Accordion;
