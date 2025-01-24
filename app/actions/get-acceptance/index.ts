@@ -2,6 +2,7 @@
 
 import { z } from "zod";
 import { AxiosError } from "axios";
+
 import { httpService } from "../../utils/httpService";
 
 const acceptanceSchema = z.object({
@@ -21,7 +22,7 @@ const acceptanceSchema = z.object({
 type AcceptanceSchema = z.infer<typeof acceptanceSchema>;
 
 export async function getAcceptance(matchingId: string) {
-  ///api/matching/:id/acceptance
+  /// api/matching/:id/acceptance
   try {
     const response = await httpService.get<AcceptanceSchema>(
       `/api/matching/${matchingId}/acceptance`,

@@ -1,5 +1,6 @@
 "use client";
 import { useRef } from "react";
+
 import { useClickoutside } from "../hooks/custom";
 
 interface ModalProps {
