@@ -2,14 +2,16 @@ interface TitleDescProps {
   title: string;
   desc: string;
   maxWidth: string;
-  // maxHeight
+  direction: "vertical" | "horizontal";
 }
 
 function TitleDesc(props: TitleDescProps) {
-  const { title, desc, maxWidth } = props;
+  const { title, desc, maxWidth, direction } = props;
 
   return (
-    <div className={`flex flex-col w-${maxWidth}`}>
+    <div
+      className={`flex ${direction === "vertical" ? "flex-col" : "gap-2"} w-${maxWidth}`}
+    >
       <p className="text-titleColor">{title}</p>
       <p className="text-descColor">{desc}</p>
     </div>
