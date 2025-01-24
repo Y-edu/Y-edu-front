@@ -1,6 +1,8 @@
 import { HttpResponse, http } from "msw";
 
-export const alimtalkhandlers: ReturnType<typeof http.get>[] = [
+export const alimtalkhandlers: ReturnType<
+  typeof http.get | typeof http.post | typeof http.patch
+>[] = [
   http.get("http://localhost:3000/api/matching/:id", () => {
     return HttpResponse.json({
       status: "SUCCESS",
