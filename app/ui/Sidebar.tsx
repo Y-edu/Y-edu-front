@@ -14,7 +14,7 @@ export function Sidebar() {
       aria-label="메인 네비게이션"
       role="navigation"
     >
-      <div className="flex h-[150px] items-center p-4">
+      <div className="flex h-[100px] items-center p-2">
         <Image src={LogoImage} height={36} width={36} alt="로고 이미지" />
         <span className="ml-2 text-lg font-bold text-headColor">Y-Edu</span>
       </div>

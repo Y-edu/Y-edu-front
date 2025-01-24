@@ -1,2 +1,2 @@
-export * from "./usemodal";
+export * from "./useModal";
 export * from "./useClickoutside";

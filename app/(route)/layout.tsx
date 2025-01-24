@@ -33,6 +33,7 @@ export default function RootLayout({
         <QueryProvider>
           <body className={`${pretendard.variable} ml-[180px]`}>
             <Sidebar />
+
             {children}
           </body>
         </QueryProvider>
