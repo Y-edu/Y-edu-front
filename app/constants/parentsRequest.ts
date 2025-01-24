@@ -9,4 +9,4 @@ export const PARENTS_REQUEST_TITLE = {
   teacherCondition: "선생님 조건",
   teacherStyle: "선생님 스타일",
   directivity: "원하는 수업 방향",
-};
+} as const;
