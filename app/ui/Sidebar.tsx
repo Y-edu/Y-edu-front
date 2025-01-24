@@ -10,11 +10,7 @@ export function Sidebar() {
   const activeLinkClassName = "font-bold text-primary";
   return (
     <nav
-<<<<<<< HEAD
       className="fixed h-screen w-[180px] border-r border-[#E6EFF5] bg-white text-disabled"
-=======
-      className="fixed left-0 top-0 h-screen w-[180px] border-r border-[#E6EFF5] text-disabled"
->>>>>>> f7a570dceb56acc0767c392c765cfdc7c624dbc3
       aria-label="메인 네비게이션"
       role="navigation"
     >
