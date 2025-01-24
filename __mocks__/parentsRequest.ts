@@ -15,11 +15,11 @@ export const parentRequestHandler: ReturnType<typeof http.get> = http.get(
         purpose: "라이팅, 리딩, 스피킹",
         childLevel: "상",
         condition:
-          "Lorem 최대 200자Lorem 최대 200자Lorem 최대 200자Lorem 최대 200자Lorem 최대 200자Lorem 최대 200자Lorem 최대 200자Lorem 최대 200자Lorem 최대 200자Lorem 최대 200자Lorem 최대 200자Lorem 최대 200자Lorem 최대 200자Lorem 최대 200자Lorem 최대 200자",
+          "Lorem 최대 200자Lorem 최대 200자Lorem 최대 200자Lorem 최대 200자Lorem 최대 200자Lorem 최대 200자Lorem 최대 200자Lorem 최대 200자Lorem 최대 200자Lorem 최대 200자",
         preferredStyle:
-          "Lorem 최대 200자Lorem 최대 200자Lorem 최대 200자Lorem 최대 200자Lorem 최대 200자Lorem 최대 200자Lorem 최대 200자Lorem 최대 200자Lorem 최대 200자Lorem 최대 200자Lorem 최대 200자Lorem 최대 200자Lorem 최대 200자Lorem 최대 200자Lorem 최대 200자",
+          "Lorem 최대 200자Lorem 최대 200자Lorem 최대 200자Lorem 최대 200자Lorem 최대 200자Lorem 최대 200자Lorem 최대 200자Lorem 최대 200자Lorem 최대 200자Lorem 최대 200자",
         directivity:
-          "Lorem 최대 200자Lorem 최대 200자Lorem 최대 200자Lorem 최대 200자Lorem 최대 200자Lorem 최대 200자Lorem 최대 200자Lorem 최대 200자Lorem 최대 200자Lorem 최대 200자Lorem 최대 200자Lorem 최대 200자Lorem 최대 200자Lorem 최대 200자Lorem 최대 200자",
+          "Lorem 최대 200자Lorem 최대 200자Lorem 최대 200자Lorem 최대 200자Lorem 최대 200자Lorem 최대 200자Lorem 최대 200자Lorem 최대 200자Lorem 최대 200자Lorem 최대 200자",
       },
     });
   },

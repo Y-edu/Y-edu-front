@@ -2,7 +2,7 @@
 
 import { z } from "zod";
 import { httpService } from "../../utils/httpService";
-import { AxiosError } from "axios";
+import axios, { AxiosError } from "axios";
 
 const parentsRequestSchema = z.object({
   classTime: z.string(),
@@ -27,12 +27,10 @@ export async function getParentsRequest(macthingId: string) {
       `/api/users/request/${macthingId}`,
     );
 
-    const parseData = parentsRequestSchema.parse(response.data);
-
-    return parseData;
+    return response.data;
   } catch (error) {
     if (error instanceof AxiosError) {
-      throw new Error(error.message);
+      throw new Error(`Axios Error: ${error.message}`);
     } else {
       throw error;
     }
