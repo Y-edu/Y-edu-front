@@ -11,7 +11,7 @@ export function Accordion(props: AccordionProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="relative w-11/12 rounded-3xl border border-gray-300 bg-white">
+    <div className="mb-3 overflow-hidden rounded-3xl border border-gray-300 bg-white p-4 shadow-lg">
       <div className="relative min-h-24 w-full p-4">
         <div className="w-11/12">{visibleContent}</div>
         <button
