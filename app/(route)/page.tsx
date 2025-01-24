@@ -1,9 +1,11 @@
+import ParentsRequest from "../components/root/ParentsRequest";
 import Accordion from "../ui/Accordion";
 import TitleDesc from "../ui/TitleDesc";
 
 export default function Home() {
   return (
     <div className="ml-[180px] p-4 pt-2 font-pretendard">
+      <ParentsRequest />
       <Accordion
         visibleContent={
           <div className="flex w-full justify-between">
