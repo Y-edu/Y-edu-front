@@ -1,0 +1,40 @@
+"use server";
+
+import { z } from "zod";
+import { httpService } from "../../utils/httpService";
+import { AxiosError } from "axios";
+
+const parentsRequestSchema = z.object({
+  classTime: z.string(),
+  amount: z.number(),
+  childAge: z.string(),
+  subject: z.union([z.literal("ENGLISH"), z.literal("MATH")]),
+  faceToFace: z.boolean(),
+  teacherGender: z.string(),
+  address: z.string(),
+  purpose: z.string(),
+  childLevel: z.string(),
+  condition: z.string().max(200),
+  preferredStyle: z.string().max(200),
+  directivity: z.string().max(200),
+});
+
+type ParentsRequestSchema = z.infer<typeof parentsRequestSchema>;
+
+export async function getParentsRequest(macthingId: string) {
+  try {
+    const response = await httpService.get<ParentsRequestSchema>(
+      `/api/users/request/${macthingId}`,
+    );
+
+    const parseData = parentsRequestSchema.parse(response.data);
+
+    return parseData;
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      throw new Error(error.message);
+    } else {
+      throw error;
+    }
+  }
+}
