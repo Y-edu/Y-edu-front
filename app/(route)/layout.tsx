@@ -31,8 +31,9 @@ export default function RootLayout({
     <IntegrateMSW>
       <html lang="en">
         <QueryProvider>
-          <body className={`${pretendard.variable}`}>
+          <body className={`${pretendard.variable} ml-[180px]`}>
             <Sidebar />
+
             {children}
           </body>
         </QueryProvider>
