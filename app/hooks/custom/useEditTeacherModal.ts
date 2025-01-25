@@ -18,7 +18,7 @@ interface PatchResponse {
 }
 
 export function useEditTeacherModal(
-  field: keyof TeacherProfile,
+  field: keyof Pick<TeacherProfile, "youtubeLink" | "remark">,
   data: TeacherProfile[] | undefined,
   patchMutation: UseMutationResult<PatchResponse, any, PatchParams, any>,
 ) {
@@ -32,29 +32,23 @@ export function useEditTeacherModal(
     setValue((teacher[field] as string) ?? "");
   };
 
+  const closeModal = () => {
+    setIsOpen(false);
+    setTeacherId(null);
+    setValue("");
+  };
+
   const saveValue = () => {
     if (teacherId == null || !data) return;
     const currentTeacher = data.find((t) => t.id === teacherId);
     if (!currentTeacher) return;
 
-    if (field === "youtubeLink") {
-      patchMutation.mutate({
-        id: teacherId,
-        youtubeLink: value,
-      });
-    } else if (field === "remark") {
-      patchMutation.mutate({
-        id: teacherId,
-        remark: value,
-      });
-    }
+    patchMutation.mutate({
+      id: teacherId,
+      [field]: value,
+    } as PatchParams);
 
     closeModal();
-  };
-  const closeModal = () => {
-    setIsOpen(false);
-    setTeacherId(null);
-    setValue("");
   };
 
   return {
