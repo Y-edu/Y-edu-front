@@ -15,7 +15,7 @@ import { EditTeacherModal } from "../../ui/EditTeacherModal";
 import { useGetTeachers } from "../../hooks/query/useGetTeachers";
 import { usePatchTeacherModal } from "../../hooks/mutation/usePatchTeacherModal";
 
-function TeacherTable() {
+function TeacherList() {
   const { data, isLoading, isError } = useGetTeachers();
   const patchMutation = usePatchTeacherModal();
 
@@ -119,4 +119,4 @@ function TeacherTable() {
   );
 }
 
-export default TeacherTable;
+export default TeacherList;
