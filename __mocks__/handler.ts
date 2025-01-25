@@ -1,8 +1,11 @@
 import { HttpResponse, http } from "msw";
+
 import { alimtalkhandlers } from "./alimtalk";
+import { parentRequestHandler } from "./parentsRequest";
 
 export const handlers = [
   ...alimtalkhandlers,
+  parentRequestHandler,
   // 테스트용 모든 핸들러 정의
   http.get("http://localhost:3000/api/users", () => {
     return HttpResponse.json({

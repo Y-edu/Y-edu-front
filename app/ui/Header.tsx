@@ -1,7 +1,8 @@
 "use client";
+import { useRef } from "react";
+
 import { useGetMatchingInfo } from "../hooks/query";
 import { usePatchMatchingDisplayName } from "../hooks/mutation/usePatchMatchingDisplayname";
-import { useRef } from "react";
 
 interface HeaderProps {
   matchingId: number;
@@ -17,14 +18,14 @@ export function Header({ matchingId }: HeaderProps) {
       {matchingDetailInfo.data.location} : {matchingDetailInfo.data.subject}
       <input
         ref={matchingDisplayNameRef}
-        defaultValue={"In the Future"}
+        defaultValue="In the Future"
         className="text-md min-w-28 rounded-2xl bg-[#EFEFEF] px-4"
       />
       <button
         onClick={() =>
           mutate({
             matchingId,
-            displayName: matchingDisplayNameRef?.current?.value + "",
+            displayName: String(matchingDisplayNameRef?.current?.value),
           })
         }
         className="min-h-[40px] min-w-[80px] rounded-lg bg-primary p-2 text-white transition duration-300 ease-in-out hover:bg-blue-600 hover:shadow-lg"
