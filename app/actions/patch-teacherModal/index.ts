@@ -19,8 +19,8 @@ export async function patchTeacherModal({
   remark,
 }: {
   id: number;
-  youtubeLink?: string | undefined;
-  remark?: string | undefined;
+  youtubeLink?: string;
+  remark?: string;
 }) {
   try {
     const response = await httpService.patch<TeacherModalResponse>(
