@@ -14,7 +14,7 @@ const columnHelper = createColumnHelper<TeacherProfile>();
 export function getTeacherColumns({
   handleOpenYoutubeModal,
   handleOpenRemarkModal,
-}: TeacherColumnsProps): ColumnDef<TeacherProfile, any>[] {
+}: TeacherColumnsProps): ColumnDef<TeacherProfile>[] {
   return [
     columnHelper.display({
       id: "select",
