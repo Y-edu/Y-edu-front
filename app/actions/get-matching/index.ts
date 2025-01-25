@@ -16,12 +16,11 @@ const matchingSchema = z.object({
 
 type MatchingResponse = z.infer<typeof matchingSchema>;
 
-export async function getMatching(matchingId: string) {
+export async function getMatching(matchingId: number) {
   try {
     const response = await httpService.get<MatchingResponse>(
       `/api/matching/${matchingId}`,
     );
-    console.log(response.data);
     const parseResult = matchingSchema.safeParse(response.data);
 
     if (!parseResult.success) {

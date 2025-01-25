@@ -17,7 +17,7 @@ export async function patchMatchingDisplayName({
   matchingId,
   displayName,
 }: {
-  matchingId: string;
+  matchingId: number;
   displayName: string;
 }) {
   try {

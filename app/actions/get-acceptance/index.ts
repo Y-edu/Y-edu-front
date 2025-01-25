@@ -5,22 +5,25 @@ import { AxiosError } from "axios";
 import { httpService } from "../../utils/httpService";
 
 const acceptanceSchema = z.object({
-  status: z.union([z.literal("SUCCESS"), z.literal("REJECTED")]),
-  data: z.object({
-    nickname: z.string(),
-    userId: z.number(),
-    id: z.number(),
-    name: z.string(),
-    allReceiveAccetance: z.number(),
-    receiveAccetance: z.number(),
-    rejectReason: z.string().optional(),
-    lastUpdated: z.string(),
-  }),
+  status: z.literal("SUCCESS"),
+  lastUpdated: z.string().refine((date) => !isNaN(Date.parse(date))),
+  data: z.array(
+    z.object({
+      status: z.union([z.literal("ACCEPTED"), z.literal("REJECTED")]),
+      nickname: z.string(),
+      userId: z.number(),
+      id: z.number(),
+      name: z.string(),
+      allReceiveAccetance: z.number(),
+      receiveAccetance: z.number(),
+      rejectReason: z.string().nullable(),
+    }),
+  ),
 });
 
 type AcceptanceSchema = z.infer<typeof acceptanceSchema>;
 
-export async function getAcceptance(matchingId: string) {
+export async function getAcceptance(matchingId: number) {
   ///api/matching/:id/acceptance
   try {
     const response = await httpService.get<AcceptanceSchema>(
