@@ -19,6 +19,9 @@ export function Header({ matchingId }: HeaderProps) {
       <input
         ref={matchingDisplayNameRef}
         defaultValue="In the Future"
+        aria-label="표시 이름"
+        maxLength={50}
+        pattern="^[a-zA-Z0-9가-힣\s]+$"
         className="text-md min-w-28 rounded-2xl bg-[#EFEFEF] px-4"
       />
       <button
