@@ -10,7 +10,12 @@ const acceptanceSchema = z.object({
   lastUpdated: z.string().refine((date) => !isNaN(Date.parse(date))),
   data: z.array(
     z.object({
-      status: z.union([z.literal("ACCEPTED"), z.literal("REJECTED")]),
+      status: z.union([
+        z.literal("ACCEPTED"),
+        z.literal("REJECTED"),
+        z.literal("PENDING"),
+        z.literal("SENDED"),
+      ]),
       nickname: z.string(),
       userId: z.number(),
       id: z.number(),
@@ -18,11 +23,12 @@ const acceptanceSchema = z.object({
       allReceiveAccetance: z.number(),
       receiveAccetance: z.number(),
       rejectReason: z.string().nullable(),
+      lastUpdated: z.string().refine((date) => !isNaN(Date.parse(date))),
     }),
   ),
 });
 
-type AcceptanceSchema = z.infer<typeof acceptanceSchema>;
+export type AcceptanceSchema = z.infer<typeof acceptanceSchema>;
 
 export async function getAcceptance(matchingId: number) {
   /// api/matching/:id/acceptance

@@ -15,17 +15,28 @@ export const alimtalkhandlers: ReturnType<typeof http.get>[] = [
   }),
 
   http.get("http://localhost:3000/api/matching/:id/acceptance", () => {
-    const acceptanceData = Array.from({ length: 25 }, (_, index) => {
-      const isAccepted = index % 2 === 0;
+    const acceptanceData = Array.from({ length: 350 }, (_, index) => {
+      let status;
+
+      if (index % 5 === 0 || index % 6 === 0) {
+        status = "PENDING";
+      } else if (index % 2 === 0) {
+        status = "ACCEPTED";
+      } else if (index === 11) {
+        status = "SENDED";
+      } else {
+        status = "REJECTED";
+      }
+
       return {
-        status: isAccepted ? "ACCEPTED" : "REJECTED",
-        nickname: isAccepted ? `올리버${index}` : `제임스${index}`,
+        status,
+        nickname: status === "ACCEPTED" ? `올리버${index}` : `제임스${index}`,
         userId: 121412412400 + index,
         id: 1241251512600 + index,
-        name: isAccepted ? "김현철" : "이영희",
-        allReceiveAccetance: Math.floor(Math.random() * 50),
-        receiveAccetance: Math.floor(Math.random() * 25),
-        rejectReason: isAccepted ? null : "거절 사유 예시",
+        name: status === "ACCEPTED" ? "김현철" : "이영희",
+        allReceiveAccetance: 3000,
+        receiveAccetance: Math.floor(index + 1),
+        rejectReason: status === "REJECTED" ? "거절 사유 예시" : null,
         lastUpdated: new Date(
           Date.now() - Math.floor(Math.random() * 10000000000),
         ).toISOString(),

@@ -1,10 +1,12 @@
-import { useSuspenseQuery } from "@tanstack/react-query";
+"use client";
+
+import { useQuery } from "@tanstack/react-query";
 
 import { getAcceptance } from "../../actions/get-acceptance";
 
-export function useGetAcceptance(matchingId: number) {
-  return useSuspenseQuery({
-    queryKey: ["acceptance", matchingId],
+export function useGetAcceptance(matchingId: number, page: number) {
+  return useQuery({
+    queryKey: ["acceptance", matchingId, page],
     queryFn: () => getAcceptance(matchingId),
   });
 }
