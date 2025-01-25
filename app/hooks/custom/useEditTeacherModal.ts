@@ -4,13 +4,21 @@ import { UseMutationResult } from "@tanstack/react-query";
 import { TeacherProfile } from "../../types/TeacherProfile";
 
 interface PatchParams {
-  data: { id: number; youtubeLink?: string; remark?: string };
+  id: number;
+  youtubeLink?: string;
+  remark?: string;
+}
+
+interface PatchResponse {
+  id: number;
+  youtubeLink?: string;
+  remark?: string;
 }
 
 export function useEditTeacherModal(
   field: keyof Pick<TeacherProfile, "youtubeLink" | "remark">,
-  data: TeacherProfile[],
-  patchMutation: UseMutationResult<PatchParams>,
+  data: TeacherProfile[] | undefined,
+  patchMutation: UseMutationResult<PatchResponse, Error, PatchParams, unknown>,
 ) {
   const [isOpen, setIsOpen] = useState(false);
   const [teacherId, setTeacherId] = useState<number | null>(null);
@@ -34,10 +42,8 @@ export function useEditTeacherModal(
     if (!currentTeacher) return;
 
     patchMutation.mutate({
-      data: {
-        id: teacherId,
-        [field]: value,
-      },
+      id: teacherId,
+      [field]: value,
     });
 
     closeModal();

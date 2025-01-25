@@ -5,7 +5,7 @@ import { TeacherProfile } from "../app/types/TeacherProfile";
 const baseProfiles: TeacherProfile[] = [
   {
     id: 1,
-    nickname: "닉주디",
+    nickname: "제이크",
     subject: ["영어"],
     fullName: "김한수",
     isActive: true,
@@ -31,7 +31,7 @@ const baseProfiles: TeacherProfile[] = [
   },
   {
     id: 3,
-    nickname: "제이크",
+    nickname: "마이크",
     subject: ["영어", "수학"],
     fullName: "성이름",
     isActive: true,
@@ -57,7 +57,7 @@ const baseProfiles: TeacherProfile[] = [
   },
   {
     id: 5,
-    nickname: "주디킴",
+    nickname: "크리스틴",
     subject: ["수학"],
     fullName: "이민수",
     isActive: false,
@@ -87,44 +87,17 @@ export const teacherListHandlers: ReturnType<
     return HttpResponse.json(teacherProfiles);
   }),
 
-  http.put(
-    "http://localhost:3000/api/teachers/:id",
-    async ({ request, params }) => {
-      const { id } = params;
-      const updatedTeacher = await request.json();
-
-      teacherProfiles = teacherProfiles.map((teacher) =>
-        teacher.id === Number(id) ? updatedTeacher : teacher,
-      ) as TeacherProfile[];
-
-      return HttpResponse.json({ message: "수정 성공", data: updatedTeacher });
-    },
-  ),
-
   http.patch(
     "http://localhost:3000/api/teachers/:id",
     async ({ request, params }) => {
       const { id } = params;
       const patchData = await request.json();
 
-      teacherProfiles = teacherProfiles.map((teacher) => {
-        if (teacher.id === Number(id)) {
-          return {
-            ...teacher,
-            ...(typeof patchData === "object" ? patchData : {}),
-          };
-        }
-        return teacher;
-      }) as TeacherProfile[];
+      teacherProfiles = teacherProfiles.map((teacher) =>
+        teacher.id === Number(id) ? patchData : teacher,
+      ) as TeacherProfile[];
 
-      const updatedTeacher = teacherProfiles.find(
-        (teacher) => teacher.id === Number(id),
-      );
-
-      return HttpResponse.json({
-        message: "수정 성공",
-        data: updatedTeacher,
-      });
+      return HttpResponse.json({ message: "수정 성공", data: patchData });
     },
   ),
 ];

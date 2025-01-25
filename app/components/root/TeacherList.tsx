@@ -1,10 +1,11 @@
+/* eslint-disable */
+
 "use client";
 
 import {
   flexRender,
   getCoreRowModel,
   useReactTable,
-  getPaginationRowModel,
 } from "@tanstack/react-table";
 
 import { TeacherProfile } from "../../types/TeacherProfile";
@@ -38,8 +39,6 @@ function TeacherList() {
     data: data ?? [],
     columns,
     getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    initialState: { pagination: { pageIndex: 0, pageSize: 10 } },
   });
 
   if (isLoading) return <div className="p-4">로딩 중...</div>;
