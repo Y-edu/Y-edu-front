@@ -1,4 +1,5 @@
 import React, { ChangeEvent } from "react";
+
 import { Modal } from "./Modal";
 
 interface EditTeacherFieldModalProps {
@@ -21,7 +22,7 @@ export function EditTeacherModal({
   onCancel,
   title,
   maxLength = 30,
-  placeholder,
+  placeholder = "내용을 입력하세요.",
   isTextarea = false,
 }: EditTeacherFieldModalProps) {
   return (
