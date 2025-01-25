@@ -4,7 +4,6 @@ import {
   RowSelectionState,
   useReactTable,
   getCoreRowModel,
-  Cell,
 } from "@tanstack/react-table";
 import { useState, useMemo } from "react";
 
