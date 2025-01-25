@@ -26,7 +26,7 @@ export function useAlimTable({ matchingId, page }: UseAlimTableProps) {
         return {
           ...v,
           receiveAccetance: Math.floor(
-            (v.receiveAccetance / v.allReceiveAccetance) * 100,
+            v.allReceiveAccetance === 0 ? 0 : (v.receiveAccetance / v.allReceiveAccetance) * 100,
           ),
         };
       }) || []
