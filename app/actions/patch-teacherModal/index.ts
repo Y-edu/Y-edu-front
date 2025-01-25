@@ -11,7 +11,7 @@ const teacherModalSchema = z.object({
   }),
 });
 
-type teacherModalResponse = z.infer<typeof teacherModalSchema>;
+type TeacherModalResponse = z.infer<typeof teacherModalSchema>;
 
 export async function patchTeacherModal({
   id,
@@ -23,7 +23,7 @@ export async function patchTeacherModal({
   remark?: string | undefined;
 }) {
   try {
-    const response = await httpService.patch<teacherModalResponse>(
+    const response = await httpService.patch<TeacherModalResponse>(
       `/api/teachers/${id}`,
       {
         youtubeLink,
