@@ -1,13 +1,13 @@
+"use client";
 /**
  * AlimHeader는 알림톡 총 발생 건, 응답 건과 처음 발송 후 얼만큼의 시간이 지났는지를 보여주는 컴포넌트입니다.
  */
 
-"use client";
+import { useGetAcceptance } from "../../../hooks/query";
 
 interface AlimHeaderProps {
   matchingId: number;
 }
-import { useGetAcceptance } from "../../../hooks/query";
 
 export function AlimHeader({ matchingId }: AlimHeaderProps) {
   const { data: alimData } = useGetAcceptance(matchingId);

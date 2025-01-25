@@ -12,7 +12,7 @@ const displayNameSchema = z.object({
   }),
 });
 
-type displayNameResponse = z.infer<typeof displayNameSchema>;
+type DisplayNameResponse = z.infer<typeof displayNameSchema>;
 
 export async function patchMatchingDisplayName({
   matchingId,
@@ -22,7 +22,7 @@ export async function patchMatchingDisplayName({
   displayName: string;
 }) {
   try {
-    const response = await httpService.patch<displayNameResponse>(
+    const response = await httpService.patch<DisplayNameResponse>(
       `/api/matching/${matchingId}/display_name`,
       {
         display_name: displayName,

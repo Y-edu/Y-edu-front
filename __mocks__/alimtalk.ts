@@ -1,10 +1,8 @@
 import { HttpResponse, http } from "msw";
 
-export const alimtalkhandlers: ReturnType<
-  typeof http.get | typeof http.post | typeof http.patch
->[] = [
+export const alimtalkhandlers: ReturnType<typeof http.get>[] = [
   http.get("http://localhost:3000/api/matching/:id", (req) => {
-    const id = req.params.id;
+    const id = req.params.id?.toString();
     return HttpResponse.json({
       status: "SUCCESS",
       data: {
@@ -45,7 +43,16 @@ export const alimtalkhandlers: ReturnType<
 
   http.post(
     "http://localhost:3000/api/matching/:id/acceptance",
-    async ({ request }) => {},
+    async ({ request }) => {
+      const response = await request.json();
+      if (!response) {
+        return HttpResponse.json({
+          status: "ERROR",
+          data: null,
+        });
+      }
+      return HttpResponse.json({ status: "SUCCESS", data: null });
+    },
   ),
 
   http.post(
