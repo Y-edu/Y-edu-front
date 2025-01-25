@@ -1,7 +1,6 @@
-import { createColumnHelper, ColumnDef } from "@tanstack/react-table";
-import Image from "next/image";
+/* eslint-disable */
 
-import youtubeIcon from "../../../public/images/youtube-icon.svg";
+import { createColumnHelper, ColumnDef } from "@tanstack/react-table";
 import { TeacherProfile } from "../../types/TeacherProfile";
 
 interface TeacherColumnsProps {
@@ -14,7 +13,7 @@ const columnHelper = createColumnHelper<TeacherProfile>();
 export function getTeacherColumns({
   handleOpenYoutubeModal,
   handleOpenRemarkModal,
-}: TeacherColumnsProps): ColumnDef<TeacherProfile>[] {
+}: TeacherColumnsProps) {
   return [
     columnHelper.display({
       id: "select",
@@ -58,8 +57,8 @@ export function getTeacherColumns({
       cell: ({ row }) => {
         const teacher = row.original;
         return (
-          <Image
-            src={youtubeIcon}
+          <img
+            src="/images/youtube-icon.svg"
             alt="유튜브 아이콘"
             onClick={() => handleOpenYoutubeModal(teacher)}
             className="h-[14px] w-[20px] cursor-pointer"
