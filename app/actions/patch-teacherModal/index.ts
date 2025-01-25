@@ -30,9 +30,9 @@ export async function patchTeacherModal({
         remark,
       },
     );
-    const parseResult = teacherModalSchema.safeParse(response.data);
+    const parseResult = teacherModalSchema.parse(response.data);
 
-    if (!parseResult.success) {
+    if (!parseResult) {
       throw new Error("서버 데이터 형식과 일치하지 않습니다.");
     }
 
