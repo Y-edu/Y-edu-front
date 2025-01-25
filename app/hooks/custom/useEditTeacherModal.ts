@@ -9,8 +9,8 @@ interface PatchParams {
 
 export function useEditTeacherModal(
   field: keyof Pick<TeacherProfile, "youtubeLink" | "remark">,
-  data: TeacherProfile[] | undefined,
-  patchMutation: UseMutationResult<PatchParams, any, PatchParams, any>,
+  data: TeacherProfile[],
+  patchMutation: UseMutationResult<PatchParams>,
 ) {
   const [isOpen, setIsOpen] = useState(false);
   const [teacherId, setTeacherId] = useState<number | null>(null);
