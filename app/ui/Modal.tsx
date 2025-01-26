@@ -5,7 +5,7 @@ import { useClickoutside } from "../hooks/custom";
 
 interface ModalProps {
   title: string;
-  message: string;
+  message: React.ReactNode;
   confirmText: string;
   cancelText?: string;
   onConfirm: () => void;
