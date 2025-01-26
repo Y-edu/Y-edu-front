@@ -4,3 +4,4 @@ export * from "./Accordion";
 export * from "./TitleDesc";
 export * from "./Header";
 export * from "./Modal";
+export * from "./Pagination";
