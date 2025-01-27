@@ -49,7 +49,8 @@ export function getParentColumns(
     columnHelper.accessor("isDone", {
       header: "처리 상태",
       cell: ({ row }) => {
-        const toggleStatus = () => {
+        const toggleStatus = (e: React.MouseEvent) => {
+          e.stopPropagation();
           setTableData((prevData) =>
             prevData.map((item) =>
               item.id === row.original.id
@@ -61,10 +62,12 @@ export function getParentColumns(
 
         return (
           <div className="flex items-center space-x-2">
-            <div
+            <button
               className={`relative inline-flex h-6 w-12 cursor-pointer items-center rounded-full ${
                 row.original.isDone ? "bg-blue-500" : "bg-gray-300"
               }`}
+              role="switch"
+              aria-checked={row.original.isDone}
               onClick={toggleStatus}
             >
               <span
@@ -72,7 +75,7 @@ export function getParentColumns(
                   row.original.isDone ? "translate-x-6" : "translate-x-1"
                 }`}
               />
-            </div>
+            </button>
           </div>
         );
       },

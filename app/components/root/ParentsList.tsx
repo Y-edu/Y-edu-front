@@ -90,7 +90,11 @@ function ParentsList() {
               <tr
                 key={row.id}
                 className="cursor-pointer border-b bg-white hover:bg-gray-100"
-                onClick={() => (window.location.href = `/${row.original.id}`)}
+                onClick={(e) => {
+                  const target = e.target as HTMLElement;
+                  if (target.closest('[role="switch"]')) return;
+                  window.location.href = `/${row.original.id}`;
+                }}
               >
                 {row.getVisibleCells().map((cell) => (
                   <td key={cell.id} className="p-4 text-left text-sm">
