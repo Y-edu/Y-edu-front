@@ -80,9 +80,7 @@ for (let i = 0; i < 3; i++) {
   });
 }
 
-export const teacherListHandlers: ReturnType<
-  typeof http.get | typeof http.put | typeof http.patch
->[] = [
+export const teacherListHandlers: ReturnType<typeof http.get>[] = [
   http.get("http://localhost:3000/api/teachers", () => {
     return HttpResponse.json(teacherProfiles);
   }),

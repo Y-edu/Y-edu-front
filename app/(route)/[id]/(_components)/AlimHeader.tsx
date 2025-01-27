@@ -56,7 +56,7 @@ export function AlimHeader({ matchingId }: AlimHeaderProps) {
           }}
           className="min-h-[40px] min-w-[80px] rounded-lg bg-primary p-2 text-white transition duration-300 ease-in-out hover:bg-blue-600 hover:shadow-lg"
         >
-          발송하기
+          선생님 추천 발송
         </button>
         <Modal
           isOpen={isModalOpen}
