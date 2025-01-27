@@ -1,6 +1,5 @@
-/* eslint-disable */
+import { createColumnHelper } from "@tanstack/react-table";
 
-import { createColumnHelper, ColumnDef } from "@tanstack/react-table";
 import { TeacherProfile } from "../../types/TeacherProfile";
 
 interface TeacherColumnsProps {
@@ -57,6 +56,7 @@ export function getTeacherColumns({
       cell: ({ row }) => {
         const teacher = row.original;
         return (
+          // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions
           <img
             src="/images/youtube-icon.svg"
             alt="유튜브 아이콘"
@@ -72,7 +72,7 @@ export function getTeacherColumns({
       cell: ({ row }) => {
         const teacher = row.original;
         return (
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center justify-between space-x-2">
             <span className="text-sm">{teacher.remark}</span>
             <button
               className="text-xs text-blue-500 underline"

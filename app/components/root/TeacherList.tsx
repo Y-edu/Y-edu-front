@@ -1,5 +1,3 @@
-/* eslint-disable */
-
 "use client";
 
 import {
@@ -41,9 +39,18 @@ function TeacherList() {
     getCoreRowModel: getCoreRowModel(),
   });
 
-  if (isLoading) return <div className="p-4">로딩 중...</div>;
+  if (isLoading)
+    return (
+      <div className="overflow-hidden rounded-3xl border border-gray-300 bg-white p-4 shadow-lg">
+        로딩 중...
+      </div>
+    );
   if (isError)
-    return <div className="p-4">데이터를 불러오는 중 에러가 발생했습니다.</div>;
+    return (
+      <div className="overflow-hidden rounded-3xl border border-gray-300 bg-white p-4 shadow-lg">
+        데이터를 불러오는 중 에러가 발생했습니다.
+      </div>
+    );
 
   return (
     <div>
@@ -71,7 +78,7 @@ function TeacherList() {
             {table.getRowModel().rows.map((row) => (
               <tr key={row.id} className="border-b bg-white hover:bg-gray-100">
                 {row.getVisibleCells().map((cell) => (
-                  <td key={cell.id} className="px-4 py-4 text-left text-sm">
+                  <td key={cell.id} className="p-4 text-left text-sm">
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </td>
                 ))}
@@ -112,7 +119,7 @@ function TeacherList() {
         onCancel={remarkModal.closeModal}
         title="간단 비고 수정"
         maxLength={30}
-        isTextarea={true}
+        isTextarea
       />
     </div>
   );
