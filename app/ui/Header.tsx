@@ -5,7 +5,7 @@ import { useGetMatchingInfo } from "../hooks/query";
 import { usePatchMatchingDisplayName } from "../hooks/mutation/usePatchMatchingDisplayname";
 
 interface HeaderProps {
-  matchingId: number;
+  matchingId: string;
 }
 
 export function Header({ matchingId }: HeaderProps) {

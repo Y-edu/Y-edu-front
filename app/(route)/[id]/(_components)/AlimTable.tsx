@@ -9,8 +9,8 @@ export function AlimTable() {
   const { alimTable } = useAlimTableContext();
 
   return (
-    <div className="overflow-x-auto">
-      <div className="max-h-[652px] overflow-y-auto">
+    <div className="mb-8 overflow-x-auto">
+      <div className="max-h-[440px] overflow-y-auto">
         <table className="mx-auto min-w-[95%] border border-gray-200 bg-white">
           <thead className="bg-gray-100">
             {alimTable.getHeaderGroups().map((headerGroup) => (
