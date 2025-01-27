@@ -17,7 +17,7 @@ const matchingSchema = z.object({
 
 type MatchingResponse = z.infer<typeof matchingSchema>;
 
-export async function getMatching(matchingId: number) {
+export async function getMatching(matchingId: string) {
   try {
     const response = await httpService.get<MatchingResponse>(
       `/api/matching/${matchingId}`,

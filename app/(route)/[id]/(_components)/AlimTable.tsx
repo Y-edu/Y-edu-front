@@ -2,17 +2,15 @@
 
 import { flexRender } from "@tanstack/react-table";
 
-import { useAlimTable } from "../(hooks)/useAlimTable";
+import { useAlimTableContext } from "../(hooks)/useAlimTable";
 import { AlimTHeaderColumn } from "../(constants)/AlimColumn";
 
-export function AlimTable({ matchingId }: { matchingId: number }) {
-  const { alimTable } = useAlimTable({
-    matchingId,
-    page: 1,
-  });
+export function AlimTable() {
+  const { alimTable } = useAlimTableContext();
+
   return (
-    <div className="overflow-x-auto">
-      <div className="max-h-[652px] overflow-y-auto">
+    <div className="mb-8 overflow-x-auto">
+      <div className="max-h-[440px] overflow-y-auto">
         <table className="mx-auto min-w-[95%] border border-gray-200 bg-white">
           <thead className="bg-gray-100">
             {alimTable.getHeaderGroups().map((headerGroup) => (
@@ -20,7 +18,7 @@ export function AlimTable({ matchingId }: { matchingId: number }) {
                 {headerGroup.headers.map((header) => (
                   <th
                     key={header.id}
-                    className="sticky top-0 border-b border-gray-200 bg-gray-100 px-4 py-2 text-left font-semibold text-descColor"
+                    className="sticky inset-0 border-b border-gray-200 bg-gray-100 px-4 py-2 text-left font-semibold text-descColor"
                   >
                     {header.isPlaceholder
                       ? null

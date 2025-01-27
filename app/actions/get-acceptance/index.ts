@@ -21,7 +21,7 @@ const acceptanceSchema = z.object({
       id: z.number(),
       name: z.string(),
       allReceiveAccetance: z.number(),
-      receiveAccetance: z.number(),
+      receiveAcceptance: z.number(),
       rejectReason: z.string().nullable(),
       lastUpdated: z.string().refine((date) => !isNaN(Date.parse(date))),
     }),
@@ -30,7 +30,7 @@ const acceptanceSchema = z.object({
 
 export type AcceptanceSchema = z.infer<typeof acceptanceSchema>;
 
-export async function getAcceptance(matchingId: number) {
+export async function getAcceptance(matchingId: string) {
   /// api/matching/:id/acceptance
   try {
     const response = await httpService.get<AcceptanceSchema>(
