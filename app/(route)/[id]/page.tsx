@@ -1,7 +1,6 @@
 import { Header } from "../../ui";
 
-import { AlimHeader } from "./(_components)/AlimHeader";
-import { AlimTable } from "./(_components)/AlimTable";
+import { Alim } from "./(_components)/Alim";
 import ParentsRequest from "./(_components)/ParentsRequest";
 import TeacherList from "./(_components)/TeacherList";
 import TeacherListFilter from "./(_components)/TeacherListFilter";
@@ -12,8 +11,7 @@ export default function MatchingDetailHome({ id }: { id: string }) {
   return (
     <div className="flex flex-col">
       <Header matchingId={id} />
-      <AlimHeader matchingId={id} />
-      <AlimTable matchingId={id} />
+      <Alim />
       <ParentsRequest />
       <TeacherListFilter />
       <TeacherListSearch />
