@@ -30,7 +30,7 @@ const acceptanceSchema = z.object({
 
 export type AcceptanceSchema = z.infer<typeof acceptanceSchema>;
 
-export async function getAcceptance(matchingId: number) {
+export async function getAcceptance(matchingId: string) {
   /// api/matching/:id/acceptance
   try {
     const response = await httpService.get<AcceptanceSchema>(

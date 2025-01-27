@@ -60,7 +60,7 @@ export const AlimTHeaderColumn = [
     header: "답변까지_시간",
     size: 120,
   }),
-  columnHelper.accessor("receiveAcceptance", {
+  columnHelper.accessor("receiveAccetance", {
     header: "수락율",
     size: 80,
   }),

@@ -1,14 +1,13 @@
 import { Header } from "../../ui";
 
-import { AlimHeader } from "./(_components)/AlimHeader";
-import { AlimTable } from "./(_components)/AlimTable";
+import { Alim } from "./(_components)/Alim";
 
-export default function MatchingDetailHome({ id }: { id: number }) {
+export default function MatchingDetailHome({ id }: { id: string }) {
+  // 페이지 네이션 처리 필요
   return (
     <div>
       <Header matchingId={id} />
-      <AlimHeader matchingId={id} />
-      <AlimTable matchingId={id} />
+      <Alim />
     </div>
   );
 }

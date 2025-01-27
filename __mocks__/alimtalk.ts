@@ -59,10 +59,13 @@ export const alimtalkhandlers: ReturnType<typeof http.get>[] = [
       if (!response) {
         return HttpResponse.json({
           status: "ERROR",
-          data: null,
+          data: "에러가 발생했어요!",
         });
       }
-      return HttpResponse.json({ status: "SUCCESS", data: null });
+      return HttpResponse.json({
+        status: "SUCCESS",
+        data: "발송에 성공했습니다",
+      });
     },
   ),
 
@@ -76,7 +79,7 @@ export const alimtalkhandlers: ReturnType<typeof http.get>[] = [
           data: null,
         });
       }
-      return HttpResponse.json({ status: "SUCCESS", data: null });
+      return HttpResponse.json({ status: "SUCCESS", data: "발송되었습니다." });
     },
   ),
 

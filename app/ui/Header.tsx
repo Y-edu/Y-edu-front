@@ -26,18 +26,20 @@ export function Header({ matchingId }: HeaderProps) {
       />
       <button
         onClick={() =>
-          mutate({
-            matchingId,
-            displayName: String(matchingDisplayNameRef?.current?.value),
-          }, {
-            onError: (error) => {
-              alert('저장 중 오류가 발생했습니다. 다시 시도해 주세요.');
-              console.error('저장 실패:', error);
+          mutate(
+            {
+              matchingId,
+              displayName: String(matchingDisplayNameRef?.current?.value),
             },
-            onSuccess: () => {
-              alert('성공적으로 저장되었습니다.');
+            {
+              onError: () => {
+                alert("저장 중 오류가 발생했습니다. 다시 시도해 주세요.");
+              },
+              onSuccess: () => {
+                alert("성공적으로 저장되었습니다.");
+              },
             },
-          })
+          )
         }
         className="min-h-[40px] min-w-[80px] rounded-lg bg-primary p-2 text-white transition duration-300 ease-in-out hover:bg-blue-600 hover:shadow-lg"
       >
