@@ -87,7 +87,11 @@ function ParentsList() {
           </thead>
           <tbody>
             {table.getRowModel().rows.map((row) => (
-              <tr key={row.id} className="border-b bg-white hover:bg-gray-100">
+              <tr
+                key={row.id}
+                className="cursor-pointer border-b bg-white hover:bg-gray-100"
+                onClick={() => (window.location.href = `/${row.original.id}`)} // 행 클릭 시 링크 이동
+              >
                 {row.getVisibleCells().map((cell) => (
                   <td key={cell.id} className="p-4 text-left text-sm">
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
