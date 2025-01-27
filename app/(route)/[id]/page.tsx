@@ -1,5 +1,3 @@
-import ParentsRequest from "../../components/root/ParentsRequest";
-import TeacherList from "../../components/root/TeacherList";
 import { Header } from "../../ui";
 
 import { AlimHeader } from "./(_components)/AlimHeader";
