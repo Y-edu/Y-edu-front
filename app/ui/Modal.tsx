@@ -19,7 +19,7 @@ export function Modal({
   isOpen,
   ...rest
 }: ModalProps) {
-  const modalRef = useRef<HTMLDivElement>(null);
+  const modalRef = useRef<HTMLDivElement | null>(null);
 
   useClickoutside(modalRef, rest?.onConfirm, [isOpen]);
 
