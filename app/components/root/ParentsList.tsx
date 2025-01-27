@@ -90,7 +90,7 @@ function ParentsList() {
               <tr
                 key={row.id}
                 className="cursor-pointer border-b bg-white hover:bg-gray-100"
-                onClick={() => (window.location.href = `/${row.original.id}`)} // 행 클릭 시 링크 이동
+                onClick={() => (window.location.href = `/${row.original.id}`)}
               >
                 {row.getVisibleCells().map((cell) => (
                   <td key={cell.id} className="p-4 text-left text-sm">

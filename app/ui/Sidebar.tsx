@@ -11,14 +11,14 @@ export function Sidebar() {
   const activeLinkClassName = "font-bold text-primary";
   return (
     <nav
-      className="fixed left-0 top-0 h-screen w-[180px] border-r border-[#E6EFF5] bg-white text-disabled"
+      className="fixed left-0 top-0 h-screen w-[180px] border-r border-[#E6EFF5] bg-white pl-2 text-disabled"
       aria-label="메인 네비게이션"
       role="navigation"
     >
-      <div className="flex h-[100px] items-center p-2">
+      <Link href="/" className="flex h-[100px] items-center p-2">
         <Image src={LogoImage} height={36} width={36} alt="로고 이미지" />
         <span className="ml-2 text-lg font-bold text-headColor">Y-Edu</span>
-      </div>
+      </Link>
 
       <div className="mt-4 flex flex-col gap-4 p-4">
         <Link
