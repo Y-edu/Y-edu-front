@@ -25,7 +25,7 @@ function ParentsList() {
       acceptCount: 10,
       alertCount: 20,
       phoneNumber: "010-1234-5678",
-      isDone: true,
+      isDone: false,
     },
     {
       id: 1214124124001,
