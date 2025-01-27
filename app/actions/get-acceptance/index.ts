@@ -21,7 +21,7 @@ const acceptanceSchema = z.object({
       id: z.number(),
       name: z.string(),
       allReceiveAccetance: z.number(),
-      receiveAccetance: z.number(),
+      receiveAcceptance: z.number(),
       rejectReason: z.string().nullable(),
       lastUpdated: z.string().refine((date) => !isNaN(Date.parse(date))),
     }),
