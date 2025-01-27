@@ -44,7 +44,7 @@ export const AlimTableProvider = ({
           receiveAccetance: Math.floor(
             v.allReceiveAccetance === 0
               ? 0
-              : (v.receiveAccetance / v.allReceiveAccetance) * 100,
+              : (v.receiveAcceptance / v.allReceiveAccetance) * 100,
           ),
         };
       }) || []
