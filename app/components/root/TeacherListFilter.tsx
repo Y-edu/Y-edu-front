@@ -10,20 +10,15 @@ function TeacherListFilter() {
   const [selectedRegions, setSelectedRegions] = useState<string[]>([]);
 
   return (
-    <div className="mb-4 rounded-3xl border border-gray-300 bg-white p-4">
+    <div className="mb-4 rounded-3xl border border-gray-300 bg-white p-6">
       {/* 필터 카테고리 */}
       {filterCategories.map(({ title, options }) => (
         <CategoryFilter key={title} title={title} options={options} />
       ))}
 
       {/* 지역 및 추가발송 버튼 */}
-      <div className="relative flex items-center justify-between">
-        <div className="mr-4 h-[36px] w-[48px] rounded bg-primary px-2 py-1 text-lg font-bold text-white">
-          지역
-        </div>
-        <button className="rounded bg-primary px-2 py-1 text-lg font-bold text-white hover:bg-blue-700">
-          추가발송
-        </button>
+      <div className="absolute mr-4 h-[36px] w-[48px] rounded bg-primary px-2 py-1 text-lg font-bold text-white">
+        지역
       </div>
 
       {/* 지역 필터 */}

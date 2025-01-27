@@ -3,6 +3,7 @@ import Link from "next/link";
 import ParentsRequest from "../components/root/ParentsRequest";
 import TeacherList from "../components/root/TeacherList";
 import TeacherListFilter from "../components/root/TeacherListFilter";
+import TeacherListSearch from "../components/root/TeacherListSearch";
 
 export default function Home() {
   return (
@@ -10,6 +11,7 @@ export default function Home() {
       <Link href="/12">멘토링 디테일</Link>
       <ParentsRequest />
       <TeacherListFilter />
+      <TeacherListSearch />
       <TeacherList />
     </div>
   );

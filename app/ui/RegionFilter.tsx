@@ -22,7 +22,7 @@ const RegionFilter: React.FC<RegionFilterProps> = ({
   };
 
   return (
-    <div className="ml-16 translate-y-[-35px]">
+    <div className="ml-16">
       <div className="flex flex-row items-center">
         <button
           className="mr-4 rounded bg-primary px-3 py-[6px] text-white hover:bg-[#4762B4]"
