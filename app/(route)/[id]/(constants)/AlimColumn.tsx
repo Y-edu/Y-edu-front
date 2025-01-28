@@ -16,6 +16,7 @@ export const AlimTHeaderColumn = [
       <input
         id="header-checkbox"
         type="checkbox"
+        className="size-4"
         checked={table.getIsAllPageRowsSelected()} // 전체 row가 선택되었는지 확인
         onChange={table.getToggleAllPageRowsSelectedHandler()} // 전체 row를 선택/해제하는 handler
       />
@@ -24,6 +25,7 @@ export const AlimTHeaderColumn = [
       <input
         id={`cell-checkbox-${row.id}`}
         type="checkbox"
+        className="size-4"
         checked={row.getIsSelected()} // row가 선택되었는지 확인
         disabled={!row.getCanSelect()} // row가 선택 가능한지 확인
         onChange={row.getToggleSelectedHandler()} // row를 선택/해제하는 handler

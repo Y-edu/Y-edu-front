@@ -66,7 +66,6 @@ function ParentsList() {
   return (
     <div>
       <div className="overflow-hidden rounded-3xl border border-gray-300 bg-white shadow-lg">
-        {/* 테이블 */}
         <table className="w-full table-auto border-collapse">
           <thead>
             {table.getHeaderGroups().map((hg) => (
@@ -107,7 +106,6 @@ function ParentsList() {
         </table>
       </div>
 
-      {/* 페이지네이션 */}
       <Pagination
         canPreviousPage={table.getCanPreviousPage()}
         canNextPage={table.getCanNextPage()}

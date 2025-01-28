@@ -16,10 +16,10 @@ export default function MatchingDetailHome({
   return (
     <div className="flex flex-col">
       <Header matchingId={id} />
-      <Alim />
+      <Alim id={id} />
       <ParentsRequest />
       <TeacherListFilter />
-      <TeacherListSearch />
+      <TeacherListSearch selectedTeachers={[]} />
       <TeacherList />
     </div>
   );
