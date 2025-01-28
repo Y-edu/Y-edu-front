@@ -8,8 +8,8 @@ interface ModalProps {
   message: React.ReactNode;
   confirmText: string;
   cancelText?: string;
-  onConfirm: () => void;
-  onCancel?: () => void;
+  handleOnConfirm: () => void;
+  handleOnCancel?: () => void;
   isOpen: boolean;
 }
 
@@ -21,7 +21,7 @@ export function Modal({
 }: ModalProps) {
   const modalRef = useRef<HTMLDivElement | null>(null);
 
-  useClickoutside(modalRef, rest?.onConfirm, [isOpen]);
+  useClickoutside(modalRef, rest?.handleOnConfirm, [isOpen]);
 
   if (!isOpen) {
     return null;
@@ -35,7 +35,7 @@ export function Modal({
         <div className="flex justify-end">
           {rest.cancelText && (
             <button
-              onClick={rest.onCancel}
+              onClick={rest.handleOnCancel}
               className="mr-2 rounded bg-gray-300 px-4 py-2 text-gray-800 hover:bg-gray-400"
             >
               {rest.cancelText}
@@ -43,7 +43,7 @@ export function Modal({
           )}
 
           <button
-            onClick={rest.onConfirm}
+            onClick={rest.handleOnConfirm}
             className="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
           >
             {rest.confirmText}

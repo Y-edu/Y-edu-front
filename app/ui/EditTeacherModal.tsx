@@ -31,8 +31,8 @@ export function EditTeacherModal({
       title={title}
       confirmText="저장"
       cancelText="취소"
-      onConfirm={onSave}
-      onCancel={onCancel}
+      handleOnConfirm={onSave}
+      handleOnCancel={onCancel}
       message={
         isTextarea ? (
           <textarea
