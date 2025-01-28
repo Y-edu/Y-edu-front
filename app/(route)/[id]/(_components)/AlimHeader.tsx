@@ -54,7 +54,7 @@ export function AlimHeader({ matchingId }: AlimHeaderProps) {
           onClick={() => {
             openModal();
           }}
-          className="min-h-[40px] min-w-[80px] rounded-lg bg-primary p-2 text-white transition duration-300 ease-in-out hover:bg-blue-600 hover:shadow-lg"
+          className="mr-4 rounded bg-primary px-3 py-[6px] text-white hover:bg-[#4762B4]"
         >
           선생님 추천 발송
         </button>

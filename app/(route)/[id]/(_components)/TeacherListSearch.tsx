@@ -1,6 +1,10 @@
 "use client";
 
-function TeacherListSearch() {
+interface TeacherListSearchProps {
+  selectedTeachers: string[];
+}
+
+function TeacherListSearch({ selectedTeachers }: TeacherListSearchProps) {
   return (
     <div>
       <div className="mb-4 flex items-center justify-between">
@@ -14,7 +18,12 @@ function TeacherListSearch() {
             조회하기
           </button>
         </div>
-        <button className="mr-4 rounded bg-primary px-3 py-[6px] text-white hover:bg-[#4762B4]">
+        <button
+          className="mr-4 rounded bg-primary px-3 py-[6px] text-white hover:bg-[#4762B4]"
+          onClick={() => {
+            alert(selectedTeachers.toString());
+          }}
+        >
           추가발송
         </button>
       </div>
