@@ -16,6 +16,6 @@ export function useClickoutside<
     return () => {
       document.removeEventListener("mousedown", listener);
     };
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   }, [ref, callback, deps && [...deps]]);
 }
