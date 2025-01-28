@@ -103,8 +103,8 @@ function TeacherList() {
         isOpen={youtubeModal.isOpen}
         value={youtubeModal.value}
         setValue={youtubeModal.setValue}
-        onSave={youtubeModal.saveValue}
-        onCancel={youtubeModal.closeModal}
+        onSave={youtubeModal.handleSaveValue}
+        onCancel={youtubeModal.handleCloseModal}
         title="선생님 프로필 유튜브 링크 수정"
         placeholder="https://youtube.com/..."
         isTextarea={false}
@@ -115,8 +115,8 @@ function TeacherList() {
         isOpen={remarkModal.isOpen}
         value={remarkModal.value}
         setValue={remarkModal.setValue}
-        onSave={remarkModal.saveValue}
-        onCancel={remarkModal.closeModal}
+        onSave={remarkModal.handleSaveValue}
+        onCancel={remarkModal.handleCloseModal}
         title="간단 비고 수정"
         maxLength={30}
         isTextarea
