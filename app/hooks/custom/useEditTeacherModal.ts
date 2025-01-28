@@ -24,13 +24,13 @@ export function useEditTeacherModal(
     setValue((teacher[field] as string) ?? "");
   };
 
-  const closeModal = () => {
+  const handleCloseModal = () => {
     setIsOpen(false);
     setTeacherId(null);
     setValue("");
   };
 
-  const saveValue = () => {
+  const handleSaveValue = () => {
     if (teacherId == null || !data) return;
     const currentTeacher = data.find((t) => t.id === teacherId);
     if (!currentTeacher) return;
@@ -40,7 +40,7 @@ export function useEditTeacherModal(
       [field]: value,
     });
 
-    closeModal();
+    handleCloseModal();
   };
 
   return {
@@ -48,7 +48,7 @@ export function useEditTeacherModal(
     value,
     setValue,
     openModal,
-    saveValue,
-    closeModal,
+    handleSaveValue,
+    handleCloseModal,
   };
 }

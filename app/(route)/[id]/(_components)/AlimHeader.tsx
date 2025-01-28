@@ -60,7 +60,7 @@ export function AlimHeader({ matchingId }: AlimHeaderProps) {
         </button>
         <Modal
           isOpen={isModalOpen}
-          onConfirm={() => {
+          handleOnConfirm={() => {
             postMatchingAcceptance(
               {
                 matchingId,
@@ -81,7 +81,7 @@ export function AlimHeader({ matchingId }: AlimHeaderProps) {
               },
             );
           }}
-          onCancel={closeModal}
+          handleOnCancel={closeModal}
           title={JSON.stringify(
             selecteddRowNickName.toString().replaceAll("", ""),
           )}
