@@ -1,7 +1,3 @@
-"use client";
-
-import { useState } from "react";
-
 import RegionFilter from "../../ui/RegionFilter";
 import CategoryFilter from "../../ui/CategoryFilter";
 
@@ -12,6 +8,8 @@ interface TeacherListFilterProps {
   setSelectedSchool: React.Dispatch<React.SetStateAction<string[]>>;
   selectedGender: string[];
   setSelectedGender: React.Dispatch<React.SetStateAction<string[]>>;
+  selectedRegion: string[];
+  setSelectedRegion: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
 function TeacherListFilter({
@@ -21,10 +19,9 @@ function TeacherListFilter({
   setSelectedSchool,
   selectedGender,
   setSelectedGender,
+  selectedRegion,
+  setSelectedRegion,
 }: TeacherListFilterProps) {
-  // 지역도 다중선택이 가능하다고 가정
-  const [selectedRegions, setSelectedRegions] = useState<string[]>([]);
-
   return (
     <div className="mb-4 rounded-3xl border border-gray-300 bg-white p-6">
       {/* 과목 필터 (다중 선택) */}
@@ -56,8 +53,8 @@ function TeacherListFilter({
         지역
       </div>
       <RegionFilter
-        selectedRegions={selectedRegions}
-        setSelectedRegions={setSelectedRegions}
+        selectedRegion={selectedRegion}
+        setSelectedRegion={setSelectedRegion}
       />
     </div>
   );

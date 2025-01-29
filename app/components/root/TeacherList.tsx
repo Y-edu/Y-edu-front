@@ -23,6 +23,7 @@ interface TeacherListProps {
   subject?: string[];
   school?: string[];
   gender?: string[];
+  region?: string[];
 }
 function TeacherList({
   selectedTeacherRowList,
@@ -30,11 +31,13 @@ function TeacherList({
   subject,
   school,
   gender,
+  region,
 }: TeacherListProps) {
   const { data, isLoading, isError } = useGetTeachers({
     subject,
     school,
     gender,
+    region,
   });
   const patchMutation = usePatchTeacherModal();
 

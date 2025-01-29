@@ -5,18 +5,18 @@ import React, { useState } from "react";
 import { filterRegions } from "../constants/filterData";
 
 interface RegionFilterProps {
-  selectedRegions: string[];
-  setSelectedRegions: React.Dispatch<React.SetStateAction<string[]>>;
+  selectedRegion: string[];
+  setSelectedRegion: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
 const RegionFilter: React.FC<RegionFilterProps> = ({
-  selectedRegions,
-  setSelectedRegions,
+  selectedRegion,
+  setSelectedRegion,
 }) => {
   const [isAccordionOpen, setIsAccordionOpen] = useState(false);
 
   const handleRegionSelect = (region: string) => {
-    setSelectedRegions((prev) =>
+    setSelectedRegion((prev) =>
       prev.includes(region)
         ? prev.filter((item) => item !== region)
         : [...prev, region],
@@ -32,10 +32,10 @@ const RegionFilter: React.FC<RegionFilterProps> = ({
         >
           선택하기
         </button>
-        {selectedRegions.length > 0 && (
+        {selectedRegion.length > 0 && (
           <span className="flex flex-row text-base text-gray-700">
             선택된 지역:{" "}
-            <p className="ml-2 text-primary">{selectedRegions.join(", ")}</p>
+            <p className="ml-2 text-primary">{selectedRegion.join(", ")}</p>
           </span>
         )}
       </div>
@@ -45,7 +45,7 @@ const RegionFilter: React.FC<RegionFilterProps> = ({
             <label key={region}>
               <input
                 type="checkbox"
-                checked={selectedRegions.includes(region)}
+                checked={selectedRegion.includes(region)}
                 onChange={() => handleRegionSelect(region)}
                 className="mr-2"
               />

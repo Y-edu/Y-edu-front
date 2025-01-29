@@ -6,6 +6,7 @@ interface UseGetTeachersProps {
   subject?: string[];
   school?: string[];
   gender?: string[];
+  region?: string[];
 }
 
 export function useGetTeachers(filters: UseGetTeachersProps = {}) {

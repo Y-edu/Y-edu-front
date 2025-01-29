@@ -14,6 +14,7 @@ export function Teacher({ matchingId }: { matchingId: string }) {
   const [selectedSubject, setSelectedSubject] = useState<string[]>([]);
   const [selectedSchool, setSelectedSchool] = useState<string[]>([]);
   const [selectedGender, setSelectedGender] = useState<string[]>([]);
+  const [selectedRegion, setSelectedRegion] = useState<string[]>([]);
 
   return (
     <section>
@@ -24,6 +25,8 @@ export function Teacher({ matchingId }: { matchingId: string }) {
         setSelectedSchool={setSelectedSchool}
         selectedGender={selectedGender}
         setSelectedGender={setSelectedGender}
+        selectedRegion={selectedRegion}
+        setSelectedRegion={setSelectedRegion}
       />
       <TeacherListSearch
         matchingId={matchingId}
@@ -35,6 +38,7 @@ export function Teacher({ matchingId }: { matchingId: string }) {
         subject={selectedSubject}
         school={selectedSchool}
         gender={selectedGender}
+        region={selectedRegion}
       />
     </section>
   );
