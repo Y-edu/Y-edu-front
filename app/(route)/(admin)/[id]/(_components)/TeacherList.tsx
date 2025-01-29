@@ -55,7 +55,7 @@ function TeacherList() {
     );
 
   return (
-    <div>
+    <div className="mb-6">
       <div className="overflow-hidden rounded-3xl border border-gray-300 bg-white shadow-lg">
         {/* 테이블 */}
         <table className="w-full table-auto border-collapse">

@@ -16,12 +16,10 @@ function TeacherListFilter() {
         <CategoryFilter key={title} title={title} options={options} />
       ))}
 
-      {/* 지역 및 추가발송 버튼 */}
+      {/* 지역 필터 */}
       <div className="absolute mr-4 h-[36px] w-[48px] rounded bg-primary px-2 py-1 text-lg font-bold text-white">
         지역
       </div>
-
-      {/* 지역 필터 */}
       <RegionFilter
         selectedRegions={selectedRegions}
         setSelectedRegions={setSelectedRegions}
