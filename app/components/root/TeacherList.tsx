@@ -9,13 +9,13 @@ import {
 } from "@tanstack/react-table";
 import { Dispatch, SetStateAction } from "react";
 
-import { TeacherProfile } from "../../../../../types/TeacherProfile";
-import { Pagination } from "../../../../../ui/Pagination";
-import { getTeacherColumns } from "../../../../../ui/Columns/TeacherColumns";
-import { useEditTeacherModal } from "../../../../../hooks/custom/useEditTeacherModal";
-import { EditTeacherModal } from "../../../../../ui/EditTeacherModal";
-import { useGetTeachers } from "../../../../../hooks/query/useGetTeachers";
-import { usePatchTeacherModal } from "../../../../../hooks/mutation/usePatchTeacherModal";
+import { TeacherProfile } from "../../types/TeacherProfile";
+import { Pagination } from "../../ui/Pagination";
+import { getTeacherColumns } from "../../ui/Columns/TeacherColumns";
+import { useEditTeacherModal } from "../../hooks/custom/useEditTeacherModal";
+import { EditTeacherModal } from "../../ui/EditTeacherModal";
+import { useGetTeachers } from "../../hooks/query/useGetTeachers";
+import { usePatchTeacherModal } from "../../hooks/mutation/usePatchTeacherModal";
 
 interface TeacherListProps {
   selectedTeacherRowList: RowSelectionState;

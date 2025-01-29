@@ -1,8 +1,8 @@
 "use client";
 
-import { useModal } from "../../../../../hooks/custom";
-import { Modal } from "../../../../../ui";
-import { usePostNewMatchingAcceptance } from "../../../../../hooks/mutation";
+import { useModal } from "../../hooks/custom";
+import { Modal } from "../../ui";
+import { usePostNewMatchingAcceptance } from "../../hooks/mutation";
 
 interface TeacherListSearchProps {
   selectedTeachers: string[];

@@ -2,9 +2,9 @@
 
 import { useState } from "react";
 
-import RegionFilter from "../../../../../ui/RegionFilter";
-import CategoryFilter from "../../../../../ui/CategoryFilter";
-import { filterCategories } from "../../../../../constants/filterData";
+import RegionFilter from "../../ui/RegionFilter";
+import CategoryFilter from "../../ui/CategoryFilter";
+import { filterCategories } from "../../constants/filterData";
 
 function TeacherListFilter() {
   const [selectedRegions, setSelectedRegions] = useState<string[]>([]);

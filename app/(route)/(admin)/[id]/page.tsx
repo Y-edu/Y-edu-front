@@ -1,8 +1,7 @@
 import { Header } from "../../../ui";
-
-import { Alim } from "./(Alim)/(_components)/Alim";
-import ParentsRequest from "./ParentsRequest";
-import { Teacher } from "./(Teacher)/(_components)/Teacher";
+import { Alim } from "../../../components/root/Alim";
+import ParentsRequest from "../../../components/root/ParentsRequest";
+import { Teacher } from "../../../components/root/Teacher";
 
 export default function MatchingDetailHome({
   params,

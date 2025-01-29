@@ -1,4 +1,4 @@
-import { AlimTableProvider } from "../(hooks)/useAlimTable";
+import { AlimTableProvider } from "../../(route)/(admin)/[id]/(hooks)/useAlimTable";
 
 import { AlimHeader } from "./AlimHeader";
 import { AlimTable } from "./AlimTable";

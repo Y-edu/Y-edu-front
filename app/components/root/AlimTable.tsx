@@ -2,9 +2,10 @@
 
 import { flexRender } from "@tanstack/react-table";
 
-import { AlimTHeaderColumn } from "../(constants)/AlimColumn";
-import { useAlimTableContext } from "../(hooks)/useAlimTable";
-import { Pagination } from "../../../../../ui";
+import { useAlimTableContext } from "../../(route)/(admin)/[id]/(hooks)/useAlimTable";
+import { Pagination } from "../../ui";
+
+import { AlimTHeaderColumn } from "./AlimColumn";
 
 export function AlimTable() {
   const { alimTable } = useAlimTableContext();
