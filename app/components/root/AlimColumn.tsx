@@ -5,7 +5,7 @@
 import { createColumnHelper } from "@tanstack/react-table";
 import type { Table, Row } from "@tanstack/react-table";
 
-import type { AcceptanceSchema } from "../../../../actions/get-acceptance";
+import { AcceptanceSchema } from "../../actions/get-acceptance";
 
 const columnHelper = createColumnHelper<AcceptanceSchema["data"]["0"]>();
 

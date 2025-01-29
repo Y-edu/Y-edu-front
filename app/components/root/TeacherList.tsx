@@ -5,17 +5,26 @@ import {
   getCoreRowModel,
   useReactTable,
   getPaginationRowModel,
+  RowSelectionState,
 } from "@tanstack/react-table";
+import { Dispatch, SetStateAction } from "react";
 
-import { TeacherProfile } from "../../../../types/TeacherProfile";
-import { Pagination } from "../../../../ui/Pagination";
-import { getTeacherColumns } from "../../../../ui/Columns/TeacherColumns";
-import { useEditTeacherModal } from "../../../../hooks/custom/useEditTeacherModal";
-import { EditTeacherModal } from "../../../../ui/EditTeacherModal";
-import { useGetTeachers } from "../../../../hooks/query/useGetTeachers";
-import { usePatchTeacherModal } from "../../../../hooks/mutation/usePatchTeacherModal";
+import { TeacherProfile } from "../../types/TeacherProfile";
+import { Pagination } from "../../ui/Pagination";
+import { getTeacherColumns } from "../../ui/Columns/TeacherColumns";
+import { useEditTeacherModal } from "../../hooks/custom/useEditTeacherModal";
+import { EditTeacherModal } from "../../ui/EditTeacherModal";
+import { useGetTeachers } from "../../hooks/query/useGetTeachers";
+import { usePatchTeacherModal } from "../../hooks/mutation/usePatchTeacherModal";
 
-function TeacherList() {
+interface TeacherListProps {
+  selectedTeacherRowList: RowSelectionState;
+  setSelectedTeachers: Dispatch<SetStateAction<RowSelectionState>>;
+}
+function TeacherList({
+  selectedTeacherRowList,
+  setSelectedTeachers,
+}: TeacherListProps) {
   const { data, isLoading, isError } = useGetTeachers();
   const patchMutation = usePatchTeacherModal();
 
@@ -39,6 +48,10 @@ function TeacherList() {
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
+    state: {
+      rowSelection: selectedTeacherRowList,
+    },
+    onRowSelectionChange: setSelectedTeachers,
   });
 
   if (isLoading)

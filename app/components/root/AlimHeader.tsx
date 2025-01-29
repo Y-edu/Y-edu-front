@@ -3,11 +3,11 @@
  */
 "use client";
 
-import { useGetAcceptance } from "../../../../hooks/query";
-import { usePostMatchingAcceptance } from "../../../../hooks/mutation";
-import { useModal } from "../../../../hooks/custom";
-import { Modal } from "../../../../ui";
-import { useAlimTableContext } from "../(hooks)/useAlimTable";
+import { useGetAcceptance } from "../../hooks/query";
+import { usePostMatchingAcceptance } from "../../hooks/mutation";
+import { useModal } from "../../hooks/custom";
+import { Modal } from "../../ui";
+import { useAlimTableContext } from "../../(route)/(admin)/[id]/(hooks)/useAlimTable";
 
 interface AlimHeaderProps {
   matchingId: string;

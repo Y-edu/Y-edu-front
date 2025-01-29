@@ -17,7 +17,7 @@ const acceptanceSchema = z.object({
         z.literal("SENDED"),
       ]),
       nickname: z.string(),
-      userId: z.number(),
+      userId: z.string(),
       id: z.number(),
       name: z.string(),
       allReceiveAccetance: z.number(),
