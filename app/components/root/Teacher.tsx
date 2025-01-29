@@ -3,23 +3,38 @@
 import { useState } from "react";
 import { RowSelectionState } from "@tanstack/react-table";
 
-import TeacherList from "./TeacherList";
 import TeacherListFilter from "./TeacherListFilter";
+import TeacherList from "./TeacherList";
 import TeacherListSearch from "./TeacherListSearch";
 
 export function Teacher({ matchingId }: { matchingId: string }) {
   const [selectedTeacherList, setSelectedTeacherRowList] =
     useState<RowSelectionState>({});
+
+  const [selectedSubject, setSelectedSubject] = useState<string[]>([]);
+  const [selectedSchool, setSelectedSchool] = useState<string[]>([]);
+  const [selectedGender, setSelectedGender] = useState<string[]>([]);
+
   return (
     <section>
-      <TeacherListFilter />
+      <TeacherListFilter
+        selectedSubject={selectedSubject}
+        setSelectedSubject={setSelectedSubject}
+        selectedSchool={selectedSchool}
+        setSelectedSchool={setSelectedSchool}
+        selectedGender={selectedGender}
+        setSelectedGender={setSelectedGender}
+      />
       <TeacherListSearch
         matchingId={matchingId}
-        selectedTeachers={Object.keys(selectedTeacherList).map((v) => v)}
+        selectedTeachers={Object.keys(selectedTeacherList)}
       />
       <TeacherList
         selectedTeacherRowList={selectedTeacherList}
         setSelectedTeachers={setSelectedTeacherRowList}
+        subject={selectedSubject}
+        school={selectedSchool}
+        gender={selectedGender}
       />
     </section>
   );

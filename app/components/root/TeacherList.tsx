@@ -20,12 +20,22 @@ import { usePatchTeacherModal } from "../../hooks/mutation/usePatchTeacherModal"
 interface TeacherListProps {
   selectedTeacherRowList: RowSelectionState;
   setSelectedTeachers: Dispatch<SetStateAction<RowSelectionState>>;
+  subject?: string[];
+  school?: string[];
+  gender?: string[];
 }
 function TeacherList({
   selectedTeacherRowList,
   setSelectedTeachers,
+  subject,
+  school,
+  gender,
 }: TeacherListProps) {
-  const { data, isLoading, isError } = useGetTeachers();
+  const { data, isLoading, isError } = useGetTeachers({
+    subject,
+    school,
+    gender,
+  });
   const patchMutation = usePatchTeacherModal();
 
   const youtubeModal = useEditTeacherModal("youtubeLink", data, patchMutation);
