@@ -3,10 +3,10 @@
  */
 "use client";
 
-import { useGetAcceptance } from "../../../hooks/query";
-import { usePostMatchingAcceptance } from "../../../hooks/mutation";
-import { useModal } from "../../../hooks/custom";
-import { Modal } from "../../../ui";
+import { useGetAcceptance } from "../../../../hooks/query";
+import { usePostMatchingAcceptance } from "../../../../hooks/mutation";
+import { useModal } from "../../../../hooks/custom";
+import { Modal } from "../../../../ui";
 import { useAlimTableContext } from "../(hooks)/useAlimTable";
 
 interface AlimHeaderProps {
