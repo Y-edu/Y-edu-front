@@ -17,7 +17,7 @@ export async function postNewMatchingAcceptance({
   userIds,
 }: {
   matchingId: string;
-  userIds: number[];
+  userIds: string[];
 }) {
   try {
     const response = await httpService.post<MatchingAccptanceResponse>(

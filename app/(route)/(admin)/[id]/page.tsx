@@ -1,10 +1,8 @@
 import { Header } from "../../../ui";
 
-import { Alim } from "./(_components)/Alim";
-import ParentsRequest from "./(_components)/ParentsRequest";
-import TeacherList from "./(_components)/TeacherList";
-import TeacherListFilter from "./(_components)/TeacherListFilter";
-import TeacherListSearch from "./(_components)/TeacherListSearch";
+import { Alim } from "./(Alim)/(_components)/Alim";
+import ParentsRequest from "./ParentsRequest";
+import { Teacher } from "./(Teacher)/(_components)/Teacher";
 
 export default function MatchingDetailHome({
   params,
@@ -18,9 +16,7 @@ export default function MatchingDetailHome({
       <Header matchingId={id} />
       <Alim id={id} />
       <ParentsRequest />
-      <TeacherListFilter />
-      <TeacherListSearch selectedTeachers={[]} />
-      <TeacherList />
+      <Teacher matchingId={id} />
     </div>
   );
 }

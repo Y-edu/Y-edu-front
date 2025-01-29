@@ -1,8 +1,8 @@
 "use client";
 
-import { useGetParentsRequest } from "../../../../hooks/query/useGetParentsRequest";
-import { Accordion, TitleDesc } from "../../../../ui";
-import { PARENTS_REQUEST_TITLE } from "../../../../constants/parentsRequest";
+import { useGetParentsRequest } from "../../../hooks/query/useGetParentsRequest";
+import { Accordion, TitleDesc } from "../../../ui";
+import { PARENTS_REQUEST_TITLE } from "../../../constants/parentsRequest";
 
 function ParentsRequest() {
   const { data } = useGetParentsRequest("abc123");
