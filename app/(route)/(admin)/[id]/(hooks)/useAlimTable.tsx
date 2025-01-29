@@ -15,9 +15,9 @@ import {
 } from "@tanstack/react-table";
 import type { Table } from "@tanstack/react-table";
 
-import { AlimTHeaderColumn } from "../(constants)/AlimColumn";
+import { AlimTHeaderColumn } from "../../../../components/root/AlimColumn";
 import { useGetAcceptance } from "../../../../hooks/query";
-import type { AcceptanceSchema } from "../../../../actions/get-acceptance";
+import { AcceptanceSchema } from "../../../../actions/get-acceptance";
 
 interface AlimTableContextType {
   alimTable: Table<AcceptanceSchema["data"]["0"]>;

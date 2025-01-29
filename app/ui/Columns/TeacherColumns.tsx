@@ -16,8 +16,25 @@ export function getTeacherColumns({
   return [
     columnHelper.display({
       id: "select",
-      header: "선택",
-      cell: () => <input type="checkbox" />,
+      header: ({ table }) => (
+        <input
+          id="teacher-header-checkbox"
+          type="checkbox"
+          className="size-4"
+          checked={table.getIsAllPageRowsSelected()}
+          onChange={table.getToggleAllPageRowsSelectedHandler()}
+        />
+      ),
+      cell: ({ row }) => (
+        <input
+          id={`cell-checkbox-${row.id}`}
+          className="size-4"
+          type="checkbox"
+          checked={row.getIsSelected()}
+          disabled={!row.getCanSelect()}
+          onChange={row.getToggleSelectedHandler()}
+        />
+      ),
     }),
     columnHelper.accessor("nickname", {
       header: "닉네임",

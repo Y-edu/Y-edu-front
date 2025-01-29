@@ -31,7 +31,7 @@ export const alimtalkhandlers: ReturnType<typeof http.get>[] = [
       return {
         status,
         nickname: status === "ACCEPTED" ? `올리버${index}` : `제임스${index}`,
-        userId: 121412412400 + index,
+        userId: String(121412412400 + index),
         id: 1241251512600 + index,
         name: status === "ACCEPTED" ? "김현철" : "이영희",
         allReceiveAccetance: 3000,
