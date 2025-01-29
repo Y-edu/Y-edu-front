@@ -1,4 +1,4 @@
-import { Header } from "../../ui";
+import { Header } from "../../../ui";
 
 import { Alim } from "./(_components)/Alim";
 import ParentsRequest from "./(_components)/ParentsRequest";

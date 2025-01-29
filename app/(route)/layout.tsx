@@ -5,7 +5,6 @@ import "./globals.css";
 import { QueryProvider } from "../providers";
 import { initMsw } from "../../__mocks__/init";
 import IntegrateMSW from "../providers/MSWProvider";
-import { Sidebar } from "../ui";
 
 const pretendard = localFont({
   src: "../../public/fonts/PretendardVariable.ttf",
@@ -31,10 +30,7 @@ export default function RootLayout({
     <IntegrateMSW>
       <html lang="ko">
         <QueryProvider>
-          <body className={`${pretendard.variable} ml-[180px] bg-background`}>
-            <Sidebar />
-            {children}
-          </body>
+          <body className={`${pretendard.variable}`}>{children}</body>
         </QueryProvider>
       </html>
     </IntegrateMSW>
