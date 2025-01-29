@@ -49,9 +49,10 @@ function TeacherListSearch({
                   alert(data.data);
                   closeModal();
                 },
-                onError: () => {
-                  // Todo -> 에러 로깅
-                  alert("에러가 발생했습니다.");
+                onError: (error) => {
+                  const errorMessage = "알림톡 발송 중 문제가 발생했습니다. 잠시 후 다시 시도해주세요.";
+                  console.error('매칭 알림톡 발송 실패:', error);
+                  alert(errorMessage);
                   closeModal();
                 },
               },
