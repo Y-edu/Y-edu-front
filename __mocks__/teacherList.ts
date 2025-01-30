@@ -92,6 +92,7 @@ export const teacherListHandlers: ReturnType<typeof http.get>[] = [
     const schoolFilters = url.searchParams.getAll("school[]");
     const genderFilters = url.searchParams.getAll("gender[]");
     const regionFilters = url.searchParams.getAll("region[]");
+    const searchParam = url.searchParams.get("search") || "";
 
     let filteredProfiles = teacherProfiles.slice();
 
@@ -118,10 +119,29 @@ export const teacherListHandlers: ReturnType<typeof http.get>[] = [
       );
     }
 
-    // 성별(gender) 필터
+    // 지역(gender) 필터
     if (regionFilters.length > 0) {
       filteredProfiles = filteredProfiles.filter((teacher) => {
         return teacher.region.some((r) => regionFilters.includes(r));
+      });
+    }
+
+    if (searchParam) {
+      filteredProfiles = filteredProfiles.filter((teacher) => {
+        const combinedText = [
+          teacher.nickname,
+          teacher.fullName,
+          teacher.school,
+          teacher.remark,
+          teacher.region,
+          teacher.gender,
+          teacher.subject,
+          teacher.isActive ? "활동" : "비활동",
+        ]
+          .filter(Boolean)
+          .join(" ");
+
+        return combinedText.includes(searchParam);
       });
     }
 
