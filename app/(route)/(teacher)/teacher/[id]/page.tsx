@@ -1,3 +1,5 @@
+"use client";
+
 import IconTitleChip from "../../../../components/teacher/IconTitleChip";
 import ProfileInfoBox from "../../../../components/teacher/ProfileInfoBox";
 import {
@@ -9,11 +11,10 @@ export default function TeacherPage({ params }: { params: { id: string } }) {
   return (
     <div>
       <ProfileInfoBox title="예시 텍스트입니다.">
-        <div>
-          예시텍스트입니다. 예시텍스트입니다. 예시텍스트입니다.
-          예시텍스트입니다. 예시텍스트입니다. 예시텍스트입니다.
-          예시텍스트입니다. 예시텍스트입니다. 예시텍스트입니다.
-        </div>
+        예시텍스트입니다. 예시텍스트입니다. 예시텍스트입니다. 예시텍스트입니다.
+        예시텍스트입니다. 예시텍스트입니다. 예시텍스트입니다. 예시텍스트입니다.
+        예시텍스트입니다.
+        {params.id}
       </ProfileInfoBox>
       <IconTitleChip
         title={`${TEACHER_STYLE_TEXT.passionate} 선생님`}

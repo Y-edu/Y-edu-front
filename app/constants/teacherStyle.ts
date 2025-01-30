@@ -1,4 +1,4 @@
-import solar_fire from "../../public/images/solar_fire.png";
+import SolarFile from "../../public/images/solar_fire.png";
 
 export const TEACHER_STYLE_TEXT = {
   kind: "따뜻하고 친절한",
@@ -10,10 +10,10 @@ export const TEACHER_STYLE_TEXT = {
 } as const;
 
 export const TEACHER_STYLE_ICON = {
-  kind: solar_fire,
-  passionate: solar_fire,
-  meticulous: solar_fire,
-  funny: solar_fire,
-  selfEsteem: solar_fire,
-  skillful: solar_fire,
+  kind: SolarFile,
+  passionate: SolarFile,
+  meticulous: SolarFile,
+  funny: SolarFile,
+  selfEsteem: SolarFile,
+  skillful: SolarFile,
 } as const;
