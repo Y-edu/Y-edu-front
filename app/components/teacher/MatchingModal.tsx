@@ -3,13 +3,25 @@ import { useRef, useState } from "react";
 import { useClickoutside } from "../../hooks/custom";
 import type { ModalProps } from "../../ui";
 
-interface MatchingModalProps
+type ModalStatus = "REJECT" | "ACCEPT";
+
+interface BaseMatchingModalProps
   extends Pick<ModalProps, "isOpen" | "message" | "title" | "cancelText"> {
-  status: "REJECT" | "ACCEPT";
-  rejectReason?: string;
-  handleOnCancel?: (rejectreason: string) => void;
+  status: ModalStatus;
   onCloseModal?: () => void;
 }
+
+interface AcceptMatchingModalProps extends BaseMatchingModalProps {
+  status: "ACCEPT";
+}
+
+interface RejectMatchingModalProps extends BaseMatchingModalProps {
+  status: "REJECT";
+  rejectReason?: string;
+  onSubmitReject: (reason: string) => void;
+}
+
+type MatchingModalProps = AcceptMatchingModalProps | RejectMatchingModalProps;
 
 export function MatchingModal({ isOpen, ...rest }: MatchingModalProps) {
   const matchingModalRef = useRef<HTMLDivElement | null>(null);
