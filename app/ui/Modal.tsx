@@ -3,7 +3,7 @@ import { useRef } from "react";
 
 import { useClickoutside } from "../hooks/custom";
 
-interface ModalProps {
+export interface ModalProps {
   title: string;
   message: React.ReactNode;
   confirmText: string;
