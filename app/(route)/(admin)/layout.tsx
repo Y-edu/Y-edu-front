@@ -1,6 +1,6 @@
 import { Sidebar } from "../../ui";
 
-export default function TeacherLayout({
+export default function AdminLayout({
   children,
 }: {
   children: React.ReactNode;

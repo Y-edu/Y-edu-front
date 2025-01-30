@@ -20,12 +20,25 @@ import { usePatchTeacherModal } from "../../hooks/mutation/usePatchTeacherModal"
 interface TeacherListProps {
   selectedTeacherRowList: RowSelectionState;
   setSelectedTeachers: Dispatch<SetStateAction<RowSelectionState>>;
+  subject?: string[];
+  school?: string[];
+  gender?: string[];
+  region?: string[];
 }
 function TeacherList({
   selectedTeacherRowList,
   setSelectedTeachers,
+  subject,
+  school,
+  gender,
+  region,
 }: TeacherListProps) {
-  const { data, isLoading, isError } = useGetTeachers();
+  const { data, isLoading, isError } = useGetTeachers({
+    subject,
+    school,
+    gender,
+    region,
+  });
   const patchMutation = usePatchTeacherModal();
 
   const youtubeModal = useEditTeacherModal("youtubeLink", data, patchMutation);
@@ -68,7 +81,7 @@ function TeacherList({
     );
 
   return (
-    <div>
+    <div className="mb-6">
       <div className="overflow-hidden rounded-3xl border border-gray-300 bg-white shadow-lg">
         {/* 테이블 */}
         <table className="w-full table-auto border-collapse">

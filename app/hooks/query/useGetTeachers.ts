@@ -2,13 +2,18 @@ import { useQuery } from "@tanstack/react-query";
 
 import { getTeachers } from "../../actions/get-teachers";
 
-export function useGetTeachers() {
+interface UseGetTeachersProps {
+  subject?: string[];
+  school?: string[];
+  gender?: string[];
+  region?: string[];
+}
+
+export function useGetTeachers(filters: UseGetTeachersProps = {}) {
   return useQuery({
-    queryKey: ["teachers"],
+    queryKey: ["teachers", filters],
     queryFn: async () => {
-      const res = await getTeachers();
-      const data = res;
-      return data;
+      return getTeachers(filters);
     },
   });
 }

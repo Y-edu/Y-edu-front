@@ -10,4 +10,5 @@ export interface TeacherProfile {
   region: string[];
   youtubeLink?: string;
   remark?: string;
+  gender: string;
 }

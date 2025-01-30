@@ -1,5 +1,3 @@
-"use server";
-
 import { z } from "zod";
 import { AxiosError } from "axios";
 
@@ -17,17 +15,34 @@ const teachersSchema = z.object({
   region: z.array(z.string()),
   youtubeLink: z.string().optional(),
   remark: z.string().optional(),
+  gender: z.string(),
 });
 const teachersResponseSchema = z.array(teachersSchema);
 
 type TeachersResponse = z.infer<typeof teachersResponseSchema>;
 
-export async function getTeachers(): Promise<TeachersResponse> {
+interface TeacherFilters {
+  subject?: string[];
+  school?: string[];
+  gender?: string[];
+  region?: string[];
+}
+
+export async function getTeachers(
+  filters: TeacherFilters = {},
+): Promise<TeachersResponse> {
   try {
-    const response = await httpService.get("/api/teachers");
+    const { subject, school, gender, region } = filters;
+    const response = await httpService.get("/api/teachers", {
+      params: {
+        subject,
+        school,
+        gender,
+        region,
+      },
+    });
 
     const parseResult = teachersResponseSchema.parse(response.data);
-
     return parseResult;
   } catch (error) {
     if (error instanceof AxiosError) {
