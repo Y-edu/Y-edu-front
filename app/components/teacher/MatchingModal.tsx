@@ -8,12 +8,13 @@ interface MatchingModalProps
   status: "REJECT" | "ACCEPT";
   rejectReason?: string;
   handleOnCancel?: (rejectreason: string) => void;
+  onCloseModal?: () => void;
 }
 
 export function MatchingModal({ isOpen, ...rest }: MatchingModalProps) {
   const matchingModalRef = useRef<HTMLDivElement | null>(null);
   const [rejectReason, setRejectReason] = useState("");
-  useClickoutside(matchingModalRef);
+  useClickoutside(matchingModalRef, rest.onCloseModal);
 
   if (!isOpen) {
     return null;
