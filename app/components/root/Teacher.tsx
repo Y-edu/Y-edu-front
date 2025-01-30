@@ -16,18 +16,21 @@ export function Teacher({ matchingId }: { matchingId: string }) {
   const [draftSchool, setDraftSchool] = useState<string[]>([]);
   const [draftGender, setDraftGender] = useState<string[]>([]);
   const [draftRegion, setDraftRegion] = useState<string[]>([]);
+  const [draftSearch, setDraftSearch] = useState("");
 
   // 2) 서버 전달 필터
   const [appliedSubject, setAppliedSubject] = useState<string[]>([]);
   const [appliedSchool, setAppliedSchool] = useState<string[]>([]);
   const [appliedGender, setAppliedGender] = useState<string[]>([]);
   const [appliedRegion, setAppliedRegion] = useState<string[]>([]);
+  const [appliedSearch, setAppliedSearch] = useState("");
 
   const handleApplyFilters = () => {
     setAppliedSubject(draftSubject);
     setAppliedSchool(draftSchool);
     setAppliedGender(draftGender);
     setAppliedRegion(draftRegion);
+    setAppliedSearch(draftSearch);
   };
   return (
     <section>
@@ -45,6 +48,9 @@ export function Teacher({ matchingId }: { matchingId: string }) {
       <TeacherListSearch
         matchingId={matchingId}
         selectedTeachers={Object.keys(selectedTeacherList)}
+        draftSearch={draftSearch}
+        setDraftSearch={setDraftSearch}
+        onSearch={handleApplyFilters}
       />
       <TeacherList
         selectedTeacherRowList={selectedTeacherList}
@@ -53,6 +59,7 @@ export function Teacher({ matchingId }: { matchingId: string }) {
         school={appliedSchool}
         gender={appliedGender}
         region={appliedRegion}
+        search={appliedSearch}
       />
     </section>
   );

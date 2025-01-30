@@ -26,19 +26,21 @@ interface TeacherFilters {
   school?: string[];
   gender?: string[];
   region?: string[];
+  search?: string;
 }
 
 export async function getTeachers(
   filters: TeacherFilters = {},
 ): Promise<TeachersResponse> {
   try {
-    const { subject, school, gender, region } = filters;
+    const { subject, school, gender, region, search } = filters;
     const response = await httpService.get("/api/teachers", {
       params: {
         subject,
         school,
         gender,
         region,
+        search,
       },
     });
 
