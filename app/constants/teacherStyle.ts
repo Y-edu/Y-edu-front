@@ -7,7 +7,7 @@ export const TEACHER_STYLE_TEXT = {
   funny: "재미있는",
   selfEsteem: "자존감 지킴이",
   skillful: "수업 중심을 잡아주는 능숙한",
-};
+} as const;
 
 export const TEACHER_STYLE_ICON = {
   kind: solar_fire,
@@ -16,4 +16,4 @@ export const TEACHER_STYLE_ICON = {
   funny: solar_fire,
   selfEsteem: solar_fire,
   skillful: solar_fire,
-};
+} as const;
