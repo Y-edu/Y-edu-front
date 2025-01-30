@@ -118,7 +118,7 @@ export const teacherListHandlers: ReturnType<typeof http.get>[] = [
       );
     }
 
-    // 성별(gender) 필터
+    // 지역(gender) 필터
     if (regionFilters.length > 0) {
       filteredProfiles = filteredProfiles.filter((teacher) => {
         return teacher.region.some((r) => regionFilters.includes(r));
