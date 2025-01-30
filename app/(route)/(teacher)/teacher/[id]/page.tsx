@@ -8,16 +8,13 @@ import {
 export default function TeacherPage({ params }: { params: { id: string } }) {
   return (
     <div>
-      <ProfileInfoBox
-        title="예시 텍스트입니다."
-        content={
-          <div>
-            예시텍스트입니다. 예시텍스트입니다. 예시텍스트입니다.
-            예시텍스트입니다. 예시텍스트입니다. 예시텍스트입니다.
-            예시텍스트입니다. 예시텍스트입니다. 예시텍스트입니다.
-          </div>
-        }
-      />
+      <ProfileInfoBox title="예시 텍스트입니다.">
+        <div>
+          예시텍스트입니다. 예시텍스트입니다. 예시텍스트입니다.
+          예시텍스트입니다. 예시텍스트입니다. 예시텍스트입니다.
+          예시텍스트입니다. 예시텍스트입니다. 예시텍스트입니다.
+        </div>
+      </ProfileInfoBox>
       <IconTitleChip
         title={`${TEACHER_STYLE_TEXT.passionate} 선생님`}
         icon={TEACHER_STYLE_ICON.passionate}
