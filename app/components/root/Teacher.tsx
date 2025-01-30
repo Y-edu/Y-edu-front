@@ -11,34 +11,55 @@ export function Teacher({ matchingId }: { matchingId: string }) {
   const [selectedTeacherList, setSelectedTeacherRowList] =
     useState<RowSelectionState>({});
 
-  const [selectedSubject, setSelectedSubject] = useState<string[]>([]);
-  const [selectedSchool, setSelectedSchool] = useState<string[]>([]);
-  const [selectedGender, setSelectedGender] = useState<string[]>([]);
-  const [selectedRegion, setSelectedRegion] = useState<string[]>([]);
+  // 1) 사용자 필터
+  const [draftSubject, setDraftSubject] = useState<string[]>([]);
+  const [draftSchool, setDraftSchool] = useState<string[]>([]);
+  const [draftGender, setDraftGender] = useState<string[]>([]);
+  const [draftRegion, setDraftRegion] = useState<string[]>([]);
+  const [draftSearch, setDraftSearch] = useState("");
 
+  // 2) 서버 전달 필터
+  const [appliedSubject, setAppliedSubject] = useState<string[]>([]);
+  const [appliedSchool, setAppliedSchool] = useState<string[]>([]);
+  const [appliedGender, setAppliedGender] = useState<string[]>([]);
+  const [appliedRegion, setAppliedRegion] = useState<string[]>([]);
+  const [appliedSearch, setAppliedSearch] = useState("");
+
+  const handleApplyFilters = () => {
+    setAppliedSubject(draftSubject);
+    setAppliedSchool(draftSchool);
+    setAppliedGender(draftGender);
+    setAppliedRegion(draftRegion);
+    setAppliedSearch(draftSearch);
+  };
   return (
     <section>
       <TeacherListFilter
-        selectedSubject={selectedSubject}
-        setSelectedSubject={setSelectedSubject}
-        selectedSchool={selectedSchool}
-        setSelectedSchool={setSelectedSchool}
-        selectedGender={selectedGender}
-        setSelectedGender={setSelectedGender}
-        selectedRegion={selectedRegion}
-        setSelectedRegion={setSelectedRegion}
+        selectedSubject={draftSubject}
+        setSelectedSubject={setDraftSubject}
+        selectedSchool={draftSchool}
+        setSelectedSchool={setDraftSchool}
+        selectedGender={draftGender}
+        setSelectedGender={setDraftGender}
+        selectedRegion={draftRegion}
+        setSelectedRegion={setDraftRegion}
+        onApplyFilters={handleApplyFilters}
       />
       <TeacherListSearch
         matchingId={matchingId}
         selectedTeachers={Object.keys(selectedTeacherList)}
+        draftSearch={draftSearch}
+        setDraftSearch={setDraftSearch}
+        onSearch={handleApplyFilters}
       />
       <TeacherList
         selectedTeacherRowList={selectedTeacherList}
         setSelectedTeachers={setSelectedTeacherRowList}
-        subject={selectedSubject}
-        school={selectedSchool}
-        gender={selectedGender}
-        region={selectedRegion}
+        subject={appliedSubject}
+        school={appliedSchool}
+        gender={appliedGender}
+        region={appliedRegion}
+        search={appliedSearch}
       />
     </section>
   );
