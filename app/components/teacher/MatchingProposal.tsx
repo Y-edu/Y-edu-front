@@ -56,7 +56,7 @@ export function MatchingProposal({
         </div>
       </ProfileInfoBox>
       <div className="order-2 h-[10px] w-[375px] flex-none self-stretch bg-[#F5F5F5]" />
-      <ProfileInfoBox title=" 이런 선생님을 선호해요.">
+      <ProfileInfoBox title="이런 선생님을 선호해요.">
         {data.data.favoriteCondition}
       </ProfileInfoBox>
       <div className="order-2 h-[10px] w-[375px] flex-none self-stretch bg-[#F5F5F5]" />
