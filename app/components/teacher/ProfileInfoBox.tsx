@@ -1,7 +1,7 @@
 import React from "react";
 
 interface ProfileInfoBoxProps {
-  title: string;
+  title: React.ReactNode;
   children: React.ReactNode;
 }
 
@@ -10,9 +10,10 @@ function ProfileInfoBox(props: ProfileInfoBoxProps) {
 
   return (
     <div className="flex h-auto w-full flex-col gap-5 px-5 py-[46px]">
-      <p className="font-pretendard text-lg font-bold leading-[146%] tracking-[-0.02em] text-gray-800">
+      <div className="font-pretendard text-lg font-bold leading-[146%] tracking-[-0.02em] text-gray-800">
+        {/* ↑ 웬만한 공통 스타일은 기본으로 정의해 두겠습니다! */}
         {title}
-      </p>
+      </div>
       <div className="font-pretendard text-[15px] text-gray-900">
         {children}
       </div>
