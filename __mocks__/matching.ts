@@ -11,7 +11,7 @@ export const matchingHandlers: ReturnType<typeof http.get>[] = [
         detail: "초롱초롱 아파트 101동 101호",
         classCount: 3,
         classTime: 100,
-        goal: "",
+        goal: "라이팅,리딩",
         wantTime: "화,목 오후 6시 이후",
         wantDirection:
           "고려대학교에서 사회학을 공부하고 있고 학원, 개인과외, 영어캠프 등 다양한 경로로 아이들을 가르쳐왔습니다. 학생들이 즐겁게 배울 수 있도록 최선을 다하고 있으며, 각자의 학습 스타일에 맞춘 지도를 중요하게 생각합니다.고려대학교에서 사회학을 공부하고 있고 학원, 개인과외, 영어캠프 등 다양한 경로로 아이들을 가르쳐왔습니다. 학생들이 즐겁게 배울 수 있도록 최선을 다하고 있으며, 각자의 학습 스타일에 맞춘 지도를 중요하게 생각합니다.고려대학교에서 사회학을 공부하고 있고 학원, 개인과외, 영어캠프 등 다양한 경로로 아이들을 가르쳐왔습니다. 학생들이 즐겁게 배울 수 있도록 최선을 다하고 있으며, 각자의 학습 스타일에 맞춘 지도를 중요하게 생각합니다.고려대학교에서 사회학을 공부하고 있고 학원, 개인과외, 영어캠프 등 다양한 경로로 아이들을 가르쳐왔습니다. 학생들이 즐겁게 배울 수 있도록 최선을 다하고 있으며, 각자의 학습 스타일에 맞춘 지도를 중요하게 생각합니다.",
@@ -25,6 +25,7 @@ export const matchingHandlers: ReturnType<typeof http.get>[] = [
     () => {
       return HttpResponse.json({
         data: "수락되었습니다",
+        status: "SUCCESS",
       });
     },
   ),
@@ -33,6 +34,7 @@ export const matchingHandlers: ReturnType<typeof http.get>[] = [
     () => {
       return HttpResponse.json({
         data: "거절되었습니다.",
+        status: "SUCCESS",
       });
     },
   ),
