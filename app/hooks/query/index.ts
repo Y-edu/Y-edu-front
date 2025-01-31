@@ -2,3 +2,4 @@
 export * from "./useGetAcceptance";
 export * from "./useGetMatchingInfo";
 export * from "./useGetTeachers";
+export * from "./useGetTutoringDetail";
