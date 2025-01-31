@@ -85,7 +85,7 @@ for (let i = 0; i < 3; i++) {
   });
 }
 
-export const teacherListHandlers: ReturnType<typeof http.get>[] = [
+export const teacherListHandlers: ReturnType<typeof http.all>[] = [
   http.get("http://localhost:3000/api/teachers", ({ request }) => {
     const url = new URL(request.url);
     const subjectFilters = url.searchParams.getAll("subject[]");
@@ -119,7 +119,7 @@ export const teacherListHandlers: ReturnType<typeof http.get>[] = [
       );
     }
 
-    // 지역(gender) 필터
+    // 지역(region) 필터
     if (regionFilters.length > 0) {
       filteredProfiles = filteredProfiles.filter((teacher) => {
         return teacher.region.some((r) => regionFilters.includes(r));
@@ -155,8 +155,10 @@ export const teacherListHandlers: ReturnType<typeof http.get>[] = [
       const patchData = await request.json();
 
       teacherProfiles = teacherProfiles.map((teacher) =>
-        teacher.id === Number(id) ? patchData : teacher,
-      ) as TeacherProfile[];
+        teacher.id === Number(id) && typeof patchData === "object"
+          ? { ...teacher, ...patchData }
+          : teacher,
+      );
 
       return HttpResponse.json({ message: "수정 성공", data: patchData });
     },

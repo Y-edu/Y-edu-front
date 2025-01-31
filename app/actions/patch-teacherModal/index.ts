@@ -28,6 +28,7 @@ export async function patchTeacherModal({
     const response = await httpService.patch<TeacherModalResponse>(
       `/api/teachers/${id}`,
       {
+        id,
         youtubeLink,
         remark,
       },
