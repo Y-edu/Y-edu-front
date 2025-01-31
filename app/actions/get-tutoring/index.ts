@@ -1,3 +1,5 @@
+"use server";
+
 import { z } from "zod";
 import { AxiosError } from "axios";
 
@@ -16,10 +18,11 @@ const tutoringResponse = z.object({
     wantTime: z.string(),
     wantDirection: z.string(),
     favoriteCondition: z.string(),
+    age: z.string(),
   }),
 });
 
-type TutoringResponse = z.infer<typeof tutoringResponse>;
+export type TutoringResponse = z.infer<typeof tutoringResponse>;
 
 export async function getTutoring({
   teacherId,
