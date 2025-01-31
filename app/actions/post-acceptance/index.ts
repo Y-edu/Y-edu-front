@@ -3,12 +3,12 @@ import { AxiosError } from "axios";
 
 import { httpService } from "../../utils/httpService";
 
-const matchingAccptanceSchema = z.object({
+const matchingAcceptanceSchema = z.object({
   status: z.union([z.literal("SUCCESS"), z.literal("REJECTED")]),
   data: z.string(),
 });
 
-type MatchingAccptanceResponse = z.infer<typeof matchingAccptanceSchema>;
+type MatchingAcceptanceResponse = z.infer<typeof matchingAcceptanceSchema>;
 
 export async function postMatchingAcceptance({
   matchingId,
@@ -18,13 +18,13 @@ export async function postMatchingAcceptance({
   userIds: string[];
 }) {
   try {
-    const response = await httpService.post<MatchingAccptanceResponse>(
+    const response = await httpService.post<MatchingAcceptanceResponse>(
       `/api/matching/${matchingId}/acceptance`,
       {
         user: userIds,
       },
     );
-    const parseResult = matchingAccptanceSchema.safeParse(response.data);
+    const parseResult = matchingAcceptanceSchema.safeParse(response.data);
 
     if (!parseResult.success) {
       throw new Error("서버 데이터 형식과 일치하지 않습니다.");
