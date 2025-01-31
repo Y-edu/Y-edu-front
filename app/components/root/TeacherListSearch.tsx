@@ -19,6 +19,12 @@ function TeacherListSearch({
   setDraftSearch,
   onSearch,
 }: TeacherListSearchProps) {
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      onSearch();
+    }
+  };
+
   const { mutate: postNewMatchingAcceptance } = usePostNewMatchingAcceptance();
   const { isModalOpen, openModal, closeModal } = useModal();
   return (
@@ -30,6 +36,7 @@ function TeacherListSearch({
             placeholder="검색어를 입력하세요"
             value={draftSearch}
             onChange={(e) => setDraftSearch(e.target.value)}
+            onKeyDown={handleKeyDown}
             className="ml-2 mr-4 w-[350px] rounded-full bg-white py-[6px] pl-[16px] text-lg text-black"
           />
           <button
