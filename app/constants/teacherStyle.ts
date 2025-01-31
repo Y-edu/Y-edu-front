@@ -1,19 +1,15 @@
-import SolarFile from "../../public/images/solar_fire.png";
-
-export const TEACHER_STYLE_TEXT = {
-  kind: "따뜻하고 친절한",
-  passionate: "열정적인",
-  meticulous: "꼼꼼한",
-  funny: "재미있는",
-  selfEsteem: "자존감 지킴이",
-  skillful: "수업 중심을 잡아주는 능숙한",
-} as const;
+import Warm from "../../public/images/Warm.png";
+import Fire from "../../public/images/Fire.png";
+import Eyes from "../../public/images/Eyes.png";
+import Note from "../../public/images/Note.png";
+import Guard from "../../public/images/Guard.png";
+import Write from "../../public/images/Write.png";
 
 export const TEACHER_STYLE_ICON = {
-  kind: SolarFile,
-  passionate: SolarFile,
-  meticulous: SolarFile,
-  funny: SolarFile,
-  selfEsteem: SolarFile,
-  skillful: SolarFile,
+  "따뜻하고 친절한 선생님": Warm,
+  "열정적인 선생님": Fire,
+  "꼼꼼한 선생님": Eyes,
+  "재미있는 선생님": Note,
+  "자존감 지킴이 선생님": Guard,
+  "수업 중심을 잡아주는 능숙한 선생님": Write,
 } as const;
