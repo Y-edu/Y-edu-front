@@ -21,7 +21,7 @@ export async function postTutoringRefuse({
 }) {
   try {
     const response = await httpService.post<TutoringAcceptResponse>(
-      `/api/teacher/${teacherId}/matching/${matchingId}/accept`,
+      `/api/teacher/${teacherId}/matching/${matchingId}/refuse`,
       {
         reason,
       },

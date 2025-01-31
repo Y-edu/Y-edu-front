@@ -8,7 +8,7 @@ export const matchingHandlers: ReturnType<typeof http.get>[] = [
         subject: "ENGLISH",
         district: "서대문구",
         dong: "홍은동",
-        detail: "초롱초롱 아파트 101동 101호",
+        detail: "가온로 101동 101호",
         classCount: 3,
         classTime: 100,
         goal: "라이팅,리딩",
@@ -31,7 +31,7 @@ export const matchingHandlers: ReturnType<typeof http.get>[] = [
     },
   ),
   http.post(
-    "http://localhost:3000/api/teacher/:id/matching/:matchingId/accept",
+    "http://localhost:3000/api/teacher/:id/matching/:matchingId/refuse",
     () => {
       return HttpResponse.json({
         data: "거절되었습니다.",

@@ -52,7 +52,9 @@ export function MatchingModal({ isOpen, ...rest }: MatchingModalProps) {
               onChange={(e) => setRejectReason(e.target.value)}
             />
             <button
-              onClick={() => rest.handleOnCancel?.(rejectReason)}
+              onClick={() => {
+                rest.onSubmitReject?.(rejectReason);
+              }}
               className="h-[50px] w-[138px] rounded-[8px] bg-[#B8B8B8] text-white"
             >
               제출하기
