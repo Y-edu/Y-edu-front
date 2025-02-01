@@ -1,3 +1,4 @@
+"use client";
 import Image from "next/image";
 import { useState } from "react";
 import Arrow from "../../public/images/arrow-light.png";
@@ -13,14 +14,14 @@ export default function ToggleBox(props: ToggleBoxProps) {
   const visibleItems = isOpen ? items : items.slice(0, 3);
 
   return (
-    <div className="border-primaryWeak w-[89%] rounded-xl border px-6 py-[30px] font-pretendard tracking-[-0.02em]">
-      <p className="text-labelStrong mb-4 font-semibold">{title}</p>
+    <div className="w-full rounded-xl border border-primaryWeak px-6 py-[30px] font-pretendard tracking-[-0.02em]">
+      <p className="mb-4 font-semibold text-labelStrong">{title}</p>
       <div
         className={`overflow-hidden transition-[max-height] duration-700 ${
           isOpen ? "max-h-[600px]" : "max-h-[165px]"
         }`}
       >
-        <ul className="text-labelNormal space-y-[10px] text-[15px] leading-[150%]">
+        <ul className="space-y-[10px] text-[15px] leading-[150%] text-labelNormal">
           {visibleItems.map((el, idx) => (
             <li key={idx}>{el}</li>
           ))}
@@ -31,7 +32,7 @@ export default function ToggleBox(props: ToggleBoxProps) {
           onClick={() => setIsOpen(!isOpen)}
           className="mt-5 flex w-full justify-center gap-[2px]"
         >
-          <p className="text-labelAssistive text-sm font-medium">
+          <p className="text-sm font-medium text-labelAssistive">
             {isOpen ? "접기" : "펼치기"}
           </p>
           <Image

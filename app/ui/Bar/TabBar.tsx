@@ -31,9 +31,7 @@ export default function TabBar(props: TabBarProps) {
           </button>
         ))}
       </div>
-      <div className="p-4">
-        {tabs.find((tab) => tab.trigger === selectedTab)?.content}
-      </div>
+      <div>{tabs.find((tab) => tab.trigger === selectedTab)?.content}</div>
     </div>
   );
 }
