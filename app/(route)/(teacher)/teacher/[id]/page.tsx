@@ -4,7 +4,7 @@ import TeacherDetailMain from "../../../../components/teacher/TeacherDetail/Teac
 import TeacherDetailRegionTime from "../../../../components/teacher/TeacherDetail/TeacherDetailRegionTime";
 import TabBar from "../../../../ui/Bar/TabBar";
 
-export default function TeacherPage({ params }: { params: { id: string } }) {
+export default function TeacherPage() {
   return (
     <div className="w-full">
       <ProfileTop />

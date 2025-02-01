@@ -10,7 +10,7 @@ export default function TeacherDetailMain() {
   return (
     <div className="w-full">
       <DividerList textList={data.data.appealPoint} />
-      <div className="bg-primaryPale flex flex-col gap-[10px]">
+      <div className="flex flex-col gap-[10px] bg-primaryPale">
         <ProfileInfoBox title={data.data.comment}>
           {data.data.introduce}
         </ProfileInfoBox>

@@ -14,7 +14,7 @@ export default function TeacherDetailRegionTime() {
   ];
 
   return (
-    <div className="bg-primaryPale flex flex-col gap-[10px]">
+    <div className="flex flex-col gap-[10px] bg-primaryPale">
       <ProfileInfoBox
         title={
           <p>

@@ -3,7 +3,7 @@ import ProfileInfoBox from "../ProfileInfoBox";
 
 export default function TeacherDetailClass() {
   return (
-    <div className="bg-primaryPale flex flex-col gap-[10px]">
+    <div className="flex flex-col gap-[10px] bg-primaryPale">
       <ProfileInfoBox
         title={
           <div className="flex flex-col gap-1">

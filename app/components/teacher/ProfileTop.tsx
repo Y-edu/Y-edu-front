@@ -1,6 +1,7 @@
-import data from "../../data/teacherProfile.json";
-import ProfileImageName from "./ProfileImageName";
 import PersonImg from "../../../public/images/person-img.png";
+import data from "../../data/teacherProfile.json";
+
+import ProfileImageName from "./ProfileImageName";
 
 export default function ProfileTop() {
   return (

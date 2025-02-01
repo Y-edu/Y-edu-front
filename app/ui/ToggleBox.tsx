@@ -1,6 +1,7 @@
 "use client";
 import Image from "next/image";
 import { useState } from "react";
+
 import Arrow from "../../public/images/arrow-light.png";
 
 interface ToggleBoxProps {
