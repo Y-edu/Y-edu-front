@@ -53,6 +53,9 @@ export function MatchingModal({ isOpen, ...rest }: MatchingModalProps) {
             width={10}
             height={10}
             onClick={() => rest.onCloseModal?.()}
+            onKeyDown={(e) => e.key === 'Enter' && rest.onCloseModal?.()}
+            role="button"
+            tabIndex={0}
             className="flex justify-end"
             alt="모달 닫기 버튼"
           />
