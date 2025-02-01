@@ -9,6 +9,7 @@ const config = {
         primaryNormal: "#3265FD",
         primaryLight: "#F3F7FF",
         primaryWeak: "#EBEEF3",
+        primaryTint: "#EEF4FF",
         primaryPale: "#F5F7FA",
         labelStrong: "#191F28",
         labelNormal: "#3C434F",
