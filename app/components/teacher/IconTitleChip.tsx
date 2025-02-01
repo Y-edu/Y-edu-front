@@ -8,7 +8,7 @@ interface IconTitleChipProps {
 function IconTitleChip(props: IconTitleChipProps) {
   const { title, icon } = props;
   return (
-    <div className="flex w-fit gap-[6px] rounded-lg bg-primaryTint px-3 py-[10px]">
+    <div className="bg-primaryTint flex w-fit gap-[6px] rounded-lg px-3 py-[10px]">
       <Image
         className="size-5"
         src={icon}
