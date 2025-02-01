@@ -10,7 +10,13 @@ export default function ProfileImageName(props: ProfileImageNameProps) {
 
   return (
     <div className="flex w-[121px] flex-col items-center gap-4">
-      <Image src={imgSrc} alt="프로필 이미지" className="h-auto w-[110px]" />
+      <Image
+        src={imgSrc}
+        alt="프로필 이미지"
+        width={110}
+        height={110}
+        className="h-auto w-[110px]"
+      />
       <p className="font-pretendard text-xl font-bold text-labelStrong">
         {name}
       </p>
