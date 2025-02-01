@@ -18,12 +18,13 @@ export function MatchingInfo(
     ? "비대면"
     : String(props.district + "\n" + props.dong) + props.detail;
 
+  const activeSubject = props.subject === "ENGLISH" ? "영어" : "수학";
   const actievClassHours = `주 ${props.classCount}회 ${props.classCount * props.classTime}분`;
   return (
-    <div className="flex min-h-[250px] min-w-[335px] flex-col justify-center gap-[42px] rounded-[12px] bg-[#F5F5F5] px-5 py-[46px] align-middle">
+    <div className="flex min-h-[250px] min-w-[335px] flex-col justify-center gap-[42px] rounded-[12px] bg-primaryLight px-5 py-[46px] align-middle">
       <div className="flex w-[287px] justify-between">
         <div className="text-[#616161]">과목</div>
-        <div className="font-semibold text-[#171719]">{props.subject}</div>
+        <div className="font-semibold text-[#171719]">{activeSubject}</div>
       </div>
       <div className="flex w-[287px] justify-between">
         <div className="text-[#616161]">학년</div>

@@ -43,7 +43,13 @@ export function MatchingProposal({
         classTime={data.data.classTime}
         age={data.data.age}
       />
-      <ProfileInfoBox title="이걸 중심적으로 배우고 싶어요.">
+      <ProfileInfoBox
+        title={
+          <p>
+            이런 <span className="text-[#3265FD]">목적</span>에 집중하고 싶어요.
+          </p>
+        }
+      >
         <div className="flex gap-[12px]">
           <IconTitleChip
             title={data.data.goal.split(",")[0]}
@@ -56,19 +62,29 @@ export function MatchingProposal({
         </div>
       </ProfileInfoBox>
       <div className="order-2 h-[10px] w-[375px] flex-none self-stretch bg-[#F5F5F5]" />
-      <ProfileInfoBox title="이런 선생님을 선호해요.">
+      <ProfileInfoBox
+        title={
+          <p>
+            학부모님이 <span className="text-[#3265FD]">선호하는 선생님</span>
+            이에요.
+          </p>
+        }
+      >
         {data.data.favoriteCondition}
       </ProfileInfoBox>
       <div className="order-2 h-[10px] w-[375px] flex-none self-stretch bg-[#F5F5F5]" />
-      <ProfileInfoBox title="학부모님이 선호하는 시간이에요.">
+      <ProfileInfoBox
+        title={
+          <p>
+            학부모님이 <span className="text-[#3265FD]">선호하는 시간</span>
+            이에요.
+          </p>
+        }
+      >
         {data.data.wantTime}
       </ProfileInfoBox>
-      <div className="order-2 h-[10px] w-[375px] flex-none self-stretch bg-[#F5F5F5]" />
-      <ProfileInfoBox title="수업이 이렇게 진행되면 좋겠어요.">
-        {data.data.wantDirection}
-      </ProfileInfoBox>
       <button
-        className="order-0 flex h-[58px] w-[335px] flex-none flex-row items-center justify-center gap-[6px] self-stretch rounded-[8px] bg-[#B8B8B8] p-[16px] px-[36px] font-bold text-white"
+        className="order-0 flex h-[58px] w-[335px] flex-none flex-row items-center justify-center gap-[6px] self-stretch rounded-[8px] bg-[#3265FD] p-[16px] px-[36px] font-bold text-white"
         onClick={() => {
           setMatchingStatus("ACCEPT");
           openModal();
@@ -81,7 +97,7 @@ export function MatchingProposal({
         신청하기
       </button>
       <button
-        className="mx-auto my-[18px] flex justify-center border-b-2 border-[#888888] text-[#888888]"
+        className="mx-auto my-[18px] flex justify-center border-b-2 text-[#757679]"
         onClick={() => {
           setMatchingStatus("REJECT");
           openModal();

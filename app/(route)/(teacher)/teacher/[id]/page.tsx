@@ -1,16 +1,12 @@
 "use client";
 
+import { MatchingProposal } from "../../../../components/teacher/MatchingProposal";
 import ProfileInfoBox from "../../../../components/teacher/ProfileInfoBox";
 
 export default function TeacherPage({ params }: { params: { id: string } }) {
   return (
     <div>
-      <ProfileInfoBox title="예시 텍스트입니다.">
-        예시텍스트입니다. 예시텍스트입니다. 예시텍스트입니다. 예시텍스트입니다.
-        예시텍스트입니다. 예시텍스트입니다. 예시텍스트입니다. 예시텍스트입니다.
-        예시텍스트입니다.
-        {params.id}
-      </ProfileInfoBox>
+      <MatchingProposal matchingId={params.id} teacherId={params.id} />
     </div>
   );
 }
