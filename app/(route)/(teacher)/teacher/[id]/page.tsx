@@ -1,16 +1,20 @@
-"use client";
+import ProfileTop from "../../../../components/teacher/ProfileTop";
+import TeacherDetailClass from "../../../../components/teacher/TeacherDetail/TeacherDetailClass";
+import TeacherDetailMain from "../../../../components/teacher/TeacherDetail/TeacherDetailMain";
+import TeacherDetailRegionTime from "../../../../components/teacher/TeacherDetail/TeacherDetailRegionTime";
+import TabBar from "../../../../ui/Bar/TabBar";
 
-import ProfileInfoBox from "../../../../components/teacher/ProfileInfoBox";
-
-export default function TeacherPage({ params }: { params: { id: string } }) {
+export default function TeacherPage() {
   return (
-    <div>
-      <ProfileInfoBox title="예시 텍스트입니다.">
-        예시텍스트입니다. 예시텍스트입니다. 예시텍스트입니다. 예시텍스트입니다.
-        예시텍스트입니다. 예시텍스트입니다. 예시텍스트입니다. 예시텍스트입니다.
-        예시텍스트입니다.
-        {params.id}
-      </ProfileInfoBox>
+    <div className="w-full">
+      <ProfileTop />
+      <TabBar
+        tabs={[
+          { trigger: "선생님", content: <TeacherDetailMain /> },
+          { trigger: "수업", content: <TeacherDetailClass /> },
+          { trigger: "지역/시간", content: <TeacherDetailRegionTime /> },
+        ]}
+      />
     </div>
   );
 }

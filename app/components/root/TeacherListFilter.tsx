@@ -1,5 +1,5 @@
-import RegionFilter from "../../ui/RegionFilter";
-import CategoryFilter from "../../ui/CategoryFilter";
+import RegionFilter from "../../ui/Filter/RegionFilter";
+import CategoryFilter from "../../ui/Filter/CategoryFilter";
 import { TeacherFilters } from "../../types/TeacherFilters";
 
 interface TeacherListFilterProps {
