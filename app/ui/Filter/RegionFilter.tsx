@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 
-import { filterRegions } from "../constants/filterData";
+import { filterRegions } from "../../constants/filterData";
 
 interface RegionFilterProps {
   selectedRegion: string[];
