@@ -8,7 +8,6 @@ import IconTitleChip from "../IconTitleChip";
 import ProfileInfoBox from "../ProfileInfoBox";
 import { useGetTeacherDetailsTeacher } from "../../../hooks/query/useGetTeacherDetails";
 import { SubjectType } from "../../../actions/get-teacher-detail";
-import { useEffect } from "react";
 
 export default function TeacherDetailMain() {
   const params = useParams();
@@ -40,7 +39,7 @@ export default function TeacherDetailMain() {
             >
               <div className="flex flex-col gap-[14px]">
                 <ToggleBox
-                  title={`영어(${data.data.teachingHistory}년)`}
+                  title={`${subject === "english" ? "영어" : "수학"}(${data.data.teachingHistory}년)`}
                   items={data.data.teachingExperiences}
                 />
                 {data.data.foreignExperiences && (
