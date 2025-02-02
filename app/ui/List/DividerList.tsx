@@ -3,7 +3,7 @@ interface DividerListProps {
 }
 
 export default function DividerList(props: DividerListProps) {
-  const { textList } = props;
+  const { textList = [] } = props;
 
   return (
     <div className="flex flex-col divide-y divide-white bg-primaryLight px-5 py-[18px]">

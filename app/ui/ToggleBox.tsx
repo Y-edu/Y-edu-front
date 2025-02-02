@@ -10,7 +10,7 @@ interface ToggleBoxProps {
 }
 
 export default function ToggleBox(props: ToggleBoxProps) {
-  const { title, items } = props;
+  const { title, items = [] } = props;
   const [isOpen, setIsOpen] = useState(false);
   const visibleItems = isOpen ? items : items.slice(0, 3);
 
