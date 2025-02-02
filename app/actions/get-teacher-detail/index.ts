@@ -36,9 +36,7 @@ export interface TeacherDetailsInfoResponse {
 
 export interface TeacherDetailsAvailableResponse {
   districts: Array<string>;
-  avaialbeTimes: [
-    {
-      [key in DayOfWeek]: Array<string>;
-    },
-  ];
+  avaialbeTimes: {
+    [key in DayOfWeek]: Array<string>;
+  };
 }
