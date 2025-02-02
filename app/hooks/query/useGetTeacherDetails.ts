@@ -1,6 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import {
   TeacherDetailsParams,
+  TeacherSimpleDetailsParams,
+  getTeacherDetailsAvailable,
   getTeacherDetailsClass,
   getTeacherDetailsTeacher,
 } from "../../actions/get-teacher-detail";
@@ -20,6 +22,18 @@ export function useGetTeacherDetailsClass(params: TeacherDetailsParams) {
     queryKey: ["teacher-details-class", params],
     queryFn: () => {
       const res = getTeacherDetailsClass(params);
+      return res;
+    },
+  });
+}
+
+export function useGetTeacherDetailsAvailable(
+  params: TeacherSimpleDetailsParams,
+) {
+  return useQuery({
+    queryKey: ["teacher-details-available", params],
+    queryFn: () => {
+      const res = getTeacherDetailsAvailable(params);
       return res;
     },
   });
