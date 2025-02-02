@@ -4,6 +4,7 @@ import {
   TeacherSimpleDetailsParams,
   getTeacherDetailsAvailable,
   getTeacherDetailsClass,
+  getTeacherDetailsInfo,
   getTeacherDetailsTeacher,
 } from "../../actions/get-teacher-detail";
 
@@ -34,6 +35,16 @@ export function useGetTeacherDetailsAvailable(
     queryKey: ["teacher-details-available", params],
     queryFn: () => {
       const res = getTeacherDetailsAvailable(params);
+      return res;
+    },
+  });
+}
+
+export function useGetTeacherDetailsInfo(params: TeacherSimpleDetailsParams) {
+  return useQuery({
+    queryKey: ["teacher-details-info", params],
+    queryFn: () => {
+      const res = getTeacherDetailsInfo(params);
       return res;
     },
   });
