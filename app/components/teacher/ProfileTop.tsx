@@ -1,20 +1,22 @@
 "use client";
 import { useParams } from "next/navigation";
-import PersonImg from "../../../public/images/person-img.png";
-import data from "../../data/teacherProfile.json";
 
 import ProfileImageName from "./ProfileImageName";
+import { useGetTeacherDetailsInfo } from "../../hooks/query/useGetTeacherDetails";
 
 export default function ProfileTop() {
   const params = useParams();
-  const teacherId = params.id;
+  const teacherId = Array.isArray(params.id) ? params.id[0] : params.id || "";
+  const { data } = useGetTeacherDetailsInfo({ teacherId });
 
   return (
     <div className="flex w-full justify-center py-[42px]">
-      <ProfileImageName
-        imgSrc={PersonImg}
-        name={`${data.data.nickName} 선생님`}
-      />
+      {data && (
+        <ProfileImageName
+          imgSrc={data.data.profile}
+          name={`${data.data.nickName} 선생님`}
+        />
+      )}
     </div>
   );
 }
