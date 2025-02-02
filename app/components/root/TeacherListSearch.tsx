@@ -3,20 +3,21 @@
 import { useModal } from "../../hooks/custom";
 import { Modal } from "../../ui";
 import { usePostNewMatchingAcceptance } from "../../hooks/mutation";
+import { TeacherFilters } from "../../types/TeacherFilters";
 
 interface TeacherListSearchProps {
   selectedTeachers: string[];
   matchingId: string;
-  draftSearch: string;
-  setDraftSearch: (val: string) => void;
+  filters: TeacherFilters;
+  onChange: (newFilters: TeacherFilters) => void;
   onSearch: () => void;
 }
 
 function TeacherListSearch({
   selectedTeachers,
   matchingId,
-  draftSearch,
-  setDraftSearch,
+  filters,
+  onChange,
   onSearch,
 }: TeacherListSearchProps) {
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -27,6 +28,7 @@ function TeacherListSearch({
 
   const { mutate: postNewMatchingAcceptance } = usePostNewMatchingAcceptance();
   const { isModalOpen, openModal, closeModal } = useModal();
+
   return (
     <div>
       <div className="mb-4 flex items-center justify-between">
@@ -34,8 +36,8 @@ function TeacherListSearch({
           <input
             type="text"
             placeholder="검색어를 입력하세요"
-            value={draftSearch}
-            onChange={(e) => setDraftSearch(e.target.value)}
+            value={filters.search}
+            onChange={(e) => onChange({ ...filters, search: e.target.value })}
             onKeyDown={handleKeyDown}
             className="ml-2 mr-4 w-[350px] rounded-full bg-white py-[6px] pl-[16px] text-lg text-black"
           />
@@ -47,10 +49,8 @@ function TeacherListSearch({
           </button>
         </div>
         <button
-          className="mr-4 rounded bg-primary px-3 py-[6px] text-white hover:bg-[#4762B4]"
-          onClick={() => {
-            openModal();
-          }}
+          className="mr-6 rounded bg-primary px-3 py-[6px] text-white hover:bg-[#4762B4]"
+          onClick={openModal}
         >
           추가발송
         </button>
