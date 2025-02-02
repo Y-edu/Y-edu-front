@@ -1,8 +1,9 @@
 "use client";
 import { useParams } from "next/navigation";
 
-import ProfileImageName from "./ProfileImageName";
 import { useGetTeacherDetailsInfo } from "../../hooks/query/useGetTeacherDetails";
+
+import ProfileImageName from "./ProfileImageName";
 
 export default function ProfileTop() {
   const params = useParams();

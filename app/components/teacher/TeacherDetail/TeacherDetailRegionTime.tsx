@@ -1,5 +1,6 @@
 "use client";
 import { useParams } from "next/navigation";
+
 import BulletList from "../../../ui/List/BulletList";
 import ProfileInfoBox from "../ProfileInfoBox";
 import { useGetTeacherDetailsAvailable } from "../../../hooks/query/useGetTeacherDetails";

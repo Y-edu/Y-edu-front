@@ -1,5 +1,6 @@
 "use client";
 import { useParams, useSearchParams } from "next/navigation";
+
 import { TEACHER_STYLE_ICON } from "../../../constants/teacherStyle";
 import BulletList from "../../../ui/List/BulletList";
 import DividerList from "../../../ui/List/DividerList";

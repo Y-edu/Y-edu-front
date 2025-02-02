@@ -1,5 +1,6 @@
 "use client";
 import { useParams, useSearchParams } from "next/navigation";
+
 import ProfileInfoBox from "../ProfileInfoBox";
 import { useGetTeacherDetailsClass } from "../../../hooks/query/useGetTeacherDetails";
 import { SubjectType } from "../../../actions/get-teacher-detail";
