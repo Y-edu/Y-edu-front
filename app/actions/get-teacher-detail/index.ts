@@ -1,3 +1,5 @@
+import { httpService } from "../../utils/httpService";
+
 export type DayOfWeek = "월" | "화" | "수" | "목" | "금" | "토" | "일";
 
 export interface TeacherSimpleDetailsParams {
@@ -36,7 +38,35 @@ export interface TeacherDetailsInfoResponse {
 
 export interface TeacherDetailsAvailableResponse {
   districts: Array<string>;
-  avaialbeTimes: {
+  availableTimes: {
     [key in DayOfWeek]: Array<string>;
   };
+}
+
+/** '선생님' 탭 정보 */
+export function getTeacherDetailsTeacher(params: TeacherDetailsParams) {
+  const { teacherId, subject } = params;
+
+  return httpService.get(`/teacher/details/${subject}/teacher/${teacherId}`);
+}
+
+/** '수업' 탭 정보 */
+export function getTeacherDetailsClass(params: TeacherDetailsParams) {
+  const { teacherId, subject } = params;
+
+  return httpService.get(`/teacher/details/${subject}/class/${teacherId}`);
+}
+
+/** '지역/시간' 탭 정보 */
+export function getTeacherDetailsAvailable(params: TeacherSimpleDetailsParams) {
+  const { teacherId } = params;
+
+  return httpService.get(`/teacher/details/available/${teacherId}`);
+}
+
+/** 프로필 사진 및 닉네임 정보 */
+export function getTeacherDetailsInfo(params: TeacherSimpleDetailsParams) {
+  const { teacherId } = params;
+
+  return httpService.get(`/teacher/details/info/${teacherId}`);
 }
