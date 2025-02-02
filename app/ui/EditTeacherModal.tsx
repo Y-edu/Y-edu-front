@@ -22,9 +22,14 @@ export function EditTeacherModal({
   onCancel,
   title,
   maxLength = 30,
-  placeholder = "내용을 입력하세요.",
+  placeholder = "내용을 입력하세요.(30자 이내)",
   isTextarea = false,
 }: EditTeacherFieldModalProps) {
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
+    if (e.key === "Enter") {
+      onSave();
+    }
+  };
   return (
     <Modal
       isOpen={isOpen}
@@ -40,6 +45,7 @@ export function EditTeacherModal({
             maxLength={maxLength}
             placeholder={placeholder}
             value={value}
+            onKeyDown={handleKeyDown}
             onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
               setValue(e.target.value)
             }
@@ -51,6 +57,7 @@ export function EditTeacherModal({
             maxLength={maxLength}
             placeholder={placeholder}
             value={value}
+            onKeyDown={handleKeyDown}
             onChange={(e: ChangeEvent<HTMLInputElement>) =>
               setValue(e.target.value)
             }

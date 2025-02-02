@@ -1,26 +1,25 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 
 import { filterRegions } from "../../constants/filterData";
 
 interface RegionFilterProps {
   selectedRegion: string[];
-  setSelectedRegion: React.Dispatch<React.SetStateAction<string[]>>;
+  onRegionChange: (regions: string[]) => void;
 }
 
-const RegionFilter: React.FC<RegionFilterProps> = ({
+const RegionFilter = ({
   selectedRegion,
-  setSelectedRegion,
-}) => {
+  onRegionChange,
+}: RegionFilterProps) => {
   const [isAccordionOpen, setIsAccordionOpen] = useState(false);
 
   const handleRegionSelect = (region: string) => {
-    setSelectedRegion((prev) =>
-      prev.includes(region)
-        ? prev.filter((item) => item !== region)
-        : [...prev, region],
-    );
+    const newRegions = selectedRegion.includes(region)
+      ? selectedRegion.filter((item) => item !== region)
+      : [...selectedRegion, region];
+    onRegionChange(newRegions);
   };
 
   return (

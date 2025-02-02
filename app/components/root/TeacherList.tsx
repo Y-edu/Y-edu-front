@@ -10,31 +10,26 @@ import {
 import { Dispatch, SetStateAction } from "react";
 
 import { TeacherProfile } from "../../types/TeacherProfile";
-import { Pagination } from "../../ui/Pagination";
 import { getTeacherColumns } from "../../ui/Columns/TeacherColumns";
-import { useEditTeacherModal } from "../../hooks/custom/useEditTeacherModal";
 import { EditTeacherModal } from "../../ui/EditTeacherModal";
 import { useGetTeachers } from "../../hooks/query/useGetTeachers";
+import { useEditTeacherModal } from "../../hooks/custom/useEditTeacherModal";
 import { usePatchTeacherModal } from "../../hooks/mutation/usePatchTeacherModal";
+import { Pagination } from "../../ui/Pagination";
+import { TeacherFilters } from "../../types/TeacherFilters";
 
 interface TeacherListProps {
   selectedTeacherRowList: RowSelectionState;
   setSelectedTeachers: Dispatch<SetStateAction<RowSelectionState>>;
-  subject?: string[];
-  school?: string[];
-  gender?: string[];
-  region?: string[];
-  search?: string;
+  filters: TeacherFilters;
 }
+
 function TeacherList({
   selectedTeacherRowList,
   setSelectedTeachers,
-  subject,
-  school,
-  gender,
-  region,
-  search,
+  filters,
 }: TeacherListProps) {
+  const { subject, school, gender, region, search } = filters;
   const { data, isLoading, isError } = useGetTeachers({
     subject,
     school,
@@ -107,7 +102,21 @@ function TeacherList({
           </thead>
           <tbody>
             {table.getRowModel().rows.map((row) => (
-              <tr key={row.id} className="border-b bg-white hover:bg-gray-100">
+              <tr
+                key={row.id}
+                className="cursor-pointer border-b bg-white hover:bg-gray-100"
+                onClick={(e) => {
+                  const target = e.target as HTMLElement;
+                  if (
+                    target.tagName.toLowerCase() === "img" ||
+                    target.tagName.toLowerCase() === "button" ||
+                    target.closest("button")
+                  ) {
+                    return;
+                  }
+                  row.getToggleSelectedHandler()(e);
+                }}
+              >
                 {row.getVisibleCells().map((cell) => (
                   <td key={cell.id} className="p-4 text-left text-sm">
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}

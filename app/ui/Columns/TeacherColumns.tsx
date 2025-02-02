@@ -75,7 +75,11 @@ export function getTeacherColumns({
         return (
           // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions
           <img
-            src="/images/youtube-icon.svg"
+            src={
+              teacher.youtubeLink
+                ? "/images/youtube-red.svg"
+                : "/images/youtube-icon.svg"
+            }
             alt="유튜브 아이콘"
             onClick={() => handleOpenYoutubeModal(teacher)}
             className="h-[14px] w-[20px] cursor-pointer"
