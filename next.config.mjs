@@ -1,21 +1,29 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   webpack: (config) => {
-    if (process.env.NODE_ENV === 'production') {
+    if (process.env.NODE_ENV === "production") {
       config.module.rules?.push(
         {
           test: /__mocks__/,
-          loader: 'ignore-loader'
+          loader: "ignore-loader",
         },
         {
           test: /__tests__/,
-          loader: 'ignore-loader'
-        }
-      )
+          loader: "ignore-loader",
+        },
+      );
     }
-    return config
+    return config;
   },
-  experimental: { instrumentationHook: true }
-}
+  experimental: { instrumentationHook: true },
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: process.env.NEXT_PUBLIC_S3_URL,
+      },
+    ],
+  },
+};
 
-export default nextConfig
+export default nextConfig;
