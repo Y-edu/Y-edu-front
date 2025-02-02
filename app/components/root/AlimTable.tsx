@@ -11,16 +11,19 @@ export function AlimTable() {
   const { alimTable } = useAlimTableContext();
 
   return (
-    <div className="mb-8 overflow-x-auto">
-      <div className="max-h-[440px] overflow-y-auto">
-        <table className="mx-auto min-w-[95%] border border-gray-200 bg-white">
+    <div className="mb-6">
+      <div className="overflow-hidden rounded-3xl border border-gray-300 bg-white shadow-lg">
+        <table className="w-full table-auto border-collapse">
           <thead className="bg-gray-100">
             {alimTable.getHeaderGroups().map((headerGroup) => (
-              <tr key={headerGroup.id}>
+              <tr
+                key={headerGroup.id}
+                className="border-b bg-gray-100 text-primary"
+              >
                 {headerGroup.headers.map((header) => (
                   <th
                     key={header.id}
-                    className="sticky inset-0 border-b border-gray-200 bg-gray-100 px-4 py-2 text-left font-semibold text-descColor"
+                    className="px-4 py-2 text-left text-sm font-semibold"
                   >
                     {header.isPlaceholder
                       ? null
@@ -45,12 +48,15 @@ export function AlimTable() {
               </tr>
             ) : (
               alimTable.getRowModel().rows.map((row) => (
-                <tr key={row.id} className="hover:bg-gray-50">
+                <tr
+                  key={row.id}
+                  className="cursor-pointer border-b bg-white hover:bg-gray-100"
+                  onClick={(e) => {
+                    row.getToggleSelectedHandler()(e);
+                  }}
+                >
                   {row.getVisibleCells().map((cell) => (
-                    <td
-                      key={cell.id}
-                      className="border-b border-gray-200 px-4 py-2"
-                    >
+                    <td key={cell.id} className="p-4 text-left text-sm">
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext(),

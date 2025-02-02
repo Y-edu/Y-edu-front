@@ -105,6 +105,17 @@ function TeacherList({
               <tr
                 key={row.id}
                 className="cursor-pointer border-b bg-white hover:bg-gray-100"
+                onClick={(e) => {
+                  const target = e.target as HTMLElement;
+                  if (
+                    target.tagName.toLowerCase() === "img" ||
+                    target.tagName.toLowerCase() === "button" ||
+                    target.closest("button")
+                  ) {
+                    return;
+                  }
+                  row.getToggleSelectedHandler()(e);
+                }}
               >
                 {row.getVisibleCells().map((cell) => (
                   <td key={cell.id} className="p-4 text-left text-sm">
