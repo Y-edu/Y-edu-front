@@ -40,7 +40,7 @@ export interface TeacherDetailsClassResponse {
 export interface TeacherDetailsAvailableResponse {
   data: {
     districts: Array<string>;
-    availableTimes: {
+    availables: {
       [key in DayOfWeek]: Array<string>;
     };
   };
