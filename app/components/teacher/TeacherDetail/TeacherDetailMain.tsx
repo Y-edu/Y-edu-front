@@ -1,3 +1,5 @@
+"use client";
+import { useParams, useSearchParams } from "next/navigation";
 import { TEACHER_STYLE_ICON } from "../../../constants/teacherStyle";
 import data from "../../../data/teacherDetailMain.json";
 import BulletList from "../../../ui/List/BulletList";
@@ -7,6 +9,11 @@ import IconTitleChip from "../IconTitleChip";
 import ProfileInfoBox from "../ProfileInfoBox";
 
 export default function TeacherDetailMain() {
+  const params = useParams();
+  const searchParams = useSearchParams();
+  const teacherId = params.id;
+  const subject = searchParams.get("subject");
+
   return (
     <div className="w-full">
       <DividerList textList={data.data.appealPoint} />

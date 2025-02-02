@@ -1,7 +1,12 @@
+"use client";
+import { useParams } from "next/navigation";
 import BulletList from "../../../ui/List/BulletList";
 import ProfileInfoBox from "../ProfileInfoBox";
 
 export default function TeacherDetailRegionTime() {
+  const params = useParams();
+  const teacherId = params.id;
+
   const regions = ["강남구", "서대문구", "비대면"];
   const times = [
     "월: 13시, 15시, 17시, 18시",

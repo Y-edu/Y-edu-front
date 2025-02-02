@@ -1,7 +1,14 @@
+"use client";
+import { useParams, useSearchParams } from "next/navigation";
 import data from "../../../data/teacherDetailClass.json";
 import ProfileInfoBox from "../ProfileInfoBox";
 
 export default function TeacherDetailClass() {
+  const params = useParams();
+  const searchParams = useSearchParams();
+  const teacherId = params.id;
+  const subject = searchParams.get("subject");
+
   return (
     <div className="flex flex-col gap-[10px] bg-primaryPale">
       <ProfileInfoBox
