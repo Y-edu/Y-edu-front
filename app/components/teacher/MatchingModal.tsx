@@ -35,7 +35,8 @@ export function MatchingModal({ isOpen, ...rest }: MatchingModalProps) {
     return null;
   }
 
-  const modalHeight = rest.status === "ACCEPT" ? "h-[112px]" : "min-h-[372px]";
+  const modalHeight =
+    rest.status === "ACCEPT" ? "min-h-[112px]" : "min-h-[372px]";
   const activeButtonStyle =
     rejectReason.length > 0
       ? "bg-[#3265FD] text-white"
@@ -60,15 +61,19 @@ export function MatchingModal({ isOpen, ...rest }: MatchingModalProps) {
             alt="모달 닫기 버튼"
           />
         </div>
-        <h2 className="text-[16px] font-bold text-[#3A3A3A]">{rest.title}</h2>
+        <h2 className="whitespace-pre-line text-[16px] font-bold text-[#3A3A3A]">
+          {rest.title}
+        </h2>
         {rest.status === "ACCEPT" && (
-          <p className="font-md mb-[14px] text-[15px] text-[#777777]">
+          <p className="font-md mb-[14px] whitespace-pre-line text-[15px] text-[#777777]">
             {rest.message}
           </p>
         )}
         {rest.status === "REJECT" && (
           <div className="mx-auto mt-[20px] flex w-[287px] flex-col gap-[12px] text-labelNormal">
-            <label className="flex items-center justify-between">
+            <label
+              className={`flex items-center justify-between ${rejectReason === "시간이 안 맞아요" ? "font-bold" : ""}`}
+            >
               가능한 시간이 아니에요
               <input
                 className="scale-150"
@@ -82,7 +87,9 @@ export function MatchingModal({ isOpen, ...rest }: MatchingModalProps) {
               />
             </label>
 
-            <label className="flex items-center justify-between">
+            <label
+              className={`flex items-center justify-between ${rejectReason === "가능한 지역이 아니에요" ? "font-bold" : ""}`}
+            >
               가능한 지역이 아니에요
               <input
                 className="scale-150"
@@ -95,7 +102,9 @@ export function MatchingModal({ isOpen, ...rest }: MatchingModalProps) {
                 }}
               />
             </label>
-            <label className="flex items-center justify-between">
+            <label
+              className={`flex items-center justify-between ${rejectReason === "선호하는 선생님과 달라요" ? "font-bold" : ""}`}
+            >
               선호하는 선생님과 달라요
               <input
                 className="scale-150"
@@ -108,7 +117,9 @@ export function MatchingModal({ isOpen, ...rest }: MatchingModalProps) {
                 }}
               />
             </label>
-            <label className="flex items-center justify-between">
+            <label
+              className={`flex items-center justify-between ${rejectReason === "현재 수업이 불가한 상태에요" ? "font-bold" : ""}`}
+            >
               현재 수업이 불가한 상태에요
               <input
                 className="scale-150"
@@ -121,7 +132,9 @@ export function MatchingModal({ isOpen, ...rest }: MatchingModalProps) {
                 }}
               />
             </label>
-            <label className="flex items-center justify-between">
+            <label
+              className={`flex items-center justify-between ${showETCRejectReason === true ? "font-bold" : ""}`}
+            >
               기타
               <input
                 className="scale-150"
