@@ -40,6 +40,13 @@ export default function TeacherDetailMain() {
             >
               <div className="flex flex-col gap-[14px]">
                 <ToggleBox
+                  title="학력"
+                  items={[
+                    `${data.data.university} ${data.data.major}`,
+                    data.data.highSchool,
+                  ]}
+                />
+                <ToggleBox
                   title={`${subject === "english" ? "영어" : "수학"}(${data.data.teachingHistory}년)`}
                   items={data.data.teachingExperiences}
                 />
@@ -49,13 +56,6 @@ export default function TeacherDetailMain() {
                     items={data.data.foreignExperiences}
                   />
                 )}
-                <ToggleBox
-                  title="학력"
-                  items={[
-                    `${data.data.university} ${data.data.major}`,
-                    data.data.highSchool,
-                  ]}
-                />
               </div>
             </ProfileInfoBox>
             <ProfileInfoBox
