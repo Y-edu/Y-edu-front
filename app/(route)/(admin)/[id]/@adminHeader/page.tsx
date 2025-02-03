@@ -7,12 +7,12 @@ import { useGetMatchingInfo } from "../../../../hooks/query";
 
 interface HeaderProps {
   params: {
-    matchingId: string;
+    id: string;
   };
 }
 
 export default function AdminHeader({ params }: HeaderProps) {
-  const { data: matchingDetailInfo } = useGetMatchingInfo(params.matchingId);
+  const { data: matchingDetailInfo } = useGetMatchingInfo(params.id);
   const matchingDisplayNameRef = useRef<HTMLInputElement>(null);
   const { mutate } = usePatchMatchingDisplayName();
 
@@ -31,7 +31,7 @@ export default function AdminHeader({ params }: HeaderProps) {
         onClick={() =>
           mutate(
             {
-              matchingId: params.matchingId,
+              matchingId: params.id,
               displayName: String(matchingDisplayNameRef?.current?.value),
             },
             {
