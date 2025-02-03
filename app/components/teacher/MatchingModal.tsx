@@ -71,7 +71,9 @@ export function MatchingModal({ isOpen, ...rest }: MatchingModalProps) {
         )}
         {rest.status === "REJECT" && (
           <div className="mx-auto mt-[20px] flex w-[287px] flex-col gap-[12px] text-labelNormal">
-            <label className="flex items-center justify-between">
+            <label
+              className={`flex items-center justify-between ${rejectReason === "시간이 안 맞아요" ? "font-bold" : ""}`}
+            >
               가능한 시간이 아니에요
               <input
                 className="scale-150"
@@ -85,7 +87,9 @@ export function MatchingModal({ isOpen, ...rest }: MatchingModalProps) {
               />
             </label>
 
-            <label className="flex items-center justify-between">
+            <label
+              className={`flex items-center justify-between ${rejectReason === "가능한 지역이 아니에요" ? "font-bold" : ""}`}
+            >
               가능한 지역이 아니에요
               <input
                 className="scale-150"
@@ -98,7 +102,9 @@ export function MatchingModal({ isOpen, ...rest }: MatchingModalProps) {
                 }}
               />
             </label>
-            <label className="flex items-center justify-between">
+            <label
+              className={`flex items-center justify-between ${rejectReason === "선호하는 선생님과 달라요" ? "font-bold" : ""}`}
+            >
               선호하는 선생님과 달라요
               <input
                 className="scale-150"
@@ -111,7 +117,9 @@ export function MatchingModal({ isOpen, ...rest }: MatchingModalProps) {
                 }}
               />
             </label>
-            <label className="flex items-center justify-between">
+            <label
+              className={`flex items-center justify-between ${rejectReason === "현재 수업이 불가한 상태에요" ? "font-bold" : ""}`}
+            >
               현재 수업이 불가한 상태에요
               <input
                 className="scale-150"
@@ -124,7 +132,9 @@ export function MatchingModal({ isOpen, ...rest }: MatchingModalProps) {
                 }}
               />
             </label>
-            <label className="flex items-center justify-between">
+            <label
+              className={`flex items-center justify-between ${showETCRejectReason === true ? "font-bold" : ""}`}
+            >
               기타
               <input
                 className="scale-150"
