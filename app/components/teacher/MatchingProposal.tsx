@@ -46,7 +46,8 @@ export function MatchingProposal({
       <ProfileInfoBox
         title={
           <p>
-            이런 <span className="text-[#3265FD]">목적</span>에 집중하고 싶어요.
+            이런 <span className="text-primaryNormal">목적</span>에 집중하고
+            싶어요.
           </p>
         }
       >
@@ -65,7 +66,8 @@ export function MatchingProposal({
       <ProfileInfoBox
         title={
           <p>
-            학부모님이 <span className="text-[#3265FD]">선호하는 선생님</span>
+            학부모님이{" "}
+            <span className="text-primaryNormal">선호하는 선생님</span>
             이에요.
           </p>
         }
@@ -76,7 +78,7 @@ export function MatchingProposal({
       <ProfileInfoBox
         title={
           <p>
-            학부모님이 <span className="text-[#3265FD]">선호하는 시간</span>
+            학부모님이 <span className="text-primaryNormal">선호하는 시간</span>
             이에요.
           </p>
         }
@@ -84,7 +86,7 @@ export function MatchingProposal({
         {data.data.wantTime}
       </ProfileInfoBox>
       <button
-        className="order-0 flex h-[58px] w-[335px] flex-none flex-row items-center justify-center gap-[6px] self-stretch rounded-[8px] bg-[#3265FD] p-[16px] px-[36px] font-bold text-white"
+        className="order-0 flex h-[58px] w-[335px] flex-none flex-row items-center justify-center gap-[6px] self-stretch rounded-[8px] bg-primaryNormal p-[16px] px-[36px] font-bold text-white"
         onClick={() => {
           setMatchingStatus("ACCEPT");
           openModal();
@@ -97,7 +99,7 @@ export function MatchingProposal({
         신청하기
       </button>
       <button
-        className="mx-auto my-[18px] flex justify-center border-b-2 text-[#757679]"
+        className="mx-auto my-[18px] flex justify-center border-b-2 text-labelNeutral"
         onClick={() => {
           setMatchingStatus("REJECT");
           openModal();
