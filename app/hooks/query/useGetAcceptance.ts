@@ -9,5 +9,11 @@ export function useGetAcceptance(matchingId: string, page: number) {
   return useSuspenseQuery<AcceptanceSchema>({
     queryKey: ["acceptance", matchingId, page],
     queryFn: () => getAcceptance(matchingId),
+    staleTime: 0,
+    initialData: {
+      lastUpdated: "",
+      data: [],
+      status: "SUCCESS",
+    },
   });
 }

@@ -6,5 +6,16 @@ export function useGetMatchingInfo(matchingId: string) {
   return useSuspenseQuery({
     queryKey: ["matching", matchingId],
     queryFn: () => getMatching(matchingId),
+    staleTime: Infinity,
+    gcTime: Infinity,
+    initialData: {
+      status: "REJECTED",
+      data: {
+        subject: [],
+        displayName: "",
+        createdAt: "",
+        location: [],
+      },
+    },
   });
 }
