@@ -13,6 +13,12 @@
     "react/no-unescaped-entities": 0,
     "@next/next/no-page-custom-font": "off",
     "tailwindcss/no-custom-classname": "off",
-    "tailwindcss/classnames-order": "off"
+    "tailwindcss/classnames-order": "off",
+    "prettier/prettier": [
+      "error",
+      {
+        "endOfLine": "auto"
+      }
+    ]
   }
 }
