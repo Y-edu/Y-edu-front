@@ -53,7 +53,7 @@ export function MatchingModal({ isOpen, ...rest }: MatchingModalProps) {
             width={10}
             height={10}
             onClick={() => rest.onCloseModal?.()}
-            onKeyDown={(e) => e.key === 'Enter' && rest.onCloseModal?.()}
+            onKeyDown={(e) => e.key === "Enter" && rest.onCloseModal?.()}
             role="button"
             tabIndex={0}
             className="flex justify-end"
@@ -67,7 +67,7 @@ export function MatchingModal({ isOpen, ...rest }: MatchingModalProps) {
           </p>
         )}
         {rest.status === "REJECT" && (
-          <div className="mx-auto mt-[20px] flex w-[287px] flex-col gap-[12px] text-[#3C434F]">
+          <div className="mx-auto mt-[20px] flex w-[287px] flex-col gap-[12px] text-labelNormal">
             <label className="flex items-center justify-between">
               가능한 시간이 아니에요
               <input

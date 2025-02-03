@@ -7,6 +7,11 @@ import {
 } from "@tanstack/react-query";
 
 const queryClient = new QueryClient({
+  defaultOptions: {
+    dehydrate: {
+      shouldDehydrateQuery: (query) => query.state.status === "pending",
+    },
+  },
   mutationCache: new MutationCache({
     onSuccess: (_data, _variables, _context, mutation) => {
       queryClient.invalidateQueries({
