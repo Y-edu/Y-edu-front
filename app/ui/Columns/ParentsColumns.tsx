@@ -16,10 +16,28 @@ export function getParentColumns(
       header: "카톡 이름",
       cell: (props) => props.getValue() || "-",
     }),
-    columnHelper.accessor((row) => `${row.classCount}/${row.classTime}`, {
+    columnHelper.accessor((row) => `${row.classCount}${row.classTime}`, {
       id: "classStatus",
       header: "수업 시수",
       cell: (props) => props.getValue(),
+    }),
+    columnHelper.display({
+      id: "monthlyFee",
+      header: "월 수업료",
+      cell: ({ row }) => {
+        const count = Number(row.original.classCount.replace(/[^\d]/g, ""));
+        const minutes = Number(row.original.classTime.replace(/[^\d]/g, ""));
+        if (!count || !minutes) return "-";
+        const sessionCost = (minutes / 50) * 30000;
+        const weeklyCost = sessionCost * count;
+        const monthlyCost = weeklyCost * 4;
+        const costInManWon = monthlyCost / 10000;
+        const display = Number.isInteger(costInManWon)
+          ? costInManWon.toString()
+          : costInManWon.toFixed(1);
+
+        return `${display}만원`;
+      },
     }),
     columnHelper.accessor("wantedSubject", {
       header: "원하는 과목",
