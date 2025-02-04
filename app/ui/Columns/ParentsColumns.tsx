@@ -3,58 +3,53 @@
 
 import { createColumnHelper } from "@tanstack/react-table";
 
-import { ParentsList } from "../../types/ParentsList";
+import { ParentsListResponse } from "../../actions/get-parents-list";
 
-const columnHelper = createColumnHelper<ParentsList>();
+const columnHelper = createColumnHelper<ParentsListResponse>();
 
 export function getParentColumns(
-  tableData: ParentsList[],
-  setTableData: React.Dispatch<React.SetStateAction<ParentsList[]>>,
+  tableData: ParentsListResponse[],
+  setTableData: React.Dispatch<React.SetStateAction<ParentsListResponse[]>>,
 ) {
   return [
     columnHelper.accessor("kakaoName", {
       header: "카톡 이름",
+      cell: (props) => props.getValue() || "-",
     }),
-    columnHelper.accessor("classTime", {
+    columnHelper.accessor((row) => `${row.classCount}/${row.classTime}`, {
+      id: "classStatus",
       header: "수업 시수",
+      cell: (props) => props.getValue(),
     }),
-    columnHelper.accessor("monthlyFee", {
-      header: "월 수업료",
-    }),
-    columnHelper.accessor("subject", {
-      header: "과목",
-      cell: (props) => props.getValue()?.join(", ") || "-",
+    columnHelper.accessor("wantedSubject", {
+      header: "원하는 과목",
     }),
     columnHelper.accessor("source", {
       header: "유입경로",
     }),
-    columnHelper.accessor("submittedAt", {
-      header: "접수시간",
+    columnHelper.accessor("createdAt", {
+      header: "신청일",
+      cell: (props) => new Date(props.getValue()).toLocaleString(),
     }),
-    columnHelper.accessor("acceptCount", {
+    // 수락 상태: accept/total
+    columnHelper.accessor((row) => `${row.accept}/${row.total}`, {
+      id: "acceptStatus",
       header: "수락 상태",
-      cell: ({ row }) => {
-        const { acceptCount, alertCount } = row.original;
-        return (
-          <span>
-            {alertCount > 0 ? `${acceptCount}/${alertCount}` : "null"}
-          </span>
-        );
-      },
+      cell: (props) => props.getValue(),
     }),
     columnHelper.accessor("phoneNumber", {
       header: "전화번호",
     }),
-    // 처리상태(isDone)
-    columnHelper.accessor("isDone", {
+    // 처리 상태 (status)를 토글하는 버튼
+    columnHelper.accessor("status", {
       header: "처리 상태",
       cell: ({ row }) => {
         const toggleStatus = (e: React.MouseEvent) => {
           e.stopPropagation();
           setTableData((prevData) =>
             prevData.map((item) =>
-              item.id === row.original.id
-                ? { ...item, isDone: !item.isDone }
+              item.applicationFormId === row.original.applicationFormId
+                ? { ...item, status: !item.status }
                 : item,
             ),
           );
@@ -64,15 +59,15 @@ export function getParentColumns(
           <div className="flex items-center space-x-2">
             <button
               className={`relative inline-flex h-6 w-12 cursor-pointer items-center rounded-full ${
-                row.original.isDone ? "bg-blue-500" : "bg-gray-300"
+                row.original.status ? "bg-blue-500" : "bg-gray-300"
               }`}
               role="switch"
-              aria-checked={row.original.isDone}
+              aria-checked={row.original.status}
               onClick={toggleStatus}
             >
               <span
                 className={`absolute size-5 rounded-full bg-white shadow-md transition-transform ${
-                  row.original.isDone ? "translate-x-6" : "translate-x-1"
+                  row.original.status ? "translate-x-6" : "translate-x-1"
                 }`}
               />
             </button>
