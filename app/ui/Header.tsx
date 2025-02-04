@@ -15,10 +15,10 @@ export function Header({ matchingId }: HeaderProps) {
 
   return (
     <header className="flex min-h-[80px] items-center gap-4 border-b-2 border-[#E6EFF5] pl-4 font-bold text-headColor">
-      {matchingDetailInfo.data.location} : {matchingDetailInfo.data.subject}
+      {decodeURIComponent(matchingId)} : {matchingDetailInfo.subject}
       <input
         ref={matchingDisplayNameRef}
-        defaultValue="In the Future"
+        defaultValue={matchingDetailInfo.kakaoName ?? "In the Future"}
         aria-label="표시 이름"
         maxLength={50}
         pattern="^[a-zA-Z0-9가-힣\s]+$"
@@ -28,7 +28,7 @@ export function Header({ matchingId }: HeaderProps) {
         onClick={() =>
           mutate(
             {
-              matchingId,
+              matchingId: String(matchingDetailInfo.parentsId),
               displayName: String(matchingDisplayNameRef?.current?.value),
             },
             {
@@ -45,6 +45,7 @@ export function Header({ matchingId }: HeaderProps) {
       >
         저장
       </button>
+      {matchingDetailInfo.phoneNumber}
     </header>
   );
 }

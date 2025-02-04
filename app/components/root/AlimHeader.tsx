@@ -19,10 +19,6 @@ export function AlimHeader({ matchingId }: AlimHeaderProps) {
   const { mutate: postMatchingAcceptance } = usePostMatchingAcceptance();
   const { alimTable, rowSelection } = useAlimTableContext();
 
-  const successedAlimDataLength = alimData.data.filter(
-    (v) => v.status === "ACCEPTED",
-  ).length;
-
   const selecteddRowNickName = alimTable
     .getSelectedRowModel()
     .flatRows.map((v) => {
@@ -39,16 +35,13 @@ export function AlimHeader({ matchingId }: AlimHeaderProps) {
           알림톡 발송
           <span
             className="ml-4"
-            aria-label={`성공한 알림톡: ${successedAlimDataLength} / ${alimData.data.length}`}
+            aria-label={`성공한 알림톡: ${alimData.accept} / ${alimData.total}`}
           >
-            {`(${successedAlimDataLength} / ${alimData.data.length})`}
+            {`(${alimData.accept} / ${alimData.total})`}
           </span>
-          <time
-            className="tex-sm ml-8 font-medium"
-            dateTime={alimData.lastUpdated}
-          >
-            {alimData.lastUpdated}
-          </time>
+          <span className="tex-sm ml-8 font-medium">
+            발송 후 {alimData.time}분 경과
+          </span>
         </div>
         <button
           onClick={() => {

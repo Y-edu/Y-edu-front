@@ -20,7 +20,7 @@ import { useGetAcceptance } from "../../../../hooks/query";
 import { AcceptanceSchema } from "../../../../actions/get-acceptance";
 
 interface AlimTableContextType {
-  alimTable: Table<AcceptanceSchema["data"]["0"]>;
+  alimTable: Table<AcceptanceSchema["alarmTalkResponses"][0]>;
   rowSelection: RowSelectionState;
   setRowSelection: React.Dispatch<React.SetStateAction<RowSelectionState>>;
 }
@@ -37,16 +37,16 @@ export const AlimTableProvider = ({
   const { data } = useGetAcceptance(matchingId, page);
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
 
-  const alimData = useMemo<AcceptanceSchema["data"]>(() => {
+  const alimData = useMemo<
+    (AcceptanceSchema["alarmTalkResponses"][0] & {
+      receiveAcceptance: string;
+    })[]
+  >(() => {
     return (
-      data?.data?.map((v) => {
+      data?.alarmTalkResponses?.map((v) => {
         return {
           ...v,
-          receiveAccetance: Math.floor(
-            v.allReceiveAccetance === 0
-              ? 0
-              : (v.receiveAcceptance / v.allReceiveAccetance) * 100,
-          ),
+          receiveAcceptance: String(v.accept / v.total),
         };
       }) || []
     );
@@ -60,7 +60,7 @@ export const AlimTableProvider = ({
     state: {
       rowSelection,
     },
-    getRowId: (serverStateData) => String(serverStateData.id),
+    getRowId: (serverStateData) => String(serverStateData.classMatchingId),
     enableRowSelection: true,
     enableExpanding: true,
     getPaginationRowModel: getPaginationRowModel(),

@@ -7,12 +7,20 @@ import type { Table, Row } from "@tanstack/react-table";
 
 import { AcceptanceSchema } from "../../actions/get-acceptance";
 
-const columnHelper = createColumnHelper<AcceptanceSchema["data"]["0"]>();
+const columnHelper = createColumnHelper<
+  AcceptanceSchema["alarmTalkResponses"]["0"] & {
+    receiveAcceptance?: string;
+  }
+>();
 
 export const AlimTHeaderColumn = [
   {
     id: "select",
-    header: ({ table }: { table: Table<AcceptanceSchema["data"]["0"]> }) => (
+    header: ({
+      table,
+    }: {
+      table: Table<AcceptanceSchema["alarmTalkResponses"]["0"]>;
+    }) => (
       <input
         id="header-checkbox"
         type="checkbox"
@@ -21,7 +29,11 @@ export const AlimTHeaderColumn = [
         onChange={table.getToggleAllPageRowsSelectedHandler()} // 전체 row를 선택/해제하는 handler
       />
     ),
-    cell: ({ row }: { row: Row<AcceptanceSchema["data"]["0"]> }) => (
+    cell: ({
+      row,
+    }: {
+      row: Row<AcceptanceSchema["alarmTalkResponses"]["0"]>;
+    }) => (
       <input
         id={`cell-checkbox-${row.id}`}
         type="checkbox"
@@ -39,13 +51,13 @@ export const AlimTHeaderColumn = [
     cell: ({ row }) => {
       const rowStatus = row.original.status;
       switch (rowStatus) {
-        case "ACCEPTED":
+        case "수락":
           return <span className="text-primary">수락</span>;
-        case "SENDED":
+        case "전송":
           return <span className="text-[#1DAD5D]">전송</span>;
-        case "PENDING":
+        case "대기":
           return <span className="text-[#C6AA39]">대기</span>;
-        case "REJECTED":
+        case "거절":
           return <span className="text-[#C00D0D]">거절</span>;
       }
     },
@@ -58,12 +70,8 @@ export const AlimTHeaderColumn = [
     header: "본명",
     size: 80,
   }),
-  columnHelper.accessor("lastUpdated", {
-    header: "답변까지_시간",
-    size: 120,
-  }),
   columnHelper.accessor("receiveAcceptance", {
-    header: "수락율",
+    header: "답변율",
     size: 80,
   }),
   columnHelper.accessor("rejectReason", {
