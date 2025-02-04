@@ -1,40 +1,37 @@
-"use server";
-
 import { z } from "zod";
 import { AxiosError } from "axios";
 
 import { httpService } from "../../utils/httpService";
 
 const acceptanceSchema = z.object({
-  status: z.literal("SUCCESS"),
-  lastUpdated: z.string().refine((date) => !isNaN(Date.parse(date))),
-  data: z.array(
+  accept: z.number(),
+  total: z.number(),
+  time: z.number(),
+  alarmTalkResponses: z.array(
     z.object({
       status: z.union([
-        z.literal("ACCEPTED"),
-        z.literal("REJECTED"),
-        z.literal("PENDING"),
-        z.literal("SENDED"),
+        z.literal("거절"),
+        z.literal("대기"),
+        z.literal("수락"),
+        z.literal("전송"),
       ]),
       nickname: z.string(),
-      userId: z.string(),
-      id: z.number(),
+      accept: z.number(),
+      total: z.number(),
+      classMatchingId: z.number(),
       name: z.string(),
-      allReceiveAccetance: z.number(),
-      receiveAcceptance: z.number(),
       rejectReason: z.string().nullable(),
-      lastUpdated: z.string().refine((date) => !isNaN(Date.parse(date))),
     }),
   ),
 });
 
 export type AcceptanceSchema = z.infer<typeof acceptanceSchema>;
 
-export async function getAcceptance(matchingId: string) {
+export async function getAcceptance(applcationFormId: string) {
   /// api/matching/:id/acceptance
   try {
     const response = await httpService.get<AcceptanceSchema>(
-      `/api/matching/${matchingId}/acceptance`,
+      `/admin/details/matching/alarm/${applcationFormId}`,
     );
     const parseResult = acceptanceSchema.safeParse(response.data);
 

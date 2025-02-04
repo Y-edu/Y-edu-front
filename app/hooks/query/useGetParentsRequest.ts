@@ -1,16 +1,14 @@
-import { useQuery } from "@tanstack/react-query";
+import { useSuspenseQuery } from "@tanstack/react-query";
 
 import { getParentsRequest } from "../../actions/get-parents-request";
 
 export function useGetParentsRequest(macthingId: string) {
-  return useQuery({
+  return useSuspenseQuery({
     queryKey: ["parents-request", macthingId],
     queryFn: async () => {
       const res = await getParentsRequest(macthingId);
-      const { data } = res;
 
-      return data;
+      return res;
     },
-    staleTime: 1000 * 20,
   });
 }
