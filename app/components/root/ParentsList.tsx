@@ -11,10 +11,12 @@ import { useGetParentsList } from "../../hooks/query/useGetParentsList";
 import { ParentsListResponse } from "../../actions/get-parents-list/index";
 import { Pagination } from "../../ui/Pagination";
 import { getParentColumns } from "../../ui/Columns/ParentsColumns";
+import { usePutParentStatusToggle } from "../../hooks/mutation/usePutParentStatusToggle";
 
 function ParentsListComponent() {
   const { data, isLoading, error } = useGetParentsList();
   const [tableData, setTableData] = useState<ParentsListResponse[]>([]);
+  const { mutate: toggleStatus } = usePutParentStatusToggle();
 
   useEffect(() => {
     if (data) {
@@ -22,7 +24,24 @@ function ParentsListComponent() {
     }
   }, [data]);
 
-  const columns = getParentColumns(tableData, setTableData);
+  const onToggleStatus = (applicationFormId: string) =>
+    toggleStatus(applicationFormId, {
+      onSuccess: () =>
+        setTableData((prev) =>
+          prev.map((item) =>
+            item.applicationFormId === applicationFormId
+              ? { ...item, status: !item.status }
+              : item,
+          ),
+        ),
+      onError: (error) => {
+        alert(
+          `데이터 전송 오류: ${error instanceof Error ? error.message : error}`,
+        );
+      },
+    });
+
+  const columns = getParentColumns(tableData, setTableData, onToggleStatus);
   const table = useReactTable({
     data: tableData,
     columns,

@@ -10,6 +10,7 @@ const columnHelper = createColumnHelper<ParentsListResponse>();
 export function getParentColumns(
   tableData: ParentsListResponse[],
   setTableData: React.Dispatch<React.SetStateAction<ParentsListResponse[]>>,
+  onToggleStatus: (applicationFormId: string) => void,
 ) {
   return [
     columnHelper.accessor("kakaoName", {
@@ -62,15 +63,9 @@ export function getParentColumns(
     columnHelper.accessor("status", {
       header: "처리 상태",
       cell: ({ row }) => {
-        const toggleStatus = (e: React.MouseEvent) => {
+        const handleToggle = (e: React.MouseEvent) => {
           e.stopPropagation();
-          setTableData((prevData) =>
-            prevData.map((item) =>
-              item.applicationFormId === row.original.applicationFormId
-                ? { ...item, status: !item.status }
-                : item,
-            ),
-          );
+          onToggleStatus(row.original.applicationFormId);
         };
 
         return (
@@ -81,7 +76,7 @@ export function getParentColumns(
               }`}
               role="switch"
               aria-checked={row.original.status}
-              onClick={toggleStatus}
+              onClick={handleToggle}
             >
               <span
                 className={`absolute size-5 rounded-full bg-white shadow-md transition-transform ${
