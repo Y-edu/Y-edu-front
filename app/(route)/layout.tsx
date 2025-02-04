@@ -3,7 +3,6 @@ import localFont from "next/font/local";
 
 import "./globals.css";
 import { QueryProvider } from "../providers";
-import { initMsw } from "../../__mocks__/init";
 import IntegrateMSW from "../providers/MSWProvider";
 
 const pretendard = localFont({
@@ -23,9 +22,6 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  if (process.env.NODE_ENV !== "production") {
-    initMsw();
-  }
   return (
     <IntegrateMSW>
       <html lang="ko">
