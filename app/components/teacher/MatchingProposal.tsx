@@ -101,28 +101,34 @@ export function MatchingProposal({
       >
         {data.data.wantTime}
       </ProfileInfoBox>
-      <button
-        className="order-0 flex h-[58px] w-[335px] flex-none flex-row items-center justify-center gap-[6px] self-stretch rounded-[8px] bg-primaryNormal p-[16px] px-[36px] font-bold text-white"
-        onClick={() => {
-          setMatchingStatus("ACCEPT");
-          openModal();
-          postTutoringAccept({
-            matchingId,
-            teacherId,
-          });
-        }}
-      >
-        신청하기
-      </button>
-      <button
-        className="mx-auto my-[18px] flex justify-center border-b-2 text-labelNeutral"
-        onClick={() => {
-          setMatchingStatus("REJECT");
-          openModal();
-        }}
-      >
-        이번 과외는 넘기기
-      </button>
+      <div className="flex justify-center gap-[15px] align-middle">
+        <button
+          className="order-0 flex h-[58px] w-[160px] flex-none flex-row items-center justify-center gap-[6px] self-stretch rounded-[8px] bg-primaryTint p-[16px] font-bold text-primaryNormal"
+          onClick={() => {
+            setMatchingStatus("REJECT");
+            openModal();
+          }}
+        >
+          이번건 넘길게요
+        </button>
+        <button
+          className="order-0 flex h-[58px] w-[160px] flex-none flex-row items-center justify-center gap-[6px] self-stretch rounded-[8px] bg-primaryNormal p-[16px] px-[36px] font-bold text-white"
+          onClick={() => {
+            setMatchingStatus("ACCEPT");
+            openModal();
+            postTutoringAccept({
+              matchingId,
+              teacherId,
+            });
+          }}
+        >
+          신청하기
+        </button>
+      </div>
+
+      <p className="mx-auto my-[20px] flex justify-center">
+        둘 중 하나를 꼭 선택해주세요!
+      </p>
       <MatchingModal
         isOpen={isModalOpen}
         status={matchingStatus}
@@ -140,7 +146,7 @@ export function MatchingProposal({
               onSuccess: () => {
                 setMatchingStatus("ACCEPT");
                 setRejectSuccessMessage({
-                  title: "제출이 완료됐어요 \n 그럼 이번 과외는 넘길게요!",
+                  title: "이번 과외는 넘길게요!",
                   content:
                     "희망하지 않는 지역이나 과목의 과외건이 \n 반복전송된다면 고객센터를 통해 알려주세요.",
                 });
