@@ -1,5 +1,5 @@
 import RegionFilter from "../../ui/Filter/RegionFilter";
-import CategoryFilter from "../../ui/Filter/CategoryFilter";
+import CategoryFilter, { OptionType } from "../../ui/Filter/CategoryFilter";
 import { TeacherSearchParams } from "../../actions/get-teacher-search";
 
 interface TeacherListFilterProps {
@@ -22,6 +22,15 @@ function TeacherListFilter({
     appliedFilters.districts.length > 0 ||
     appliedFilters.search.trim() !== "";
 
+  const schoolOptions: OptionType[] = [
+    { value: "S", label: "서울대" },
+    { value: "K", label: "고려대" },
+    { value: "Y", label: "연세대" },
+    { value: "서강", label: "서강대" },
+    { value: "성균", label: "성균관대" },
+    { value: "한양", label: "한양대" },
+  ];
+
   return (
     <div className="relative mb-4 rounded-3xl border border-gray-300 bg-white p-6">
       {/* 과목 필터 */}
@@ -35,13 +44,7 @@ function TeacherListFilter({
       {/* 학교 필터 */}
       <CategoryFilter
         title="학교"
-        options={[
-          "서울대학교",
-          "연세대학교",
-          "고려대학교",
-          "서강대학교",
-          "한양대학교",
-        ]}
+        options={schoolOptions}
         selectedValues={filters.universities}
         onChange={(values) => onChange({ ...filters, universities: values })}
       />
