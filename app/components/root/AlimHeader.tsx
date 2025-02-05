@@ -22,7 +22,7 @@ export function AlimHeader({ matchingId }: AlimHeaderProps) {
   const selecteddRowNickName = alimTable
     .getSelectedRowModel()
     .flatRows.map((v) => {
-      return v.original.nickname;
+      return v.original.nickName;
     });
 
   return (
@@ -39,7 +39,7 @@ export function AlimHeader({ matchingId }: AlimHeaderProps) {
           >
             {`(${alimData.accept} / ${alimData.total})`}
           </span>
-          <span className="tex-sm ml-8 font-medium">
+          <span className="tex-sm ml-8 font-medium" suppressHydrationWarning>
             발송 후 {alimData.time}분 경과
           </span>
         </div>

@@ -62,7 +62,7 @@ export const AlimTHeaderColumn = [
       }
     },
   }),
-  columnHelper.accessor("nickname", {
+  columnHelper.accessor("nickName", {
     header: "영어이름",
     size: 150,
   }),
@@ -74,7 +74,7 @@ export const AlimTHeaderColumn = [
     header: "답변율",
     size: 80,
   }),
-  columnHelper.accessor("rejectReason", {
+  columnHelper.accessor("refuseReason", {
     header: "거절사유",
     size: 150,
   }),
