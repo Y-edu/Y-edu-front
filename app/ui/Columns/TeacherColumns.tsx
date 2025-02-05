@@ -50,8 +50,7 @@ export function getTeacherColumns({
       header: "답변율",
       cell: ({ row }) => {
         const { accept, total } = row.original;
-        const percentage = total > 0 ? (accept / total) * 100 : 0;
-        return `${Math.floor(percentage)}%`;
+        return `${accept / total}`;
       },
     }),
     columnHelper.accessor("university", { header: "학교/학과" }),
