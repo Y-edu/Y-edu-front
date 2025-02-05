@@ -4,13 +4,13 @@ import { FilteringTeacher } from "../../actions/get-teacher-search";
 
 interface TeacherColumnsProps {
   // 유튜브는 현재 API에는 없으므로 단순히 아이콘만 렌더링합니다.
-  handleOpenRemarkModal: (teacher: FilteringTeacher) => void;
+  handleOpenIssueModal: (teacher: FilteringTeacher) => void;
 }
 
 const columnHelper = createColumnHelper<FilteringTeacher>();
 
 export function getTeacherColumns({
-  handleOpenRemarkModal,
+  handleOpenIssueModal,
 }: TeacherColumnsProps) {
   return [
     columnHelper.display({
@@ -50,7 +50,7 @@ export function getTeacherColumns({
       header: "답변율",
       cell: ({ row }) => {
         const { accept, total } = row.original;
-        return `${accept / total}`;
+        return `${accept}/${total}`;
       },
     }),
     columnHelper.accessor("university", { header: "학교/학과" }),
@@ -76,7 +76,7 @@ export function getTeacherColumns({
           <span className="text-sm">{getValue() ?? "-"}</span>
           <button
             className="text-xs text-blue-500 underline"
-            onClick={() => handleOpenRemarkModal(row.original)}
+            onClick={() => handleOpenIssueModal(row.original)}
           >
             수정
           </button>

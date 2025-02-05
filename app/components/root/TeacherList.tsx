@@ -7,14 +7,15 @@ import {
   getPaginationRowModel,
   RowSelectionState,
 } from "@tanstack/react-table";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 
-import type { TeacherSearchParams } from "../../actions/get-teacher-search";
+import type {
+  TeacherSearchParams,
+  FilteringTeacher,
+} from "../../actions/get-teacher-search";
 import { getTeacherColumns } from "../../ui/Columns/TeacherColumns";
-import { EditTeacherModal } from "../../ui/EditTeacherModal";
+import { TeacherIssueModal } from "../../ui/TeacherIssueModal";
 import { useGetTeacherSearch } from "../../hooks/query/useGetTeacherSearch";
-import { useEditTeacherModal } from "../../hooks/custom/useEditTeacherModal";
-import { usePatchTeacherModal } from "../../hooks/mutation/usePatchTeacherModal";
 import { Pagination } from "../../ui/Pagination";
 
 interface TeacherListProps {
@@ -29,6 +30,7 @@ function TeacherList({
   filters,
 }: TeacherListProps) {
   const { districts, subjects, universities, genders, search } = filters;
+
   const { data, isLoading, isError } = useGetTeacherSearch({
     districts,
     subjects,
@@ -36,21 +38,23 @@ function TeacherList({
     genders,
     search,
   });
-  const patchMutation = usePatchTeacherModal();
 
-  const youtubeModal = useEditTeacherModal("youtubeLink", data, patchMutation);
-  const remarkModal = useEditTeacherModal("issue", data, patchMutation);
+  const [isIssueModalOpen, setIsIssueModalOpen] = useState(false);
+  const [selectedTeacher, setSelectedTeacher] =
+    useState<FilteringTeacher | null>(null);
 
-  const handleOpenYoutubeModal = (teacher: TeacherSearchParams) => {
-    youtubeModal.openModal(teacher);
+  const handleOpenIssueModal = (teacher: FilteringTeacher) => {
+    setSelectedTeacher(teacher);
+    setIsIssueModalOpen(true);
   };
-  const handleOpenRemarkModal = (teacher: TeacherSearchParams) => {
-    remarkModal.openModal(teacher);
+
+  const handleCloseIssueModal = () => {
+    setSelectedTeacher(null);
+    setIsIssueModalOpen(false);
   };
 
   const columns = getTeacherColumns({
-    handleOpenYoutubeModal,
-    handleOpenRemarkModal,
+    handleOpenIssueModal,
   });
 
   const table = useReactTable({
@@ -105,6 +109,7 @@ function TeacherList({
                 key={row.id}
                 className="cursor-pointer border-b bg-white hover:bg-gray-100"
                 onClick={(e) => {
+                  // 클릭 시, 체크박스나 수정버튼이 아닌 곳이면 row 선택
                   const target = e.target as HTMLElement;
                   if (
                     target.tagName.toLowerCase() === "img" ||
@@ -137,28 +142,11 @@ function TeacherList({
         onNext={() => table.nextPage()}
       />
 
-      {/* 유튜브 링크 수정 모달 */}
-      <EditTeacherModal
-        isOpen={youtubeModal.isOpen}
-        value={youtubeModal.value}
-        setValue={youtubeModal.setValue}
-        onSave={youtubeModal.handleSaveValue}
-        onCancel={youtubeModal.handleCloseModal}
-        title="선생님 프로필 유튜브 링크 수정"
-        placeholder="https://youtube.com/..."
-        isTextarea={false}
-      />
-
-      {/* 비고(remark) 수정 모달 */}
-      <EditTeacherModal
-        isOpen={remarkModal.isOpen}
-        value={remarkModal.value}
-        setValue={remarkModal.setValue}
-        onSave={remarkModal.handleSaveValue}
-        onCancel={remarkModal.handleCloseModal}
-        title="간단 비고 수정"
-        maxLength={30}
-        isTextarea
+      {/* 선생님 비고 수정 모달 */}
+      <TeacherIssueModal
+        isOpen={isIssueModalOpen}
+        teacher={selectedTeacher}
+        onClose={handleCloseIssueModal}
       />
     </div>
   );
