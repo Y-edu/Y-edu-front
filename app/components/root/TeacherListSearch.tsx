@@ -3,13 +3,13 @@
 import { useModal } from "../../hooks/custom";
 import { Modal } from "../../ui";
 import { usePostNewMatchingAcceptance } from "../../hooks/mutation";
-import { TeacherFilters } from "../../types/TeacherFilters";
+import type { TeacherSearchParams } from "../../actions/get-teacher-search";
 
 interface TeacherListSearchProps {
   selectedTeachers: string[];
   matchingId: string;
-  filters: TeacherFilters;
-  onChange: (newFilters: TeacherFilters) => void;
+  filters: TeacherSearchParams;
+  onChange: (newFilters: TeacherSearchParams) => void;
   onSearch: () => void;
 }
 

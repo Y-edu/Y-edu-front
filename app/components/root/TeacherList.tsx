@@ -9,19 +9,18 @@ import {
 } from "@tanstack/react-table";
 import { Dispatch, SetStateAction } from "react";
 
-import { TeacherProfile } from "../../types/TeacherProfile";
+import type { TeacherSearchParams } from "../../actions/get-teacher-search";
 import { getTeacherColumns } from "../../ui/Columns/TeacherColumns";
 import { EditTeacherModal } from "../../ui/EditTeacherModal";
-import { useGetTeachers } from "../../hooks/query/useGetTeachers";
+import { useGetTeacherSearch } from "../../hooks/query/useGetTeacherSearch";
 import { useEditTeacherModal } from "../../hooks/custom/useEditTeacherModal";
 import { usePatchTeacherModal } from "../../hooks/mutation/usePatchTeacherModal";
 import { Pagination } from "../../ui/Pagination";
-import { TeacherFilters } from "../../types/TeacherFilters";
 
 interface TeacherListProps {
   selectedTeacherRowList: RowSelectionState;
   setSelectedTeachers: Dispatch<SetStateAction<RowSelectionState>>;
-  filters: TeacherFilters;
+  filters: TeacherSearchParams;
 }
 
 function TeacherList({
@@ -29,23 +28,23 @@ function TeacherList({
   setSelectedTeachers,
   filters,
 }: TeacherListProps) {
-  const { subject, school, gender, region, search } = filters;
-  const { data, isLoading, isError } = useGetTeachers({
-    subject,
-    school,
-    gender,
-    region,
+  const { districts, subjects, universities, genders, search } = filters;
+  const { data, isLoading, isError } = useGetTeacherSearch({
+    districts,
+    subjects,
+    universities,
+    genders,
     search,
   });
   const patchMutation = usePatchTeacherModal();
 
   const youtubeModal = useEditTeacherModal("youtubeLink", data, patchMutation);
-  const remarkModal = useEditTeacherModal("remark", data, patchMutation);
+  const remarkModal = useEditTeacherModal("issue", data, patchMutation);
 
-  const handleOpenYoutubeModal = (teacher: TeacherProfile) => {
+  const handleOpenYoutubeModal = (teacher: TeacherSearchParams) => {
     youtubeModal.openModal(teacher);
   };
-  const handleOpenRemarkModal = (teacher: TeacherProfile) => {
+  const handleOpenRemarkModal = (teacher: TeacherSearchParams) => {
     remarkModal.openModal(teacher);
   };
 
@@ -55,7 +54,7 @@ function TeacherList({
   });
 
   const table = useReactTable({
-    data: data ?? [],
+    data: data?.filteringTeachers ?? [],
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),

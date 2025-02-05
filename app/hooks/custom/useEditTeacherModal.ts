@@ -1,26 +1,26 @@
 import { useState } from "react";
 import { UseMutationResult } from "@tanstack/react-query";
 
-import { TeacherProfile } from "../../types/TeacherProfile";
+import { FilteringTeacher } from "../../actions/get-teacher-search";
 
 interface PatchParams {
   id: number;
-  youtubeLink?: string;
-  remark?: string;
+  issue?: string;
 }
 
 export function useEditTeacherModal(
-  field: keyof Pick<TeacherProfile, "youtubeLink" | "remark">,
-  data: TeacherProfile[] | undefined,
+  // field는 "issue"만 지원하면 됩니다.
+  field: keyof Pick<FilteringTeacher, "issue">,
+  data: FilteringTeacher[] | undefined,
   patchMutation: UseMutationResult<PatchParams, Error, PatchParams, unknown>,
 ) {
   const [isOpen, setIsOpen] = useState(false);
   const [teacherId, setTeacherId] = useState<number | null>(null);
   const [value, setValue] = useState("");
 
-  const openModal = (teacher: TeacherProfile) => {
+  const openModal = (teacher: FilteringTeacher) => {
     setIsOpen(true);
-    setTeacherId(teacher.id);
+    setTeacherId(teacher.teacherId);
     setValue((teacher[field] as string) ?? "");
   };
 
@@ -32,7 +32,7 @@ export function useEditTeacherModal(
 
   const handleSaveValue = () => {
     if (teacherId == null || !data) return;
-    const currentTeacher = data.find((t) => t.id === teacherId);
+    const currentTeacher = data.find((t) => t.teacherId === teacherId);
     if (!currentTeacher) return;
 
     patchMutation.mutate({

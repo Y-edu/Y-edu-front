@@ -3,17 +3,17 @@
 import { useState } from "react";
 import { RowSelectionState } from "@tanstack/react-table";
 
-import { TeacherFilters } from "../../types/TeacherFilters";
+import type { TeacherSearchParams } from "../../actions/get-teacher-search";
 
 import TeacherListFilter from "./TeacherListFilter";
 import TeacherList from "./TeacherList";
 import TeacherListSearch from "./TeacherListSearch";
 
-const initialFilters: TeacherFilters = {
-  subject: [],
-  school: [],
-  gender: [],
-  region: [],
+const initialFilters: TeacherSearchParams = {
+  districts: [],
+  subjects: [],
+  universities: [],
+  genders: [],
   search: "",
 };
 
@@ -22,9 +22,9 @@ export function Teacher({ matchingId }: { matchingId: string }) {
     useState<RowSelectionState>({});
 
   const [draftFilters, setDraftFilters] =
-    useState<TeacherFilters>(initialFilters);
+    useState<TeacherSearchParams>(initialFilters);
   const [appliedFilters, setAppliedFilters] =
-    useState<TeacherFilters>(initialFilters);
+    useState<TeacherSearchParams>(initialFilters);
 
   const handleApplyFilters = () => {
     setAppliedFilters(draftFilters);
