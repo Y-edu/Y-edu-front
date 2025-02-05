@@ -1,6 +1,7 @@
 import { Header } from "../../../ui";
 import { Alim } from "../../../components/root/Alim";
 import ParentsRequest from "../../../components/root/ParentsRequest";
+import { Teacher } from "../../../components/root/Teacher";
 
 export default function MatchingDetailHome({
   params,
@@ -14,6 +15,7 @@ export default function MatchingDetailHome({
       <Header matchingId={id} />
       <Alim id={id} />
       <ParentsRequest applicationFormId={id} />
+      <Teacher matchingId={id} />
     </div>
   );
 }

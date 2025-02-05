@@ -1,12 +1,12 @@
 import RegionFilter from "../../ui/Filter/RegionFilter";
-import CategoryFilter from "../../ui/Filter/CategoryFilter";
-import { TeacherFilters } from "../../types/TeacherFilters";
+import CategoryFilter, { OptionType } from "../../ui/Filter/CategoryFilter";
+import { TeacherSearchParams } from "../../actions/get-teacher-search";
 
 interface TeacherListFilterProps {
-  filters: TeacherFilters;
-  onChange: (newFilter: TeacherFilters) => void;
+  filters: TeacherSearchParams;
+  onChange: (newFilter: TeacherSearchParams) => void;
   onApply: () => void;
-  appliedFilters: TeacherFilters;
+  appliedFilters: TeacherSearchParams;
 }
 
 function TeacherListFilter({
@@ -16,35 +16,45 @@ function TeacherListFilter({
   appliedFilters,
 }: TeacherListFilterProps) {
   const isFilterApplied =
-    appliedFilters.subject.length > 0 ||
-    appliedFilters.school.length > 0 ||
-    appliedFilters.gender.length > 0 ||
-    appliedFilters.region.length > 0 ||
+    appliedFilters.subjects.length > 0 ||
+    appliedFilters.universities.length > 0 ||
+    appliedFilters.genders.length > 0 ||
+    appliedFilters.districts.length > 0 ||
     appliedFilters.search.trim() !== "";
+
+  const schoolOptions: OptionType[] = [
+    { value: "S", label: "서울대" },
+    { value: "K", label: "고려대" },
+    { value: "Y", label: "연세대" },
+    { value: "서강", label: "서강대" },
+    { value: "성균", label: "성균관대" },
+    { value: "한양", label: "한양대" },
+  ];
+
   return (
     <div className="relative mb-4 rounded-3xl border border-gray-300 bg-white p-6">
       {/* 과목 필터 */}
       <CategoryFilter
         title="과목"
         options={["영어", "수학"]}
-        selectedValues={filters.subject}
-        onChange={(values) => onChange({ ...filters, subject: values })}
+        selectedValues={filters.subjects}
+        onChange={(values) => onChange({ ...filters, subjects: values })}
       />
 
       {/* 학교 필터 */}
       <CategoryFilter
         title="학교"
-        options={["서울대", "연세대", "고려대", "서강대", "한양대"]}
-        selectedValues={filters.school}
-        onChange={(values) => onChange({ ...filters, school: values })}
+        options={schoolOptions}
+        selectedValues={filters.universities}
+        onChange={(values) => onChange({ ...filters, universities: values })}
       />
 
       {/* 성별 필터 */}
       <CategoryFilter
         title="성별"
-        options={["남자", "여자"]}
-        selectedValues={filters.gender}
-        onChange={(values) => onChange({ ...filters, gender: values })}
+        options={["남", "여"]}
+        selectedValues={filters.genders}
+        onChange={(values) => onChange({ ...filters, genders: values })}
       />
 
       {/* 지역 필터 */}
@@ -58,8 +68,8 @@ function TeacherListFilter({
         필터적용
       </button>
       <RegionFilter
-        selectedRegion={filters.region}
-        onRegionChange={(values) => onChange({ ...filters, region: values })}
+        selectedRegion={filters.districts}
+        onRegionChange={(values) => onChange({ ...filters, districts: values })}
       />
 
       {/* 적용된 필터 영역 */}
@@ -67,24 +77,24 @@ function TeacherListFilter({
         <div className="mt-4 rounded border border-blue-200 bg-blue-50 p-3">
           <p className="text-sm font-medium text-blue-700">적용된 필터:</p>
           <div className="mt-2 flex flex-wrap gap-2 text-sm text-blue-600">
-            {appliedFilters.subject.length > 0 && (
+            {appliedFilters.subjects.length > 0 && (
               <span className="rounded bg-blue-100 px-2 py-1">
-                과목: {appliedFilters.subject.join(", ")}
+                과목: {appliedFilters.subjects}
               </span>
             )}
-            {appliedFilters.school.length > 0 && (
+            {appliedFilters.universities.length > 0 && (
               <span className="rounded bg-blue-100 px-2 py-1">
-                학교: {appliedFilters.school.join(", ")}
+                학교: {appliedFilters.universities}
               </span>
             )}
-            {appliedFilters.gender.length > 0 && (
+            {appliedFilters.genders.length > 0 && (
               <span className="rounded bg-blue-100 px-2 py-1">
-                성별: {appliedFilters.gender.join(", ")}
+                성별: {appliedFilters.genders}
               </span>
             )}
-            {appliedFilters.region.length > 0 && (
+            {appliedFilters.districts.length > 0 && (
               <span className="rounded bg-blue-100 px-2 py-1">
-                지역: {appliedFilters.region.join(", ")}
+                지역: {appliedFilters.districts}
               </span>
             )}
             {appliedFilters.search.trim() !== "" && (

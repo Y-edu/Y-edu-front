@@ -39,7 +39,7 @@ const RegionFilter = ({
         )}
       </div>
       {isAccordionOpen && (
-        <div className="mt-2 grid max-h-60 grid-cols-5 gap-4 overflow-y-auto rounded-lg border border-gray-300 bg-gray-50 p-4">
+        <div className="max-h-120 mt-2 grid grid-cols-6 gap-4 rounded-lg border border-gray-300 bg-gray-50 p-4">
           {filterRegions.map((region) => (
             <label key={region}>
               <input

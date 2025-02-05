@@ -1,17 +1,16 @@
 import { createColumnHelper } from "@tanstack/react-table";
 
-import { TeacherProfile } from "../../types/TeacherProfile";
+import { FilteringTeacher } from "../../actions/get-teacher-search";
 
 interface TeacherColumnsProps {
-  handleOpenYoutubeModal: (teacher: TeacherProfile) => void;
-  handleOpenRemarkModal: (teacher: TeacherProfile) => void;
+  // 유튜브는 현재 API에는 없으므로 단순히 아이콘만 렌더링합니다.
+  handleOpenIssueModal: (teacher: FilteringTeacher) => void;
 }
 
-const columnHelper = createColumnHelper<TeacherProfile>();
+const columnHelper = createColumnHelper<FilteringTeacher>();
 
 export function getTeacherColumns({
-  handleOpenYoutubeModal,
-  handleOpenRemarkModal,
+  handleOpenIssueModal,
 }: TeacherColumnsProps) {
   return [
     columnHelper.display({
@@ -36,68 +35,53 @@ export function getTeacherColumns({
         />
       ),
     }),
-    columnHelper.accessor("nickname", {
-      header: "닉네임",
-    }),
-    columnHelper.accessor("subject", {
+    columnHelper.accessor("nickName", { header: "닉네임" }),
+    columnHelper.accessor("classTypes", {
       header: "과목",
-      cell: (props) => props.getValue()?.join(", ") || "-",
+      cell: (props) => props.getValue().join(", ") || "-",
     }),
-    columnHelper.accessor("fullName", {
-      header: "본명",
-    }),
-    columnHelper.accessor("isActive", {
+    columnHelper.accessor("name", { header: "본명" }),
+    columnHelper.accessor("status", {
       header: "활동상태",
-      cell: ({ getValue }) => (getValue() ? "활동" : "비활동"),
+      cell: ({ getValue }) => getValue(),
     }),
     columnHelper.display({
       id: "acceptanceRate",
       header: "답변율",
       cell: ({ row }) => {
-        const { acceptedCount, totalCount } = row.original;
-        const percentage =
-          totalCount > 0 ? (acceptedCount / totalCount) * 100 : 0;
-        return `${Math.floor(percentage)}%`;
+        const { accept, total } = row.original;
+        return `${accept}/${total}`;
       },
     }),
-    columnHelper.accessor("school", {
-      header: "학교/학과",
-    }),
-    columnHelper.accessor("region", {
+    columnHelper.accessor("university", { header: "학교/학과" }),
+    columnHelper.accessor("districts", {
       header: "활동지역",
-      cell: (props) => props.getValue()?.join(", ") || "-",
-    }),
-    // 유튜브 링크
-    columnHelper.accessor("youtubeLink", {
-      header: "유튜브",
-      cell: ({ row }) => {
-        const teacher = row.original;
-        return (
-          // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions
-          <img
-            src={
-              teacher.youtubeLink
-                ? "/images/youtube-red.svg"
-                : "/images/youtube-icon.svg"
-            }
-            alt="유튜브 아이콘"
-            onClick={() => handleOpenYoutubeModal(teacher)}
-            className="h-[14px] w-[20px] cursor-pointer"
-          />
-        );
+      cell: (props) => {
+        const text = props.getValue().join(", ") || "-";
+        return <div className="max-w-[150px] break-words">{text}</div>;
       },
     }),
-    // 비고(remark)
-    columnHelper.accessor("remark", {
-      header: "간단비고",
-      cell: ({ row }) => {
-        const teacher = row.original;
+    columnHelper.display({
+      id: "youtube",
+      header: "유튜브",
+      cell: () => (
+        <img
+          src="/images/youtube-icon.svg"
+          alt="유튜브 아이콘"
+          className="h-[20px] w-[26px]"
+        />
+      ),
+    }),
+    columnHelper.accessor("issue", {
+      header: "비고",
+      cell: ({ getValue, row }) => {
+        const text = getValue() ?? "-";
         return (
-          <div className="flex items-center justify-between space-x-2">
-            <span className="text-sm">{teacher.remark}</span>
+          <div className="flex flex-col justify-between space-x-2">
+            <span className="max-w-[300px] break-words text-sm">{text}</span>
             <button
-              className="text-xs text-blue-500 underline"
-              onClick={() => handleOpenRemarkModal(teacher)}
+              className="mt-1 self-end text-xs text-blue-500 underline"
+              onClick={() => handleOpenIssueModal(row.original)}
             >
               수정
             </button>
