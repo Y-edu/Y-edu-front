@@ -56,7 +56,10 @@ export function getTeacherColumns({
     columnHelper.accessor("university", { header: "학교/학과" }),
     columnHelper.accessor("districts", {
       header: "활동지역",
-      cell: (props) => props.getValue().join(", ") || "-",
+      cell: (props) => {
+        const text = props.getValue().join(", ") || "-";
+        return <div className="max-w-[150px] break-words">{text}</div>;
+      },
     }),
     columnHelper.display({
       id: "youtube",
@@ -65,23 +68,26 @@ export function getTeacherColumns({
         <img
           src="/images/youtube-icon.svg"
           alt="유튜브 아이콘"
-          className="h-[14px] w-[20px]"
+          className="h-[20px] w-[26px]"
         />
       ),
     }),
     columnHelper.accessor("issue", {
       header: "비고",
-      cell: ({ getValue, row }) => (
-        <div className="flex items-center justify-between space-x-2">
-          <span className="text-sm">{getValue() ?? "-"}</span>
-          <button
-            className="text-xs text-blue-500 underline"
-            onClick={() => handleOpenIssueModal(row.original)}
-          >
-            수정
-          </button>
-        </div>
-      ),
+      cell: ({ getValue, row }) => {
+        const text = getValue() ?? "-";
+        return (
+          <div className="flex flex-col justify-between space-x-2">
+            <span className="max-w-[300px] break-words text-sm">{text}</span>
+            <button
+              className="mt-1 self-end text-xs text-blue-500 underline"
+              onClick={() => handleOpenIssueModal(row.original)}
+            >
+              수정
+            </button>
+          </div>
+        );
+      },
     }),
   ];
 }

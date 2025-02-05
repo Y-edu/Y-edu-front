@@ -44,7 +44,6 @@ export function useEditTeacherModal(
           handleCloseModal();
         },
         onError: (error) => {
-          // 에러 처리
           alert(`문제가 발생했습니다: ${error.message}`);
           handleCloseModal();
         },

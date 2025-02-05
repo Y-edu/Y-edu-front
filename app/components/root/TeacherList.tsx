@@ -109,7 +109,6 @@ function TeacherList({
                 key={row.id}
                 className="cursor-pointer border-b bg-white hover:bg-gray-100"
                 onClick={(e) => {
-                  // 클릭 시, 체크박스나 수정버튼이 아닌 곳이면 row 선택
                   const target = e.target as HTMLElement;
                   if (
                     target.tagName.toLowerCase() === "img" ||
