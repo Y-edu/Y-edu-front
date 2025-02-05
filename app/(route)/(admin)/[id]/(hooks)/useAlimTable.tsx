@@ -35,6 +35,7 @@ export const AlimTableProvider = ({
   children,
 }: PropsWithChildren<{ matchingId: string; page: number }>) => {
   const { data } = useGetAcceptance(matchingId, page);
+
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
 
   const alimData = useMemo<
@@ -46,7 +47,7 @@ export const AlimTableProvider = ({
       data?.alarmTalkResponses?.map((v) => {
         return {
           ...v,
-          receiveAcceptance: String(v.accept / v.total),
+          receiveAcceptance: `${v.accept} / ${v.total}`,
         };
       }) || []
     );
