@@ -1,39 +1,36 @@
-"use server";
-
 import { z } from "zod";
 import { AxiosError } from "axios";
 
 import { httpService } from "../../utils/httpService";
 
 const tutoringResponse = z.object({
-  data: z.object({
-    online: z.boolean(),
-    subject: z.string(),
-    district: z.string(),
-    dong: z.string(),
-    detail: z.string(),
-    classCount: z.number(),
-    classTime: z.number(),
-    goal: z.string(),
-    wantTime: z.string(),
-    wantDirection: z.string(),
-    favoriteCondition: z.string(),
-    age: z.string(),
-  }),
+  applicationFormId: z.string(),
+  classType: z.union([z.literal("수학"), z.literal("영어")]),
+  age: z.string().optional(),
+  classCount: z.string(),
+  classTime: z.string(),
+  online: z.union([z.literal("대면"), z.literal("비대면")]),
+  district: z.string(),
+  dong: z.string(),
+  goals: z.array(z.string()),
+  favoriteStyle: z.string(),
+  favoriteTime: z.string(),
 });
 
 export type TutoringResponse = z.infer<typeof tutoringResponse>;
 
 export async function getTutoring({
   teacherId,
-  matchingId,
+  applcationFormId,
+  phoneNumber,
 }: {
   teacherId: string;
-  matchingId: string;
+  applcationFormId: string;
+  phoneNumber: string;
 }) {
   try {
     const response = await httpService.get<TutoringResponse>(
-      `/api/teacher/${teacherId}/matching/${matchingId}`,
+      `/matching/application/${applcationFormId}/${teacherId}/${phoneNumber}`,
     );
     const parseResult = tutoringResponse.safeParse(response.data);
 
