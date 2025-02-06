@@ -1,3 +1,7 @@
+"use client";
+
+import { usePathname } from "next/navigation";
+
 import { Sidebar } from "../../ui";
 
 export default function AdminLayout({
@@ -5,9 +9,13 @@ export default function AdminLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const pathname = usePathname();
+
   return (
-    <div className="ml-[180px] bg-background">
-      <Sidebar />
+    <div
+      className={`bg-background ${pathname !== "/login" ? "ml-[180px]" : ""}`}
+    >
+      {pathname !== "/login" && <Sidebar />}
       {children}
     </div>
   );
