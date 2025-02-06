@@ -10,6 +10,7 @@
     "project": "./tsconfig.json"
   },
   "rules": {
+    "@typescript-eslint/no-unsafe-assignment": "warn",
     "react/no-unescaped-entities": 0,
     "@next/next/no-page-custom-font": "off",
     "tailwindcss/no-custom-classname": "off",
