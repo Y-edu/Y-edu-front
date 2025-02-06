@@ -1,11 +1,15 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 "use client";
 import { ReactNode, useState } from "react";
 
 import { useGetTutoring } from "../../hooks/query";
-import { TEACHER_STYLE_ICON } from "../../constants/teacherStyle";
 import { useModal } from "../../hooks/custom";
 import { usePostTutoringAccept } from "../../hooks/mutation/usePostTutoringAccept";
 import { usePostTutoringRefuse } from "../../hooks/mutation/usePostTutoringRefuse";
+import {
+  GOALS_STYLE_ICON,
+  GOALS_CONTRACT,
+} from "../../constants/goalsIconMapping";
 
 import { MatchingModal } from "./MatchingModal";
 import { MatchingInfo } from "./MatchingInfo";
@@ -14,16 +18,19 @@ import ProfileInfoBox from "./ProfileInfoBox";
 
 interface MatchingProposalProps {
   teacherId: string;
-  matchingId: string;
+  phoneNumber: string;
+  applcationFormId: string;
 }
 
 export function MatchingProposal({
   teacherId,
-  matchingId,
+  phoneNumber,
+  applcationFormId,
 }: MatchingProposalProps) {
   const { data } = useGetTutoring({
     teacherId,
-    matchingId,
+    applcationFormId,
+    phoneNumber,
   });
   const { openModal, isModalOpen, closeModal } = useModal();
   const [matchingStatus, setMatchingStatus] = useState<"REJECT" | "ACCEPT">(
@@ -49,15 +56,22 @@ export function MatchingProposal({
     matchingStatus === "ACCEPT" ? rejectSuccessMessage.content : "";
   return (
     <section>
+      <p className="mb-[15px] ml-[16px] mt-[36px] font-pretendard text-lg font-bold leading-[146%] tracking-[-0.02em] text-gray-800">
+        <span className="text-primaryNormal">{data.applicationFormId}</span>{" "}
+        과외건
+      </p>
       <MatchingInfo
-        detail={data.data.detail}
-        online={data.data.online}
-        subject={data.data.subject}
-        district={data.data.district}
-        dong={data.data.dong}
-        classCount={data.data.classCount}
-        classTime={data.data.classTime}
-        age={data.data.age}
+        applicationFormId={String(data.applicationFormId)}
+        classType={data.classType}
+        age={data.age}
+        classCount={data.classCount}
+        classTime={data.classTime}
+        online={data.online}
+        district={data.district}
+        dong={data.dong}
+        goals={data.goals}
+        favoriteStyle={data.favoriteStyle}
+        favoriteTime={data.favoriteTime}
       />
       <ProfileInfoBox
         title={
@@ -68,14 +82,13 @@ export function MatchingProposal({
         }
       >
         <div className="flex gap-[12px]">
-          <IconTitleChip
-            title={data.data.goal.split(",")[0]}
-            icon={TEACHER_STYLE_ICON["수업 중심을 잡아주는 능숙한 선생님"]}
-          />
-          <IconTitleChip
-            title={data.data.goal.split(",")[1]}
-            icon={TEACHER_STYLE_ICON["열정적인 선생님"]}
-          />
+          {data.goals.map((goal, index) => (
+            <IconTitleChip
+              key={index + goal}
+              title={GOALS_CONTRACT[`${goal}`]}
+              icon={GOALS_STYLE_ICON[`${goal}`]}
+            />
+          ))}
         </div>
       </ProfileInfoBox>
       <div className="order-2 h-[10px] w-[375px] flex-none self-stretch bg-[#F5F5F5]" />
@@ -88,7 +101,7 @@ export function MatchingProposal({
           </p>
         }
       >
-        {data.data.favoriteCondition}
+        {data.favoriteStyle}
       </ProfileInfoBox>
       <div className="order-2 h-[10px] w-[375px] flex-none self-stretch bg-[#F5F5F5]" />
       <ProfileInfoBox
@@ -99,7 +112,7 @@ export function MatchingProposal({
           </p>
         }
       >
-        {data.data.wantTime}
+        {data.favoriteTime}
       </ProfileInfoBox>
       <div className="flex justify-center gap-[15px] align-middle">
         <button
@@ -117,8 +130,9 @@ export function MatchingProposal({
             setMatchingStatus("ACCEPT");
             openModal();
             postTutoringAccept({
-              matchingId,
               teacherId,
+              applicationFormId: data.applicationFormId,
+              phoneNumber,
             });
           }}
         >
@@ -126,7 +140,7 @@ export function MatchingProposal({
         </button>
       </div>
 
-      <p className="mx-auto my-[20px] flex justify-center">
+      <p className="mx-auto my-[20px] flex justify-center text-labelNeutral">
         둘 중 하나를 꼭 선택해주세요!
       </p>
       <MatchingModal
@@ -138,8 +152,9 @@ export function MatchingProposal({
         onSubmitReject={(reason) => {
           postTutoringReject(
             {
-              reason,
-              matchingId,
+              refuseReason: reason,
+              applicationFormId: data.applicationFormId,
+              phoneNumber,
               teacherId,
             },
             {

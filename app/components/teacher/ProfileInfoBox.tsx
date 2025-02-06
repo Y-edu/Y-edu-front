@@ -2,7 +2,7 @@ import React from "react";
 
 interface ProfileInfoBoxProps {
   title: React.ReactNode;
-  children: React.ReactNode;
+  children?: React.ReactNode;
 }
 
 function ProfileInfoBox(props: ProfileInfoBoxProps) {

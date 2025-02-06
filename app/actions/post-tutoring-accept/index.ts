@@ -4,22 +4,23 @@ import { AxiosError } from "axios";
 import { httpService } from "../../utils/httpService";
 
 const tutoringAccptanceSchema = z.object({
-  status: z.union([z.literal("SUCCESS"), z.literal("REJECTED")]),
   data: z.string(),
 });
 
 type TutoringAcceptResponse = z.infer<typeof tutoringAccptanceSchema>;
 
 export async function postTutoringAccept({
+  applicationFormId,
   teacherId,
-  matchingId,
+  phoneNumber,
 }: {
-  matchingId: string;
+  phoneNumber: string;
   teacherId: string;
+  applicationFormId: string;
 }) {
   try {
-    const response = await httpService.post<TutoringAcceptResponse>(
-      `/api/teacher/${teacherId}/matching/${matchingId}/accept`,
+    const response = await httpService.put<TutoringAcceptResponse>(
+      `/matching/applcation/accept/${applicationFormId}/${teacherId}/${phoneNumber}`,
       {},
     );
     const parseResult = tutoringAccptanceSchema.safeParse(response.data);

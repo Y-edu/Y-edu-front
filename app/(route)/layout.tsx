@@ -3,7 +3,6 @@ import localFont from "next/font/local";
 
 import "./globals.css";
 import { QueryProvider } from "../providers";
-import IntegrateMSW from "../providers/MSWProvider";
 
 const pretendard = localFont({
   src: "../../public/fonts/PretendardVariable.ttf",
@@ -23,12 +22,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <IntegrateMSW>
-      <html lang="ko">
-        <QueryProvider>
-          <body className={`${pretendard.variable}`}>{children}</body>
-        </QueryProvider>
-      </html>
-    </IntegrateMSW>
+    <html lang="ko">
+      <QueryProvider>
+        <body className={`${pretendard.variable}`}>{children}</body>
+      </QueryProvider>
+    </html>
   );
 }
