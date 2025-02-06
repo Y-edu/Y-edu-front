@@ -13,7 +13,7 @@ export async function postTutoringAccept({
 }) {
   try {
     const response = await httpService.put<string>(
-      `/matching/applcation/accept/${applicationFormId}/${teacherId}/${phoneNumber}`,
+      `/matching/application/accept/${applicationFormId}/${teacherId}/${phoneNumber}`,
       {},
     );
 
