@@ -16,13 +16,13 @@ export const GOALS_STYLE_ICON: Record<string, StaticImageData | string> = {
   리스닝: Listen,
   "국제학교 입학": Assist,
   "학교 숙제 보완": Layers,
-  기타: "",
+  기타: Talk,
   "수학과 친해지기": Note,
   "수학 기초 개념 정리": Read,
   "개념 응용 수업": Write,
   "수학 학원 보조": Layers,
   "영재/과학고 미리 준비": Assist,
-  회화: Talk,
+  "초등 회화": Talk,
 };
 
 export const GOALS_CONTRACT: Record<string, string> = {

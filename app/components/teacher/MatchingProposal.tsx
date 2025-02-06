@@ -2,6 +2,7 @@
 "use client";
 import { ReactNode, useState } from "react";
 
+import Layers from "../../../public/images/Eyes.png";
 import { useGetTutoring } from "../../hooks/query";
 import { useModal } from "../../hooks/custom";
 import { usePostTutoringAccept } from "../../hooks/mutation/usePostTutoringAccept";
@@ -81,12 +82,12 @@ export function MatchingProposal({
           </p>
         }
       >
-        <div className="flex gap-[12px]">
+        <div className="flex flex-wrap gap-[12px]">
           {data.goals.map((goal, index) => (
             <IconTitleChip
               key={index + goal}
-              title={GOALS_CONTRACT[`${goal}`]}
-              icon={GOALS_STYLE_ICON[`${goal}`]}
+              title={GOALS_CONTRACT[`${goal}`] ?? goal}
+              icon={GOALS_STYLE_ICON?.[`${goal}`] ?? Layers}
             />
           ))}
         </div>
