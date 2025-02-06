@@ -1,40 +1,33 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 
 import { loginAPI } from "../../actions/get-auth/get-login";
 
 const LoginPage = () => {
-  const [id, setId] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [form, setForm] = useState({ id: "", password: "" });
+  const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-  const router = useRouter();
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError("");
+    setError(null);
     setLoading(true);
 
     try {
-      // 로그인 API 호출
-      const response = await loginAPI({ id, password });
-
-      if (response) {
-        console.log("로그인 성공:", id);
-
-        // 로그인 성공 시 페이지 이동
-        // router.push("/admin");
+      if (await loginAPI(form)) {
+        console.log("로그인 성공:", form.id);
       } else {
-        setError("아이디와 비밀번호를 확인하세요.");
+        throw new Error("아이디와 비밀번호를 확인하세요.");
       }
-    } catch (error) {
-      if (error instanceof Error) {
-        setError(error.message);
-      } else {
-        setError("오류가 발생했습니다.");
-      }
+    } catch (err) {
+      setError(
+        err instanceof Error ? err.message : "로그인 오류가 발생했습니다.",
+      );
     } finally {
       setLoading(false);
     }
@@ -50,8 +43,9 @@ const LoginPage = () => {
           <div className="relative">
             <input
               type="text"
-              value={id}
-              onChange={(e) => setId(e.target.value)}
+              name="id"
+              value={form.id}
+              onChange={handleChange}
               placeholder="아이디 입력"
               className="w-full rounded-lg border border-gray-300 bg-gray-100 px-4 py-3 text-gray-900 transition-all duration-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
             />
@@ -59,8 +53,9 @@ const LoginPage = () => {
           <div className="relative">
             <input
               type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              name="password"
+              value={form.password}
+              onChange={handleChange}
               placeholder="비밀번호 입력"
               className="w-full rounded-lg border border-gray-300 bg-gray-100 px-4 py-3 text-gray-900 transition-all duration-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
               autoComplete="off"
