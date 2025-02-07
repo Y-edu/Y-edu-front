@@ -48,7 +48,7 @@ export const regenerateAPI = async (): Promise<boolean> => {
       }
       return false;
     } catch (error) {
-      alert(error);
+      alert("로그인 해주세요");
       return false;
     } finally {
       isRefreshing = false;
