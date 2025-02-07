@@ -7,7 +7,9 @@ import type { AcceptanceSchema } from "../../actions/get-acceptance";
 
 export function useGetAcceptance(matchingId: string, page: number) {
   return useSuspenseQuery<AcceptanceSchema>({
-    queryKey: ["acceptance", matchingId, page],
+    queryKey: [`/acceptance/${matchingId}/${page}`],
     queryFn: () => getAcceptance(matchingId),
+    staleTime: Infinity,
+    gcTime: Infinity,
   });
 }

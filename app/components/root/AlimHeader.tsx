@@ -3,6 +3,9 @@
  */
 "use client";
 
+import { useQueryClient } from "@tanstack/react-query";
+
+import type { AcceptanceSchema } from "../../actions/get-acceptance";
 import { useGetAcceptance } from "../../hooks/query";
 import { usePostMatchingAcceptance } from "../../hooks/mutation";
 import { useModal } from "../../hooks/custom";
@@ -19,11 +22,38 @@ export function AlimHeader({ matchingId }: AlimHeaderProps) {
   const { mutate: postMatchingAcceptance } = usePostMatchingAcceptance();
   const { alimTable, rowSelection } = useAlimTableContext();
 
+  const queryClient = useQueryClient();
+
   const selecteddRowNickName = alimTable
     .getSelectedRowModel()
     .flatRows.map((v) => {
       return v.original.nickName;
     });
+
+  const acceptanceQueryMutate = () => {
+    const existAcceptanceQueryData = queryClient.getQueryData<AcceptanceSchema>(
+      [`/acceptance/${matchingId}/1`],
+    );
+    const selectedIds = Object.keys(rowSelection).map((v) => v);
+
+    const newQuedyData = {
+      ...existAcceptanceQueryData,
+      alarmTalkResponses: existAcceptanceQueryData?.alarmTalkResponses?.map(
+        (alarm) => {
+          if (selectedIds.includes(String(alarm.classMatchingId))) {
+            return {
+              ...alarm,
+              status: "전송",
+            };
+          } else {
+            return alarm;
+          }
+        },
+      ),
+    };
+
+    queryClient.setQueryData([`/acceptance/${matchingId}/1`], newQuedyData);
+  };
 
   return (
     <header className="mt-2 p-4">
@@ -56,15 +86,15 @@ export function AlimHeader({ matchingId }: AlimHeaderProps) {
           handleOnConfirm={() => {
             postMatchingAcceptance(
               {
-                matchingId,
-                userIds: Object.keys(rowSelection).map((v) => {
+                classMatchingIds: Object.keys(rowSelection).map((v) => {
                   return v;
                 }),
               },
               {
-                onSuccess: (data) => {
-                  alert(data.data);
+                onSuccess: () => {
+                  alert("발송에 성공했습니다.");
                   closeModal();
+                  acceptanceQueryMutate();
                 },
                 onError: () => {
                   // Todo -> 에러 로깅
