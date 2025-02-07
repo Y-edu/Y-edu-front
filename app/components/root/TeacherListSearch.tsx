@@ -59,12 +59,12 @@ function TeacherListSearch({
           handleOnConfirm={() => {
             postNewMatchingAcceptance(
               {
-                matchingId,
-                userIds: selectedTeachers,
+                applicationId: matchingId,
+                teacherIds: selectedTeachers,
               },
               {
-                onSuccess: (data) => {
-                  alert(data.data);
+                onSuccess: () => {
+                  alert("발송 완료");
                   closeModal();
                 },
                 onError: () => {

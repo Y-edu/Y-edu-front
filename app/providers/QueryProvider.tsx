@@ -27,7 +27,10 @@ export const QueryProvider = ({
 }: Readonly<{ children: React.ReactNode }>) => {
   return (
     <QueryClientProvider client={queryClient}>
-      <ReactQueryDevtools initialIsOpen />
+      {process.env.NODE_ENV === "development" && (
+        <ReactQueryDevtools initialIsOpen />
+      )}
+
       {children}
     </QueryClientProvider>
   );
