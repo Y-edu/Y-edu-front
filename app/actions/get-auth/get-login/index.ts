@@ -13,17 +13,14 @@ export const loginAPI = async (params: LoginParams): Promise<boolean> => {
     });
 
     if (response.status === 200) {
-      const authHeader =
-        (response.headers.authorization as string) ||
-        (response.headers.Authorization as string);
-      // const refreshToken =
-      //   (response.headers.refreshtoken as string) ||
-      //   (response.headers.RefreshToken as string);
+      const authHeader = response.headers.authorization as string;
+      const refreshToken = response.headers.refreshtoken as string;
 
       const accessToken = authHeader ? authHeader.replace("Bearer ", "") : null;
 
-      if (accessToken) {
+      if (accessToken && refreshToken) {
         useAuthStore.getState().setAccessToken(accessToken);
+        document.cookie = `refreshToken=${refreshToken}; path=/; Secure; SameSite=Strict;`;
         return true;
       }
     }

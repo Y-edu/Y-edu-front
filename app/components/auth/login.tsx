@@ -1,5 +1,4 @@
 "use client";
-
 import { useState, ChangeEvent, FormEvent } from "react";
 import { useRouter } from "next/navigation";
 
@@ -21,10 +20,26 @@ export default function LoginPage() {
 
   const handleLogin = async (e: FormEvent) => {
     e.preventDefault();
+
     if (!form.id.trim() || !form.password.trim()) {
       setError("아이디와 비밀번호를 입력해주세요.");
       return;
     }
+
+    const englishRegex = /^[A-Za-z0-9]+$/;
+    if (!englishRegex.test(form.id) || !englishRegex.test(form.password)) {
+      setError("아이디와 비밀번호는 영어와 숫자만 사용 가능합니다.");
+      return;
+    }
+
+    if (
+      /[A-Za-z]/.test(form.password) &&
+      form.password === form.password.toUpperCase()
+    ) {
+      setError("Caps Lock이 켜져있는 것 같습니다. 확인해주세요.");
+      return;
+    }
+
     setError(null);
     setLoading(true);
     try {
