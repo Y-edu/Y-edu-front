@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import {
   flexRender,
   getCoreRowModel,
+  getPaginationRowModel,
   useReactTable,
 } from "@tanstack/react-table";
 
@@ -46,6 +47,7 @@ function ParentsListComponent() {
     data: tableData,
     columns,
     getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
   });
 
   return (
