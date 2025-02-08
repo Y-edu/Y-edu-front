@@ -17,9 +17,11 @@ export function Sidebar() {
   const handleLogout = async () => {
     try {
       await logout();
+      // eslint-disable-next-line no-console
       console.log("로그아웃 성공");
       router.push("/login");
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error("로그아웃 실패:", error);
     }
   };
