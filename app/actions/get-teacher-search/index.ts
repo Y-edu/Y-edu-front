@@ -9,7 +9,7 @@ export interface TeacherSearchParams {
 }
 
 export interface FilteringTeacher {
-  teacherId: number;
+  teacherId: string;
   nickName: string;
   classTypes: Array<"수학" | "영어">;
   name: string;
