@@ -49,6 +49,8 @@ export const regenerateAPI = async (): Promise<boolean> => {
       return false;
     } catch (error) {
       alert("로그인 해주세요");
+      // eslint-disable-next-line no-console
+      console.error(error);
       return false;
     } finally {
       isRefreshing = false;
