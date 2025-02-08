@@ -14,7 +14,7 @@ import type {
   FilteringTeacher,
 } from "../../actions/get-teacher-search";
 import { getTeacherColumns } from "../../ui/Columns/TeacherColumns";
-import { TeacherIssueModal } from "../../ui/TeacherIssueModal";
+import { TeacherUpdateModal } from "../../ui/TeacherUpdateModal";
 import { useGetTeacherSearch } from "../../hooks/query/useGetTeacherSearch";
 import { Pagination } from "../../ui/Pagination";
 
@@ -39,22 +39,25 @@ function TeacherList({
     search,
   });
 
-  const [isIssueModalOpen, setIsIssueModalOpen] = useState(false);
   const [selectedTeacher, setSelectedTeacher] =
     useState<FilteringTeacher | null>(null);
+  const [modalType, setModalType] = useState<"video" | "issue" | null>(null);
 
-  const handleOpenIssueModal = (teacher: FilteringTeacher) => {
+  const handleOpenModal = (
+    teacher: FilteringTeacher,
+    type: "video" | "issue",
+  ) => {
     setSelectedTeacher(teacher);
-    setIsIssueModalOpen(true);
+    setModalType(type);
   };
 
-  const handleCloseIssueModal = () => {
+  const handleCloseModal = () => {
     setSelectedTeacher(null);
-    setIsIssueModalOpen(false);
+    setModalType(null);
   };
 
   const columns = getTeacherColumns({
-    handleOpenIssueModal,
+    handleOpenModal,
   });
 
   const table = useReactTable({
@@ -131,7 +134,6 @@ function TeacherList({
         </table>
       </div>
 
-      {/* 페이지네이션 */}
       <Pagination
         canPreviousPage={table.getCanPreviousPage()}
         canNextPage={table.getCanNextPage()}
@@ -141,12 +143,14 @@ function TeacherList({
         onNext={() => table.nextPage()}
       />
 
-      {/* 선생님 비고 수정 모달 */}
-      <TeacherIssueModal
-        isOpen={isIssueModalOpen}
-        teacher={selectedTeacher}
-        onClose={handleCloseIssueModal}
-      />
+      {modalType && (
+        <TeacherUpdateModal
+          isOpen={modalType !== null}
+          teacher={selectedTeacher}
+          onClose={handleCloseModal}
+          type={modalType}
+        />
+      )}
     </div>
   );
 }
