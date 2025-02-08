@@ -18,7 +18,7 @@ export const regenerateAPI = async (): Promise<boolean> => {
     try {
       const refreshToken = getCookie("refreshToken");
       if (!refreshToken) {
-        alert("refreshToken이 존재하지 않습니다.");
+        alert("다시 로그인 해주세요.");
         return false;
       }
 
