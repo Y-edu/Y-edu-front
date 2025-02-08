@@ -29,6 +29,7 @@ function TeacherListFilter({
     { value: "서강", label: "서강대" },
     { value: "성균", label: "성균관대" },
     { value: "한양", label: "한양대" },
+    { value: "기타", label: "그 외 학교" },
   ];
 
   return (

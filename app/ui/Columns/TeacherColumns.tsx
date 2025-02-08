@@ -3,15 +3,12 @@ import { createColumnHelper } from "@tanstack/react-table";
 import { FilteringTeacher } from "../../actions/get-teacher-search";
 
 interface TeacherColumnsProps {
-  // 유튜브는 현재 API에는 없으므로 단순히 아이콘만 렌더링합니다.
-  handleOpenIssueModal: (teacher: FilteringTeacher) => void;
+  handleOpenModal: (teacher: FilteringTeacher, type: "video" | "issue") => void;
 }
 
 const columnHelper = createColumnHelper<FilteringTeacher>();
 
-export function getTeacherColumns({
-  handleOpenIssueModal,
-}: TeacherColumnsProps) {
+export function getTeacherColumns({ handleOpenModal }: TeacherColumnsProps) {
   return [
     columnHelper.display({
       id: "select",
@@ -62,15 +59,23 @@ export function getTeacherColumns({
       },
     }),
     columnHelper.display({
-      id: "youtube",
+      id: "video",
       header: "유튜브",
-      cell: () => (
-        <img
-          src="/images/youtube-icon.svg"
-          alt="유튜브 아이콘"
-          className="h-[20px] w-[26px]"
-        />
-      ),
+      cell: ({ row }) => {
+        const teacher = row.original;
+        const imgSrc = teacher.video
+          ? "/images/youtube-red.svg"
+          : "/images/youtube-icon.svg";
+        return (
+          <button onClick={() => handleOpenModal(teacher, "video")}>
+            <img
+              src={imgSrc}
+              alt="유튜브 아이콘"
+              className="h-[20px] w-[26px]"
+            />
+          </button>
+        );
+      },
     }),
     columnHelper.accessor("issue", {
       header: "비고",
@@ -81,7 +86,7 @@ export function getTeacherColumns({
             <span className="max-w-[300px] break-words text-sm">{text}</span>
             <button
               className="mt-1 self-end text-xs text-blue-500 underline"
-              onClick={() => handleOpenIssueModal(row.original)}
+              onClick={() => handleOpenModal(row.original, "issue")}
             >
               수정
             </button>

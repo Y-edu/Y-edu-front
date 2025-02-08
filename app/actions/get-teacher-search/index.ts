@@ -19,6 +19,7 @@ export interface FilteringTeacher {
   university: string;
   districts: string[];
   issue: string | null;
+  video: string;
 }
 
 export interface TeacherSearchResponse {
