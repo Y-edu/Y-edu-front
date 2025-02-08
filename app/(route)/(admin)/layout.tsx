@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 
 import { Sidebar } from "../../ui";
@@ -16,6 +16,7 @@ export default function AdminLayout({
   const router = useRouter();
   const { accessToken } = useAuthStore();
   const { regenerate } = useRegenerate();
+  const [authChecked, setAuthChecked] = useState(false);
 
   useEffect(() => {
     async function checkAuth() {
@@ -24,12 +25,18 @@ export default function AdminLayout({
           const success = await regenerate();
           if (!success) {
             router.push("/login");
+            return;
           }
         }
       }
+      setAuthChecked(true);
     }
     checkAuth();
   }, [pathname, accessToken, regenerate, router]);
+
+  if (!authChecked) {
+    return null;
+  }
 
   return (
     <div
