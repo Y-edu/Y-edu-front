@@ -4,14 +4,16 @@ import { getTutoring } from "../../actions/get-tutoring";
 
 export function useGetTutoring({
   teacherId,
-  matchingId,
+  applcationFormId,
+  phoneNumber,
 }: {
   teacherId: string;
-  matchingId: string;
+  applcationFormId: string;
+  phoneNumber: string;
 }) {
   return useSuspenseQuery({
     queryKey: ["tutoring"],
-    queryFn: () => getTutoring({ teacherId, matchingId }),
+    queryFn: () => getTutoring({ teacherId, applcationFormId, phoneNumber }),
     staleTime: Infinity,
   });
 }

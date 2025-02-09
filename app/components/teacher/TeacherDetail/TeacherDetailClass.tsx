@@ -4,6 +4,7 @@ import { useParams, useSearchParams } from "next/navigation";
 import ProfileInfoBox from "../ProfileInfoBox";
 import { useGetTeacherDetailsClass } from "../../../hooks/query/useGetTeacherDetails";
 import { SubjectType } from "../../../actions/get-teacher-detail";
+import { getYoutubeEmbedLink } from "../../../utils/getYoutubeEmbedLink";
 
 export default function TeacherDetailClass() {
   const params = useParams();
@@ -43,6 +44,24 @@ export default function TeacherDetailClass() {
           >
             {data.data.managementStyle}
           </ProfileInfoBox>
+          {data.data.video && (
+            <ProfileInfoBox
+              title={
+                <p>
+                  <span className="text-primaryNormal">선생님 스피킹 영상</span>
+                  이에요.
+                </p>
+              }
+            >
+              <iframe
+                width={335}
+                height={188}
+                src={getYoutubeEmbedLink(data.data.video)}
+                className="rounded-xl"
+                title="선생님 스피킹 영상"
+              />
+            </ProfileInfoBox>
+          )}
         </>
       )}
     </div>

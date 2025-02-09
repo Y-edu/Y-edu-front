@@ -1,36 +1,21 @@
-import { z } from "zod";
 import { AxiosError } from "axios";
 
 import { httpService } from "../../utils/httpService";
 
-const matchingAcceptanceSchema = z.object({
-  status: z.union([z.literal("SUCCESS"), z.literal("REJECTED")]),
-  data: z.string(),
-});
-
-type MatchingAcceptanceResponse = z.infer<typeof matchingAcceptanceSchema>;
-
 export async function postMatchingAcceptance({
-  matchingId,
-  userIds,
+  classMatchingIds,
 }: {
-  matchingId: string;
-  userIds: string[];
+  classMatchingIds: string[];
 }) {
   try {
-    const response = await httpService.post<MatchingAcceptanceResponse>(
-      `/api/matching/${matchingId}/acceptance`,
+    const response = await httpService.post<string>(
+      `/admin/details/matching/recommend`,
       {
-        user: userIds,
+        classMatchingIds,
       },
     );
-    const parseResult = matchingAcceptanceSchema.safeParse(response.data);
 
-    if (!parseResult.success) {
-      throw new Error("서버 데이터 형식과 일치하지 않습니다.");
-    }
-
-    return parseResult.data;
+    return response.data;
   } catch (error) {
     if (error instanceof AxiosError) {
       throw new Error(`Axios Error: ${error.message}`);

@@ -1,6 +1,8 @@
+export type OptionType = string | { value: string; label: string };
+
 interface CategoryFilterProps {
   title: string;
-  options: string[];
+  options: OptionType[];
   selectedValues: string[];
   onChange: (newValues: string[]) => void;
 }
@@ -11,13 +13,18 @@ const CategoryFilter: React.FC<CategoryFilterProps> = ({
   selectedValues,
   onChange,
 }) => {
-  const handleCheckboxChange = (option: string) => {
-    if (selectedValues.includes(option)) {
-      onChange(selectedValues.filter((val) => val !== option));
+  const handleCheckboxChange = (optionValue: string) => {
+    if (selectedValues.includes(optionValue)) {
+      onChange(selectedValues.filter((val) => val !== optionValue));
     } else {
-      onChange([...selectedValues, option]);
+      onChange([...selectedValues, optionValue]);
     }
   };
+
+  const getOptionValue = (option: OptionType): string =>
+    typeof option === "string" ? option : option.value;
+  const getOptionLabel = (option: OptionType): string =>
+    typeof option === "string" ? option : option.label;
 
   return (
     <div className="mb-4 flex flex-row border-b border-gray-300 pb-4">
@@ -26,17 +33,21 @@ const CategoryFilter: React.FC<CategoryFilterProps> = ({
           {title}
         </div>
         <div className="flex flex-row gap-4">
-          {options.map((option) => (
-            <label key={option} className="flex items-center gap-2">
-              <input
-                type="checkbox"
-                checked={selectedValues.includes(option)}
-                onChange={() => handleCheckboxChange(option)}
-                className="size-4 accent-blue-500"
-              />
-              <span className="text-sm">{option}</span>
-            </label>
-          ))}
+          {options.map((option) => {
+            const value = getOptionValue(option);
+            const label = getOptionLabel(option);
+            return (
+              <label key={value} className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  checked={selectedValues.includes(value)}
+                  onChange={() => handleCheckboxChange(value)}
+                  className="size-4 accent-blue-500"
+                />
+                <span className="text-sm">{label}</span>
+              </label>
+            );
+          })}
         </div>
       </div>
     </div>

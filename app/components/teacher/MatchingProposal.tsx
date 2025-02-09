@@ -1,10 +1,16 @@
-import { useState } from "react";
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+"use client";
+import { ReactNode, useState } from "react";
 
+import Layers from "../../../public/images/Eyes.png";
 import { useGetTutoring } from "../../hooks/query";
-import { TEACHER_STYLE_ICON } from "../../constants/teacherStyle";
 import { useModal } from "../../hooks/custom";
 import { usePostTutoringAccept } from "../../hooks/mutation/usePostTutoringAccept";
 import { usePostTutoringRefuse } from "../../hooks/mutation/usePostTutoringRefuse";
+import {
+  GOALS_STYLE_ICON,
+  GOALS_CONTRACT,
+} from "../../constants/goalsIconMapping";
 
 import { MatchingModal } from "./MatchingModal";
 import { MatchingInfo } from "./MatchingInfo";
@@ -13,16 +19,19 @@ import ProfileInfoBox from "./ProfileInfoBox";
 
 interface MatchingProposalProps {
   teacherId: string;
-  matchingId: string;
+  phoneNumber: string;
+  applcationFormId: string;
 }
 
 export function MatchingProposal({
   teacherId,
-  matchingId,
+  phoneNumber,
+  applcationFormId,
 }: MatchingProposalProps) {
   const { data } = useGetTutoring({
     teacherId,
-    matchingId,
+    applcationFormId,
+    phoneNumber,
   });
   const { openModal, isModalOpen, closeModal } = useModal();
   const [matchingStatus, setMatchingStatus] = useState<"REJECT" | "ACCEPT">(
@@ -31,17 +40,39 @@ export function MatchingProposal({
   const { mutate: postTutoringAccept } = usePostTutoringAccept();
   const { mutate: postTutoringReject } = usePostTutoringRefuse();
 
+  const [rejectSuccessMessage, setRejectSuccessMessage] = useState<{
+    title: ReactNode;
+    content: ReactNode;
+  }>({
+    title: "신청이 완료됐어요!",
+    content: "선생님의 프로필을 학부모님께 전달드릴게요.",
+  });
+
+  const modalTitle =
+    matchingStatus === "ACCEPT"
+      ? rejectSuccessMessage.title
+      : "신청하지 않으시는 이유를 알려주세요.";
+
+  const modalSubTitle =
+    matchingStatus === "ACCEPT" ? rejectSuccessMessage.content : "";
   return (
-    <section>
+    <section className="font-pretendard">
+      <p className="mb-[15px] ml-[16px] mt-[36px] font-pretendard text-lg font-bold leading-[146%] tracking-[-0.02em] text-gray-800">
+        <span className="text-primaryNormal">{data.applicationFormId}</span>{" "}
+        과외건
+      </p>
       <MatchingInfo
-        detail={data.data.detail}
-        online={data.data.online}
-        subject={data.data.subject}
-        district={data.data.district}
-        dong={data.data.dong}
-        classCount={data.data.classCount}
-        classTime={data.data.classTime}
-        age={data.data.age}
+        applicationFormId={String(data.applicationFormId)}
+        classType={data.classType}
+        age={data.age}
+        classCount={data.classCount}
+        classTime={data.classTime}
+        online={data.online}
+        district={data.district}
+        dong={data.dong}
+        goals={data.goals}
+        favoriteStyle={data.favoriteStyle}
+        favoriteTime={data.favoriteTime}
       />
       <ProfileInfoBox
         title={
@@ -51,15 +82,14 @@ export function MatchingProposal({
           </p>
         }
       >
-        <div className="flex gap-[12px]">
-          <IconTitleChip
-            title={data.data.goal.split(",")[0]}
-            icon={TEACHER_STYLE_ICON["수업 중심을 잡아주는 능숙한 선생님"]}
-          />
-          <IconTitleChip
-            title={data.data.goal.split(",")[1]}
-            icon={TEACHER_STYLE_ICON["열정적인 선생님"]}
-          />
+        <div className="flex flex-wrap gap-[12px]">
+          {data.goals.map((goal, index) => (
+            <IconTitleChip
+              key={index + goal}
+              title={GOALS_CONTRACT[`${goal}`] ?? goal}
+              icon={GOALS_STYLE_ICON?.[`${goal}`] ?? Layers}
+            />
+          ))}
         </div>
       </ProfileInfoBox>
       <div className="order-2 h-[10px] w-[375px] flex-none self-stretch bg-[#F5F5F5]" />
@@ -72,7 +102,7 @@ export function MatchingProposal({
           </p>
         }
       >
-        {data.data.favoriteCondition}
+        {data.favoriteStyle}
       </ProfileInfoBox>
       <div className="order-2 h-[10px] w-[375px] flex-none self-stretch bg-[#F5F5F5]" />
       <ProfileInfoBox
@@ -83,50 +113,62 @@ export function MatchingProposal({
           </p>
         }
       >
-        {data.data.wantTime}
+        {data.favoriteTime}
       </ProfileInfoBox>
-      <button
-        className="order-0 flex h-[58px] w-[335px] flex-none flex-row items-center justify-center gap-[6px] self-stretch rounded-[8px] bg-primaryNormal p-[16px] px-[36px] font-bold text-white"
-        onClick={() => {
-          setMatchingStatus("ACCEPT");
-          openModal();
-          postTutoringAccept({
-            matchingId,
-            teacherId,
-          });
-        }}
-      >
-        신청하기
-      </button>
-      <button
-        className="mx-auto my-[18px] flex justify-center border-b-2 text-labelNeutral"
-        onClick={() => {
-          setMatchingStatus("REJECT");
-          openModal();
-        }}
-      >
-        이번 과외는 넘기기
-      </button>
+      <div className="flex justify-center gap-[15px] align-middle">
+        <button
+          className="order-0 flex h-[58px] w-[160px] flex-none flex-row items-center justify-center gap-[6px] self-stretch rounded-[8px] bg-primaryTint p-[16px] font-bold text-primaryNormal"
+          onClick={() => {
+            setMatchingStatus("REJECT");
+            openModal();
+          }}
+        >
+          이번건 넘길게요
+        </button>
+        <button
+          className="order-0 flex h-[58px] w-[160px] flex-none flex-row items-center justify-center gap-[6px] self-stretch rounded-[8px] bg-primaryNormal p-[16px] px-[36px] font-bold text-white"
+          onClick={() => {
+            setMatchingStatus("ACCEPT");
+            openModal();
+            postTutoringAccept({
+              teacherId,
+              applicationFormId: data.applicationFormId,
+              phoneNumber,
+            });
+          }}
+        >
+          신청하기
+        </button>
+      </div>
+
+      <p className="mx-auto my-[20px] flex justify-center text-labelNeutral">
+        둘 중 하나를 꼭 선택해주세요!
+      </p>
       <MatchingModal
         isOpen={isModalOpen}
         status={matchingStatus}
-        title={
-          matchingStatus === "ACCEPT"
-            ? "신청이 완료됐어요!"
-            : "신청을 하지 않는 이유를 알려주세요!"
-        }
-        message={
-          matchingStatus === "ACCEPT"
-            ? "선생님의 프로필을 학부모님께 전달드릴게요"
-            : ""
-        }
+        title={modalTitle}
+        message={modalSubTitle}
         onCloseModal={closeModal}
         onSubmitReject={(reason) => {
-          postTutoringReject({
-            reason,
-            matchingId,
-            teacherId,
-          });
+          postTutoringReject(
+            {
+              refuseReason: reason,
+              applicationFormId: data.applicationFormId,
+              phoneNumber,
+              teacherId,
+            },
+            {
+              onSuccess: () => {
+                setMatchingStatus("ACCEPT");
+                setRejectSuccessMessage({
+                  title: "이번 과외는 넘길게요!",
+                  content:
+                    "희망하지 않는 지역이나 과목의 과외건이 \n 반복 전송된다면 고객센터를 통해 알려주세요.",
+                });
+              },
+            },
+          );
         }}
       />
     </section>

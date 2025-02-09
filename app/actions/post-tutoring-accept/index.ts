@@ -1,34 +1,23 @@
-import { z } from "zod";
 import { AxiosError } from "axios";
 
 import { httpService } from "../../utils/httpService";
 
-const tutoringAccptanceSchema = z.object({
-  status: z.union([z.literal("SUCCESS"), z.literal("REJECTED")]),
-  data: z.string(),
-});
-
-type TutoringAcceptResponse = z.infer<typeof tutoringAccptanceSchema>;
-
 export async function postTutoringAccept({
+  applicationFormId,
   teacherId,
-  matchingId,
+  phoneNumber,
 }: {
-  matchingId: string;
+  phoneNumber: string;
   teacherId: string;
+  applicationFormId: string;
 }) {
   try {
-    const response = await httpService.post<TutoringAcceptResponse>(
-      `/api/teacher/${teacherId}/matching/${matchingId}/accept`,
+    const response = await httpService.put<string>(
+      `/matching/application/accept/${applicationFormId}/${teacherId}/${phoneNumber}`,
       {},
     );
-    const parseResult = tutoringAccptanceSchema.safeParse(response.data);
 
-    if (!parseResult.success) {
-      throw new Error("서버 데이터 형식과 일치하지 않습니다.");
-    }
-
-    return parseResult.data;
+    return response.data;
   } catch (error) {
     if (error instanceof AxiosError) {
       throw new Error(`Axios Error: ${error.message}`);

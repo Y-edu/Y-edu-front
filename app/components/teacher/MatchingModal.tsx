@@ -35,7 +35,8 @@ export function MatchingModal({ isOpen, ...rest }: MatchingModalProps) {
     return null;
   }
 
-  const modalHeight = rest.status === "ACCEPT" ? "h-[112px]" : "min-h-[372px]";
+  const modalHeight =
+    rest.status === "ACCEPT" ? "min-h-[112px]" : "min-h-[372px]";
   const activeButtonStyle =
     rejectReason.length > 0
       ? "bg-[#3265FD] text-white"
@@ -60,21 +61,25 @@ export function MatchingModal({ isOpen, ...rest }: MatchingModalProps) {
             alt="모달 닫기 버튼"
           />
         </div>
-        <h2 className="text-[16px] font-bold text-[#3A3A3A]">{rest.title}</h2>
+        <h2 className="whitespace-pre-line text-[16px] font-bold text-[#3A3A3A]">
+          {rest.title}
+        </h2>
         {rest.status === "ACCEPT" && (
-          <p className="font-md mb-[14px] text-[15px] text-[#777777]">
+          <p className="font-md mb-[14px] whitespace-pre-line text-[15px] text-[#777777]">
             {rest.message}
           </p>
         )}
         {rest.status === "REJECT" && (
           <div className="mx-auto mt-[20px] flex w-[287px] flex-col gap-[12px] text-labelNormal">
-            <label className="flex items-center justify-between">
-              가능한 시간이 아니에요
+            <label
+              className={`flex items-center justify-between ${rejectReason === "시간이 맞지 않아요" ? "font-bold" : ""}`}
+            >
+              시간이 맞지 않아요
               <input
                 className="scale-150"
                 type="radio"
                 name="rejectReason"
-                value="시간이 안 맞아요"
+                value="시간이 맞지 않아요"
                 onChange={(e) => {
                   setShowETCRejectReason(false);
                   setRejectReason(e.target.value);
@@ -82,7 +87,9 @@ export function MatchingModal({ isOpen, ...rest }: MatchingModalProps) {
               />
             </label>
 
-            <label className="flex items-center justify-between">
+            <label
+              className={`flex items-center justify-between ${rejectReason === "가능한 지역이 아니에요" ? "font-bold" : ""}`}
+            >
               가능한 지역이 아니에요
               <input
                 className="scale-150"
@@ -95,7 +102,9 @@ export function MatchingModal({ isOpen, ...rest }: MatchingModalProps) {
                 }}
               />
             </label>
-            <label className="flex items-center justify-between">
+            <label
+              className={`flex items-center justify-between ${rejectReason === "선호하는 선생님과 달라요" ? "font-bold" : ""}`}
+            >
               선호하는 선생님과 달라요
               <input
                 className="scale-150"
@@ -108,26 +117,30 @@ export function MatchingModal({ isOpen, ...rest }: MatchingModalProps) {
                 }}
               />
             </label>
-            <label className="flex items-center justify-between">
-              현재 수업이 불가한 상태에요
+            <label
+              className={`flex items-center justify-between ${rejectReason === "지금은 수업이 불가해요" ? "font-bold" : ""}`}
+            >
+              지금은 수업이 불가해요
               <input
                 className="scale-150"
                 type="radio"
                 name="rejectReason"
-                value="현재 수업이 불가한 상태에요"
+                value="지금은 수업이 불가해요"
                 onChange={(e) => {
                   setShowETCRejectReason(false);
                   setRejectReason(e.target.value);
                 }}
               />
             </label>
-            <label className="flex items-center justify-between">
-              기타
+            <label
+              className={`flex items-center justify-between ${showETCRejectReason === true ? "font-bold" : ""}`}
+            >
+              다른 이유가 있어요
               <input
                 className="scale-150"
                 type="radio"
                 name="rejectReason"
-                value="기타"
+                value="다른 이유가 있어요"
                 onChange={() => setShowETCRejectReason(true)}
               />
             </label>

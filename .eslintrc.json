@@ -7,9 +7,11 @@
     "plugin:prettier/recommended"
   ],
   "parserOptions": {
+    "projectService": true,
     "project": "./tsconfig.json"
   },
   "rules": {
+    "@typescript-eslint/no-unsafe-assignment": "off",
     "react/no-unescaped-entities": 0,
     "@next/next/no-page-custom-font": "off",
     "tailwindcss/no-custom-classname": "off",

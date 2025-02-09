@@ -1,46 +1,54 @@
 import { useState } from "react";
 import { UseMutationResult } from "@tanstack/react-query";
 
-import { TeacherProfile } from "../../types/TeacherProfile";
+import { FilteringTeacher } from "../../actions/get-teacher-search";
 
 interface PatchParams {
-  id: number;
-  youtubeLink?: string;
-  remark?: string;
+  teacherId: string;
+  issue: string | null;
 }
 
 export function useEditTeacherModal(
-  field: keyof Pick<TeacherProfile, "youtubeLink" | "remark">,
-  data: TeacherProfile[] | undefined,
-  patchMutation: UseMutationResult<PatchParams, Error, PatchParams, unknown>,
+  field: keyof Pick<FilteringTeacher, "issue">,
+  data: FilteringTeacher[] | undefined,
+  patchMutation: UseMutationResult<PatchParams, Error>,
 ) {
   const [isOpen, setIsOpen] = useState(false);
-  const [teacherId, setTeacherId] = useState<number | null>(null);
+  const [teacherId, setTeacherId] = useState<string>("");
   const [value, setValue] = useState("");
 
-  const openModal = (teacher: TeacherProfile) => {
+  const openModal = (teacher: FilteringTeacher) => {
     setIsOpen(true);
-    setTeacherId(teacher.id);
+    setTeacherId(teacher.teacherId);
     setValue((teacher[field] as string) ?? "");
   };
 
   const handleCloseModal = () => {
     setIsOpen(false);
-    setTeacherId(null);
+    setTeacherId("");
     setValue("");
   };
 
   const handleSaveValue = () => {
     if (teacherId == null || !data) return;
-    const currentTeacher = data.find((t) => t.id === teacherId);
+    const currentTeacher = data.find((t) => t.teacherId === teacherId);
     if (!currentTeacher) return;
 
-    patchMutation.mutate({
-      id: teacherId,
-      [field]: value,
-    });
-
-    handleCloseModal();
+    patchMutation.mutate(
+      {
+        teacherId,
+        [field]: value,
+      },
+      {
+        onSuccess: () => {
+          handleCloseModal();
+        },
+        onError: (error) => {
+          alert(`문제가 발생했습니다: ${error.message}`);
+          handleCloseModal();
+        },
+      },
+    );
   };
 
   return {

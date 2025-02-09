@@ -1,6 +1,19 @@
 import { http, HttpResponse } from "msw";
 
-import { TeacherProfile } from "../app/types/TeacherProfile";
+interface TeacherProfile {
+  id: number;
+  nickname: string;
+  subject: string[];
+  fullName: string;
+  isActive: boolean;
+  acceptedCount: number;
+  totalCount: number;
+  school: string;
+  region: string[];
+  youtubeLink: string;
+  remark: string;
+  gender: string;
+}
 
 const baseProfiles: TeacherProfile[] = [
   {
