@@ -3,9 +3,9 @@
 import { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 
-import { Sidebar } from "../../ui";
-import { useAuthStore } from "../../store/auth/useAuthStore";
-import { useRegenerate } from "../../hooks/auth/useRegenerate";
+import { Sidebar } from "../../../ui";
+import { useAuthStore } from "../../../store/auth/useAuthStore";
+import { useRegenerate } from "../../../hooks/auth/useRegenerate";
 
 export default function AdminLayout({
   children,
@@ -20,11 +20,11 @@ export default function AdminLayout({
 
   useEffect(() => {
     async function checkAuth() {
-      if (pathname !== "/login") {
+      if (pathname !== "/zuzuclubadmin/login") {
         if (!accessToken) {
           const success = await regenerate();
           if (!success) {
-            router.push("/login");
+            router.push("/zuzuclubadmin/login");
             return;
           }
         }
@@ -40,9 +40,9 @@ export default function AdminLayout({
 
   return (
     <div
-      className={`bg-background ${pathname !== "/login" ? "ml-[180px]" : ""}`}
+      className={`bg-background ${pathname !== "/zuzuclubadmin/login" ? "ml-[180px]" : ""}`}
     >
-      {pathname !== "/login" && <Sidebar />}
+      {pathname !== "/zuzuclubadmin/login" && <Sidebar />}
       {children}
     </div>
   );

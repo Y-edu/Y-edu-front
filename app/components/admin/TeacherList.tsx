@@ -65,6 +65,7 @@ function TeacherList({
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
+    getRowId: (row) => row.teacherId.toString(),
     state: {
       rowSelection: selectedTeacherRowList,
     },
