@@ -43,6 +43,23 @@ export default function TeacherDetailClass() {
           >
             {data.data.managementStyle}
           </ProfileInfoBox>
+          {data.data.video && (
+            <ProfileInfoBox
+              title={
+                <p>
+                  <span className="text-primaryNormal">선생님 스피킹 영상</span>
+                  이에요.
+                </p>
+              }
+            >
+              <iframe
+                width={335}
+                height={188}
+                src={getYoutubeEmbedLink(data.data.video)}
+                className="rounded-xl"
+              ></iframe>
+            </ProfileInfoBox>
+          )}
         </>
       )}
     </div>
