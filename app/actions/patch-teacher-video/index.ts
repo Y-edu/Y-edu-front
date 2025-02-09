@@ -6,7 +6,7 @@ export async function patchTeacherVideo({
   teacherId,
   video,
 }: {
-  teacherId: number;
+  teacherId: string;
   video: string;
 }) {
   try {

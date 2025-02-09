@@ -6,7 +6,7 @@ export async function patchTeacherIssue({
   teacherId,
   issue,
 }: {
-  teacherId: number;
+  teacherId: string;
   issue: string | null;
 }) {
   try {
