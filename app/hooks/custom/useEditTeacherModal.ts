@@ -4,7 +4,7 @@ import { UseMutationResult } from "@tanstack/react-query";
 import { FilteringTeacher } from "../../actions/get-teacher-search";
 
 interface PatchParams {
-  teacherId: number;
+  teacherId: string;
   issue: string | null;
 }
 
@@ -14,7 +14,7 @@ export function useEditTeacherModal(
   patchMutation: UseMutationResult<PatchParams, Error>,
 ) {
   const [isOpen, setIsOpen] = useState(false);
-  const [teacherId, setTeacherId] = useState<number | null>(null);
+  const [teacherId, setTeacherId] = useState<string>("");
   const [value, setValue] = useState("");
 
   const openModal = (teacher: FilteringTeacher) => {
@@ -25,7 +25,7 @@ export function useEditTeacherModal(
 
   const handleCloseModal = () => {
     setIsOpen(false);
-    setTeacherId(null);
+    setTeacherId("");
     setValue("");
   };
 

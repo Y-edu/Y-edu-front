@@ -34,6 +34,7 @@ export interface TeacherDetailsClassResponse {
   data: {
     teachingStyle: string;
     managementStyle: string;
+    video?: string;
   };
 }
 
