@@ -19,7 +19,7 @@ export default function ProfileImageName(props: ProfileImageNameProps) {
           className="h-auto w-[110px]"
         />
       ) : (
-        <div className="h-[180px] w-[110px] rounded-xl bg-gray-200"></div>
+        <div className="h-[180px] w-[110px] rounded-xl bg-gray-200" />
       )}
       <p className="font-pretendard text-xl font-bold text-labelStrong">
         {name}

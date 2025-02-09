@@ -58,7 +58,8 @@ export default function TeacherDetailClass() {
                 height={188}
                 src={getYoutubeEmbedLink(data.data.video)}
                 className="rounded-xl"
-              ></iframe>
+                title="선생님 스피킹 영상"
+              />
             </ProfileInfoBox>
           )}
         </>
