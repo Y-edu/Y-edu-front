@@ -93,7 +93,7 @@ function ParentsListComponent() {
                     onClick={(e) => {
                       const target = e.target as HTMLElement;
                       if (target.closest('[role="switch"]')) return;
-                      window.location.href = `/${row.original.applicationFormId}`;
+                      window.location.href = `/zuzuclubadmin/${row.original.applicationFormId}`;
                     }}
                   >
                     {row.getVisibleCells().map((cell) => (

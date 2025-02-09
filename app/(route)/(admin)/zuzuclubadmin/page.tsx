@@ -1,4 +1,4 @@
-import ParentsList from "../../components/root/ParentsList";
+import ParentsList from "../../../components/admin/ParentsList";
 
 export default function Home() {
   return (
