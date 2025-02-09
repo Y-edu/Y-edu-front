@@ -44,19 +44,19 @@ export function MatchingProposal({
     title: ReactNode;
     content: ReactNode;
   }>({
-    title: "신청이 완료됐어요.",
-    content: "선생님의 프로필을 학부모님께 전달드릴게요",
+    title: "신청이 완료됐어요!",
+    content: "선생님의 프로필을 학부모님께 전달드릴게요.",
   });
 
   const modalTitle =
     matchingStatus === "ACCEPT"
       ? rejectSuccessMessage.title
-      : "넘기는 이유를 알려주세요.";
+      : "신청하지 않으시는 이유를 알려주세요.";
 
   const modalSubTitle =
     matchingStatus === "ACCEPT" ? rejectSuccessMessage.content : "";
   return (
-    <section>
+    <section className="font-pretendard">
       <p className="mb-[15px] ml-[16px] mt-[36px] font-pretendard text-lg font-bold leading-[146%] tracking-[-0.02em] text-gray-800">
         <span className="text-primaryNormal">{data.applicationFormId}</span>{" "}
         과외건
@@ -164,7 +164,7 @@ export function MatchingProposal({
                 setRejectSuccessMessage({
                   title: "이번 과외는 넘길게요!",
                   content:
-                    "희망하지 않는 지역이나 과목의 과외건이 \n 반복전송된다면 고객센터를 통해 알려주세요.",
+                    "희망하지 않는 지역이나 과목의 과외건이 \n 반복 전송된다면 고객센터를 통해 알려주세요.",
                 });
               },
             },
