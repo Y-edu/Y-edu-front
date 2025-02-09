@@ -72,14 +72,14 @@ export function MatchingModal({ isOpen, ...rest }: MatchingModalProps) {
         {rest.status === "REJECT" && (
           <div className="mx-auto mt-[20px] flex w-[287px] flex-col gap-[12px] text-labelNormal">
             <label
-              className={`flex items-center justify-between ${rejectReason === "시간이 안 맞아요" ? "font-bold" : ""}`}
+              className={`flex items-center justify-between ${rejectReason === "시간이 맞지 않아요" ? "font-bold" : ""}`}
             >
-              가능한 시간이 아니에요
+              시간이 맞지 않아요
               <input
                 className="scale-150"
                 type="radio"
                 name="rejectReason"
-                value="시간이 안 맞아요"
+                value="시간이 맞지 않아요"
                 onChange={(e) => {
                   setShowETCRejectReason(false);
                   setRejectReason(e.target.value);
@@ -118,14 +118,14 @@ export function MatchingModal({ isOpen, ...rest }: MatchingModalProps) {
               />
             </label>
             <label
-              className={`flex items-center justify-between ${rejectReason === "현재 수업이 불가한 상태에요" ? "font-bold" : ""}`}
+              className={`flex items-center justify-between ${rejectReason === "지금은 수업이 불가해요" ? "font-bold" : ""}`}
             >
-              현재 수업이 불가한 상태에요
+              지금은 수업이 불가해요
               <input
                 className="scale-150"
                 type="radio"
                 name="rejectReason"
-                value="현재 수업이 불가한 상태에요"
+                value="지금은 수업이 불가해요"
                 onChange={(e) => {
                   setShowETCRejectReason(false);
                   setRejectReason(e.target.value);
@@ -135,12 +135,12 @@ export function MatchingModal({ isOpen, ...rest }: MatchingModalProps) {
             <label
               className={`flex items-center justify-between ${showETCRejectReason === true ? "font-bold" : ""}`}
             >
-              기타
+              다른 이유가 있어요
               <input
                 className="scale-150"
                 type="radio"
                 name="rejectReason"
-                value="기타"
+                value="다른 이유가 있어요"
                 onChange={() => setShowETCRejectReason(true)}
               />
             </label>

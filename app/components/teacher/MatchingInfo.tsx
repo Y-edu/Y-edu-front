@@ -1,9 +1,10 @@
 import { TutoringResponse } from "../../actions/get-tutoring";
 
 export function MatchingInfo(props: TutoringResponse) {
-  const activeLocation = props.online
-    ? "비대면"
-    : String(props.district + "\n" + props.dong);
+  const activeLocation =
+    props.online === "비대면"
+      ? "비대면"
+      : String(props.district + "\n" + props.dong);
 
   const extractClassTime = (timeString: string) => {
     const match = timeString.match(/\d+/);
@@ -14,7 +15,7 @@ export function MatchingInfo(props: TutoringResponse) {
   const classFee = 500 * classTimeInMinutes;
 
   return (
-    <div className="ml-[16px] flex min-h-[250px] min-w-[335px] flex-col justify-center gap-[42px] rounded-[12px] bg-primaryLight px-5 py-[46px] align-middle">
+    <div className="mx-auto flex h-[247px] w-[89%] flex-col justify-center gap-[18px] rounded-[12px] bg-primaryLight px-5 py-[46px] align-middle font-pretendard">
       <div className="flex w-[287px] justify-between">
         <div className="text-[#616161]">과목</div>
         <div className="font-semibold text-[#171719]">{props.classType}</div>
@@ -25,7 +26,9 @@ export function MatchingInfo(props: TutoringResponse) {
       </div>
       <div className="flex w-[287px] justify-between">
         <div className="text-[#616161]">수업시수</div>
-        <div className="font-semibold text-[#171719]">{props.classCount}</div>
+        <div className="font-semibold text-[#171719]">
+          {props.classCount + " " + props.classTime}
+        </div>
       </div>
       <div className="flex w-[287px] justify-between">
         <div className="text-[#616161]">수업료</div>
