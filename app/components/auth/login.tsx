@@ -45,7 +45,7 @@ export default function LoginPage() {
     try {
       if (!(await loginAPI(form)))
         throw new Error("아이디와 비밀번호가 일치하지 않습니다.");
-      router.push("/");
+      router.push("/zuzuclubadmin");
     } catch (err) {
       setError(
         err instanceof Error ? err.message : "로그인 오류가 발생했습니다.",

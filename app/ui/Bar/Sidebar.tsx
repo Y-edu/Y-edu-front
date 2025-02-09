@@ -19,7 +19,7 @@ export function Sidebar() {
       await logout();
       // eslint-disable-next-line no-console
       console.log("로그아웃 성공");
-      router.push("/login");
+      router.push("/zuzuclubadmin/login");
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error("로그아웃 실패:", error);
@@ -33,19 +33,19 @@ export function Sidebar() {
       role="navigation"
     >
       <div>
-        <Link href="/" className="flex h-[100px] items-center p-2">
+        <Link href="/zuzuclubadmin" className="flex h-[100px] items-center p-2">
           <Image src={LogoImage} height={36} width={36} alt="로고 이미지" />
           <span className="ml-2 text-lg font-bold text-headColor">Y-Edu</span>
         </Link>
         <div className="mt-4 flex flex-col gap-4 p-4">
           <Link
-            href="/"
+            href="/zuzuclubadmin"
             className={activeSegment === null ? activeLinkClassName : ""}
           >
             매칭관리
           </Link>
           <Link
-            href="/teacher-management"
+            href="/zuzuclubadmin/teacher-management"
             className={
               activeSegment === "teacher-management" ? activeLinkClassName : ""
             }
@@ -53,7 +53,7 @@ export function Sidebar() {
             선생님관리
           </Link>
           <Link
-            href="/settle-management"
+            href="/zuzuclubadmin/settle-management"
             className={
               activeSegment === "settle-management" ? activeLinkClassName : ""
             }
