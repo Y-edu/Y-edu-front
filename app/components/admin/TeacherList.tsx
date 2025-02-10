@@ -43,6 +43,11 @@ function TeacherList({
     useState<FilteringTeacher | null>(null);
   const [modalType, setModalType] = useState<"video" | "issue" | null>(null);
 
+  const [pagination, setPagination] = useState({
+    pageIndex: 0,
+    pageSize: 30,
+  });
+
   const handleOpenModal = (
     teacher: FilteringTeacher,
     type: "video" | "issue",
@@ -68,8 +73,10 @@ function TeacherList({
     getRowId: (row) => row.teacherId.toString(),
     state: {
       rowSelection: selectedTeacherRowList,
+      pagination,
     },
     onRowSelectionChange: setSelectedTeachers,
+    onPaginationChange: setPagination,
   });
 
   if (isLoading)
