@@ -16,7 +16,7 @@ export default function ProfileImageName(props: ProfileImageNameProps) {
           alt="프로필 이미지"
           width={110}
           height={110}
-          className="h-auto w-[110px]"
+          className="h-auto w-[110px] rounded-xl"
         />
       ) : (
         <div className="h-[180px] w-[110px] rounded-xl bg-gray-200" />
