@@ -75,9 +75,13 @@ export function AlimHeader({ matchingId }: AlimHeaderProps) {
         </div>
         <button
           onClick={() => {
+            if (Object.keys(rowSelection).length === 0) {
+              alert("학부모에게 추천할 선생님을 선택해주세요.");
+              return;
+            }
             openModal();
           }}
-          className="mr-4 rounded bg-primary px-3 py-[6px] text-white hover:bg-[#4762B4]"
+          className="mr-4 rounded bg-primary px-3 py-[6px] font-normal text-white hover:bg-[#4762B4]"
         >
           선생님 추천 발송
         </button>
