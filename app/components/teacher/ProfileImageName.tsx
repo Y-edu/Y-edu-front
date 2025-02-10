@@ -9,7 +9,7 @@ export default function ProfileImageName(props: ProfileImageNameProps) {
   const { imgSrc, name } = props;
 
   return (
-    <div className="flex w-[121px] flex-col items-center gap-4">
+    <div className="flex w-auto flex-col items-center gap-4 text-center">
       {imgSrc ? (
         <Image
           src={imgSrc}
