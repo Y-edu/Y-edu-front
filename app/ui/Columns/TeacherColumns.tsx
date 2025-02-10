@@ -50,7 +50,21 @@ export function getTeacherColumns({ handleOpenModal }: TeacherColumnsProps) {
         return `${accept}/${total}`;
       },
     }),
-    columnHelper.accessor("university", { header: "학교/학과" }),
+    columnHelper.accessor(
+      (row) => ({ university: row.university, major: row.major }),
+      {
+        header: "학교/학과",
+        cell: (info) => {
+          const { university, major } = info.getValue();
+          return (
+            <div>
+              <div>{university}</div>
+              <div>{major}</div>
+            </div>
+          );
+        },
+      },
+    ),
     columnHelper.accessor("districts", {
       header: "활동지역",
       cell: (props) => {
@@ -82,10 +96,10 @@ export function getTeacherColumns({ handleOpenModal }: TeacherColumnsProps) {
       cell: ({ getValue, row }) => {
         const text = getValue() ?? "-";
         return (
-          <div className="flex flex-col justify-between space-x-2">
+          <div className="flex w-[240px] flex-col justify-between space-x-2">
             <span className="max-w-[300px] break-words text-sm">{text}</span>
             <button
-              className="mt-1 self-end text-xs text-blue-500 underline"
+              className="mt-1 inline-flex items-center justify-center self-end rounded border border-blue-500 px-2 py-1 text-xs font-medium text-blue-500 hover:bg-blue-50 focus:outline-none"
               onClick={() => handleOpenModal(row.original, "issue")}
             >
               수정
