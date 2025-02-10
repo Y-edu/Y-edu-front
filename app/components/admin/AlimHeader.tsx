@@ -24,7 +24,7 @@ export function AlimHeader({ matchingId }: AlimHeaderProps) {
 
   const queryClient = useQueryClient();
 
-  const selecteddRowNickName = alimTable
+  const selectedRowNickName = alimTable
     .getSelectedRowModel()
     .flatRows.map((v) => {
       return v.original.nickName;
@@ -36,7 +36,7 @@ export function AlimHeader({ matchingId }: AlimHeaderProps) {
     );
     const selectedIds = Object.keys(rowSelection).map((v) => v);
 
-    const newQuedyData = {
+    const newQueryData = {
       ...existAcceptanceQueryData,
       alarmTalkResponses: existAcceptanceQueryData?.alarmTalkResponses?.map(
         (alarm) => {
@@ -52,7 +52,7 @@ export function AlimHeader({ matchingId }: AlimHeaderProps) {
       ),
     };
 
-    queryClient.setQueryData([`/acceptance/${matchingId}/1`], newQuedyData);
+    queryClient.setQueryData([`/acceptance/${matchingId}/1`], newQueryData);
   };
 
   return (
@@ -110,7 +110,7 @@ export function AlimHeader({ matchingId }: AlimHeaderProps) {
           }}
           handleOnCancel={closeModal}
           title={JSON.stringify(
-            selecteddRowNickName.toString().replaceAll("", ""),
+            selectedRowNickName.toString().replaceAll("", ""),
           )}
           message="위 선생님을 학부모께 정말 제안하시겠습니까?"
           confirmText="발송하기"
