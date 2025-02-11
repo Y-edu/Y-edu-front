@@ -69,7 +69,10 @@ export function getParentColumns(
         };
 
         return (
-          <div className="flex items-center space-x-2">
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="flex cursor-default items-center space-x-2 p-[14px]"
+          >
             <button
               className={`relative inline-flex h-6 w-12 cursor-pointer items-center rounded-full ${
                 row.original.status ? "bg-blue-500" : "bg-gray-300"
