@@ -7,7 +7,7 @@ import {
   getPaginationRowModel,
   RowSelectionState,
 } from "@tanstack/react-table";
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useState, useEffect } from "react";
 
 import type {
   TeacherSearchParams,
@@ -22,15 +22,16 @@ interface TeacherListProps {
   selectedTeacherRowList: RowSelectionState;
   setSelectedTeachers: Dispatch<SetStateAction<RowSelectionState>>;
   filters: TeacherSearchParams;
+  onTeacherDataLoad: (data: FilteringTeacher[]) => void;
 }
 
 function TeacherList({
   selectedTeacherRowList,
   setSelectedTeachers,
   filters,
+  onTeacherDataLoad,
 }: TeacherListProps) {
   const { districts, subjects, universities, genders, search } = filters;
-
   const { data, isLoading, isError } = useGetTeacherSearch({
     districts,
     subjects,
@@ -78,6 +79,12 @@ function TeacherList({
     onRowSelectionChange: setSelectedTeachers,
     onPaginationChange: setPagination,
   });
+
+  useEffect(() => {
+    if (data?.filteringTeachers) {
+      onTeacherDataLoad(data.filteringTeachers);
+    }
+  }, [data, onTeacherDataLoad]);
 
   if (isLoading)
     return (
