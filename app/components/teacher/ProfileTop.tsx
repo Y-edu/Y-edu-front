@@ -8,7 +8,9 @@ import ProfileImageName from "./ProfileImageName";
 export default function ProfileTop() {
   const params = useParams();
   const teacherId = Array.isArray(params.id) ? params.id[0] : params.id || "";
-  const { data } = useGetTeacherDetailsInfo({ teacherId });
+  const { data, error } = useGetTeacherDetailsInfo({ teacherId });
+
+  if (error) throw error;
 
   return (
     <div className="flex w-full justify-center py-[42px]">

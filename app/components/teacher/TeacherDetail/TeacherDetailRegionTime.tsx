@@ -9,7 +9,9 @@ import { formatAvailableTimes } from "../../../utils/formatAvailableTimes";
 export default function TeacherDetailRegionTime() {
   const params = useParams();
   const teacherId = Array.isArray(params.id) ? params.id[0] : params.id || "";
-  const { data } = useGetTeacherDetailsAvailable({ teacherId });
+  const { data, error } = useGetTeacherDetailsAvailable({ teacherId });
+
+  if (error) throw error;
 
   return (
     <div className="flex flex-col gap-[10px] bg-primaryPale">
