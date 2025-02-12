@@ -11,7 +11,6 @@ import {
   RowSelectionState,
   useReactTable,
   getCoreRowModel,
-  getPaginationRowModel,
 } from "@tanstack/react-table";
 import type { Table } from "@tanstack/react-table";
 
@@ -64,7 +63,6 @@ export const AlimTableProvider = ({
     getRowId: (serverStateData) => String(serverStateData.classMatchingId),
     enableRowSelection: true,
     enableExpanding: true,
-    getPaginationRowModel: getPaginationRowModel(),
   });
 
   return (

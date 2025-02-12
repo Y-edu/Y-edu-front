@@ -4,6 +4,7 @@
 import { createColumnHelper } from "@tanstack/react-table";
 
 import { ParentsListResponse } from "../../actions/get-parents-list";
+import { calculateMonthlyFee } from "../../utils/calculateMonthlyFee";
 
 const columnHelper = createColumnHelper<ParentsListResponse>();
 
@@ -25,20 +26,8 @@ export function getParentColumns(
     columnHelper.display({
       id: "monthlyFee",
       header: "월 수업료",
-      cell: ({ row }) => {
-        const count = Number(row.original.classCount.replace(/[^\d]/g, ""));
-        const minutes = Number(row.original.classTime.replace(/[^\d]/g, ""));
-        if (!count || !minutes) return "-";
-        const sessionCost = (minutes / 50) * 30000;
-        const weeklyCost = sessionCost * count;
-        const monthlyCost = weeklyCost * 4;
-        const costInManWon = monthlyCost / 10000;
-        const display = Number.isInteger(costInManWon)
-          ? costInManWon.toString()
-          : costInManWon.toFixed(1);
-
-        return `${display}만원`;
-      },
+      cell: ({ row }) =>
+        calculateMonthlyFee(row.original.classCount, row.original.classTime),
     }),
     columnHelper.accessor("wantedSubject", {
       header: "원하는 과목",
@@ -69,7 +58,10 @@ export function getParentColumns(
         };
 
         return (
-          <div className="flex items-center space-x-2">
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="flex cursor-default items-center space-x-2 p-[14px]"
+          >
             <button
               className={`relative inline-flex h-6 w-12 cursor-pointer items-center rounded-full ${
                 row.original.status ? "bg-blue-500" : "bg-gray-300"

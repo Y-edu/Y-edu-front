@@ -3,7 +3,6 @@
 import { flexRender } from "@tanstack/react-table";
 
 import { useAlimTableContext } from "../../(route)/(admin)/zuzuclubadmin/[id]/(hooks)/useAlimTable";
-import { Pagination } from "../../ui";
 
 import { AlimTHeaderColumn } from "./AlimColumn";
 
@@ -69,14 +68,6 @@ export function AlimTable() {
           </tbody>
         </table>
       </div>
-      <Pagination
-        canPreviousPage={alimTable.getCanPreviousPage()}
-        canNextPage={alimTable.getCanNextPage()}
-        pageIndex={alimTable.getState().pagination.pageIndex}
-        pageCount={alimTable.getPageCount()}
-        onPrevious={() => alimTable.previousPage()}
-        onNext={() => alimTable.nextPage()}
-      />
     </div>
   );
 }

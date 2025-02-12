@@ -24,7 +24,7 @@ export function AlimHeader({ matchingId }: AlimHeaderProps) {
 
   const queryClient = useQueryClient();
 
-  const selecteddRowNickName = alimTable
+  const selectedRowNickName = alimTable
     .getSelectedRowModel()
     .flatRows.map((v) => {
       return v.original.nickName;
@@ -36,7 +36,7 @@ export function AlimHeader({ matchingId }: AlimHeaderProps) {
     );
     const selectedIds = Object.keys(rowSelection).map((v) => v);
 
-    const newQuedyData = {
+    const newQueryData = {
       ...existAcceptanceQueryData,
       alarmTalkResponses: existAcceptanceQueryData?.alarmTalkResponses?.map(
         (alarm) => {
@@ -52,7 +52,7 @@ export function AlimHeader({ matchingId }: AlimHeaderProps) {
       ),
     };
 
-    queryClient.setQueryData([`/acceptance/${matchingId}/1`], newQuedyData);
+    queryClient.setQueryData([`/acceptance/${matchingId}/1`], newQueryData);
   };
 
   return (
@@ -75,9 +75,13 @@ export function AlimHeader({ matchingId }: AlimHeaderProps) {
         </div>
         <button
           onClick={() => {
+            if (Object.keys(rowSelection).length === 0) {
+              alert("학부모에게 추천할 선생님을 선택해주세요.");
+              return;
+            }
             openModal();
           }}
-          className="mr-4 rounded bg-primary px-3 py-[6px] text-white hover:bg-[#4762B4]"
+          className="mr-4 rounded bg-primary px-3 py-[6px] font-normal text-white hover:bg-[#4762B4]"
         >
           선생님 추천 발송
         </button>
@@ -106,7 +110,7 @@ export function AlimHeader({ matchingId }: AlimHeaderProps) {
           }}
           handleOnCancel={closeModal}
           title={JSON.stringify(
-            selecteddRowNickName.toString().replaceAll("", ""),
+            selectedRowNickName.toString().replaceAll("", ""),
           )}
           message="위 선생님을 학부모께 정말 제안하시겠습니까?"
           confirmText="발송하기"
