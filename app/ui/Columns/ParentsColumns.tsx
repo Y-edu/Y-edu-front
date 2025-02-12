@@ -1,6 +1,3 @@
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-
 import { createColumnHelper } from "@tanstack/react-table";
 
 import { ParentsListResponse } from "../../actions/get-parents-list";
@@ -56,9 +53,9 @@ export function getParentColumns(
           e.stopPropagation();
           onToggleStatus(row.original.applicationFormId);
         };
-
         return (
           <div
+            role="presentation"
             onClick={(e) => e.stopPropagation()}
             className="flex cursor-default items-center space-x-2 p-[14px]"
           >
