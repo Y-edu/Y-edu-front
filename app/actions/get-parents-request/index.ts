@@ -4,8 +4,8 @@ import { AxiosError } from "axios";
 import { httpService } from "../../utils/httpService";
 
 const parentsRequestSchema = z.object({
-  classCount: z.number(),
-  classTime: z.number(),
+  classCount: z.string(),
+  classTime: z.string(),
   pay: z.number(),
   age: z.string(),
   wantedSubject: z.union([z.literal("수학"), z.literal("영어")]),
@@ -19,10 +19,10 @@ const parentsRequestSchema = z.object({
 
 type ParentsRequestSchema = z.infer<typeof parentsRequestSchema>;
 
-export async function getParentsRequest(macthingId: string) {
+export async function getParentsRequest(matchingId: string) {
   try {
     const response = await httpService.get<ParentsRequestSchema>(
-      `/admin/details/matching/class/${macthingId}`,
+      `/admin/details/matching/class/${matchingId}`,
     );
 
     return parentsRequestSchema.parse(response.data);
