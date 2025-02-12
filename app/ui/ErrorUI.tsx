@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export default function ErrorUI() {
   return (
-    <div className="mt-44 flex h-full w-full flex-col items-center justify-center">
+    <div className="mt-44 flex size-full flex-col items-center justify-center">
       <div className="mb-5 flex size-10 items-center justify-center rounded-full border-2 border-red-400 text-xl text-red-400">
         !
       </div>
@@ -14,7 +14,7 @@ export default function ErrorUI() {
       </p>
       <Link
         className="flex h-8 w-28 items-center justify-center rounded-lg bg-descColor font-semibold text-white"
-        href={"https://pf.kakao.com/_BVKxiK/chat"}
+        href="https://pf.kakao.com/_BVKxiK/chat"
       >
         문의하기
       </Link>

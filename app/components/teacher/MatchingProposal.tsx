@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 "use client";
-import { ReactNode, useState, useEffect } from "react";
+import { ReactNode, useState } from "react";
 
 import Layers from "../../../public/images/Eyes.png";
 import { useGetTutoring } from "../../hooks/query";
@@ -157,7 +157,7 @@ export function MatchingProposal({
 
       {["거절", "수락", "전송"].includes(finalStatus) && (
         <div className="mb-6 flex w-full justify-center">
-          <button className="bg-statusInactive h-[58px] w-[89%] rounded-xl text-lg font-bold text-labelAssistive">
+          <button className="h-[58px] w-[89%] rounded-xl bg-statusInactive text-lg font-bold text-labelAssistive">
             {finalStatus === "거절"
               ? "이미 넘긴 수업입니다."
               : "이미 수락한 수업입니다."}

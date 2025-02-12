@@ -1,4 +1,5 @@
 import { ErrorBoundary } from "react-error-boundary";
+
 import ProfileTop from "../../../../components/teacher/ProfileTop";
 import TeacherDetailClass from "../../../../components/teacher/TeacherDetail/TeacherDetailClass";
 import TeacherDetailMain from "../../../../components/teacher/TeacherDetail/TeacherDetailMain";
