@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 
 import ModalCloseImage from "../../../public/images/ModalClose.svg";
@@ -31,6 +31,10 @@ export function MatchingModal({ isOpen, ...rest }: MatchingModalProps) {
   useClickoutside(matchingModalRef, rest.onCloseModal);
   const [showETCRejectReason, setShowETCRejectReason] = useState(false);
 
+  useEffect(() => {
+    if (showETCRejectReason) setRejectReason("");
+  }, [showETCRejectReason]);
+
   if (!isOpen) {
     return null;
   }
@@ -53,7 +57,11 @@ export function MatchingModal({ isOpen, ...rest }: MatchingModalProps) {
             src={ModalCloseImage as string}
             width={10}
             height={10}
-            onClick={() => rest.onCloseModal?.()}
+            onClick={() => {
+              setRejectReason("");
+              setShowETCRejectReason(false);
+              rest.onCloseModal?.();
+            }}
             onKeyDown={(e) => e.key === "Enter" && rest.onCloseModal?.()}
             role="button"
             tabIndex={0}

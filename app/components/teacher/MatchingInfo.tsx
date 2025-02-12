@@ -4,7 +4,7 @@ export function MatchingInfo(props: TutoringResponse) {
   const activeLocation =
     props.online === "비대면"
       ? "비대면"
-      : String(props.district + "\n" + props.dong);
+      : `대면(${props.district} ${props.dong})`;
 
   const extractClassTime = (timeString: string) => {
     const match = timeString.match(/\d+/);
