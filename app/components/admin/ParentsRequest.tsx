@@ -14,7 +14,13 @@ function ParentsRequest({ applicationFormId }: { applicationFormId: string }) {
           <TitleDesc
             title={PARENTS_REQUEST_TITLE.classTime}
             desc={
-              data ? `주 ${data.classCount} 회 / ${data.pay}만원` : "수업 시수"
+              data
+                ? `주 ${data.classCount} 회 / ${
+                    Number.isInteger(data.pay / 10000)
+                      ? `${data.pay / 10000}만원`
+                      : `${(data.pay / 10000).toFixed(1)}만원`
+                  }`
+                : "수업 시수"
             }
             maxWidth="1/5"
             direction="vertical"
