@@ -63,7 +63,7 @@ function TeacherListSearch({
         <button
           className="mr-6 rounded bg-primary px-3 py-[6px] text-white hover:bg-[#4762B4]"
           onClick={() => {
-            if (Object.keys(selectedTeachers).length === 0) {
+            if (selectedTeachers.length === 0) {
               alert("이 과외건을 추가로 제안할 선생님을 선택해주세요.");
               return;
             }
