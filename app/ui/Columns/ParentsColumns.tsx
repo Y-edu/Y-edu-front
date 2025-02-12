@@ -1,10 +1,7 @@
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-
 import { createColumnHelper } from "@tanstack/react-table";
 
 import { ParentsListResponse } from "../../actions/get-parents-list";
-import { calculateMonthlyFee } from "../../utils/calculateMonthlyFee";
+import { formatMonthlyFee } from "../../utils/formatMonthlyFee";
 
 const columnHelper = createColumnHelper<ParentsListResponse>();
 
@@ -18,16 +15,14 @@ export function getParentColumns(
       header: "카톡 이름",
       cell: (props) => props.getValue() || "-",
     }),
-    columnHelper.accessor((row) => `${row.classCount}${row.classTime}`, {
+    columnHelper.accessor((row) => `${row.classCount} ${row.classTime}`, {
       id: "classStatus",
       header: "수업 시수",
       cell: (props) => props.getValue(),
     }),
-    columnHelper.display({
-      id: "monthlyFee",
+    columnHelper.accessor("pay", {
       header: "월 수업료",
-      cell: ({ row }) =>
-        calculateMonthlyFee(row.original.classCount, row.original.classTime),
+      cell: (info) => formatMonthlyFee(info.getValue()),
     }),
     columnHelper.accessor("wantedSubject", {
       header: "원하는 과목",
@@ -56,9 +51,9 @@ export function getParentColumns(
           e.stopPropagation();
           onToggleStatus(row.original.applicationFormId);
         };
-
         return (
           <div
+            role="presentation"
             onClick={(e) => e.stopPropagation()}
             className="flex cursor-default items-center space-x-2 p-[14px]"
           >
