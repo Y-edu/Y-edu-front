@@ -5,6 +5,7 @@ export interface ParentsListResponse {
   kakaoName: string | null;
   classCount: string;
   classTime: string;
+  pay: number;
   wantedSubject: string;
   source: string;
   createdAt: string;
