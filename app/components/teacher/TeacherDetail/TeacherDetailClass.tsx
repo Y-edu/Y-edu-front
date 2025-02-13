@@ -11,7 +11,9 @@ export default function TeacherDetailClass() {
   const searchParams = useSearchParams();
   const teacherId = Array.isArray(params.id) ? params.id[0] : params.id || "";
   const subject = searchParams.get("subject") as SubjectType;
-  const { data } = useGetTeacherDetailsClass({ teacherId, subject });
+  const { data, error } = useGetTeacherDetailsClass({ teacherId, subject });
+
+  if (error) throw error;
 
   return (
     <div className="flex flex-col gap-[10px] bg-primaryPale">

@@ -37,6 +37,9 @@ export function MatchingProposal({
   const [matchingStatus, setMatchingStatus] = useState<"REJECT" | "ACCEPT">(
     "REJECT",
   );
+  const [finalStatus, setFinalStatus] = useState<
+    "거절" | "대기" | "전송" | "수락"
+  >(data.matchStatus);
   const { mutate: postTutoringAccept } = usePostTutoringAccept();
   const { mutate: postTutoringReject } = usePostTutoringRefuse();
 
@@ -55,6 +58,7 @@ export function MatchingProposal({
 
   const modalSubTitle =
     matchingStatus === "ACCEPT" ? rejectSuccessMessage.content : "";
+
   return (
     <section className="font-pretendard">
       <p className="mb-[15px] ml-[16px] mt-[36px] font-pretendard text-lg font-bold leading-[146%] tracking-[-0.02em] text-gray-800">
@@ -73,6 +77,7 @@ export function MatchingProposal({
         goals={data.goals}
         favoriteStyle={data.favoriteStyle}
         favoriteTime={data.favoriteTime}
+        matchStatus={data.matchStatus}
       />
       <ProfileInfoBox
         title={
@@ -115,35 +120,51 @@ export function MatchingProposal({
       >
         {data.favoriteTime}
       </ProfileInfoBox>
-      <div className="flex justify-center gap-[15px] align-middle">
-        <button
-          className="order-0 flex h-[58px] w-[160px] flex-none flex-row items-center justify-center gap-[6px] self-stretch rounded-[8px] bg-primaryTint p-[16px] font-bold text-primaryNormal"
-          onClick={() => {
-            setMatchingStatus("REJECT");
-            openModal();
-          }}
-        >
-          이번건 넘길게요
-        </button>
-        <button
-          className="order-0 flex h-[58px] w-[160px] flex-none flex-row items-center justify-center gap-[6px] self-stretch rounded-[8px] bg-primaryNormal p-[16px] px-[36px] font-bold text-white"
-          onClick={() => {
-            setMatchingStatus("ACCEPT");
-            openModal();
-            postTutoringAccept({
-              teacherId,
-              applicationFormId: data.applicationFormId,
-              phoneNumber,
-            });
-          }}
-        >
-          신청하기
-        </button>
-      </div>
+      {finalStatus === "대기" && (
+        <>
+          <div className="flex justify-center gap-[15px] align-middle">
+            <button
+              className="order-0 flex h-[58px] w-[160px] flex-none flex-row items-center justify-center gap-[6px] self-stretch rounded-[8px] bg-primaryTint p-[16px] font-bold text-primaryNormal"
+              onClick={() => {
+                setMatchingStatus("REJECT");
+                openModal();
+              }}
+            >
+              이번건 넘길게요
+            </button>
+            <button
+              className="order-0 flex h-[58px] w-[160px] flex-none flex-row items-center justify-center gap-[6px] self-stretch rounded-[8px] bg-primaryNormal p-[16px] px-[36px] font-bold text-white"
+              onClick={() => {
+                setMatchingStatus("ACCEPT");
+                setFinalStatus("수락");
+                openModal();
+                postTutoringAccept({
+                  teacherId,
+                  applicationFormId: data.applicationFormId,
+                  phoneNumber,
+                });
+              }}
+            >
+              신청하기
+            </button>
+          </div>
 
-      <p className="mx-auto my-[20px] flex justify-center text-labelNeutral">
-        둘 중 하나를 꼭 선택해주세요!
-      </p>
+          <p className="mx-auto my-[20px] flex justify-center text-labelNeutral">
+            둘 중 하나를 꼭 선택해주세요!
+          </p>
+        </>
+      )}
+
+      {["거절", "수락", "전송"].includes(finalStatus) && (
+        <div className="mb-6 flex w-full justify-center">
+          <button className="h-[58px] w-[89%] rounded-xl bg-statusInactive text-lg font-bold text-labelAssistive">
+            {finalStatus === "거절"
+              ? "이미 넘긴 수업입니다."
+              : "이미 수락한 수업입니다."}
+          </button>
+        </div>
+      )}
+
       <MatchingModal
         isOpen={isModalOpen}
         status={matchingStatus}
@@ -161,6 +182,7 @@ export function MatchingProposal({
             {
               onSuccess: () => {
                 setMatchingStatus("ACCEPT");
+                setFinalStatus("거절");
                 setRejectSuccessMessage({
                   title: "이번 과외는 넘길게요!",
                   content:

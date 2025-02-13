@@ -15,10 +15,12 @@ export default function TeacherDetailMain() {
   const searchParams = useSearchParams();
   const teacherId = Array.isArray(params.id) ? params.id[0] : params.id || "";
   const subject = searchParams.get("subject") as SubjectType;
-  const { data } = useGetTeacherDetailsTeacher({
+  const { data, error } = useGetTeacherDetailsTeacher({
     teacherId,
     subject,
   });
+
+  if (error) throw error;
 
   return (
     <div className="w-full">

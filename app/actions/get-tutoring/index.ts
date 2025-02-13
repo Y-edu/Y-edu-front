@@ -15,6 +15,12 @@ const tutoringResponse = z.object({
   goals: z.array(z.string()),
   favoriteStyle: z.string(),
   favoriteTime: z.string(),
+  matchStatus: z.union([
+    z.literal("거절"),
+    z.literal("대기"),
+    z.literal("수락"),
+    z.literal("전송"),
+  ]),
 });
 
 export type TutoringResponse = z.infer<typeof tutoringResponse>;
