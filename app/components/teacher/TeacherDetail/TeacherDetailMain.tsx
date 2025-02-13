@@ -52,12 +52,13 @@ export default function TeacherDetailMain() {
                   title={`${subject === "english" ? "영어" : "수학"} 수업(${data.data.teachingHistory}년)`}
                   items={data.data.teachingExperiences}
                 />
-                {data.data.foreignExperiences && (
-                  <ToggleBox
-                    title="해외 경험"
-                    items={data.data.foreignExperiences}
-                  />
-                )}
+                {data.data.foreignExperiences &&
+                  data.data.foreignExperiences.length > 0 && (
+                    <ToggleBox
+                      title="해외 경험"
+                      items={data.data.foreignExperiences}
+                    />
+                  )}
               </div>
             </ProfileInfoBox>
             <ProfileInfoBox
