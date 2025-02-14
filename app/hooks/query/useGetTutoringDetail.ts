@@ -15,5 +15,6 @@ export function useGetTutoring({
     queryKey: ["tutoring"],
     queryFn: () => getTutoring({ teacherId, applcationFormId, phoneNumber }),
     staleTime: Infinity,
+    retry: 0,
   });
 }
