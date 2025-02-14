@@ -1,4 +1,5 @@
 import { ErrorBoundary } from "react-error-boundary";
+
 import { MatchingProposal } from "../../../../../../components/teacher/MatchingProposal";
 import ErrorUI from "../../../../../../ui/ErrorUI";
 
