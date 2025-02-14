@@ -28,7 +28,7 @@ export function MatchingProposal({
   phoneNumber,
   applcationFormId,
 }: MatchingProposalProps) {
-  const { data } = useGetTutoring({
+  const { data, error } = useGetTutoring({
     teacherId,
     applcationFormId,
     phoneNumber,
@@ -42,6 +42,8 @@ export function MatchingProposal({
   >(data.matchStatus);
   const { mutate: postTutoringAccept } = usePostTutoringAccept();
   const { mutate: postTutoringReject } = usePostTutoringRefuse();
+
+  if (error) throw error;
 
   const [rejectSuccessMessage, setRejectSuccessMessage] = useState<{
     title: ReactNode;

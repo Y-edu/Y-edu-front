@@ -1,4 +1,6 @@
+import { ErrorBoundary } from "react-error-boundary";
 import { MatchingProposal } from "../../../../../../components/teacher/MatchingProposal";
+import ErrorUI from "../../../../../../ui/ErrorUI";
 
 export default function TeacherApplyPage({
   params,
@@ -12,12 +14,14 @@ export default function TeacherApplyPage({
   const { id, formId, phone } = params;
 
   return (
-    <div>
-      <MatchingProposal
-        teacherId={id}
-        phoneNumber={phone}
-        applcationFormId={formId}
-      />
-    </div>
+    <ErrorBoundary fallback={<ErrorUI />}>
+      <div>
+        <MatchingProposal
+          teacherId={id}
+          phoneNumber={phone}
+          applcationFormId={formId}
+        />
+      </div>
+    </ErrorBoundary>
   );
 }
