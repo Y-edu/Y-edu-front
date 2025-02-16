@@ -155,7 +155,7 @@ export function MatchingModal({ isOpen, ...rest }: MatchingModalProps) {
             {showETCRejectReason && (
               <textarea
                 placeholder="이유를 입력해주세요."
-                className="h-[86px] w-[287px] resize-none rounded-[8px] border-2 p-2 font-[14px] text-black"
+                className="h-[86px] w-[287px] resize-none rounded-[8px] border-[0.8px] p-2 font-[14px] text-black"
                 onChange={(e) => setRejectReason(e.target.value)}
               />
             )}

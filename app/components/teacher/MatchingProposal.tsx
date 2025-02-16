@@ -147,7 +147,7 @@ export function MatchingProposal({
                 });
               }}
             >
-              신청하기
+              신청할게요
             </button>
           </div>
 
