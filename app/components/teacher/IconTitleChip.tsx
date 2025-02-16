@@ -8,15 +8,15 @@ interface IconTitleChipProps {
 function IconTitleChip(props: IconTitleChipProps) {
   const { title, icon } = props;
   return (
-    <div className="flex w-fit gap-[6px] rounded-lg bg-primaryTint px-3 py-[10px]">
+    <div className="flex w-fit items-center gap-[6px] rounded-lg bg-primaryTint px-3 py-2">
       <Image
-        className="size-5"
+        className="size-[18px]"
         src={icon}
         alt="아이콘 이미지"
-        width={20}
-        height={20}
+        width={18}
+        height={18}
       />
-      <p className="font-pretendard font-bold leading-[146%] tracking-[-0.02em]">
+      <p className="font-pretendard font-bold leading-[146%] tracking-[-0.02em] text-labelStrong">
         {title}
       </p>
     </div>
