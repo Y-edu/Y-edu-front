@@ -10,7 +10,7 @@ function IconTitleChip(props: IconTitleChipProps) {
   return (
     <div className="flex w-fit items-center gap-[6px] rounded-lg bg-primaryTint px-3 py-2">
       <Image
-        className="h-[18px] w-[18px]"
+        className="size-[18px]"
         src={icon}
         alt="아이콘 이미지"
         width={18}
