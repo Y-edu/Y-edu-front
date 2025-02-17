@@ -63,7 +63,7 @@ export function MatchingProposal({
 
   return (
     <section className="font-pretendard">
-      <p className="mb-[15px] ml-[16px] mt-[36px] font-pretendard text-lg font-bold leading-[146%] tracking-[-0.02em] text-gray-800">
+      <p className="mb-[15px] ml-[16px] mt-[36px] font-pretendard text-lg font-bold leading-[146%] tracking-[-0.02em] text-labelStrong">
         <span className="text-primaryNormal">{data.applicationFormId}</span>{" "}
         과외건
       </p>
