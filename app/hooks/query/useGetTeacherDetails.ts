@@ -16,6 +16,7 @@ export function useGetTeacherDetailsTeacher(params: TeacherDetailsParams) {
       const res = getTeacherDetailsTeacher(params);
       return res;
     },
+    retry: 0,
     staleTime: 1000 * 60 * 60,
     gcTime: 1000 * 60 * 60 * 24,
   });
@@ -28,6 +29,7 @@ export function useGetTeacherDetailsClass(params: TeacherDetailsParams) {
       const res = getTeacherDetailsClass(params);
       return res;
     },
+    retry: 0,
     staleTime: 1000 * 60 * 60,
     gcTime: 1000 * 60 * 60 * 24,
   });
@@ -42,6 +44,7 @@ export function useGetTeacherDetailsAvailable(
       const res = getTeacherDetailsAvailable(params);
       return res;
     },
+    retry: 0,
     staleTime: 1000 * 60 * 60,
     gcTime: 1000 * 60 * 60 * 24,
   });
@@ -54,6 +57,7 @@ export function useGetTeacherDetailsInfo(params: TeacherSimpleDetailsParams) {
       const res = getTeacherDetailsInfo(params);
       return res;
     },
+    retry: 0,
     staleTime: 1000 * 60 * 60,
     gcTime: 1000 * 60 * 60 * 24,
   });

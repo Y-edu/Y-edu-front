@@ -97,7 +97,10 @@ function ParentsListComponent() {
                     }}
                   >
                     {row.getVisibleCells().map((cell) => (
-                      <td key={cell.id} className="p-4 text-left text-sm">
+                      <td
+                        key={cell.id}
+                        className={`${cell.column.id === "status" ? "p-0" : "p-4"} text-left text-sm`}
+                      >
                         {flexRender(
                           cell.column.columnDef.cell,
                           cell.getContext(),

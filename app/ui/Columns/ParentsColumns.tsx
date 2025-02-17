@@ -1,9 +1,7 @@
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-
 import { createColumnHelper } from "@tanstack/react-table";
 
 import { ParentsListResponse } from "../../actions/get-parents-list";
+import { formatMonthlyFee } from "../../utils/formatMonthlyFee";
 
 const columnHelper = createColumnHelper<ParentsListResponse>();
 
@@ -17,28 +15,14 @@ export function getParentColumns(
       header: "카톡 이름",
       cell: (props) => props.getValue() || "-",
     }),
-    columnHelper.accessor((row) => `${row.classCount}${row.classTime}`, {
+    columnHelper.accessor((row) => `${row.classCount} ${row.classTime}`, {
       id: "classStatus",
       header: "수업 시수",
       cell: (props) => props.getValue(),
     }),
-    columnHelper.display({
-      id: "monthlyFee",
+    columnHelper.accessor("pay", {
       header: "월 수업료",
-      cell: ({ row }) => {
-        const count = Number(row.original.classCount.replace(/[^\d]/g, ""));
-        const minutes = Number(row.original.classTime.replace(/[^\d]/g, ""));
-        if (!count || !minutes) return "-";
-        const sessionCost = (minutes / 50) * 30000;
-        const weeklyCost = sessionCost * count;
-        const monthlyCost = weeklyCost * 4;
-        const costInManWon = monthlyCost / 10000;
-        const display = Number.isInteger(costInManWon)
-          ? costInManWon.toString()
-          : costInManWon.toFixed(1);
-
-        return `${display}만원`;
-      },
+      cell: (info) => formatMonthlyFee(info.getValue()),
     }),
     columnHelper.accessor("wantedSubject", {
       header: "원하는 과목",
@@ -67,9 +51,12 @@ export function getParentColumns(
           e.stopPropagation();
           onToggleStatus(row.original.applicationFormId);
         };
-
         return (
-          <div className="flex items-center space-x-2">
+          <div
+            role="presentation"
+            onClick={(e) => e.stopPropagation()}
+            className="flex cursor-default items-center space-x-2 p-[14px]"
+          >
             <button
               className={`relative inline-flex h-6 w-12 cursor-pointer items-center rounded-full ${
                 row.original.status ? "bg-blue-500" : "bg-gray-300"

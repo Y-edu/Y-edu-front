@@ -3,7 +3,11 @@
 import { useModal } from "../../hooks/custom";
 import { Modal } from "../../ui";
 import { usePostNewMatchingAcceptance } from "../../hooks/mutation";
-import type { TeacherSearchParams } from "../../actions/get-teacher-search";
+import type {
+  TeacherSearchParams,
+  FilteringTeacher,
+} from "../../actions/get-teacher-search";
+import { getSelectedTeacherNicknames } from "../../hooks/custom/useGetSelectedTeacherNickname";
 
 interface TeacherListSearchProps {
   selectedTeachers: string[];
@@ -11,6 +15,8 @@ interface TeacherListSearchProps {
   filters: TeacherSearchParams;
   onChange: (newFilters: TeacherSearchParams) => void;
   onSearch: () => void;
+  teacherData: FilteringTeacher[] | null;
+  selectedTeacherRowList: { [key: string]: boolean };
 }
 
 function TeacherListSearch({
@@ -19,7 +25,13 @@ function TeacherListSearch({
   filters,
   onChange,
   onSearch,
+  teacherData,
+  selectedTeacherRowList,
 }: TeacherListSearchProps) {
+  const selectedTeacherNicknames = teacherData
+    ? getSelectedTeacherNicknames(teacherData, selectedTeacherRowList)
+    : [];
+
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       onSearch();
@@ -50,9 +62,15 @@ function TeacherListSearch({
         </div>
         <button
           className="mr-6 rounded bg-primary px-3 py-[6px] text-white hover:bg-[#4762B4]"
-          onClick={openModal}
+          onClick={() => {
+            if (selectedTeachers.length === 0) {
+              alert("이 과외건을 추가로 제안할 선생님을 선택해주세요.");
+              return;
+            }
+            openModal();
+          }}
         >
-          추가발송
+          과외건 추가 제안
         </button>
         <Modal
           isOpen={isModalOpen}
@@ -77,7 +95,7 @@ function TeacherListSearch({
             );
           }}
           handleOnCancel={closeModal}
-          title="추가 전송하시겠습니까?"
+          title={selectedTeacherNicknames.join(", ")}
           confirmText="발송하기"
           message="위 선생님들께 추가로 매칭 알림을 보낼까요?"
           cancelText="취소하기"

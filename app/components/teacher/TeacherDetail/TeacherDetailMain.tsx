@@ -15,10 +15,12 @@ export default function TeacherDetailMain() {
   const searchParams = useSearchParams();
   const teacherId = Array.isArray(params.id) ? params.id[0] : params.id || "";
   const subject = searchParams.get("subject") as SubjectType;
-  const { data } = useGetTeacherDetailsTeacher({
+  const { data, error } = useGetTeacherDetailsTeacher({
     teacherId,
     subject,
   });
+
+  if (error) throw error;
 
   return (
     <div className="w-full">
@@ -39,23 +41,29 @@ export default function TeacherDetailMain() {
               }
             >
               <div className="flex flex-col gap-[14px]">
-                <ToggleBox
-                  title="학력"
-                  items={[
-                    `${data.data.university} ${data.data.major}`,
-                    data.data.highSchool,
-                  ]}
-                />
-                <ToggleBox
-                  title={`${subject === "english" ? "영어" : "수학"}(${data.data.teachingHistory}년)`}
-                  items={data.data.teachingExperiences}
-                />
-                {data.data.foreignExperiences && (
+                {data.data.highSchool && (
                   <ToggleBox
-                    title="해외 경험"
-                    items={data.data.foreignExperiences}
+                    title="학력"
+                    items={[
+                      `${data.data.university} ${data.data.major}`,
+                      data.data.highSchool,
+                    ]}
                   />
                 )}
+                {data.data.teachingExperiences &&
+                  data.data.teachingExperiences.length > 0 && (
+                    <ToggleBox
+                      title={`${subject === "english" ? "영어" : "수학"} 수업(${data.data.teachingHistory}년)`}
+                      items={data.data.teachingExperiences}
+                    />
+                  )}
+                {data.data.foreignExperiences &&
+                  data.data.foreignExperiences.length > 0 && (
+                    <ToggleBox
+                      title="해외 경험"
+                      items={data.data.foreignExperiences}
+                    />
+                  )}
               </div>
             </ProfileInfoBox>
             <ProfileInfoBox

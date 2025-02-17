@@ -17,9 +17,10 @@ export interface FilteringTeacher {
   accept: number;
   total: number;
   university: string;
+  major: string;
   districts: string[];
-  issue: string | null;
   video: string;
+  issue: string | null;
 }
 
 export interface TeacherSearchResponse {

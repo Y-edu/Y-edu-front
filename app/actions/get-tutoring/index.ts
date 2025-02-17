@@ -9,12 +9,19 @@ const tutoringResponse = z.object({
   age: z.string().optional(),
   classCount: z.string(),
   classTime: z.string(),
+  pay: z.number().optional(),
   online: z.union([z.literal("대면"), z.literal("비대면")]),
   district: z.string(),
   dong: z.string(),
   goals: z.array(z.string()),
   favoriteStyle: z.string(),
   favoriteTime: z.string(),
+  matchStatus: z.union([
+    z.literal("거절"),
+    z.literal("대기"),
+    z.literal("수락"),
+    z.literal("전송"),
+  ]),
 });
 
 export type TutoringResponse = z.infer<typeof tutoringResponse>;

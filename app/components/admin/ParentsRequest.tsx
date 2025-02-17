@@ -3,6 +3,7 @@
 import { useGetParentsRequest } from "../../hooks/query/useGetParentsRequest";
 import { Accordion, TitleDesc } from "../../ui";
 import { PARENTS_REQUEST_TITLE } from "../../constants/parentsRequest";
+import { formatMonthlyFee } from "../../utils/formatMonthlyFee";
 
 function ParentsRequest({ applicationFormId }: { applicationFormId: string }) {
   const { data } = useGetParentsRequest(applicationFormId);
@@ -14,7 +15,9 @@ function ParentsRequest({ applicationFormId }: { applicationFormId: string }) {
           <TitleDesc
             title={PARENTS_REQUEST_TITLE.classTime}
             desc={
-              data ? `주 ${data.classCount} 회 / ${data.pay}만원` : "수업 시수"
+              data
+                ? `${data.classCount} ${data.classTime} / ${formatMonthlyFee(data.pay)}`
+                : "수업 시수"
             }
             maxWidth="1/5"
             direction="vertical"

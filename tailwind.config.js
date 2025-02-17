@@ -20,6 +20,7 @@ const config = {
         descColor: "#718EBF",
         disabled: "#D9D9D9",
         tabBarBorder: "#F0F2F6",
+        statusInactive: "#F4F4F5",
       },
       fontFamily: {
         pretendard: ["var(--font-pretendard)"],

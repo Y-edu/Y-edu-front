@@ -7,7 +7,7 @@ import {
   getPaginationRowModel,
   RowSelectionState,
 } from "@tanstack/react-table";
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useState, useEffect } from "react";
 
 import type {
   TeacherSearchParams,
@@ -22,15 +22,16 @@ interface TeacherListProps {
   selectedTeacherRowList: RowSelectionState;
   setSelectedTeachers: Dispatch<SetStateAction<RowSelectionState>>;
   filters: TeacherSearchParams;
+  onTeacherDataLoad: (data: FilteringTeacher[]) => void;
 }
 
 function TeacherList({
   selectedTeacherRowList,
   setSelectedTeachers,
   filters,
+  onTeacherDataLoad,
 }: TeacherListProps) {
   const { districts, subjects, universities, genders, search } = filters;
-
   const { data, isLoading, isError } = useGetTeacherSearch({
     districts,
     subjects,
@@ -42,6 +43,11 @@ function TeacherList({
   const [selectedTeacher, setSelectedTeacher] =
     useState<FilteringTeacher | null>(null);
   const [modalType, setModalType] = useState<"video" | "issue" | null>(null);
+
+  const [pagination, setPagination] = useState({
+    pageIndex: 0,
+    pageSize: 30,
+  });
 
   const handleOpenModal = (
     teacher: FilteringTeacher,
@@ -60,17 +66,25 @@ function TeacherList({
     handleOpenModal,
   });
 
-  const table = useReactTable({
+  const teacherTable = useReactTable({
     data: data?.filteringTeachers ?? [],
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-    getRowId: (row) => row.teacherId.toString(),
+    getRowId: (serverStateData) => String(serverStateData.teacherId),
     state: {
       rowSelection: selectedTeacherRowList,
+      pagination,
     },
     onRowSelectionChange: setSelectedTeachers,
+    onPaginationChange: setPagination,
   });
+
+  useEffect(() => {
+    if (data?.filteringTeachers) {
+      onTeacherDataLoad(data.filteringTeachers);
+    }
+  }, [data, onTeacherDataLoad]);
 
   if (isLoading)
     return (
@@ -88,10 +102,9 @@ function TeacherList({
   return (
     <div className="mb-6">
       <div className="overflow-hidden rounded-3xl border border-gray-300 bg-white shadow-lg">
-        {/* 테이블 */}
         <table className="w-full table-auto border-collapse">
           <thead>
-            {table.getHeaderGroups().map((hg) => (
+            {teacherTable.getHeaderGroups().map((hg) => (
               <tr key={hg.id} className="border-b bg-gray-100 text-primary">
                 {hg.headers.map((header) => (
                   <th
@@ -108,40 +121,56 @@ function TeacherList({
             ))}
           </thead>
           <tbody>
-            {table.getRowModel().rows.map((row) => (
-              <tr
-                key={row.id}
-                className="cursor-pointer border-b bg-white hover:bg-gray-100"
-                onClick={(e) => {
-                  const target = e.target as HTMLElement;
-                  if (
-                    target.tagName.toLowerCase() === "img" ||
-                    target.tagName.toLowerCase() === "button" ||
-                    target.closest("button")
-                  ) {
-                    return;
+            {teacherTable.getRowModel().rows.length === 0 ? (
+              <tr>
+                <td
+                  colSpan={
+                    teacherTable.getHeaderGroups()[0]?.headers.length || 1
                   }
-                  row.getToggleSelectedHandler()(e);
-                }}
-              >
-                {row.getVisibleCells().map((cell) => (
-                  <td key={cell.id} className="p-4 text-left text-sm">
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </td>
-                ))}
+                  className="p-4 text-center text-sm"
+                >
+                  검색결과가 없습니다.
+                </td>
               </tr>
-            ))}
+            ) : (
+              teacherTable.getRowModel().rows.map((row) => (
+                <tr
+                  key={row.id}
+                  className="cursor-pointer border-b bg-white hover:bg-gray-100"
+                  onClick={(e) => {
+                    const target = e.target as HTMLElement;
+                    if (
+                      target.tagName.toLowerCase() === "img" ||
+                      target.tagName.toLowerCase() === "button" ||
+                      target.closest("button")
+                    ) {
+                      return;
+                    }
+                    row.getToggleSelectedHandler()(e);
+                  }}
+                >
+                  {row.getVisibleCells().map((cell) => (
+                    <td key={cell.id} className="p-4 text-left text-sm">
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext(),
+                      )}
+                    </td>
+                  ))}
+                </tr>
+              ))
+            )}
           </tbody>
         </table>
       </div>
 
       <Pagination
-        canPreviousPage={table.getCanPreviousPage()}
-        canNextPage={table.getCanNextPage()}
-        pageIndex={table.getState().pagination.pageIndex}
-        pageCount={table.getPageCount()}
-        onPrevious={() => table.previousPage()}
-        onNext={() => table.nextPage()}
+        canPreviousPage={teacherTable.getCanPreviousPage()}
+        canNextPage={teacherTable.getCanNextPage()}
+        pageIndex={teacherTable.getState().pagination.pageIndex}
+        pageCount={teacherTable.getPageCount()}
+        onPrevious={() => teacherTable.previousPage()}
+        onNext={() => teacherTable.nextPage()}
       />
 
       {modalType && (

@@ -4,15 +4,7 @@ export function MatchingInfo(props: TutoringResponse) {
   const activeLocation =
     props.online === "비대면"
       ? "비대면"
-      : String(props.district + "\n" + props.dong);
-
-  const extractClassTime = (timeString: string) => {
-    const match = timeString.match(/\d+/);
-    return match ? Number(match[0]) : 0;
-  };
-
-  const classTimeInMinutes = extractClassTime(props.classTime);
-  const classFee = 500 * classTimeInMinutes;
+      : `대면(${props.district} ${props.dong})`;
 
   return (
     <div className="mx-auto flex h-[247px] w-[89%] flex-col justify-center gap-[18px] rounded-[12px] bg-primaryLight px-5 py-[46px] align-middle font-pretendard">
@@ -33,7 +25,7 @@ export function MatchingInfo(props: TutoringResponse) {
       <div className="flex w-[287px] justify-between">
         <div className="text-[#616161]">수업료</div>
         <div className="font-semibold text-[#171719]">
-          {classFee.toLocaleString()}원
+          4주 기준 {props?.pay?.toLocaleString()}원
         </div>
       </div>
       <div className="flex w-[287px] flex-wrap justify-between">

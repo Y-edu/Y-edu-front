@@ -11,7 +11,9 @@ export default function TeacherDetailClass() {
   const searchParams = useSearchParams();
   const teacherId = Array.isArray(params.id) ? params.id[0] : params.id || "";
   const subject = searchParams.get("subject") as SubjectType;
-  const { data } = useGetTeacherDetailsClass({ teacherId, subject });
+  const { data, error } = useGetTeacherDetailsClass({ teacherId, subject });
+
+  if (error) throw error;
 
   return (
     <div className="flex flex-col gap-[10px] bg-primaryPale">
@@ -32,18 +34,21 @@ export default function TeacherDetailClass() {
           >
             {data.data.teachingStyle}
           </ProfileInfoBox>
-          <ProfileInfoBox
-            title={
-              <p className="whitespace-pre-line">
-                {subject === "english" ? "영어" : "수학"} 역량을 키울 수 있도록
-                {"\n"}
-                <span className="text-primaryNormal">학생 관리</span>는 이렇게
-                해요!
-              </p>
-            }
-          >
-            {data.data.managementStyle}
-          </ProfileInfoBox>
+          {data.data.managementStyle && (
+            <ProfileInfoBox
+              title={
+                <p className="whitespace-pre-line">
+                  {subject === "english" ? "영어" : "수학"} 역량을 키울 수
+                  있도록
+                  {"\n"}
+                  <span className="text-primaryNormal">학생 관리</span>는 이렇게
+                  해요!
+                </p>
+              }
+            >
+              {data.data.managementStyle}
+            </ProfileInfoBox>
+          )}
           {data.data.video && (
             <ProfileInfoBox
               title={

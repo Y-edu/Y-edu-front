@@ -9,7 +9,9 @@ import { formatAvailableTimes } from "../../../utils/formatAvailableTimes";
 export default function TeacherDetailRegionTime() {
   const params = useParams();
   const teacherId = Array.isArray(params.id) ? params.id[0] : params.id || "";
-  const { data } = useGetTeacherDetailsAvailable({ teacherId });
+  const { data, error } = useGetTeacherDetailsAvailable({ teacherId });
+
+  if (error) throw error;
 
   return (
     <div className="flex flex-col gap-[10px] bg-primaryPale">
@@ -25,17 +27,24 @@ export default function TeacherDetailRegionTime() {
           >
             <BulletList items={data.data.districts} />
           </ProfileInfoBox>
-          <ProfileInfoBox
-            title={
-              <p>
-                선생님이{" "}
-                <span className="text-primaryNormal">선호하는 시간</span>
-                이에요!
-              </p>
-            }
-          >
-            <BulletList items={formatAvailableTimes(data.data.availables)} />
-          </ProfileInfoBox>
+          {data.data.availables &&
+            !Object.values(data.data.availables).every(
+              (times) => times.length === 1 && times[0] === "불가",
+            ) && (
+              <ProfileInfoBox
+                title={
+                  <p>
+                    선생님이{" "}
+                    <span className="text-primaryNormal">선호하는 시간</span>
+                    이에요!
+                  </p>
+                }
+              >
+                <BulletList
+                  items={formatAvailableTimes(data.data.availables)}
+                />
+              </ProfileInfoBox>
+            )}
         </>
       )}
     </div>
