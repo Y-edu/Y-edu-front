@@ -80,6 +80,7 @@ export function MatchingProposal({
         favoriteStyle={data.favoriteStyle}
         favoriteTime={data.favoriteTime}
         matchStatus={data.matchStatus}
+        pay={data.pay}
       />
       <ProfileInfoBox
         title={

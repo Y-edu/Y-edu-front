@@ -9,6 +9,7 @@ const tutoringResponse = z.object({
   age: z.string().optional(),
   classCount: z.string(),
   classTime: z.string(),
+  pay: z.number().optional(),
   online: z.union([z.literal("대면"), z.literal("비대면")]),
   district: z.string(),
   dong: z.string(),
