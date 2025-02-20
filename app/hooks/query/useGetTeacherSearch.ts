@@ -4,7 +4,7 @@ import {
   getTeacherSearch,
   TeacherSearchParams,
   TeacherSearchResponse,
-} from "../../actions/get-teacher-search";
+} from "@/actions/get-teacher-search";
 
 export function useGetTeacherSearch(params: TeacherSearchParams) {
   return useQuery<TeacherSearchResponse>({

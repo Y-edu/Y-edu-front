@@ -1,13 +1,13 @@
 "use client";
 
-import { useModal } from "../../hooks/custom";
-import { Modal } from "../../ui";
-import { usePostNewMatchingAcceptance } from "../../hooks/mutation";
+import { useModal } from "@/hooks/custom";
+import { Modal } from "@/ui";
+import { usePostNewMatchingAcceptance } from "@/hooks/mutation";
 import type {
   TeacherSearchParams,
   FilteringTeacher,
-} from "../../actions/get-teacher-search";
-import { getSelectedTeacherNicknames } from "../../hooks/custom/useGetSelectedTeacherNickname";
+} from "@/actions/get-teacher-search";
+import { getSelectedTeacherNicknames } from "@/hooks/custom/useGetSelectedTeacherNickname";
 
 interface TeacherListSearchProps {
   selectedTeachers: string[];

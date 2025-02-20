@@ -1,4 +1,4 @@
-import Brand from "../components/root/main";
+import Brand from "@/components/root/main";
 
 export default function Home() {
   return (

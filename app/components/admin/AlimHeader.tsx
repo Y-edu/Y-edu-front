@@ -5,12 +5,12 @@
 
 import { useQueryClient } from "@tanstack/react-query";
 
-import type { AcceptanceSchema } from "../../actions/get-acceptance";
-import { useGetAcceptance } from "../../hooks/query";
-import { usePostMatchingAcceptance } from "../../hooks/mutation";
-import { useModal } from "../../hooks/custom";
-import { Modal } from "../../ui";
-import { useAlimTableContext } from "../../(route)/(admin)/zuzuclubadmin/[id]/(hooks)/useAlimTable";
+import type { AcceptanceSchema } from "@/actions/get-acceptance";
+import { useGetAcceptance } from "@/hooks/query";
+import { usePostMatchingAcceptance } from "@/hooks/mutation";
+import { useModal } from "@/hooks/custom";
+import { Modal } from "@/ui";
+import { useAlimTableContext } from "@/(route)/(admin)/zuzuclubadmin/[id]/(hooks)/useAlimTable";
 
 interface AlimHeaderProps {
   matchingId: string;

@@ -8,11 +8,11 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 
-import { useGetParentsList } from "../../hooks/query/useGetParentsList";
-import { ParentsListResponse } from "../../actions/get-parents-list/index";
-import { Pagination } from "../../ui/Pagination";
-import { getParentColumns } from "../../ui/Columns/ParentsColumns";
-import { usePutParentStatusToggle } from "../../hooks/mutation/usePutParentStatusToggle";
+import { Pagination } from "@/ui/Pagination";
+import { useGetParentsList } from "@/hooks/query/useGetParentsList";
+import { ParentsListResponse } from "@/actions/get-parents-list/index";
+import { getParentColumns } from "@/ui/Columns/ParentsColumns";
+import { usePutParentStatusToggle } from "@/hooks/mutation/usePutParentStatusToggle";
 
 function ParentsListComponent() {
   const { data, isLoading, error } = useGetParentsList();

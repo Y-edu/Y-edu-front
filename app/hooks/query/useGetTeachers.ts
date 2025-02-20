@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 
-import { getTeachers } from "../../actions/get-teachers";
+import { getTeachers } from "@/actions/get-teachers";
 
 interface UseGetTeachersProps {
   subject?: string[];
