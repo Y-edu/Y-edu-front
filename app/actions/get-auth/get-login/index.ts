@@ -1,5 +1,5 @@
-import { httpService } from "../../../utils/httpService";
-import { useAuthStore } from "../../../store/auth/useAuthStore";
+import { httpService } from "@/utils/httpService";
+import { useAuthStore } from "@/store/auth/useAuthStore";
 
 export interface LoginParams {
   id: string;

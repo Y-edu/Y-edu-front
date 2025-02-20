@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { AxiosError } from "axios";
 
-import { httpService } from "../../utils/httpService";
+import { httpService } from "@/utils/httpService";
 
 const acceptanceSchema = z.object({
   accept: z.number(),

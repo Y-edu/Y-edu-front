@@ -1,5 +1,5 @@
-import { httpService } from "../../../utils/httpService";
-import { useAuthStore } from "../../../store/auth/useAuthStore";
+import { httpService } from "@/utils/httpService";
+import { useAuthStore } from "@/store/auth/useAuthStore";
 
 function getCookie(name: string): string | null {
   const value = `; ${document.cookie}`;

@@ -3,9 +3,9 @@
 import { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 
-import { Sidebar } from "../../../ui";
-import { useAuthStore } from "../../../store/auth/useAuthStore";
-import { useRegenerate } from "../../../hooks/auth/useRegenerate";
+import { useAuthStore } from "@/store/auth/useAuthStore";
+import { Sidebar } from "@/ui";
+import { useRegenerate } from "@/hooks/auth/useRegenerate";
 
 export default function AdminLayout({
   children,

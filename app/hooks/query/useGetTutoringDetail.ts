@@ -1,6 +1,6 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 
-import { getTutoring } from "../../actions/get-tutoring";
+import { getTutoring } from "@/actions/get-tutoring";
 
 export function useGetTutoring({
   teacherId,

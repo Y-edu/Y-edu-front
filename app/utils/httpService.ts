@@ -1,6 +1,6 @@
 import axios from "axios";
 
-import { useAuthStore } from "../store/auth/useAuthStore";
+import { useAuthStore } from "@/store/auth/useAuthStore";
 
 const baseURL =
   process.env.NODE_ENV === "development"

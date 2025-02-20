@@ -2,7 +2,7 @@
 
 import { flexRender } from "@tanstack/react-table";
 
-import { useAlimTableContext } from "../../(route)/(admin)/zuzuclubadmin/[id]/(hooks)/useAlimTable";
+import { useAlimTableContext } from "@/(route)/(admin)/zuzuclubadmin/[id]/(hooks)/useAlimTable";
 
 import { AlimTHeaderColumn } from "./AlimColumn";
 
