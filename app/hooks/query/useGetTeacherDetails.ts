@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useSuspenseQuery } from "@tanstack/react-query";
 
 import {
   TeacherDetailsParams,
@@ -7,7 +7,7 @@ import {
   getTeacherDetailsClass,
   getTeacherDetailsInfo,
   getTeacherDetailsTeacher,
-} from "../../actions/get-teacher-detail";
+} from "@/actions/get-teacher-detail";
 
 export function useGetTeacherDetailsTeacher(params: TeacherDetailsParams) {
   return useQuery({
@@ -23,30 +23,30 @@ export function useGetTeacherDetailsTeacher(params: TeacherDetailsParams) {
 }
 
 export function useGetTeacherDetailsClass(params: TeacherDetailsParams) {
-  return useQuery({
+  return useSuspenseQuery({
     queryKey: ["teacher-details-class", params],
     queryFn: () => {
       const res = getTeacherDetailsClass(params);
       return res;
     },
     retry: 0,
-    staleTime: 1000 * 60 * 60,
-    gcTime: 1000 * 60 * 60 * 24,
+    staleTime: Infinity,
+    gcTime: Infinity,
   });
 }
 
 export function useGetTeacherDetailsAvailable(
   params: TeacherSimpleDetailsParams,
 ) {
-  return useQuery({
+  return useSuspenseQuery({
     queryKey: ["teacher-details-available", params],
     queryFn: () => {
       const res = getTeacherDetailsAvailable(params);
       return res;
     },
     retry: 0,
-    staleTime: 1000 * 60 * 60,
-    gcTime: 1000 * 60 * 60 * 24,
+    staleTime: Infinity,
+    gcTime: Infinity,
   });
 }
 
