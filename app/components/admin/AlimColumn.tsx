@@ -78,4 +78,25 @@ export const AlimTHeaderColumn = [
     header: "거절사유",
     size: 150,
   }),
+  columnHelper.display({
+    header: "프로필 상세보기",
+    cell: ({ row }) => {
+      const teacherId = row.original.teacherId;
+      const subject = row.original.subject;
+      const subjectParam =
+        subject === "영어" ? "english" : subject === "수학" ? "math" : subject;
+      const url = `/teacher/${teacherId}?subject=${subjectParam}`;
+
+      return (
+        <div className="flex w-[100px] flex-col">
+          <button
+            className="mb-1 rounded bg-blue-500 px-2 py-1 text-xs text-white hover:bg-blue-600"
+            onClick={() => window.open(url, "_blank")}
+          >
+            바로가기
+          </button>
+        </div>
+      );
+    },
+  }),
 ];

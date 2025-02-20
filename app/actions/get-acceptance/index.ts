@@ -21,6 +21,8 @@ const acceptanceSchema = z.object({
       classMatchingId: z.number(),
       name: z.string(),
       refuseReason: z.string().nullable(),
+      teacherId: z.number(),
+      subject: z.string(),
     }),
   ),
 });
