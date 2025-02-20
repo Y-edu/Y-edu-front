@@ -1,9 +1,9 @@
 "use client";
 
-import { useGetParentsRequest } from "../../hooks/query/useGetParentsRequest";
-import { Accordion, TitleDesc } from "../../ui";
-import { PARENTS_REQUEST_TITLE } from "../../constants/parentsRequest";
-import { formatMonthlyFee } from "../../utils/formatMonthlyFee";
+import { useGetParentsRequest } from "@/hooks/query/useGetParentsRequest";
+import { Accordion, TitleDesc } from "@/ui";
+import { PARENTS_REQUEST_TITLE } from "@/constants/parentsRequest";
+import { formatMonthlyFee } from "@/utils/formatMonthlyFee";
 
 function ParentsRequest({ applicationFormId }: { applicationFormId: string }) {
   const { data } = useGetParentsRequest(applicationFormId);

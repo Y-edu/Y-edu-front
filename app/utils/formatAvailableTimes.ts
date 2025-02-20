@@ -1,4 +1,4 @@
-import { DayOfWeek } from "../actions/get-teacher-detail";
+import { DayOfWeek } from "@/actions/get-teacher-detail";
 
 /** 연속된 시간대를 그룹화하는 함수 */
 function groupTimes(times: string[]): string {

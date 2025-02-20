@@ -1,6 +1,6 @@
 import { createColumnHelper } from "@tanstack/react-table";
 
-import { FilteringTeacher } from "../../actions/get-teacher-search";
+import { FilteringTeacher } from "@/actions/get-teacher-search";
 
 interface TeacherColumnsProps {
   handleOpenModal: (teacher: FilteringTeacher, type: "video" | "issue") => void;

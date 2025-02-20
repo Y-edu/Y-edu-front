@@ -9,14 +9,14 @@ import {
 } from "@tanstack/react-table";
 import { Dispatch, SetStateAction, useState, useEffect } from "react";
 
+import { getTeacherColumns } from "@/ui/Columns/TeacherColumns";
 import type {
   TeacherSearchParams,
   FilteringTeacher,
-} from "../../actions/get-teacher-search";
-import { getTeacherColumns } from "../../ui/Columns/TeacherColumns";
-import { TeacherUpdateModal } from "../../ui/TeacherUpdateModal";
-import { useGetTeacherSearch } from "../../hooks/query/useGetTeacherSearch";
-import { Pagination } from "../../ui/Pagination";
+} from "@/actions/get-teacher-search";
+import { TeacherUpdateModal } from "@/ui/TeacherUpdateModal";
+import { useGetTeacherSearch } from "@/hooks/query/useGetTeacherSearch";
+import { Pagination } from "@/ui/Pagination";
 
 interface TeacherListProps {
   selectedTeacherRowList: RowSelectionState;

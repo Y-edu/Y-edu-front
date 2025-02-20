@@ -1,6 +1,6 @@
-import RegionFilter from "../../ui/Filter/RegionFilter";
-import CategoryFilter, { OptionType } from "../../ui/Filter/CategoryFilter";
-import { TeacherSearchParams } from "../../actions/get-teacher-search";
+import RegionFilter from "@/ui/Filter/RegionFilter";
+import CategoryFilter, { OptionType } from "@/ui/Filter/CategoryFilter";
+import { TeacherSearchParams } from "@/actions/get-teacher-search";
 
 interface TeacherListFilterProps {
   filters: TeacherSearchParams;

@@ -6,7 +6,7 @@ import { RowSelectionState } from "@tanstack/react-table";
 import type {
   TeacherSearchParams,
   FilteringTeacher,
-} from "../../actions/get-teacher-search";
+} from "@/actions/get-teacher-search";
 
 import TeacherListFilter from "./TeacherListFilter";
 import TeacherList from "./TeacherList";
