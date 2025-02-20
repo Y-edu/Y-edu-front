@@ -1,3 +1,5 @@
+"use client";
+
 import { Header } from "../../../../ui";
 import { Alim } from "../../../../components/admin/Alim";
 import ParentsRequest from "../../../../components/admin/ParentsRequest";
