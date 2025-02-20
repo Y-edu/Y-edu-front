@@ -1,4 +1,4 @@
-import { DayOfWeek } from "../actions/get-teacher-detail";
+import { DayOfWeek } from "@/actions/get-teacher-detail";
 
 /** 연속된 시간대를 그룹화하는 함수 */
 function groupTimes(times: string[]): string {
@@ -31,7 +31,9 @@ function groupTimes(times: string[]): string {
 export function formatAvailableTimes(availableTimes: {
   [key in DayOfWeek]: Array<string>;
 }): string[] {
-  return Object.entries(availableTimes).map(([day, times]) => {
-    return `${day}: ${groupTimes(times)}`;
-  });
+  return Object.entries(availableTimes)
+    .filter((v) => v[1].length > 0)
+    .map(([day, times]) => {
+      return `${day}: ${groupTimes(times)}`;
+    });
 }

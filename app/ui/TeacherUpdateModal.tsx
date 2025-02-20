@@ -2,9 +2,9 @@
 
 import { useState, useEffect } from "react";
 
-import { FilteringTeacher } from "../actions/get-teacher-search";
-import { usePatchTeacherVideo } from "../hooks/mutation/usePatchTeacherVideo";
-import { usePatchTeacherIssue } from "../hooks/mutation/usePatchTeacherIssue";
+import { FilteringTeacher } from "@/actions/get-teacher-search";
+import { usePatchTeacherVideo } from "@/hooks/mutation/usePatchTeacherVideo";
+import { usePatchTeacherIssue } from "@/hooks/mutation/usePatchTeacherIssue";
 
 import { Modal } from "./Modal";
 

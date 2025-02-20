@@ -1,6 +1,6 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 
-import { getMatching } from "../../actions/get-matching";
+import { getMatching } from "@/actions/get-matching";
 
 export function useGetMatchingInfo(matchingId: string) {
   return useSuspenseQuery({

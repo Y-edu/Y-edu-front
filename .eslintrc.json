@@ -10,6 +10,14 @@
     "projectService": true,
     "project": "./tsconfig.json"
   },
+  "settings": {
+    "import/parsers": {
+      "@typescript-eslint/parser": [".ts", ".tsx"]
+    },
+    "import/resolver": {
+      "typescript": {}
+    }
+  },
   "rules": {
     "@typescript-eslint/no-unsafe-assignment": "off",
     "react/no-unescaped-entities": 0,

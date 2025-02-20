@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 
-import { patchTeacherModal } from "../../actions/patch-teacherModal";
+import { patchTeacherModal } from "@/actions/patch-teacherModal";
 
 export function usePatchTeacherModal() {
   return useMutation({

@@ -1,7 +1,7 @@
 import { createColumnHelper } from "@tanstack/react-table";
 
-import { ParentsListResponse } from "../../actions/get-parents-list";
-import { formatMonthlyFee } from "../../utils/formatMonthlyFee";
+import { ParentsListResponse } from "@/actions/get-parents-list";
+import { formatMonthlyFee } from "@/utils/formatMonthlyFee";
 
 const columnHelper = createColumnHelper<ParentsListResponse>();
 

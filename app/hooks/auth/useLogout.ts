@@ -1,4 +1,4 @@
-import { logoutAPI } from "../../actions/get-auth/get-logout";
+import { logoutAPI } from "@/actions/get-auth/get-logout";
 
 export function useLogout() {
   const logout = async () => {

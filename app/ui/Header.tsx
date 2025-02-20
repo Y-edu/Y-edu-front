@@ -18,11 +18,12 @@ export function Header({ matchingId }: HeaderProps) {
       {decodeURIComponent(matchingId)} : {matchingDetailInfo.subject}
       <input
         ref={matchingDisplayNameRef}
-        defaultValue={matchingDetailInfo.kakaoName ?? "In the Future"}
+        defaultValue={matchingDetailInfo.kakaoName ?? ""}
+        placeholder="카카오 아이디를 입력하세요"
         aria-label="표시 이름"
         maxLength={50}
         pattern="^[a-zA-Z0-9가-힣\s]+$"
-        className="text-md min-w-28 rounded-2xl bg-[#EFEFEF] px-4"
+        className="text-md min-w-28 rounded-2xl bg-[#EFEFEF] p-[6px] pl-[10px]"
       />
       <button
         onClick={() =>
