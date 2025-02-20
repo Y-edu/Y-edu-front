@@ -22,6 +22,7 @@ function ParentsRequest({ applicationFormId }: { applicationFormId: string }) {
             maxWidth="1/5"
             direction="vertical"
           />
+
           <TitleDesc
             title={PARENTS_REQUEST_TITLE.childAge}
             desc={data ? data.age : "아이 나이"}
@@ -43,6 +44,12 @@ function ParentsRequest({ applicationFormId }: { applicationFormId: string }) {
           <TitleDesc
             title={PARENTS_REQUEST_TITLE.address}
             desc={data ? data.district + data.dong : "주소"}
+            maxWidth="1/5"
+            direction="vertical"
+          />
+          <TitleDesc
+            title={PARENTS_REQUEST_TITLE.wantTime}
+            desc={data.wantTime}
             maxWidth="1/5"
             direction="vertical"
           />
