@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 
-import { getParentsList } from "../../actions/get-parents-list";
+import { getParentsList } from "app/actions/get-parents-list";
 
 export function useGetParentsList() {
   return useQuery({

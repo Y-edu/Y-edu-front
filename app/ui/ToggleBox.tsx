@@ -2,7 +2,7 @@
 import Image from "next/image";
 import { useState } from "react";
 
-import Arrow from "../../public/images/arrow-light.png";
+import Arrow from "public/images/arrow-light.png";
 
 interface ToggleBoxProps {
   title: string;

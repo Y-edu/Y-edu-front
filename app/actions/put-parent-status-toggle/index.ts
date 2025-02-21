@@ -1,4 +1,4 @@
-import { httpService } from "../../utils/httpService";
+import { httpService } from "app/utils/httpService";
 
 export const putParentStatusToggle = async (
   applicationFormId: string,

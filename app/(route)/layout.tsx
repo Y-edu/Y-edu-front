@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 
 import "./globals.css";
-import { QueryProvider } from "../providers";
-import IntegrateMSW from "../providers/MSWProvider";
+import { QueryProvider } from "app/providers";
+import IntegrateMSW from "app/providers/MSWProvider";
 
 const pretendard = localFont({
   src: "../../public/fonts/PretendardVariable.ttf",

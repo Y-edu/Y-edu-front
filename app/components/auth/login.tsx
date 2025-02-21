@@ -2,7 +2,7 @@
 import { useState, ChangeEvent, FormEvent } from "react";
 import { useRouter } from "next/navigation";
 
-import { loginAPI } from "../../actions/get-auth/get-login";
+import { loginAPI } from "app/actions/get-auth/get-login";
 
 interface LoginForm {
   id: string;

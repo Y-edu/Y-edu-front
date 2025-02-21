@@ -4,8 +4,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { useSelectedLayoutSegment, useRouter } from "next/navigation";
 
-import LogoImage from "../../../public/images/logo.png";
-import { useLogout } from "../../hooks/auth/useLogout";
+import LogoImage from "public/images/logo.png";
+import { useLogout } from "app/hooks/auth/useLogout";
 
 export function Sidebar() {
   const activeSegment = useSelectedLayoutSegment();

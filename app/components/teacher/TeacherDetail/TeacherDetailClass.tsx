@@ -1,10 +1,10 @@
 "use client";
 import { useParams, useSearchParams } from "next/navigation";
 
-import ProfileInfoBox from "../ProfileInfoBox";
-import { useGetTeacherDetailsClass } from "../../../hooks/query/useGetTeacherDetails";
-import { SubjectType } from "../../../actions/get-teacher-detail";
-import { getYoutubeEmbedLink } from "../../../utils/getYoutubeEmbedLink";
+import ProfileInfoBox from "app/components/teacher/ProfileInfoBox";
+import { useGetTeacherDetailsClass } from "app/hooks/query/useGetTeacherDetails";
+import { SubjectType } from "app/actions/get-teacher-detail";
+import { getYoutubeEmbedLink } from "app/utils/getYoutubeEmbedLink";
 
 export default function TeacherDetailClass() {
   const params = useParams();

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { UseMutationResult } from "@tanstack/react-query";
 
-import { FilteringTeacher } from "../../actions/get-teacher-search";
+import { FilteringTeacher } from "app/actions/get-teacher-search";
 
 interface PatchParams {
   teacherId: string;

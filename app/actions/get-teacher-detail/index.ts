@@ -1,4 +1,4 @@
-import { httpService } from "../../utils/httpService";
+import { httpService } from "app/utils/httpService";
 
 export type DayOfWeek = "월" | "화" | "수" | "목" | "금" | "토" | "일";
 export type SubjectType = "english" | "math";
