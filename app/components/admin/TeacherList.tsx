@@ -19,6 +19,7 @@ import { useGetTeacherSearch } from "@/hooks/query/useGetTeacherSearch";
 import { Pagination } from "@/ui/Pagination";
 
 interface TeacherListProps {
+  matchingId: string;
   selectedTeacherRowList: RowSelectionState;
   setSelectedTeachers: Dispatch<SetStateAction<RowSelectionState>>;
   filters: TeacherSearchParams;
@@ -26,13 +27,14 @@ interface TeacherListProps {
 }
 
 function TeacherList({
+  matchingId,
   selectedTeacherRowList,
   setSelectedTeachers,
   filters,
   onTeacherDataLoad,
 }: TeacherListProps) {
   const { districts, subjects, universities, genders, search } = filters;
-  const { data, isLoading, isError } = useGetTeacherSearch({
+  const { data, isLoading, isError } = useGetTeacherSearch(matchingId, {
     districts,
     subjects,
     universities,
