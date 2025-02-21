@@ -49,6 +49,7 @@ export function getTeacherColumns({ handleOpenModal }: TeacherColumnsProps) {
                   onClick={() =>
                     window.open(
                       `/teacher/${teacher.teacherId}?subject=${subjectParam}`,
+                      "_blank",
                     )
                   }
                 >
