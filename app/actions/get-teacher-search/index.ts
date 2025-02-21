@@ -28,6 +28,7 @@ export interface TeacherSearchResponse {
 }
 
 export async function getTeacherSearch(
+  applicationFormId: string,
   params: TeacherSearchParams,
 ): Promise<TeacherSearchResponse> {
   const transformedParams = {
@@ -39,7 +40,7 @@ export async function getTeacherSearch(
   };
 
   const response = await httpService.get<TeacherSearchResponse>(
-    "/admin/details/matching/search",
+    `/admin/details/matching/search/${applicationFormId}`,
     {
       params: transformedParams,
     },
