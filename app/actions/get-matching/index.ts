@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { AxiosError } from "axios";
 
-import { httpService } from "../../utils/httpService";
+import { httpService } from "app/utils/httpService";
 
 const matchingSchema = z.object({
   subject: z.string(),

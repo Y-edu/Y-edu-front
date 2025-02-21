@@ -1,7 +1,7 @@
 "use client";
 import { useRef } from "react";
 
-import { useClickoutside } from "../hooks/custom";
+import { useClickoutside } from "app/hooks/custom";
 
 export interface ModalProps {
   title: string | React.ReactNode;

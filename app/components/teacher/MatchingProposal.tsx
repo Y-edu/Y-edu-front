@@ -2,20 +2,20 @@
 "use client";
 import { ReactNode, useState } from "react";
 
-import Layers from "../../../public/images/Eyes.png";
-import { useGetTutoring } from "../../hooks/query";
-import { useModal } from "../../hooks/custom";
-import { usePostTutoringAccept } from "../../hooks/mutation/usePostTutoringAccept";
-import { usePostTutoringRefuse } from "../../hooks/mutation/usePostTutoringRefuse";
-import {
-  GOALS_STYLE_ICON,
-  GOALS_CONTRACT,
-} from "../../constants/goalsIconMapping";
-
 import { MatchingModal } from "./MatchingModal";
 import { MatchingInfo } from "./MatchingInfo";
 import IconTitleChip from "./IconTitleChip";
 import ProfileInfoBox from "./ProfileInfoBox";
+
+import Layers from "public/images/Eyes.png";
+import { useGetTutoring } from "app/hooks/query";
+import { useModal } from "app/hooks/custom";
+import { usePostTutoringAccept } from "app/hooks/mutation/usePostTutoringAccept";
+import { usePostTutoringRefuse } from "app/hooks/mutation/usePostTutoringRefuse";
+import {
+  GOALS_STYLE_ICON,
+  GOALS_CONTRACT,
+} from "app/constants/goalsIconMapping";
 
 interface MatchingProposalProps {
   teacherId: string;

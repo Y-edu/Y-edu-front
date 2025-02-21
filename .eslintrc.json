@@ -6,6 +6,7 @@
     "plugin:tailwindcss/recommended",
     "plugin:prettier/recommended"
   ],
+  "plugins": ["no-relative-import-paths"],
   "parserOptions": {
     "projectService": true,
     "project": "./tsconfig.json"
@@ -19,6 +20,10 @@
     }
   },
   "rules": {
+    "no-relative-import-paths/no-relative-import-paths": [
+      "warn",
+      { "allowSameFolder": true, "prefix": "@" }
+    ],
     "@typescript-eslint/no-unsafe-assignment": "off",
     "react/no-unescaped-entities": 0,
     "@next/next/no-page-custom-font": "off",

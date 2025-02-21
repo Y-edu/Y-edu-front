@@ -1,14 +1,14 @@
 "use client";
 import { useParams, useSearchParams } from "next/navigation";
 
-import { TEACHER_STYLE_ICON } from "../../../constants/teacherStyle";
-import BulletList from "../../../ui/List/BulletList";
-import DividerList from "../../../ui/List/DividerList";
-import ToggleBox from "../../../ui/ToggleBox";
-import IconTitleChip from "../IconTitleChip";
-import ProfileInfoBox from "../ProfileInfoBox";
-import { useGetTeacherDetailsTeacher } from "../../../hooks/query/useGetTeacherDetails";
-import { SubjectType } from "../../../actions/get-teacher-detail";
+import { TEACHER_STYLE_ICON } from "app/constants/teacherStyle";
+import BulletList from "app/ui/List/BulletList";
+import DividerList from "app/ui/List/DividerList";
+import ToggleBox from "app/ui/ToggleBox";
+import IconTitleChip from "app/components/teacher/IconTitleChip";
+import ProfileInfoBox from "app/components/teacher/ProfileInfoBox";
+import { useGetTeacherDetailsTeacher } from "app/hooks/query/useGetTeacherDetails";
+import { SubjectType } from "app/actions/get-teacher-detail";
 
 export default function TeacherDetailMain() {
   const params = useParams();
