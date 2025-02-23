@@ -53,6 +53,7 @@ export function Teacher({ matchingId }: { matchingId: string }) {
         selectedTeacherRowList={selectedTeacherList}
       />
       <TeacherList
+        matchingId={matchingId}
         selectedTeacherRowList={selectedTeacherList}
         setSelectedTeachers={setSelectedTeacherRowList}
         filters={appliedFilters}

@@ -1,8 +1,8 @@
 "use client";
 import { useRef } from "react";
 
-import { useGetMatchingInfo } from "../hooks/query";
-import { usePatchMatchingDisplayName } from "../hooks/mutation/usePatchMatchingDisplayname";
+import { useGetMatchingInfo } from "app/hooks/query";
+import { usePatchMatchingDisplayName } from "app/hooks/mutation/usePatchMatchingDisplayname";
 
 interface HeaderProps {
   matchingId: string;

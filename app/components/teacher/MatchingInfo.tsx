@@ -1,4 +1,4 @@
-import { TutoringResponse } from "../../actions/get-tutoring";
+import { TutoringResponse } from "app/actions/get-tutoring";
 
 export function MatchingInfo(props: TutoringResponse) {
   const activeLocation =

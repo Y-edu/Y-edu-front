@@ -1,6 +1,6 @@
 import type { RowSelectionState } from "@tanstack/react-table";
 
-import type { FilteringTeacher } from "../../actions/get-teacher-search";
+import type { FilteringTeacher } from "app/actions/get-teacher-search";
 
 export function getSelectedTeacherNicknames(
   teachers: FilteringTeacher[],

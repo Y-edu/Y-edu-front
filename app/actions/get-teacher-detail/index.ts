@@ -1,4 +1,4 @@
-import { httpService } from "../../utils/httpService";
+import { httpService } from "app/utils/httpService";
 
 export type DayOfWeek = "월" | "화" | "수" | "목" | "금" | "토" | "일";
 export type SubjectType = "english" | "math";
@@ -13,7 +13,6 @@ export interface TeacherDetailsParams extends TeacherSimpleDetailsParams {
 
 export interface TeacherDetailsTeacherResponse {
   data: {
-    appealPoints: Array<string>;
     comment: string;
     introduce: string;
     teachingHistory: number;
@@ -26,14 +25,12 @@ export interface TeacherDetailsTeacherResponse {
     teachingStyleInfo1: string;
     teachingStyle2: string;
     teachingStyleInfo2: string;
-    recommendStudents: Array<string>;
   };
 }
 
 export interface TeacherDetailsClassResponse {
   data: {
     teachingStyle: string;
-    managementStyle: string;
     video?: string;
   };
 }

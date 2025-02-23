@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 
-import ModalCloseImage from "../../../public/images/ModalClose.svg";
-import { useClickoutside } from "../../hooks/custom";
-import type { ModalProps } from "../../ui";
+import ModalCloseImage from "public/images/ModalClose.svg";
+import { useClickoutside } from "app/hooks/custom";
+import type { ModalProps } from "app/ui";
 
 type ModalStatus = "REJECT" | "ACCEPT";
 

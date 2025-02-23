@@ -2,28 +2,27 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useSelectedLayoutSegment, useRouter } from "next/navigation";
+import {
+  useSelectedLayoutSegment,
+  usePathname,
+  useRouter,
+} from "next/navigation";
 
-import LogoImage from "../../../public/images/logo.png";
-import { useLogout } from "../../hooks/auth/useLogout";
+import LogoImage from "public/images/logo.png";
+import { useLogout } from "app/hooks/auth/useLogout";
 
 export function Sidebar() {
   const activeSegment = useSelectedLayoutSegment();
+  const pathname = usePathname();
   const router = useRouter();
   const { logout } = useLogout();
 
   const activeLinkClassName = "font-bold text-primary";
+  const isMatchingManagement = pathname.startsWith("/zuzuclubadmin");
 
-  const handleLogout = async () => {
-    try {
-      await logout();
-      // eslint-disable-next-line no-console
-      console.log("로그아웃 성공");
-      router.push("/zuzuclubadmin/login");
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error("로그아웃 실패:", error);
-    }
+  const handleLogout = () => {
+    logout();
+    router.push("/zuzuclubadmin/login");
   };
 
   return (
@@ -33,14 +32,14 @@ export function Sidebar() {
       role="navigation"
     >
       <div>
-        <Link href="/zuzuclubadmin" className="flex h-[100px] items-center p-2">
+        <Link href="/zuzuclubadmin" className="mt-5 flex items-center p-2">
           <Image src={LogoImage} height={36} width={36} alt="로고 이미지" />
           <span className="ml-2 text-lg font-bold text-headColor">Y-Edu</span>
         </Link>
         <div className="mt-4 flex flex-col gap-4 p-4">
           <Link
             href="/zuzuclubadmin"
-            className={activeSegment === null ? activeLinkClassName : ""}
+            className={isMatchingManagement ? activeLinkClassName : ""}
           >
             매칭관리
           </Link>

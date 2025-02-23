@@ -1,9 +1,9 @@
-import Warm from "../../public/images/Warm.png";
-import Fire from "../../public/images/Fire.png";
-import Eyes from "../../public/images/Eyes.png";
-import Note from "../../public/images/Note.png";
-import Guard from "../../public/images/Guard.png";
-import Write from "../../public/images/Write.png";
+import Warm from "public/images/Warm.png";
+import Fire from "public/images/Fire.png";
+import Eyes from "public/images/Eyes.png";
+import Note from "public/images/Note.png";
+import Guard from "public/images/Guard.png";
+import Write from "public/images/Write.png";
 
 export const TEACHER_STYLE_ICON = {
   "따뜻하고 친절한 선생님": Warm,

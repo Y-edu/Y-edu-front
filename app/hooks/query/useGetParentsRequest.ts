@@ -10,5 +10,7 @@ export function useGetParentsRequest(matchingId: string) {
 
       return res;
     },
+    staleTime: Infinity,
+    gcTime: Infinity,
   });
 }

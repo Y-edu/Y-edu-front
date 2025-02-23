@@ -1,13 +1,13 @@
 import { StaticImageData } from "next/image";
 
-import Note from "../../public/images/Note.png";
-import Speak from "../../public/images/Speak.png";
-import Listen from "../../public/images/Listen.png";
-import Write from "../../public/images/Write.png";
-import Read from "../../public/images/Read.png";
-import Assist from "../../public/images/Assist.png";
-import Talk from "../../public/images/Talk.png";
-import Layers from "../../public/images/Layers.png";
+import Note from "public/images/Note.png";
+import Speak from "public/images/Speak.png";
+import Listen from "public/images/Listen.png";
+import Write from "public/images/Write.png";
+import Read from "public/images/Read.png";
+import Assist from "public/images/Assist.png";
+import Talk from "public/images/Talk.png";
+import Layers from "public/images/Layers.png";
 
 export const GOALS_STYLE_ICON: Record<string, StaticImageData | string> = {
   라이팅: Write,

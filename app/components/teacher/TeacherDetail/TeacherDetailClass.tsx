@@ -1,10 +1,10 @@
 "use client";
 import { useParams, useSearchParams } from "next/navigation";
 
-import ProfileInfoBox from "../ProfileInfoBox";
-import { useGetTeacherDetailsClass } from "../../../hooks/query/useGetTeacherDetails";
-import { SubjectType } from "../../../actions/get-teacher-detail";
-import { getYoutubeEmbedLink } from "../../../utils/getYoutubeEmbedLink";
+import ProfileInfoBox from "app/components/teacher/ProfileInfoBox";
+import { useGetTeacherDetailsClass } from "app/hooks/query/useGetTeacherDetails";
+import { SubjectType } from "app/actions/get-teacher-detail";
+import { getYoutubeEmbedLink } from "app/utils/getYoutubeEmbedLink";
 
 export default function TeacherDetailClass() {
   const params = useParams();
@@ -34,21 +34,7 @@ export default function TeacherDetailClass() {
           >
             {data.data.teachingStyle}
           </ProfileInfoBox>
-          {data.data.managementStyle && (
-            <ProfileInfoBox
-              title={
-                <p className="whitespace-pre-line">
-                  {subject === "english" ? "영어" : "수학"} 역량을 키울 수
-                  있도록
-                  {"\n"}
-                  <span className="text-primaryNormal">학생 관리</span>는 이렇게
-                  해요!
-                </p>
-              }
-            >
-              {data.data.managementStyle}
-            </ProfileInfoBox>
-          )}
+
           {data.data.video && (
             <ProfileInfoBox
               title={

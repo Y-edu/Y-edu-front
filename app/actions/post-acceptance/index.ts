@@ -1,6 +1,6 @@
 import { AxiosError } from "axios";
 
-import { httpService } from "../../utils/httpService";
+import { httpService } from "app/utils/httpService";
 
 export async function postMatchingAcceptance({
   classMatchingIds,

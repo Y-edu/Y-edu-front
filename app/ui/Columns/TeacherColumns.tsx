@@ -35,7 +35,31 @@ export function getTeacherColumns({ handleOpenModal }: TeacherColumnsProps) {
     columnHelper.accessor("nickName", { header: "닉네임" }),
     columnHelper.accessor("classTypes", {
       header: "과목",
-      cell: (props) => props.getValue().join(", ") || "-",
+      cell: ({ row, getValue }) => {
+        const teacher = row.original;
+        const subjects: Array<"수학" | "영어"> = getValue();
+        return (
+          <div className="flex flex-col">
+            {subjects.map((subject) => {
+              const subjectParam = subject === "수학" ? "math" : "english";
+              return (
+                <button
+                  key={subject}
+                  className="mb-1 rounded bg-blue-500 px-2 py-1 text-xs text-white hover:bg-blue-600"
+                  onClick={() =>
+                    window.open(
+                      `/teacher/${teacher.teacherId}?subject=${subjectParam}`,
+                      "_blank",
+                    )
+                  }
+                >
+                  {subject}
+                </button>
+              );
+            })}
+          </div>
+        );
+      },
     }),
     columnHelper.accessor("name", { header: "본명" }),
     columnHelper.accessor("status", {
