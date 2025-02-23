@@ -29,7 +29,7 @@ export default function TeacherDetailMain() {
           </ProfileInfoBox>
           <ProfileInfoBox
             title={
-              <p>
+              <p className="mb-[20px]">
                 선생님의 <span className="text-primaryNormal">경력과 경험</span>
                 이에요.
               </p>
@@ -70,7 +70,7 @@ export default function TeacherDetailMain() {
             }
           >
             <div className="flex flex-col gap-[22px]">
-              <div className="flex flex-col gap-[12px]">
+              <div className="mt-[18px] flex flex-col gap-[12px]">
                 <IconTitleChip
                   title={data.data.teachingStyle1}
                   icon={
