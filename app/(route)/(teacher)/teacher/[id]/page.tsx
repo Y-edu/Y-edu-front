@@ -10,7 +10,7 @@ import {
 
 import TeacherPage from "./TeacherPage";
 
-export default async function HydrationTeacherDetail({ 
+export default async function HydrationTeacherDetail({
   searchParams,
   params,
 }: {
