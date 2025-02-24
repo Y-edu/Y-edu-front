@@ -1,4 +1,5 @@
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
+import { Suspense } from "react";
 
 import { getQueryClient } from "@/utils/getQueryClient";
 import {
@@ -52,8 +53,10 @@ export default async function HydrationTeacherDetail({
 
   const dehydrateState = dehydrate(queryClient);
   return (
-    <HydrationBoundary state={dehydrateState}>
-      <TeacherPage />
-    </HydrationBoundary>
+    <Suspense fallback={<div />}>
+      <HydrationBoundary state={dehydrateState}>
+        <TeacherPage />
+      </HydrationBoundary>
+    </Suspense>
   );
 }
