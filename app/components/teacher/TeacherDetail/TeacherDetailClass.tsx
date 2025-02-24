@@ -34,21 +34,7 @@ export default function TeacherDetailClass() {
           >
             {data.data.teachingStyle}
           </ProfileInfoBox>
-          {data.data.managementStyle && (
-            <ProfileInfoBox
-              title={
-                <p className="whitespace-pre-line">
-                  {subject === "english" ? "영어" : "수학"} 역량을 키울 수
-                  있도록
-                  {"\n"}
-                  <span className="text-primaryNormal">학생 관리</span>는 이렇게
-                  해요!
-                </p>
-              }
-            >
-              {data.data.managementStyle}
-            </ProfileInfoBox>
-          )}
+
           {data.data.video && (
             <ProfileInfoBox
               title={
