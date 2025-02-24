@@ -12,35 +12,29 @@ export interface TeacherDetailsParams extends TeacherSimpleDetailsParams {
 }
 
 export interface TeacherDetailsTeacherResponse {
-  data: {
-    comment: string;
-    introduce: string;
-    teachingHistory: number;
-    teachingExperiences: Array<string>;
-    foreignExperiences?: Array<string>;
-    university: string;
-    major: string;
-    highSchool: string;
-    teachingStyle1: string;
-    teachingStyleInfo1: string;
-    teachingStyle2: string;
-    teachingStyleInfo2: string;
-  };
+  comment: string;
+  introduce: string;
+  teachingHistory: number;
+  teachingExperiences: Array<string>;
+  foreignExperiences?: Array<string>;
+  university: string;
+  major: string;
+  highSchool: string;
+  teachingStyle1: string;
+  teachingStyleInfo1: string;
+  teachingStyle2: string;
+  teachingStyleInfo2: string;
 }
 
 export interface TeacherDetailsClassResponse {
-  data: {
-    teachingStyle: string;
-    video?: string;
-  };
+  teachingStyle: string;
+  video?: string;
 }
 
 export interface TeacherDetailsAvailableResponse {
-  data: {
-    districts: Array<string>;
-    availables: {
-      [key in DayOfWeek]: Array<string>;
-    };
+  districts: Array<string>;
+  availables: {
+    [key in DayOfWeek]: Array<string>;
   };
 }
 
@@ -52,30 +46,39 @@ export interface TeacherDetailsInfoResponse {
 }
 
 /** '선생님' 탭 정보 */
-export function getTeacherDetailsTeacher(
+export async function getTeacherDetailsTeacher(
   params: TeacherDetailsParams,
 ): Promise<TeacherDetailsTeacherResponse> {
   const { teacherId, subject } = params;
 
-  return httpService.get(`/teacher/details/${subject}/teacher/${teacherId}`);
+  const res = await httpService.get<TeacherDetailsTeacherResponse>(
+    `/teacher/details/${subject}/teacher/${teacherId}`,
+  );
+  return res.data;
 }
 
 /** '수업' 탭 정보 */
-export function getTeacherDetailsClass(
+export async function getTeacherDetailsClass(
   params: TeacherDetailsParams,
 ): Promise<TeacherDetailsClassResponse> {
   const { teacherId, subject } = params;
 
-  return httpService.get(`/teacher/details/${subject}/class/${teacherId}`);
+  const res = await httpService.get<TeacherDetailsClassResponse>(
+    `/teacher/details/${subject}/class/${teacherId}`,
+  );
+  return res.data;
 }
 
 /** '지역/시간' 탭 정보 */
-export function getTeacherDetailsAvailable(
+export async function getTeacherDetailsAvailable(
   params: TeacherSimpleDetailsParams,
 ): Promise<TeacherDetailsAvailableResponse> {
   const { teacherId } = params;
 
-  return httpService.get(`/teacher/details/available/${teacherId}`);
+  const res = await httpService.get<TeacherDetailsAvailableResponse>(
+    `/teacher/details/available/${teacherId}`,
+  );
+  return res.data;
 }
 
 /** 프로필 사진 및 닉네임 정보 */
