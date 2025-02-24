@@ -1,6 +1,6 @@
 import { ErrorBoundary } from "react-error-boundary";
 
-import { MatchingProposal } from "@/(route)/(teacher)/teacher/teacher/MatchingProposal";
+import { MatchingProposal } from "@/components/teacher/MatchingProposal";
 import ErrorUI from "@/ui/ErrorUI";
 
 export default function TeacherApplyPage({
