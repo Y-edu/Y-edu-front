@@ -7,7 +7,6 @@ export const PARENTS_REQUEST_TITLE = {
   wantTime: "원하는 수업 시간",
   classPurpose: "과외 목적",
   childLevel: "아이 레벨",
-  teacherCondition: "선생님 조건",
-  teacherStyle: "선생님 스타일",
-  directivity: "원하는 수업 방향",
+  teacherCondition: "선생님 조건 및 스타일",
+  referral: "알게된 경로",
 } as const;
