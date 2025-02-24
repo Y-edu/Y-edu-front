@@ -25,10 +25,10 @@ export default function TeacherDetailRegionTime() {
               </p>
             }
           >
-            <BulletList items={data.data.districts} />
+            <BulletList items={data.districts} />
           </ProfileInfoBox>
-          {data.data.availables &&
-            !Object.values(data.data.availables).every(
+          {data.availables &&
+            !Object.values(data.availables).every(
               (times) => times.length === 1 && times[0] === "불가",
             ) && (
               <ProfileInfoBox
@@ -40,9 +40,7 @@ export default function TeacherDetailRegionTime() {
                   </p>
                 }
               >
-                <BulletList
-                  items={formatAvailableTimes(data.data.availables)}
-                />
+                <BulletList items={formatAvailableTimes(data.availables)} />
               </ProfileInfoBox>
             )}
         </>

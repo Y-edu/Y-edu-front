@@ -24,9 +24,7 @@ export default function TeacherDetailMain() {
     <div className="w-full">
       {data && (
         <div className="flex flex-col gap-[10px] bg-primaryPale">
-          <ProfileInfoBox title={data.data.comment}>
-            {data.data.introduce}
-          </ProfileInfoBox>
+          <ProfileInfoBox title={data.comment}>{data.introduce}</ProfileInfoBox>
           <ProfileInfoBox
             title={
               <p className="mb-[20px]">
@@ -36,27 +34,24 @@ export default function TeacherDetailMain() {
             }
           >
             <div className="flex flex-col gap-[14px]">
-              {data.data.highSchool && (
+              {data.highSchool && (
                 <ToggleBox
                   title="학력"
-                  items={[
-                    `${data.data.university} ${data.data.major}`,
-                    data.data.highSchool,
-                  ]}
+                  items={[`${data.university} ${data.major}`, data.highSchool]}
                 />
               )}
-              {data.data.teachingExperiences &&
-                data.data.teachingExperiences.length > 0 && (
+              {data.teachingExperiences &&
+                data.teachingExperiences.length > 0 && (
                   <ToggleBox
-                    title={`${subject === "english" ? "영어" : "수학"} 수업(${data.data.teachingHistory}년)`}
-                    items={data.data.teachingExperiences}
+                    title={`${subject === "english" ? "영어" : "수학"} 수업(${data.teachingHistory}년)`}
+                    items={data.teachingExperiences}
                   />
                 )}
-              {data.data.foreignExperiences &&
-                data.data.foreignExperiences.length > 0 && (
+              {data.foreignExperiences &&
+                data.foreignExperiences.length > 0 && (
                   <ToggleBox
                     title="해외 경험"
-                    items={data.data.foreignExperiences}
+                    items={data.foreignExperiences}
                   />
                 )}
             </div>
@@ -72,30 +67,28 @@ export default function TeacherDetailMain() {
             <div className="flex flex-col gap-[22px]">
               <div className="mt-[18px] flex flex-col gap-[12px]">
                 <IconTitleChip
-                  title={data.data.teachingStyle1}
+                  title={data.teachingStyle1}
                   icon={
                     TEACHER_STYLE_ICON[
-                      data.data
-                        .teachingStyle1 as keyof typeof TEACHER_STYLE_ICON
+                      data.teachingStyle1 as keyof typeof TEACHER_STYLE_ICON
                     ]
                   }
                 />
                 <p className="text-[15px] leading-[156%] tracking-[-0.02em] text-labelNormal">
-                  {data.data.teachingStyleInfo1}
+                  {data.teachingStyleInfo1}
                 </p>
               </div>
               <div className="flex flex-col gap-[12px]">
                 <IconTitleChip
-                  title={data.data.teachingStyle2}
+                  title={data.teachingStyle2}
                   icon={
                     TEACHER_STYLE_ICON[
-                      data.data
-                        .teachingStyle2 as keyof typeof TEACHER_STYLE_ICON
+                      data.teachingStyle2 as keyof typeof TEACHER_STYLE_ICON
                     ]
                   }
                 />
                 <p className="text-[15px] leading-[156%] tracking-[-0.02em] text-labelNormal">
-                  {data.data.teachingStyleInfo2}
+                  {data.teachingStyleInfo2}
                 </p>
               </div>
             </div>

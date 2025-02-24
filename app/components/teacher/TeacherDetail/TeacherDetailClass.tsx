@@ -32,10 +32,10 @@ export default function TeacherDetailClass() {
               </div>
             }
           >
-            {data.data.teachingStyle}
+            {data.teachingStyle}
           </ProfileInfoBox>
 
-          {data.data.video && (
+          {data.video && (
             <ProfileInfoBox
               title={
                 <p>
@@ -47,7 +47,7 @@ export default function TeacherDetailClass() {
               <iframe
                 width={335}
                 height={188}
-                src={getYoutubeEmbedLink(data.data.video)}
+                src={getYoutubeEmbedLink(data.video)}
                 className="rounded-xl"
                 title="선생님 스피킹 영상"
               />
