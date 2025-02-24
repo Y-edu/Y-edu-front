@@ -1,10 +1,11 @@
 "use client";
 import { useParams, useSearchParams } from "next/navigation";
 
-import { TEACHER_STYLE_ICON } from "app/constants/teacherStyle";
-import ToggleBox from "app/ui/ToggleBox";
+import ToggleBox from "@/ui/ToggleBox";
+
 import IconTitleChip from "app/components/teacher/IconTitleChip";
 import ProfileInfoBox from "app/components/teacher/ProfileInfoBox";
+import { TEACHER_STYLE_ICON } from "app/constants/teacherStyle";
 import { useGetTeacherDetailsTeacher } from "app/hooks/query/useGetTeacherDetails";
 import { SubjectType } from "app/actions/get-teacher-detail";
 

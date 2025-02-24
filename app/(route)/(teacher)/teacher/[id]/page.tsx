@@ -1,11 +1,11 @@
 import { ErrorBoundary } from "react-error-boundary";
 
-import TeacherDetailRegionTime from "@/components/teacher/TeacherDetail/TeacherDetailRegionTime";
+import TabBar from "@/ui/Bar/TabBar";
+import ErrorUI from "@/ui/ErrorUI";
 import ProfileTop from "@/components/teacher/ProfileTop";
 import TeacherDetailClass from "@/components/teacher/TeacherDetail/TeacherDetailClass";
 import TeacherDetailMain from "@/components/teacher/TeacherDetail/TeacherDetailMain";
-import TabBar from "@/ui/Bar/TabBar";
-import ErrorUI from "@/ui/ErrorUI";
+import TeacherDetailRegionTime from "@/components/teacher/TeacherDetail/TeacherDetailRegionTime";
 
 export default function TeacherPage() {
   return (
