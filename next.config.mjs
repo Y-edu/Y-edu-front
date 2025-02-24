@@ -15,7 +15,10 @@ const nextConfig = {
     }
     return config;
   },
-  experimental: { instrumentationHook: true },
+  experimental: {
+    instrumentationHook: true,
+    missingSuspenseWithCSRBailout: false,
+  },
   images: {
     remotePatterns: [
       {
