@@ -70,8 +70,8 @@ function ParentsRequest({ applicationFormId }: { applicationFormId: string }) {
               direction="horizontal"
             />
             <TitleDesc
-              title={PARENTS_REQUEST_TITLE.childLevel}
-              desc={data ? data.age : "아이 레벨"}
+              title={PARENTS_REQUEST_TITLE.referral}
+              desc={data ? data.referral : "알게된 경로"}
               maxWidth="1/5"
               direction="horizontal"
             />
@@ -82,18 +82,6 @@ function ParentsRequest({ applicationFormId }: { applicationFormId: string }) {
             maxWidth="full"
             direction="vertical"
           />
-          <TitleDesc
-            title={PARENTS_REQUEST_TITLE.teacherStyle}
-            desc={data ? data.teacherStyle : "선생님 스타일"}
-            maxWidth="full"
-            direction="vertical"
-          />
-          {/* <TitleDesc
-            title={PARENTS_REQUEST_TITLE.directivity}
-            desc={data ? data.directivity : "원하는 방향성"}
-            maxWidth="full"
-            direction="vertical"
-          /> */}
         </div>
       }
     />
