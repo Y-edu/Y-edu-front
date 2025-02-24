@@ -24,7 +24,7 @@ export default async function HydrationTeacherDetail({
     subject: searchParams.subject as "english" | "math",
   };
 
-  await Promise.all([
+  await Promise.allSettled([
     queryClient.prefetchQuery({
       queryKey: ["teacher-details-teacher", paramsProps],
       queryFn: async () => {
