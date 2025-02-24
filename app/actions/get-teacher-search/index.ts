@@ -11,9 +11,9 @@ export interface TeacherSearchParams {
 export interface FilteringTeacher {
   teacherId: string;
   nickName: string;
-  classTypes: Array<"수학" | "영어">;
+  classTypes: Array<string>;
   name: string;
-  status: "등록중" | "활동중" | "일시정지" | "종료";
+  status: string;
   accept: number;
   total: number;
   university: string;
