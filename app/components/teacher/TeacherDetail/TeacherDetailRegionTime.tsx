@@ -1,10 +1,11 @@
 "use client";
 import { useParams } from "next/navigation";
 
-import BulletList from "app/ui/List/BulletList";
+import { useGetTeacherDetailsAvailable } from "@/hooks/query/useGetTeacherDetails";
+import BulletList from "@/ui/List/BulletList";
+import { formatAvailableTimes } from "@/utils/formatAvailableTimes";
+
 import ProfileInfoBox from "app/components/teacher/ProfileInfoBox";
-import { useGetTeacherDetailsAvailable } from "app/hooks/query/useGetTeacherDetails";
-import { formatAvailableTimes } from "app/utils/formatAvailableTimes";
 
 export default function TeacherDetailRegionTime() {
   const params = useParams();
