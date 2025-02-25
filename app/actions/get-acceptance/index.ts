@@ -23,6 +23,7 @@ const acceptanceSchema = z.object({
       refuseReason: z.string().nullable(),
       teacherId: z.number(),
       subject: z.string(),
+      phoneNumber: z.string(),
     }),
   ),
 });
