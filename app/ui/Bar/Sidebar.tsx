@@ -18,7 +18,10 @@ export function Sidebar() {
   const { logout } = useLogout();
 
   const activeLinkClassName = "font-bold text-primary";
-  const isMatchingManagement = pathname.startsWith("/zuzuclubadmin");
+  const isMatchingManagement =
+    pathname.startsWith("/zuzuclubadmin") &&
+    !pathname.startsWith("/zuzuclubadmin/teacher-management") &&
+    !pathname.startsWith("/zuzuclubadmin/settle-management");
 
   const handleLogout = () => {
     logout();
