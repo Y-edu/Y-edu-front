@@ -9,13 +9,14 @@ const parentsRequestSchema = z.object({
   pay: z.number(),
   age: z.string(),
   wantedSubject: z.union([z.literal("수학"), z.literal("영어")]),
-  online: z.string(),
   favoriteGender: z.string(),
   district: z.string(),
   dong: z.string(),
+  online: z.string(),
+  wantTime: z.string(),
   goals: z.array(z.string()),
   teacherStyle: z.string(),
-  wantTime: z.string(),
+  referral: z.string(),
 });
 
 type ParentsRequestSchema = z.infer<typeof parentsRequestSchema>;

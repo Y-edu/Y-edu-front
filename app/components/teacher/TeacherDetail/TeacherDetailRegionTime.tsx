@@ -1,10 +1,11 @@
 "use client";
 import { useParams } from "next/navigation";
 
-import BulletList from "app/ui/List/BulletList";
+import { useGetTeacherDetailsAvailable } from "@/hooks/query/useGetTeacherDetails";
+import BulletList from "@/ui/List/BulletList";
+import { formatAvailableTimes } from "@/utils/formatAvailableTimes";
+
 import ProfileInfoBox from "app/components/teacher/ProfileInfoBox";
-import { useGetTeacherDetailsAvailable } from "app/hooks/query/useGetTeacherDetails";
-import { formatAvailableTimes } from "app/utils/formatAvailableTimes";
 
 export default function TeacherDetailRegionTime() {
   const params = useParams();
@@ -25,10 +26,10 @@ export default function TeacherDetailRegionTime() {
               </p>
             }
           >
-            <BulletList items={data.data.districts} />
+            <BulletList items={data.districts} />
           </ProfileInfoBox>
-          {data.data.availables &&
-            !Object.values(data.data.availables).every(
+          {data.availables &&
+            !Object.values(data.availables).every(
               (times) => times.length === 1 && times[0] === "불가",
             ) && (
               <ProfileInfoBox
@@ -40,9 +41,7 @@ export default function TeacherDetailRegionTime() {
                   </p>
                 }
               >
-                <BulletList
-                  items={formatAvailableTimes(data.data.availables)}
-                />
+                <BulletList items={formatAvailableTimes(data.availables)} />
               </ProfileInfoBox>
             )}
         </>
