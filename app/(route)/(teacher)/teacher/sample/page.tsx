@@ -244,9 +244,7 @@ export default function SampleTeacher() {
                     ],
                     토: [],
                     일: [],
-                  }).every(
-                    (times) => times.length === 1 && times[0] === "불가",
-                  ) && (
+                  }).some((times) => times.length > 0) && (
                     <ProfileInfoBox
                       title={
                         <p>
@@ -289,14 +287,12 @@ export default function SampleTeacher() {
                             "15:00:00",
                             "16:00:00",
                             "17:00:00",
-                            "18:00:00",
                             "19:00:00",
                           ],
                           금: [
                             "14:00:00",
                             "15:00:00",
                             "16:00:00",
-                            "17:00:00",
                             "18:00:00",
                             "19:00:00",
                           ],
