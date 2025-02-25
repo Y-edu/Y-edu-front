@@ -41,7 +41,12 @@ export default async function HydrationTeacherDetail({
       },
     }),
     queryClient.prefetchQuery({
-      queryKey: ["teacher-details-available", paramsProps],
+      queryKey: [
+        "teacher-details-available",
+        {
+          teacherId: params.id,
+        },
+      ],
       queryFn: async () => {
         const res = await getTeacherDetailsAvailable({
           teacherId: params.id,

@@ -20,7 +20,7 @@ export default function SampleTeacher() {
       <div className="w-full">
         <div className="flex w-full justify-center py-[42px]">
           <ProfileImageName
-            imgSrc="/images/exampleProfile.jpeg"
+            imgSrc="/images/exampleProfile.png"
             name="토마스 선생님"
           />
         </div>
