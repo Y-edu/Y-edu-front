@@ -19,6 +19,7 @@ export interface FilteringTeacher {
   university: string;
   major: string;
   districts: string[];
+  phoneNumber: string;
   video: string;
   issue: string | null;
 }

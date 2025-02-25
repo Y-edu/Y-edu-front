@@ -70,6 +70,10 @@ export const AlimTHeaderColumn = [
     header: "본명",
     size: 80,
   }),
+  columnHelper.accessor("phoneNumber", {
+    header: "전화번호",
+    size: 80,
+  }),
   columnHelper.accessor("receiveAcceptance", {
     header: "답변율",
     size: 80,
@@ -88,7 +92,7 @@ export const AlimTHeaderColumn = [
       const url = `/teacher/${teacherId}?subject=${subjectParam}`;
 
       return (
-        <div className="flex w-[100px] flex-col">
+        <div className="flex w-[80px] flex-col">
           <button
             className="mb-1 rounded bg-blue-500 px-2 py-1 text-xs text-white hover:bg-blue-600"
             onClick={() => window.open(url, "_blank")}

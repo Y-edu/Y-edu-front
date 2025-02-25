@@ -37,7 +37,7 @@ export function getTeacherColumns({ handleOpenModal }: TeacherColumnsProps) {
       header: "과목",
       cell: ({ row, getValue }) => {
         const teacher = row.original;
-        const subjects: Array<"수학" | "영어"> = getValue();
+        const subjects = getValue();
         return (
           <div className="flex flex-col">
             {subjects.map((subject) => {
@@ -62,6 +62,9 @@ export function getTeacherColumns({ handleOpenModal }: TeacherColumnsProps) {
       },
     }),
     columnHelper.accessor("name", { header: "본명" }),
+    columnHelper.accessor("phoneNumber", {
+      header: "전화번호",
+    }),
     columnHelper.accessor("status", {
       header: "활동상태",
       cell: ({ getValue }) => getValue(),
@@ -81,9 +84,9 @@ export function getTeacherColumns({ handleOpenModal }: TeacherColumnsProps) {
         cell: (info) => {
           const { university, major } = info.getValue();
           return (
-            <div>
-              <div>{university}</div>
-              <div>{major}</div>
+            <div className="max-w-[120px] break-words">
+              {university}&nbsp;
+              {major}
             </div>
           );
         },
