@@ -244,9 +244,7 @@ export default function SampleTeacher() {
                     ],
                     토: [],
                     일: [],
-                  }).every(
-                    (times) => times.length === 1 && times[0] === "불가",
-                  ) && (
+                  }).some((times) => times.length > 0) && (
                     <ProfileInfoBox
                       title={
                         <p>
