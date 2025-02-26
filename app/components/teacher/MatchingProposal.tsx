@@ -115,10 +115,16 @@ export function MatchingProposal({
       <div className="order-2 h-[10px] w-[375px] flex-none self-stretch bg-[#F5F5F5]" />
       <ProfileInfoBox
         title={
-          <p>
-            학부모님이 <span className="text-primaryNormal">선호하는 시간</span>
-            이에요.
-          </p>
+          <div className="flex flex-col gap-1">
+            <p>
+              학부모님이
+              <span className="text-primaryNormal">선호하는 시간</span>
+              이에요!
+            </p>
+            <p className="text-[15px] font-medium leading-[152%] text-labelAssistive">
+              학부모님과 협의하여 시간을 조율할 수 있어요.
+            </p>
+          </div>
         }
       >
         {data.favoriteTime}

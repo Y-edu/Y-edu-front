@@ -34,11 +34,16 @@ export default function TeacherDetailRegionTime() {
             ) && (
               <ProfileInfoBox
                 title={
-                  <p>
-                    선생님이{" "}
-                    <span className="text-primaryNormal">선호하는 시간</span>
-                    이에요!
-                  </p>
+                  <div className="flex flex-col gap-1">
+                    <p>
+                      선생님이{" "}
+                      <span className="text-primaryNormal">선호하는 시간</span>
+                      이에요!
+                    </p>
+                    <p className="text-[15px] font-medium leading-[152%] text-labelAssistive">
+                      선생님과 협의하여 시간을 조율할 수 있어요.
+                    </p>
+                  </div>
                 }
               >
                 <BulletList items={formatAvailableTimes(data.availables)} />
