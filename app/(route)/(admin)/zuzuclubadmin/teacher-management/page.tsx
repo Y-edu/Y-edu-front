@@ -1,3 +1,9 @@
+import { Teacher } from "@/components/admin/Teacher";
+
 export default function TeacherManagementHome() {
-  return <div className="p-4 pt-2 font-pretendard">선생님관리</div>;
+  return (
+    <div className="flex flex-col">
+      <Teacher matchingId="주주클럽" />
+    </div>
+  );
 }
