@@ -55,7 +55,14 @@ export function AlimTable() {
                   }}
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <td key={cell.id} className="p-4 text-left text-sm">
+                    <td
+                      key={cell.id}
+                      className={`text-left text-sm ${
+                        cell.column.columnDef.header === "프로필 상세보기"
+                          ? ""
+                          : "p-4"
+                      }`}
+                    >
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext(),

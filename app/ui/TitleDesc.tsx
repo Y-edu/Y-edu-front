@@ -13,7 +13,7 @@ export function TitleDesc(props: TitleDescProps) {
       className={`flex ${direction === "vertical" ? "flex-col" : "gap-2"} max-w-${maxWidth}`}
     >
       <p className="text-titleColor">{title}</p>
-      <p className="text-descColor">{desc}</p>
+      <p className="whitespace-pre-wrap text-descColor">{desc}</p>
     </div>
   );
 }

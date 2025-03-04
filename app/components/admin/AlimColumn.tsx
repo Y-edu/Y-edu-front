@@ -92,10 +92,13 @@ export const AlimTHeaderColumn = [
       const url = `/teacher/${teacherId}?subject=${subjectParam}`;
 
       return (
-        <div className="flex w-[80px] flex-col">
+        <div className="flex cursor-default items-center space-x-2 p-4">
           <button
             className="mb-1 rounded bg-blue-500 px-2 py-1 text-xs text-white hover:bg-blue-600"
-            onClick={() => window.open(url, "_blank")}
+            onClick={(e) => {
+              e.stopPropagation();
+              window.open(url, "_blank");
+            }}
           >
             바로가기
           </button>
