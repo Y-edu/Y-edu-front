@@ -61,6 +61,7 @@ export const AlimTHeaderColumn = [
           return <span className="text-[#C00D0D]">거절</span>;
       }
     },
+    enableSorting: true,
   }),
   columnHelper.accessor("nickName", {
     header: "영어이름",
