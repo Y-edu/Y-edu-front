@@ -37,6 +37,13 @@ export const AlimTableProvider = ({
 
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
 
+  const statusOrder = {
+    전송: 1,
+    수락: 2,
+    대기: 3,
+    거절: 4,
+  };
+
   const alimData = useMemo<
     (AcceptanceSchema["alarmTalkResponses"][0] & {
       receiveAcceptance: string;
@@ -54,7 +61,9 @@ export const AlimTableProvider = ({
 
   const alimTable = useReactTable({
     columns: AlimTHeaderColumn,
-    data: alimData,
+    data: alimData.sort((a, b) => {
+      return (statusOrder[a.status] || 0) - (statusOrder[b.status] || 0);
+    }),
     getCoreRowModel: getCoreRowModel(),
     onRowSelectionChange: setRowSelection,
     state: {
