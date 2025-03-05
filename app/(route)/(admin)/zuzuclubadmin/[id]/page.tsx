@@ -13,7 +13,7 @@ export default function MatchingDetailHome({
   const { id } = params;
 
   return (
-    <div className="flex flex-col">
+    <div className="flex min-w-[1200px] flex-col overflow-x-auto">
       <Header matchingId={id} />
       <Alim id={id} />
       <ParentsRequest applicationFormId={id} />
