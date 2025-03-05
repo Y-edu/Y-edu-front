@@ -11,6 +11,7 @@ import { usePostMatchingAcceptance } from "@/hooks/mutation";
 import { useModal } from "@/hooks/custom";
 import { Modal } from "@/ui";
 import { useAlimTableContext } from "@/(route)/(admin)/zuzuclubadmin/[id]/(hooks)/useAlimTable";
+import { formatTimetoDate } from "@/utils/formatTimetoDate";
 
 interface AlimHeaderProps {
   matchingId: string;
@@ -70,7 +71,7 @@ export function AlimHeader({ matchingId }: AlimHeaderProps) {
             {`(${alimData.accept} / ${alimData.total})`}
           </span>
           <span className="tex-sm ml-8 font-medium" suppressHydrationWarning>
-            발송 후 {alimData.time}분 경과
+            발송 후 {formatTimetoDate(alimData.time)} 경과
           </span>
         </div>
         <button
