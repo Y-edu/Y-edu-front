@@ -16,6 +16,7 @@ export interface FilteringTeacher {
   status: string;
   accept: number;
   total: number;
+  gender: string;
   university: string;
   major: string;
   districts: string[];

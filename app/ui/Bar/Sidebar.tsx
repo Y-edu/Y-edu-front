@@ -30,7 +30,7 @@ export function Sidebar() {
 
   return (
     <nav
-      className="fixed left-0 top-0 flex h-screen w-[180px] flex-col justify-between border-r border-[#E6EFF5] bg-white pl-2 text-disabled"
+      className="fixed left-0 top-0 z-50 flex h-screen w-[180px] flex-col justify-between border-r border-[#E6EFF5] bg-white pl-2 text-disabled"
       aria-label="메인 네비게이션"
       role="navigation"
     >
