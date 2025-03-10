@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import { useState } from "react";
 
 import SettingBox from "@/ui/Box/SettingBox";
 
@@ -7,13 +8,24 @@ export default function TeacherSettingMain() {
   const teacherId = "123";
   const teacherPhone = "01012345678";
 
+  const [isToggled, setIsToggled] = useState(false);
+
+  const handleToggleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setIsToggled(event.target.checked);
+  };
+
   return (
     <div>
       <p className="border-b border-primaryPale pb-5 pt-10 text-center font-pretendard text-xl font-bold text-labelStrong">
         크리스 선생님 과외 설정
       </p>
       <div className="flex flex-col gap-[2px] bg-primaryPale">
-        <SettingBox title="활동상태" isToggle>
+        <SettingBox
+          title="활동상태"
+          isToggle
+          toggleChecked={isToggled}
+          onToggleChange={handleToggleChange}
+        >
           <span className="text-labelAssistive">활동중</span>
         </SettingBox>
         <Link href={`/teachersetting/${teacherId}/${teacherPhone}/region`}>

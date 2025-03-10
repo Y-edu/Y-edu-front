@@ -1,14 +1,19 @@
 import Image from "next/image";
+
+import ToggleSwitch from "@/ui/ToggleSwitch";
+
 import Arrow from "public/images/arrow-light.png";
 
 interface SettingBoxProps {
   title: React.ReactNode;
   children?: React.ReactNode;
   isToggle?: boolean;
+  toggleChecked?: boolean;
+  onToggleChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 function SettingBox(props: SettingBoxProps) {
-  const { title, children, isToggle } = props;
+  const { title, children, isToggle, toggleChecked, onToggleChange } = props;
 
   return (
     <div className="flex h-auto w-full flex-col gap-[8.02px] bg-white px-5 py-[46px]">
@@ -17,14 +22,7 @@ function SettingBox(props: SettingBoxProps) {
           {title}
         </div>
         {isToggle ? (
-          <label
-            className="relative inline-block h-6 w-10"
-            aria-label="토글 스위치"
-          >
-            <input type="checkbox" className="peer size-0 opacity-0" />
-            <span className="absolute inset-0 cursor-pointer rounded-full bg-gray-300 peer-checked:bg-blue-500" />
-            <span className="absolute left-1 top-1 size-4 rounded-full bg-white transition-transform duration-200 peer-checked:translate-x-4" />
-          </label>
+          <ToggleSwitch checked={toggleChecked!} onChange={onToggleChange!} />
         ) : (
           <Image
             src={Arrow}
