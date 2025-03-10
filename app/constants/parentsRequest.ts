@@ -9,4 +9,5 @@ export const PARENTS_REQUEST_TITLE = {
   childLevel: "아이 레벨",
   teacherCondition: "선생님 조건 및 스타일",
   referral: "알게된 경로",
+  dong: "동",
 } as const;
