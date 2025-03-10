@@ -49,6 +49,12 @@ function ParentsRequest({ applicationFormId }: { applicationFormId: string }) {
             direction="vertical"
           />
           <TitleDesc
+            title={PARENTS_REQUEST_TITLE.dong}
+            desc={data.dong}
+            maxWidth="1/5"
+            direction="vertical"
+          />
+          <TitleDesc
             title={PARENTS_REQUEST_TITLE.wantTime}
             desc={data.wantTime}
             maxWidth="1/5"
