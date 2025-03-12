@@ -3,11 +3,12 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import BackArrow from "public/images/arrow-black.png";
 
 import BulletList from "@/ui/List/BulletList";
 import ProfileInfoBox from "@/components/teacher/ProfileInfoBox";
 import { buttonLabels } from "@/constants/buttonLabels";
+
+import BackArrow from "public/images/arrow-black.png";
 
 export default function TeacherSettingRegion() {
   const router = useRouter();
@@ -51,10 +52,10 @@ export default function TeacherSettingRegion() {
       </div>
       <ProfileInfoBox
         title="크리스 선생님의 과외 가능지역"
-        className="gap-[4px]"
+        className="!gap-[4px]"
       >
         <span className="text-labelAssistive">
-          동작구, 서초구, 성북구, 양천구, 인천, 분당, 온라인
+          가능 지역을 최신 상태로 유지하면 매칭 확률이 높아져요.
         </span>
         <BulletList
           items={[
@@ -64,7 +65,7 @@ export default function TeacherSettingRegion() {
           className="pt-[14px]"
         />
       </ProfileInfoBox>
-      <div className="grid h-auto w-full grid-cols-3 grid-rows-11 gap-3 bg-white px-5 pb-[30px]">
+      <div className="grid h-auto w-full grid-cols-3 grid-rows-11 gap-3 bg-white px-5 pb-[40px]">
         {buttons}
       </div>
       <div className="flex h-auto w-full bg-white px-5 pb-[30px]">
