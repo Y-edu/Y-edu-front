@@ -1,23 +1,51 @@
 "use client";
+
+import { useEffect, useState } from "react";
 import Link from "next/link";
-import { useState } from "react";
 
 import SettingBox from "@/ui/Box/SettingBox";
+import { useGetTeacherSettingInfo } from "@/hooks/query/useGetTeacherSettingInfo";
+import { usePatchTeacherSettingAlarmTalk } from "@/hooks/mutation/usePatchTeacherSettingAlarmTalk";
+import { formatAvailableTimes } from "@/utils/formatAvailableTimes";
 
 export default function TeacherSettingMain() {
-  const teacherId = "123";
-  const teacherPhone = "01012345678";
-
   const [isToggled, setIsToggled] = useState(false);
 
+  const teacherName = "김기동";
+  const teacherPhone = "01087654321";
+
+  const { data, isLoading, error } = useGetTeacherSettingInfo({
+    name: teacherName,
+    phoneNumber: teacherPhone,
+  });
+
+  const { mutate: patchAlarmTalk } = usePatchTeacherSettingAlarmTalk();
+
+  useEffect(() => {
+    if (data) {
+      setIsToggled(data.alarmTalk);
+    }
+  }, [data]);
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error || !data) return <div>Error occurred</div>;
+
   const handleToggleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setIsToggled(event.target.checked);
+    const newValue = event.target.checked;
+    setIsToggled(newValue);
+    patchAlarmTalk({
+      name: teacherName,
+      phoneNumber: teacherPhone,
+      alarmTalk: newValue,
+    });
   };
+
+  const districtStr = data.districts.join(", ");
 
   return (
     <div>
       <p className="border-b border-primaryPale pb-5 pt-10 text-center font-pretendard text-xl font-bold text-labelStrong">
-        크리스 선생님 과외 설정
+        {data.name} 선생님 과외 설정
       </p>
       <div className="flex flex-col gap-[2px] bg-primaryPale">
         <SettingBox
@@ -26,24 +54,19 @@ export default function TeacherSettingMain() {
           toggleChecked={isToggled}
           onToggleChange={handleToggleChange}
         >
-          <span className="text-labelAssistive">활동중</span>
+          <span className="text-labelAssistive">
+            {isToggled ? "활동중" : "비활동"}
+          </span>
         </SettingBox>
-        <Link href={`/teachersetting/${teacherId}/${teacherPhone}/region`}>
+        <Link href="/teachersetting/region">
           <SettingBox title="과외 가능지역">
-            <span className="text-labelAssistive">
-              동작구, 서초구, 성북구, 양천구, 인천, 분당, 온라인
-            </span>
+            <span className="text-labelAssistive">{districtStr}</span>
           </SettingBox>
         </Link>
-        <Link href={`/teachersetting/${teacherId}/${teacherPhone}/time`}>
+        <Link href="/teachersetting/time">
           <SettingBox title="과외 가능시간">
             <span className="whitespace-pre-line text-labelAssistive">
-              월: 19시 - 23시{"\n"}
-              화: 21시 - 23시{"\n"}
-              수: 11시 - 13시, 19시 - 23시{"\n"}
-              목: 12시 - 22시{"\n"}
-              금: 13시 - 15시, 19시 - 21시{"\n"}
-              토: 9시 - 11시, 12시 - 14시, 15시 - 19시
+              {formatAvailableTimes(data.available).join("\n")}
             </span>
           </SettingBox>
         </Link>
