@@ -1,51 +1,88 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useEffect, useState, useMemo } from "react";
+import Link from "next/link";
 import Image from "next/image";
 
 import BulletList from "@/ui/List/BulletList";
 import ProfileInfoBox from "@/components/teacher/ProfileInfoBox";
 import { buttonLabels } from "@/constants/buttonLabels";
+import { useGetTeacherSettingInfo } from "@/hooks/query/useGetTeacherSettingInfo";
 
 import BackArrow from "public/images/arrow-black.png";
 
-export default function TeacherSettingRegion() {
-  const router = useRouter();
-  const [activeButtons, setActiveButtons] = useState<number[]>([]);
+const teacherName = "김기동";
+const teacherPhone = "01087654321";
 
-  const toggleButton = (index: number) => {
+const arraysEqual = (a: number[], b: number[]) => {
+  if (a.length !== b.length) return false;
+  const sortedA = [...a].sort();
+  const sortedB = [...b].sort();
+  return sortedA.every((val, i) => val === sortedB[i]);
+};
+
+export default function TeacherSettingRegion() {
+  const [activeButtons, setActiveButtons] = useState<number[]>([]);
+  const [initialActive, setInitialActive] = useState<number[]>([]);
+
+  const { data, isLoading, error } = useGetTeacherSettingInfo({
+    name: teacherName,
+    phoneNumber: teacherPhone,
+  });
+
+  useEffect(() => {
+    if (data) {
+      const initial = buttonLabels.reduce<number[]>((acc, label, index) => {
+        return data.districts.includes(label) ? [...acc, index] : acc;
+      }, []);
+      setActiveButtons(initial);
+      setInitialActive(initial);
+    }
+  }, [data]);
+
+  const onClickButton = (index: number) =>
     setActiveButtons((prev) =>
       prev.includes(index) ? prev.filter((i) => i !== index) : [...prev, index],
     );
-  };
 
-  const buttons = buttonLabels.map((label, index) => {
-    const isActive = activeButtons.includes(index);
-    const buttonClass = isActive
-      ? "bg-primaryNormal text-white"
-      : "bg-[#eeeeee] text-labelAssistive";
+  const buttons = useMemo(
+    () =>
+      buttonLabels.map((label, index) => {
+        const isActive = activeButtons.includes(index);
+        const btnClass = isActive
+          ? "bg-primaryNormal text-white"
+          : "bg-[#eeeeee] text-labelAssistive";
+        return (
+          <button
+            key={index}
+            onClick={() => onClickButton(index)}
+            className={`${btnClass} h-[48px] rounded-[12px]`}
+          >
+            {label}
+          </button>
+        );
+      }),
+    [activeButtons],
+  );
 
-    return (
-      <button
-        key={index}
-        onClick={() => toggleButton(index)}
-        className={`${buttonClass} h-[48px] rounded-[12px]`}
-      >
-        {label}
-      </button>
-    );
-  });
+  const hasChanges = useMemo(
+    () => !arraysEqual(activeButtons, initialActive),
+    [activeButtons, initialActive],
+  );
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error || !data) return <div>Error occurred</div>;
 
   return (
     <div>
       <div className="ml-3 flex flex-row items-center border-b border-primaryPale pb-5 pt-10">
-        <Image
-          onClick={() => router.back()}
-          src={BackArrow}
-          alt="뒤로가기"
-          className="mr-2 size-8 cursor-pointer"
-        />
+        <Link href="/teachersetting">
+          <Image
+            src={BackArrow}
+            alt="뒤로가기"
+            className="mr-2 size-8 cursor-pointer"
+          />
+        </Link>
         <p className="font-pretendard text-xl font-bold text-labelStrong">
           과외 가능 지역
         </p>
@@ -69,8 +106,15 @@ export default function TeacherSettingRegion() {
         {buttons}
       </div>
       <div className="flex h-auto w-full bg-white px-5 pb-[30px]">
-        <button className="h-[48px] w-full rounded-[12px] bg-primaryNormal text-white">
-          <span className="text-white">변경된 지역 저장</span>
+        <button
+          disabled={!hasChanges}
+          className={`h-[48px] w-full rounded-[12px] ${
+            hasChanges
+              ? "bg-primaryNormal text-white"
+              : "bg-[#eeeeee] text-labelAssistive"
+          }`}
+        >
+          <span>변경된 지역 저장</span>
         </button>
       </div>
     </div>
