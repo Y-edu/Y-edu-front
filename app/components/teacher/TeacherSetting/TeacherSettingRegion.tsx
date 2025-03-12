@@ -88,7 +88,7 @@ export default function TeacherSettingRegion() {
         </p>
       </div>
       <ProfileInfoBox
-        title="크리스 선생님의 과외 가능지역"
+        title={`${data.name} 선생님의 과외 가능지역`}
         className="!gap-[4px]"
       >
         <span className="text-labelAssistive">
