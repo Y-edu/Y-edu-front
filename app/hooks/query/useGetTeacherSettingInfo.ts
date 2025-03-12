@@ -9,8 +9,7 @@ export function useGetTeacherSettingInfo(params: TeacherSettingInfoParams) {
   return useQuery({
     queryKey: ["teacher-setting-info", params],
     queryFn: () => {
-      const res = getTeacherSettingInfo(params);
-      return res;
+      return getTeacherSettingInfo(params);
     },
   });
 }
