@@ -5,6 +5,7 @@ import Link from "next/link";
 
 import SettingBox from "@/ui/Box/SettingBox";
 import { useGetTeacherSettingInfo } from "@/hooks/query/useGetTeacherSettingInfo";
+import { usePatchTeacherSettingAlarmTalk } from "@/hooks/mutation/usePatchTeacherSettingAlarmTalk";
 import { formatAvailableTimes } from "@/utils/formatAvailableTimes";
 
 export default function TeacherSettingMain() {
@@ -18,6 +19,8 @@ export default function TeacherSettingMain() {
     phoneNumber: teacherPhone,
   });
 
+  const { mutate: patchAlarmTalk } = usePatchTeacherSettingAlarmTalk();
+
   useEffect(() => {
     if (data) {
       setIsToggled(data.alarmTalk);
@@ -28,7 +31,13 @@ export default function TeacherSettingMain() {
   if (error || !data) return <div>Error occurred</div>;
 
   const handleToggleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setIsToggled(event.target.checked);
+    const newValue = event.target.checked;
+    setIsToggled(newValue);
+    patchAlarmTalk({
+      name: teacherName,
+      phoneNumber: teacherPhone,
+      alarmTalk: newValue,
+    });
   };
 
   const districtStr = data.districts.join(", ");

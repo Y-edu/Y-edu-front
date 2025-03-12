@@ -8,6 +8,7 @@ import BulletList from "@/ui/List/BulletList";
 import ProfileInfoBox from "@/components/teacher/ProfileInfoBox";
 import { buttonLabels } from "@/constants/buttonLabels";
 import { useGetTeacherSettingInfo } from "@/hooks/query/useGetTeacherSettingInfo";
+import { usePatchTeacherSettingRegion } from "@/hooks/mutation/usePatchTeacherSettingRegion";
 
 import BackArrow from "public/images/arrow-black.png";
 
@@ -29,6 +30,9 @@ export default function TeacherSettingRegion() {
     name: teacherName,
     phoneNumber: teacherPhone,
   });
+
+  const { mutate: patchRegion, isPending: patchLoading } =
+    usePatchTeacherSettingRegion();
 
   useEffect(() => {
     if (data) {
@@ -73,6 +77,17 @@ export default function TeacherSettingRegion() {
   if (isLoading) return <div>Loading...</div>;
   if (error || !data) return <div>Error occurred</div>;
 
+  const onClickSave = () => {
+    const updatedDistricts = buttonLabels.filter((_, index) =>
+      activeButtons.includes(index),
+    );
+    patchRegion({
+      name: teacherName,
+      phoneNumber: teacherPhone,
+      districts: updatedDistricts,
+    });
+  };
+
   return (
     <div>
       <div className="ml-3 flex flex-row items-center border-b border-primaryPale pb-5 pt-10">
@@ -107,7 +122,8 @@ export default function TeacherSettingRegion() {
       </div>
       <div className="flex h-auto w-full bg-white px-5 pb-[30px]">
         <button
-          disabled={!hasChanges}
+          disabled={!hasChanges || patchLoading}
+          onClick={onClickSave}
           className={`h-[48px] w-full rounded-[12px] ${
             hasChanges
               ? "bg-primaryNormal text-white"
