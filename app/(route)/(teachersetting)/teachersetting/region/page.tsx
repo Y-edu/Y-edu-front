@@ -1,6 +1,6 @@
 import TeacherSettingRegion from "@/components/teacher/TeacherSetting/TeacherSettingRegion";
 
-export default function TeacherRegionSetting() {
+export default function TeacherRegionSettingPage() {
   return (
     <div className="w-full">
       <TeacherSettingRegion />

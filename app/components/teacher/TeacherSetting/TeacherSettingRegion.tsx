@@ -86,6 +86,7 @@ export default function TeacherSettingRegion() {
       phoneNumber: teacherPhone,
       districts: updatedDistricts,
     });
+    alert("변경된 지역이 저장되었습니다.");
   };
 
   return (
