@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import CircularProgress from "@mui/material/CircularProgress";
 
 import SettingBox from "@/ui/Box/SettingBox";
 import { useGetTeacherSettingInfo } from "@/hooks/query/useGetTeacherSettingInfo";
@@ -42,7 +43,12 @@ export default function TeacherSettingMain() {
     }
   }, [data]);
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading)
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <CircularProgress />
+      </div>
+    );
   if (error || !data) return <div>Error occurred</div>;
 
   const handleToggleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -55,7 +61,13 @@ export default function TeacherSettingMain() {
     });
   };
 
-  const districtStr = data.districts.join(", ");
+  const chunkArray = (arr: string[], size: number) =>
+    Array.from({ length: Math.ceil(arr.length / size) }, (_, i) =>
+      arr.slice(i * size, i * size + size),
+    );
+
+  const chunked = chunkArray(data.districts, 5);
+  const districtStr = chunked.map((chunk) => chunk.join(", ")).join("\n");
 
   return (
     <div>
@@ -77,7 +89,9 @@ export default function TeacherSettingMain() {
         </SettingBox>
         <Link href="/teachersetting/region">
           <SettingBox title="과외 가능지역">
-            <span className="text-labelAssistive">{districtStr}</span>
+            <span className="whitespace-pre-line text-labelAssistive">
+              {districtStr}
+            </span>
           </SettingBox>
         </Link>
         <Link href="/teachersetting/time">

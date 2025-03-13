@@ -4,6 +4,7 @@ import { useEffect, useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
+import CircularProgress from "@mui/material/CircularProgress";
 
 import BulletList from "@/ui/List/BulletList";
 import ProfileInfoBox from "@/components/teacher/ProfileInfoBox";
@@ -86,7 +87,12 @@ export default function TeacherSettingRegion() {
     [activeButtons, initialActive],
   );
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading)
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <CircularProgress />
+      </div>
+    );
   if (error || !data) return <div>Error occurred</div>;
 
   const onClickSave = () => {
@@ -130,10 +136,10 @@ export default function TeacherSettingRegion() {
           className="pt-[14px]"
         />
       </ProfileInfoBox>
-      <div className="grid h-auto w-full grid-cols-3 grid-rows-11 gap-3 bg-white px-5 pb-[40px]">
+      <div className="grid h-auto w-full grid-cols-3 grid-rows-11 gap-3 bg-white px-5 pb-[100px]">
         {buttons}
       </div>
-      <div className="flex h-auto w-full bg-white px-5 pb-[30px]">
+      <div className="fixed inset-x-0 bottom-0 bg-white px-5 pb-4 pt-2">
         <button
           disabled={!hasChanges || patchLoading}
           onClick={onClickSave}
