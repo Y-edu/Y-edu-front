@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 import SettingBox from "@/ui/Box/SettingBox";
@@ -9,10 +10,24 @@ import { usePatchTeacherSettingAlarmTalk } from "@/hooks/mutation/usePatchTeache
 import { formatAvailableTimes } from "@/utils/formatAvailableTimes";
 
 export default function TeacherSettingMain() {
+  const router = useRouter();
   const [isToggled, setIsToggled] = useState(false);
+  const [teacherName, setTeacherName] = useState("");
+  const [teacherPhone, setTeacherPhone] = useState("");
 
-  const teacherName = "김기동";
-  const teacherPhone = "01087654321";
+  useEffect(() => {
+    const storedName = localStorage.getItem("teacherName") || "";
+    const storedPhone = localStorage.getItem("teacherPhone") || "";
+
+    if (!storedName || !storedPhone) {
+      alert("로그인하세요");
+      router.push("/teachersetting/login");
+      return;
+    }
+
+    setTeacherName(storedName);
+    setTeacherPhone(storedPhone);
+  }, [router]);
 
   const { data, isLoading, error } = useGetTeacherSettingInfo({
     name: teacherName,
@@ -55,7 +70,9 @@ export default function TeacherSettingMain() {
           onToggleChange={handleToggleChange}
         >
           <span className="text-labelAssistive">
-            {isToggled ? "활동중" : "비활동"}
+            {isToggled
+              ? "지역에 맞는 과외건 공지 메세지를 받습니다."
+              : "과외건 공지 메세지를 받지 않습니다."}
           </span>
         </SettingBox>
         <Link href="/teachersetting/region">
