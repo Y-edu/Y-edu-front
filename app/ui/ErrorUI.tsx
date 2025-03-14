@@ -14,7 +14,7 @@ export default function ErrorUI() {
       </p>
       <Link
         className="flex h-8 w-28 items-center justify-center rounded-lg bg-descColor font-semibold text-white"
-        href="https://pf.kakao.com/_BVKxiK/chat"
+        href="https://pf.kakao.com/_AFHjn/chat"
       >
         문의하기
       </Link>

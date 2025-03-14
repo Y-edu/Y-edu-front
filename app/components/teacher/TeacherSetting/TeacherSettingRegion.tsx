@@ -39,7 +39,7 @@ export default function TeacherSettingRegion() {
     setTeacherPhone(storedPhone);
   }, [router]);
 
-  const { data, isLoading, error } = useGetTeacherSettingInfo({
+  const { data, isLoading } = useGetTeacherSettingInfo({
     name: teacherName,
     phoneNumber: teacherPhone,
   });
@@ -93,7 +93,7 @@ export default function TeacherSettingRegion() {
         <CircularProgress />
       </div>
     );
-  if (error || !data) return <div>Error occurred</div>;
+  if (!data) return <div>Error occurred</div>;
 
   const onClickSave = () => {
     const updatedDistricts = buttonLabels.filter((_, index) =>
@@ -126,11 +126,11 @@ export default function TeacherSettingRegion() {
         className="!gap-[4px]"
       >
         <span className="text-labelAssistive">
-          가능 지역을 최신 상태로 유지하면 매칭 확률이 높아져요.
+          선택한 지역의 과외건 공지를 받을 수 있어요
         </span>
         <BulletList
           items={[
-            "지역 수정하기 버튼 클릭 후 가능 지역을 수정하세요.",
+            "지역 버튼을 눌러 가능한 지역을 선택해주세요.",
             "변경된 지역 저장 버튼을 눌러야 최종 저장됩니다.",
           ]}
           className="pt-[14px]"
@@ -139,7 +139,7 @@ export default function TeacherSettingRegion() {
       <div className="grid h-auto w-full grid-cols-3 grid-rows-11 gap-3 bg-white px-5 pb-[100px]">
         {buttons}
       </div>
-      <div className="fixed inset-x-0 bottom-0 bg-white px-5 pb-4 pt-2">
+      <div className="fixed inset-x-0 bottom-0 mx-auto max-w-[375px] bg-white px-5 pb-4 pt-2">
         <button
           disabled={!hasChanges || patchLoading}
           onClick={onClickSave}

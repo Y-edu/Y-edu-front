@@ -12,7 +12,7 @@ export default function TeacherSettingLogin() {
 
   const { data, refetch } = useGetTeacherSettingInfo(
     { name, phoneNumber: phone },
-    { enabled: false, gcTime: 0, staleTime: 0, refetchOnMount: true },
+    { enabled: false, gcTime: 0, staleTime: 0, refetchOnMount: false },
   );
 
   useEffect(() => {
@@ -37,7 +37,7 @@ export default function TeacherSettingLogin() {
   return (
     <div>
       <p className="border-b border-primaryPale pb-5 pt-10 text-center font-pretendard text-xl font-bold text-labelStrong">
-        Y-Edu 선생님 과외 설정
+        <span className="text-primary">Y-Edu</span> 선생님 과외 설정
       </p>
       <div className="flex flex-col px-5">
         <input

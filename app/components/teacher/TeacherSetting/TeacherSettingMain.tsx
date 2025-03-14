@@ -30,7 +30,7 @@ export default function TeacherSettingMain() {
     setTeacherPhone(storedPhone);
   }, [router]);
 
-  const { data, isLoading, error } = useGetTeacherSettingInfo({
+  const { data, isLoading } = useGetTeacherSettingInfo({
     name: teacherName,
     phoneNumber: teacherPhone,
   });
@@ -49,7 +49,7 @@ export default function TeacherSettingMain() {
         <CircularProgress />
       </div>
     );
-  if (error || !data) return <div>Error occurred</div>;
+  if (!data) return <div>Error occurred</div>;
 
   const handleToggleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = event.target.checked;
