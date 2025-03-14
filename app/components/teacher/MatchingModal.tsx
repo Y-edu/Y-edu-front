@@ -47,7 +47,7 @@ export function MatchingModal({ isOpen, ...rest }: MatchingModalProps) {
       : "bg-[#B8B8B8] text-white";
 
   return (
-    <div className="bg-opacity / 36 bg-opacity/50 fixed inset-0 z-10 flex items-center justify-center bg-black">
+    <div className="fixed inset-0 z-10 flex items-center justify-center bg-black/50">
       <div
         ref={matchingModalRef}
         className={`flex ${modalHeight} w-[335px] flex-col justify-center gap-[6px] rounded-[14px] bg-white p-[24px] align-middle`}
