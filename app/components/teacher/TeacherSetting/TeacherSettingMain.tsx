@@ -1,7 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
+import CircularProgress from "@mui/material/CircularProgress";
 
 import SettingBox from "@/ui/Box/SettingBox";
 import { useGetTeacherSettingInfo } from "@/hooks/query/useGetTeacherSettingInfo";
@@ -9,10 +11,24 @@ import { usePatchTeacherSettingAlarmTalk } from "@/hooks/mutation/usePatchTeache
 import { formatAvailableTimes } from "@/utils/formatAvailableTimes";
 
 export default function TeacherSettingMain() {
+  const router = useRouter();
   const [isToggled, setIsToggled] = useState(false);
+  const [teacherName, setTeacherName] = useState("");
+  const [teacherPhone, setTeacherPhone] = useState("");
 
-  const teacherName = "김기동";
-  const teacherPhone = "01087654321";
+  useEffect(() => {
+    const storedName = localStorage.getItem("teacherName") || "";
+    const storedPhone = localStorage.getItem("teacherPhone") || "";
+
+    if (!storedName || !storedPhone) {
+      alert("로그인하세요");
+      router.push("/teachersetting/login");
+      return;
+    }
+
+    setTeacherName(storedName);
+    setTeacherPhone(storedPhone);
+  }, [router]);
 
   const { data, isLoading, error } = useGetTeacherSettingInfo({
     name: teacherName,
@@ -27,7 +43,12 @@ export default function TeacherSettingMain() {
     }
   }, [data]);
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading)
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <CircularProgress />
+      </div>
+    );
   if (error || !data) return <div>Error occurred</div>;
 
   const handleToggleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -40,7 +61,13 @@ export default function TeacherSettingMain() {
     });
   };
 
-  const districtStr = data.districts.join(", ");
+  const chunkArray = (arr: string[], size: number) =>
+    Array.from({ length: Math.ceil(arr.length / size) }, (_, i) =>
+      arr.slice(i * size, i * size + size),
+    );
+
+  const chunked = chunkArray(data.districts, 5);
+  const districtStr = chunked.map((chunk) => chunk.join(", ")).join("\n");
 
   return (
     <div>
@@ -55,12 +82,16 @@ export default function TeacherSettingMain() {
           onToggleChange={handleToggleChange}
         >
           <span className="text-labelAssistive">
-            {isToggled ? "활동중" : "비활동"}
+            {isToggled
+              ? "지역에 맞는 과외건 공지 메세지를 받습니다."
+              : "과외건 공지 메세지를 받지 않습니다."}
           </span>
         </SettingBox>
         <Link href="/teachersetting/region">
           <SettingBox title="과외 가능지역">
-            <span className="text-labelAssistive">{districtStr}</span>
+            <span className="whitespace-pre-line text-labelAssistive">
+              {districtStr}
+            </span>
           </SettingBox>
         </Link>
         <Link href="/teachersetting/time">
