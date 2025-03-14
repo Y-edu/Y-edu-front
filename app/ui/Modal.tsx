@@ -28,8 +28,11 @@ export function Modal({
   }
 
   return (
-    <div className="fixed inset-0 z-10 flex items-center justify-center bg-black bg-opacity-50">
-      <div ref={modalRef} className="w-1/3 rounded-lg bg-white p-6 shadow-lg">
+    <div className="fixed inset-0 z-10 flex items-center justify-center bg-black/50">
+      <div
+        ref={modalRef}
+        className="w-1/3 min-w-[335px] rounded-lg bg-white p-6 shadow-lg"
+      >
         <h2 className="mb-4 text-lg font-bold">{title}</h2>
         <p className="mb-6">{message}</p>
         <div className="flex justify-end">
