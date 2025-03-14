@@ -33,7 +33,7 @@ export default function Brand() {
       <footer className="text-center text-sm text-gray-600">
         <div className="mt-4">
           <a
-            href="https://pf.kakao.com/_BVKxiK/chat"
+            href="https://pf.kakao.com/_AFHjn/chat"
             target="_blank"
             rel="noopener noreferrer"
             className="rounded bg-yellow-400 px-4 py-2 text-white hover:bg-yellow-500"
