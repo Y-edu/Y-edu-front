@@ -1,3 +1,9 @@
+import { SettingTeacherTime } from "@/components/teacher/TeacherSetting/TeacherSettingTime";
+
 export default function TeacherTimeSetting() {
-  return <div className="w-full">시간세팅</div>;
+  return (
+    <div className="w-full">
+      <SettingTeacherTime />
+    </div>
+  );
 }

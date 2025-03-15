@@ -36,38 +36,35 @@ export function TimeTable() {
 
   return (
     <div className="m-5 mx-auto flex w-full flex-col">
-      <div className="mb-2 flex w-full">
-        {["", "월", "화", "수", "목", "금", "토", "일"].map((day) => (
-          <div key={day} className="w-[50px] rounded text-center transition">
+      <div className="center flex-end mb-2 flex w-full justify-end gap-1">
+        {["월", "화", "수", "목", "금", "토", "일"].map((day) => (
+          <div
+            key={day}
+            className="mx-1 w-[32px] rounded text-center transition"
+          >
             {day}
           </div>
         ))}
       </div>
 
       <div className="flex w-full">
-        <div className="flex w-[50px] flex-col items-start">
+        <div className="flex w-[32px] flex-col items-start">
           {getSplitHoursToStringFormat().map((v, index) => (
             <div
               key={v}
-              className="rounded p-2 text-center text-[12px] text-primaryNormal"
+              className="flex size-[32px] justify-center rounded align-middle text-[12px] text-primaryNormal"
             >
               {index % 2 !== 0 ? "" : v}
             </div>
           ))}
         </div>
 
-        {/* 요일별 시간 박스 */}
         <div className="flex grow">
           {week.map((day) => (
-            <div key={day} className="flex grow flex-col">
+            <div key={day} className="mx-1 flex grow flex-col">
               {getSplitHoursToStringFormat().map((time) => {
-                const isAvailable = MOCK_TIME_DATA[day].some((availableTime) =>
-                  isEqual(
-                    new Date(`1970-01-01T${time}:00`),
-                    new Date(`1970-01-01T${availableTime}`),
-                  ),
-                );
-
+                console.log(time);
+                const isAvailable = MOCK_TIME_DATA[day]?.includes(time + ":00"); // 시간에 초를 추가하여 비교
                 const isSelected =
                   (startCell.day === day && startCell.time === time) ||
                   (endCell.day === day && endCell.time === time) ||
@@ -81,7 +78,7 @@ export function TimeTable() {
                   <div
                     onClick={() => handleCellClick(day, time)}
                     key={time}
-                    className={`grow rounded border border-gray-300 p-2 text-center text-[12px] ${
+                    className={`size-[32px] border border-gray-300 p-2 text-center text-[12px] ${
                       isAvailable || isSelected
                         ? "bg-red-500 text-white"
                         : "bg-[#E4EFFF] text-primaryNormal"

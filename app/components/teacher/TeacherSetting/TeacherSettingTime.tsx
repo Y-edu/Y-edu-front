@@ -17,6 +17,8 @@ export function SettingTeacherTime() {
         <Image
           onClick={() => router.back()}
           src={BackArrow}
+          width={24}
+          height={24}
           alt="뒤로가기"
           className="mr-2 size-8 cursor-pointer"
         />
