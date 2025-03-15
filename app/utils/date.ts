@@ -7,7 +7,7 @@ export const getSplitHoursToStringFormat = () => {
   });
 
   // 30분 단위로 필터링
-  const splitByMinutes = resultOfSplit.filter((_, index) => index % 30 === 0);
+  const splitByMinutes = resultOfSplit.filter((_, index) => index % 60 === 0);
   const formattoString = splitByMinutes.map((date) => format(date, "HH:mm")); // 공백 제거
   return formattoString;
 };

@@ -21,24 +21,34 @@ export function TimeTable() {
 
   const [currentDate, setCurrentDate] =
     useState<Record<string, string[]>>(MOCK_TIME_DATA);
-  const [startCell, setStartCell] = useState<TimeCell>({ day: "", time: "" });
-  const [endCell, setEndCell] = useState<TimeCell>({ day: "", time: "" });
+  const [selectedCell, setSelectedCell] = useState<TimeCell>({
+    day: "",
+    time: "",
+  });
 
   const week = ["월", "화", "수", "목", "금", "토", "일"];
 
   const handleCellClick = (day: string, time: string) => {
-    setStartCell({ day, time });
-    if (day === startCell.day) {
-      setEndCell({ day, time });
-      const [startHour, startMinute] = startCell.time.split(":").map(Number);
-      const [endHour, endMinute] = time.split(":").map(Number);
+    const timeWithSeconds = time + ":00"; // Add seconds for comparison
+
+    if (day === selectedCell.day && time === selectedCell.time) {
+      // If the same cell is clicked, deselect it
+      setSelectedCell({ day: "", time: "" });
+      setCurrentDate((prev) => ({
+        ...prev,
+        [day]: prev[day].filter((t) => t !== timeWithSeconds), // Remove the time from currentDate
+      }));
+    } else {
+      // Select the new cell
+      setSelectedCell({ day, time });
+      const [startHour, startMinute] = time.split(":").map(Number);
 
       const selectedDateRange = eachMinuteOfInterval({
         start: new Date(2025, 2, 26, startHour, startMinute),
-        end: new Date(2025, 2, 26, endHour, endMinute),
+        end: new Date(2025, 2, 26, startHour, startMinute + 59), // Select one hour range
       });
       const splitByMinutes = selectedDateRange.filter(
-        (_, index) => index % 30 === 0,
+        (_, index) => index % 60 === 0,
       );
       const toFormatHHMM = splitByMinutes.map(
         (date) => format(date, "HH:mm") + ":00",
@@ -48,9 +58,6 @@ export function TimeTable() {
         ...prev,
         [day]: [...new Set([...prev[day], ...toFormatHHMM])],
       }));
-
-      setStartCell({ day: "", time: "" });
-      setEndCell({ day: "", time: "" });
     }
   };
 
@@ -69,12 +76,12 @@ export function TimeTable() {
 
       <div className="flex w-full">
         <div className="flex w-[32px] flex-col items-start">
-          {getSplitHoursToStringFormat().map((v, index) => (
+          {getSplitHoursToStringFormat().map((v) => (
             <div
               key={v}
               className="flex size-[32px] justify-center rounded align-middle text-[12px] text-primaryNormal"
             >
-              {index % 2 !== 0 ? "" : v}
+              {v}
             </div>
           ))}
         </div>
@@ -86,16 +93,8 @@ export function TimeTable() {
                 const isAvailable = MOCK_TIME_DATA[day]?.includes(time + ":00");
 
                 const isSelected =
-                  (startCell.day === day && startCell.time === time) ||
-                  (endCell.day === day && endCell.time === time) ||
-                  (startCell.day === day &&
-                    new Date(`1970-01-01T${time}:00`) >=
-                      new Date(`1970-01-01T${startCell.time}:00`) &&
-                    new Date(`1970-01-01T${time}:00`) <=
-                      new Date(`1970-01-01T${endCell.time}:00`)) ||
+                  (selectedCell.day === day && selectedCell.time === time) ||
                   currentDate[day]?.includes(time + ":00");
-
-                // 이미 선택되어있는경우 -> 해당 시간 ~ 선택된 최대 시간 찾기
 
                 return (
                   <div
