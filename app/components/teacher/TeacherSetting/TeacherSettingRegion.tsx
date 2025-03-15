@@ -1,8 +1,10 @@
 "use client";
 
 import { useEffect, useState, useMemo } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
+import CircularProgress from "@mui/material/CircularProgress";
 
 import BulletList from "@/ui/List/BulletList";
 import ProfileInfoBox from "@/components/teacher/ProfileInfoBox";
@@ -12,21 +14,32 @@ import { usePatchTeacherSettingRegion } from "@/hooks/mutation/usePatchTeacherSe
 
 import BackArrow from "public/images/arrow-black.png";
 
-const teacherName = "김기동";
-const teacherPhone = "01087654321";
-
-const arraysEqual = (a: number[], b: number[]) => {
-  if (a.length !== b.length) return false;
-  const sortedA = [...a].sort();
-  const sortedB = [...b].sort();
-  return sortedA.every((val, i) => val === sortedB[i]);
-};
+const arraysEqual = (a: number[], b: number[]) =>
+  a.length === b.length &&
+  [...a].sort().every((val, i) => val === [...b].sort()[i]);
 
 export default function TeacherSettingRegion() {
+  const router = useRouter();
   const [activeButtons, setActiveButtons] = useState<number[]>([]);
   const [initialActive, setInitialActive] = useState<number[]>([]);
+  const [teacherName, setTeacherName] = useState("");
+  const [teacherPhone, setTeacherPhone] = useState("");
 
-  const { data, isLoading, error } = useGetTeacherSettingInfo({
+  useEffect(() => {
+    const storedName = localStorage.getItem("teacherName") || "";
+    const storedPhone = localStorage.getItem("teacherPhone") || "";
+
+    if (!storedName || !storedPhone) {
+      alert("로그인하세요");
+      router.push("/teachersetting/login");
+      return;
+    }
+
+    setTeacherName(storedName);
+    setTeacherPhone(storedPhone);
+  }, [router]);
+
+  const { data, isLoading } = useGetTeacherSettingInfo({
     name: teacherName,
     phoneNumber: teacherPhone,
   });
@@ -74,8 +87,13 @@ export default function TeacherSettingRegion() {
     [activeButtons, initialActive],
   );
 
-  if (isLoading) return <div>Loading...</div>;
-  if (error || !data) return <div>Error occurred</div>;
+  if (isLoading)
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <CircularProgress />
+      </div>
+    );
+  if (!data) return <div>Error occurred</div>;
 
   const onClickSave = () => {
     const updatedDistricts = buttonLabels.filter((_, index) =>
@@ -86,6 +104,7 @@ export default function TeacherSettingRegion() {
       phoneNumber: teacherPhone,
       districts: updatedDistricts,
     });
+    alert("변경된 지역이 저장되었습니다.");
   };
 
   return (
@@ -107,20 +126,20 @@ export default function TeacherSettingRegion() {
         className="!gap-[4px]"
       >
         <span className="text-labelAssistive">
-          가능 지역을 최신 상태로 유지하면 매칭 확률이 높아져요.
+          선택한 지역의 과외건 공지를 받을 수 있어요
         </span>
         <BulletList
           items={[
-            "지역 수정하기 버튼 클릭 후 가능 지역을 수정하세요.",
+            "지역 버튼을 눌러 가능한 지역을 선택해주세요.",
             "변경된 지역 저장 버튼을 눌러야 최종 저장됩니다.",
           ]}
           className="pt-[14px]"
         />
       </ProfileInfoBox>
-      <div className="grid h-auto w-full grid-cols-3 grid-rows-11 gap-3 bg-white px-5 pb-[40px]">
+      <div className="grid h-auto w-full grid-cols-3 grid-rows-11 gap-3 bg-white px-5 pb-[100px]">
         {buttons}
       </div>
-      <div className="flex h-auto w-full bg-white px-5 pb-[30px]">
+      <div className="fixed inset-x-0 bottom-0 mx-auto max-w-[375px] bg-white px-5 pb-4 pt-2">
         <button
           disabled={!hasChanges || patchLoading}
           onClick={onClickSave}
