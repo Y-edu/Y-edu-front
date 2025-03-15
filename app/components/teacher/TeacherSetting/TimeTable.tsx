@@ -44,14 +44,15 @@ export function TimeTable() {
 
       setCurrentDate((prev) => ({
         ...prev,
-        [day]: [...new Set([...prev[day], ...toFormatHHMM])], // 중복 제거
+        [day]: [...new Set([...prev[day], ...toFormatHHMM])],
       }));
 
       setStartCell({ day: "", time: "" });
+      setEndCell({ day: "", time: "" });
     }
   };
-
   console.log(currentDate);
+
   return (
     <div className="m-5 mx-auto flex w-full flex-col">
       <div className="center flex-end mb-2 flex w-full justify-end gap-1">
