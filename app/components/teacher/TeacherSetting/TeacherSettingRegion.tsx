@@ -73,7 +73,7 @@ export default function TeacherSettingRegion() {
           <button
             key={index}
             onClick={() => onClickButton(index)}
-            className={`${btnClass} h-[48px] rounded-[12px]`}
+            className={`${btnClass} h-[48px] rounded-[12px] font-semibold`}
           >
             {label}
           </button>

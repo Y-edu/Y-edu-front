@@ -28,6 +28,10 @@ export default function TeacherSettingLogin() {
       alert("이름과 전화번호를 입력해주세요.");
       return;
     }
+    if (phone.includes("-")) {
+      alert("올바른 전화번호 형식으로 입력해주세요.");
+      return;
+    }
     const result = await refetch();
     if (result.error) {
       alert("이름 또는 전화번호 정보가 일치하지 않습니다.");
@@ -58,7 +62,7 @@ export default function TeacherSettingLogin() {
           onClick={handleLogin}
           className="h-[48px] w-full rounded-[12px] bg-primaryNormal text-white"
         >
-          로그인
+          설정 페이지로 이동
         </button>
       </div>
     </div>
