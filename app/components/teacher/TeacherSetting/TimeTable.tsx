@@ -1,5 +1,5 @@
-import { isEqual } from "date-fns";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { eachHourOfInterval, eachMinuteOfInterval, format } from "date-fns";
 
 import { getSplitHoursToStringFormat } from "@/utils/date";
 
@@ -21,23 +21,41 @@ export function TimeTable() {
   const week = ["월", "화", "수", "목", "금", "토", "일"];
 
   const handleCellClick = (day, time) => {
-    if (!startCell.day && !startCell.time) {
-      setStartCell({ day, time });
-      return;
-    }
-
-    if (!startCell.day && !startCell.time) {
-      setStartCell({ day, time });
-    } else {
+    setStartCell({ day, time });
+    if (day === startCell.day) {
       // 선택된 셀의 시작 시간과 끝 시간을 설정
+      // 끝 시간에 포함된 모든 날짜
       setEndCell({ day, time });
+      const selectedDateRange = eachMinuteOfInterval({
+        start: new Date(
+          2025,
+          2,
+          26,
+          Number(startCell.time[0]) + startCell.time[1],
+        ),
+        end: new Date(2025, 2, 26, Number(time[0]) + time[1]),
+      });
+      const splitByMinutes = selectedDateRange.filter(
+        (_, index) => index % 30 === 0,
+      );
+      const toFormatHHMM = splitByMinutes.map(
+        (date) => format(date, "HH:mm") + ":00",
+      );
+
+      setCurrentDate((prev) => ({
+        ...prev,
+        [day]: [...new Set([...prev[day], ...toFormatHHMM])], // 중복 제거
+      }));
+
+      setStartCell({ day: "", time: "" });
     }
   };
 
+  console.log(currentDate);
   return (
     <div className="m-5 mx-auto flex w-full flex-col">
       <div className="center flex-end mb-2 flex w-full justify-end gap-1">
-        {["월", "화", "수", "목", "금", "토", "일"].map((day) => (
+        {week.map((day) => (
           <div
             key={day}
             className="mx-1 w-[32px] rounded text-center transition"
@@ -63,8 +81,8 @@ export function TimeTable() {
           {week.map((day) => (
             <div key={day} className="mx-1 flex grow flex-col">
               {getSplitHoursToStringFormat().map((time) => {
-                console.log(time);
-                const isAvailable = MOCK_TIME_DATA[day]?.includes(time + ":00"); // 시간에 초를 추가하여 비교
+                const isAvailable = MOCK_TIME_DATA[day]?.includes(time + ":00");
+
                 const isSelected =
                   (startCell.day === day && startCell.time === time) ||
                   (endCell.day === day && endCell.time === time) ||
@@ -72,8 +90,8 @@ export function TimeTable() {
                     new Date(`1970-01-01T${time}:00`) >=
                       new Date(`1970-01-01T${startCell.time}:00`) &&
                     new Date(`1970-01-01T${time}:00`) <=
-                      new Date(`1970-01-01T${endCell.time}:00`));
-
+                      new Date(`1970-01-01T${endCell.time}:00`)) ||
+                  currentDate[day]?.includes(time + ":00"); // currentDate를 기반으로 추가
                 return (
                   <div
                     onClick={() => handleCellClick(day, time)}
