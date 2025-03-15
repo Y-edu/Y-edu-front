@@ -1,10 +1,15 @@
-import { useState, useEffect } from "react";
-import { eachHourOfInterval, eachMinuteOfInterval, format } from "date-fns";
+import { useState } from "react";
+import { eachMinuteOfInterval, format } from "date-fns";
 
 import { getSplitHoursToStringFormat } from "@/utils/date";
 
+interface TimeCell {
+  day: string;
+  time: string;
+}
+
 export function TimeTable() {
-  const MOCK_TIME_DATA = {
+  const MOCK_TIME_DATA: Record<string, string[]> = {
     월: [],
     화: ["18:00:00", "19:00:00", "20:00:00"],
     수: ["20:00:00", "21:00:00", "22:00:00"],
@@ -14,26 +19,23 @@ export function TimeTable() {
     일: [],
   };
 
-  const [currentDate, setCurrentDate] = useState(MOCK_TIME_DATA);
-  const [startCell, setStartCell] = useState({ day: "", time: "" });
-  const [endCell, setEndCell] = useState({ day: "", time: "" });
+  const [currentDate, setCurrentDate] =
+    useState<Record<string, string[]>>(MOCK_TIME_DATA);
+  const [startCell, setStartCell] = useState<TimeCell>({ day: "", time: "" });
+  const [endCell, setEndCell] = useState<TimeCell>({ day: "", time: "" });
 
   const week = ["월", "화", "수", "목", "금", "토", "일"];
 
-  const handleCellClick = (day, time) => {
+  const handleCellClick = (day: string, time: string) => {
     setStartCell({ day, time });
     if (day === startCell.day) {
-      // 선택된 셀의 시작 시간과 끝 시간을 설정
-      // 끝 시간에 포함된 모든 날짜
       setEndCell({ day, time });
+      const [startHour, startMinute] = startCell.time.split(":").map(Number);
+      const [endHour, endMinute] = time.split(":").map(Number);
+
       const selectedDateRange = eachMinuteOfInterval({
-        start: new Date(
-          2025,
-          2,
-          26,
-          Number(startCell.time[0]) + startCell.time[1],
-        ),
-        end: new Date(2025, 2, 26, Number(time[0]) + time[1]),
+        start: new Date(2025, 2, 26, startHour, startMinute),
+        end: new Date(2025, 2, 26, endHour, endMinute),
       });
       const splitByMinutes = selectedDateRange.filter(
         (_, index) => index % 30 === 0,
@@ -51,7 +53,6 @@ export function TimeTable() {
       setEndCell({ day: "", time: "" });
     }
   };
-  console.log(currentDate);
 
   return (
     <div className="m-5 mx-auto flex w-full flex-col">
@@ -92,14 +93,24 @@ export function TimeTable() {
                       new Date(`1970-01-01T${startCell.time}:00`) &&
                     new Date(`1970-01-01T${time}:00`) <=
                       new Date(`1970-01-01T${endCell.time}:00`)) ||
-                  currentDate[day]?.includes(time + ":00"); // currentDate를 기반으로 추가
+                  currentDate[day]?.includes(time + ":00");
+
+                // 이미 선택되어있는경우 -> 해당 시간 ~ 선택된 최대 시간 찾기
+
                 return (
                   <div
+                    role="button"
+                    tabIndex={0}
                     onClick={() => handleCellClick(day, time)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ") {
+                        handleCellClick(day, time);
+                      }
+                    }}
                     key={time}
                     className={`size-[32px] border border-gray-300 p-2 text-center text-[12px] ${
                       isAvailable || isSelected
-                        ? "bg-red-500 text-white"
+                        ? "bg-primary text-white"
                         : "bg-[#E4EFFF] text-primaryNormal"
                     }`}
                   />
