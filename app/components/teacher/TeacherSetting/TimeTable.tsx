@@ -14,6 +14,7 @@ interface TimeTableProps {
   initalName: string;
   initalSelectTime: Record<string, string[]>;
 }
+
 export function TimeTable({
   initalName,
   initalPhoneNumber,
