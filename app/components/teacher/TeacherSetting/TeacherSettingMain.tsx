@@ -14,12 +14,10 @@ import { Modal } from "@/ui/Modal";
 export default function TeacherSettingMain() {
   const router = useRouter();
   const [isToggled, setIsToggled] = useState(false);
-  const [teacherName, setTeacherName] = useState("");
-  const [teacherPhone, setTeacherPhone] = useState("");
+  const [teacherName, setTeacherName] = useState("김효중");
+  const [teacherPhone, setTeacherPhone] = useState("010111111114");
   const [showModal, setShowModal] = useState(false);
 
-  const teacherName = "김효중";
-  const teacherPhone = "010111111114";
   useEffect(() => {
     const storedName = localStorage.getItem("teacherName") || "";
     const storedPhone = localStorage.getItem("teacherPhone") || "";
