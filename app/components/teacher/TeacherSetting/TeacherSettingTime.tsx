@@ -9,7 +9,17 @@ import { TimeTable } from "./TimeTable";
 
 import BackArrow from "public/images/arrow-black.png";
 
-export function SettingTeacherTime() {
+interface SettingTeacherTimeProps {
+  name: string;
+  phoneNumber: string;
+  available: Record<string, string[]>;
+}
+
+export function SettingTeacherTime({
+  name,
+  phoneNumber,
+  available,
+}: SettingTeacherTimeProps) {
   const router = useRouter();
   return (
     <div>
@@ -27,7 +37,7 @@ export function SettingTeacherTime() {
         </p>
       </div>
       <ProfileInfoBox
-        title="크리스 선생님의 과외 가능 시간"
+        title={`${name} 선생님의 과외 가능시간`}
         className="gap-[4px]"
       >
         <span className="text-labelAssistive">
@@ -42,14 +52,13 @@ export function SettingTeacherTime() {
           ]}
           className="pt-[14px]"
         />
-        <TimeTable />
+        <TimeTable
+          initalName={name}
+          initalPhoneNumber={phoneNumber}
+          initalSelectTime={available}
+        />
       </ProfileInfoBox>
       <div className="grid h-auto w-full grid-cols-3 grid-rows-11 gap-3 bg-white px-5 pb-[30px]" />
-      <div className="flex h-auto w-full bg-white px-5 pb-[30px]">
-        <button className="h-[48px] w-full rounded-[12px] bg-primaryNormal text-white">
-          <span className="text-white">변경된 시간 저장</span>
-        </button>
-      </div>
     </div>
   );
 }

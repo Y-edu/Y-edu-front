@@ -2,25 +2,27 @@ import { useState } from "react";
 import { eachMinuteOfInterval, format } from "date-fns";
 
 import { getSplitHoursToStringFormat } from "@/utils/date";
+import { useUpdateTeacherAvaiable } from "@/hooks/mutation/usePutAvaiableTeacherTime";
 
 interface TimeCell {
   day: string;
   time: string;
 }
 
-export function TimeTable() {
-  const MOCK_TIME_DATA: Record<string, string[]> = {
-    월: [],
-    화: ["18:00:00", "19:00:00", "20:00:00"],
-    수: ["20:00:00", "21:00:00", "22:00:00"],
-    목: ["09:00:00", "09:30:00", "10:00:00", "11:00:00"],
-    금: ["09:00:00", "10:00:00", "11:00:00"],
-    토: ["12:00:00", "13:00:00", "14:00:00"],
-    일: [],
-  };
+interface TimeTableProps {
+  initalPhoneNumber: string;
+  initalName: string;
+  initalSelectTime: Record<string, string[]>;
+}
 
+export function TimeTable({
+  initalName,
+  initalPhoneNumber,
+  initalSelectTime,
+}: TimeTableProps) {
+  const { mutate } = useUpdateTeacherAvaiable();
   const [currentDate, setCurrentDate] =
-    useState<Record<string, string[]>>(MOCK_TIME_DATA);
+    useState<Record<string, string[]>>(initalSelectTime);
   const [selectedCell, setSelectedCell] = useState<TimeCell>({
     day: "",
     time: "",
@@ -133,7 +135,38 @@ export function TimeTable() {
           ))}
         </div>
       </div>
+      <div className="mt-[30px] flex h-auto w-full bg-white px-5 pb-[30px]">
+        <button
+          disabled={
+            Object.entries(initalSelectTime).toString() ===
+            Object.entries(currentDate).toString()
+          }
+          className={`h-[48px] w-full rounded-[12px] ${
+            Object.entries(initalSelectTime).toString() ===
+            Object.entries(currentDate).toString()
+              ? "cursor-not-allowed bg-gray-400"
+              : "bg-primaryNormal text-white"
+          }`}
+          onClick={() => {
+            if (confirm("변경된 시간을 저장하시겠습니까?")) {
+              mutate(
+                {
+                  phoneNumber: initalPhoneNumber,
+                  name: initalName,
+                  available: currentDate,
+                },
+                {
+                  onSuccess: () => {
+                    alert("저장되었습니다.");
+                  },
+                },
+              );
+            }
+          }}
+        >
+          <span className="text-white">변경된 시간 저장</span>
+        </button>
+      </div>
     </div>
   );
 }
-

@@ -18,6 +18,8 @@ export default function TeacherSettingMain() {
   const [teacherPhone, setTeacherPhone] = useState("");
   const [showModal, setShowModal] = useState(false);
 
+  const teacherName = "김효중";
+  const teacherPhone = "010111111114";
   useEffect(() => {
     const storedName = localStorage.getItem("teacherName") || "";
     const storedPhone = localStorage.getItem("teacherPhone") || "";
@@ -120,7 +122,9 @@ export default function TeacherSettingMain() {
             </span>
           </SettingBox>
         </Link>
-        <Link href="/teachersetting/time">
+        <Link
+          href={`/teachersetting/time?name=${teacherName}&phoneNumber=${teacherPhone}&available=${JSON.stringify(data.available)}`}
+        >
           <SettingBox title="과외 가능시간">
             <span className="whitespace-pre-line text-labelAssistive">
               {formatAvailableTimes(data.available).join("\n")}
