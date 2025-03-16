@@ -37,7 +37,7 @@ export function SettingTeacherTime({
         </p>
       </div>
       <ProfileInfoBox
-        title="크리스 선생님의 과외 가능 시간"
+        title={`${name} 선생님의 과외 가능시간`}
         className="gap-[4px]"
       >
         <span className="text-labelAssistive">

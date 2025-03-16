@@ -138,11 +138,20 @@ export function TimeTable({
         <button
           className="h-[48px] w-full rounded-[12px] bg-primaryNormal text-white"
           onClick={() => {
-            mutate({
-              phoneNumber: initalPhoneNumber,
-              name: initalName,
-              available: currentDate,
-            });
+            if (confirm("변경된 시간을 저장하시겠습니까?")) {
+              mutate(
+                {
+                  phoneNumber: initalPhoneNumber,
+                  name: initalName,
+                  available: currentDate,
+                },
+                {
+                  onSuccess: () => {
+                    alert("저장되었습니다.");
+                  },
+                },
+              );
+            }
           }}
         >
           <span className="text-white">변경된 시간 저장</span>
