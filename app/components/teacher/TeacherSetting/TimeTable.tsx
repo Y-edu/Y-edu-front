@@ -136,7 +136,16 @@ export function TimeTable({
       </div>
       <div className="mt-[30px] flex h-auto w-full bg-white px-5 pb-[30px]">
         <button
-          className="h-[48px] w-full rounded-[12px] bg-primaryNormal text-white"
+          disabled={
+            Object.entries(initalSelectTime).toString() ===
+            Object.entries(currentDate).toString()
+          }
+          className={`h-[48px] w-full rounded-[12px] ${
+            Object.entries(initalSelectTime).toString() ===
+            Object.entries(currentDate).toString()
+              ? "cursor-not-allowed bg-gray-400"
+              : "bg-primaryNormal text-white"
+          }`}
           onClick={() => {
             if (confirm("변경된 시간을 저장하시겠습니까?")) {
               mutate(
