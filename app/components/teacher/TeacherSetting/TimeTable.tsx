@@ -29,23 +29,21 @@ export function TimeTable() {
   const week = ["월", "화", "수", "목", "금", "토", "일"];
 
   const handleCellClick = (day: string, time: string) => {
-    const timeWithSeconds = time + ":00"; // Add seconds for comparison
+    const timeWithSeconds = time + ":00";
 
     if (day === selectedCell.day && time === selectedCell.time) {
-      // If the same cell is clicked, deselect it
       setSelectedCell({ day: "", time: "" });
       setCurrentDate((prev) => ({
         ...prev,
-        [day]: prev[day].filter((t) => t !== timeWithSeconds), // Remove the time from currentDate
+        [day]: prev[day].filter((t) => t !== timeWithSeconds),
       }));
     } else {
-      // Select the new cell
       setSelectedCell({ day, time });
       const [startHour, startMinute] = time.split(":").map(Number);
 
       const selectedDateRange = eachMinuteOfInterval({
         start: new Date(2025, 2, 26, startHour, startMinute),
-        end: new Date(2025, 2, 26, startHour, startMinute + 59), // Select one hour range
+        end: new Date(2025, 2, 26, startHour, startMinute + 59),
       });
       const splitByMinutes = selectedDateRange.filter(
         (_, index) => index % 60 === 0,
@@ -59,6 +57,16 @@ export function TimeTable() {
         [day]: [...new Set([...prev[day], ...toFormatHHMM])],
       }));
     }
+  };
+
+  const handleNotClick = (day: string, time: string) => {
+    if (currentDate[day]?.includes(time + ":00")) {
+      setCurrentDate((prev) => ({
+        ...prev,
+        [day]: prev[day].filter((t) => t !== time + ":00"),
+      }));
+    }
+    setSelectedCell({ day: "", time: "" });
   };
 
   return (
@@ -90,7 +98,7 @@ export function TimeTable() {
           {week.map((day) => (
             <div key={day} className="mx-1 flex grow flex-col">
               {getSplitHoursToStringFormat().map((time) => {
-                const isAvailable = MOCK_TIME_DATA[day]?.includes(time + ":00");
+                const isAvailable = currentDate[day]?.includes(time + ":00");
 
                 const isSelected =
                   (selectedCell.day === day && selectedCell.time === time) ||
@@ -100,7 +108,13 @@ export function TimeTable() {
                   <div
                     role="button"
                     tabIndex={0}
-                    onClick={() => handleCellClick(day, time)}
+                    onClick={() => {
+                      if (isSelected || isAvailable) {
+                        handleNotClick(day, time);
+                      } else {
+                        handleCellClick(day, time);
+                      }
+                    }}
                     onKeyDown={(e) => {
                       if (e.key === "Enter" || e.key === " ") {
                         handleCellClick(day, time);
@@ -122,3 +136,4 @@ export function TimeTable() {
     </div>
   );
 }
+
