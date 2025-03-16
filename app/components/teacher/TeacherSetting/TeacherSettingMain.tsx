@@ -64,7 +64,7 @@ export default function TeacherSettingMain() {
           </SettingBox>
         </Link>
         <Link
-          href={`/teachersetting/time?name=${teacherName}&phoneNumber=${teacherPhone}$available=${JSON.stringify(data.available)}`}
+          href={`/teachersetting/time?name=${teacherName}&phoneNumber=${teacherPhone}&available=${JSON.stringify(data.available)}`}
         >
           <SettingBox title="과외 가능시간">
             <span className="whitespace-pre-line text-labelAssistive">

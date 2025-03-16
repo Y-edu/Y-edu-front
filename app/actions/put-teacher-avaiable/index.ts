@@ -7,7 +7,7 @@ export const putTeacherAvaiable = async ({
 }: {
   name: string;
   phoneNumber: string;
-  available: string[];
+  available: Record<string, string[]>;
 }) => {
   const response = await httpService.put<string>(`/teacher/info/available`, {
     name,
