@@ -134,7 +134,7 @@ export function TimeTable({
           ))}
         </div>
       </div>
-      <div className="flex h-auto w-full bg-white px-5 pb-[30px]">
+      <div className="mt-[30px] flex h-auto w-full bg-white px-5 pb-[30px]">
         <button
           className="h-[48px] w-full rounded-[12px] bg-primaryNormal text-white"
           onClick={() => {

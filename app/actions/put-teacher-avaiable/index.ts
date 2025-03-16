@@ -9,16 +9,19 @@ export const putTeacherAvaiable = async ({
   phoneNumber: string;
   available: Record<string, string[]>;
 }) => {
-  for (const [key, value] of Object.entries(available)) {
+  const newPostTimes = [];
+  for (const [, value] of Object.entries(available)) {
     if (value.length === 0) {
-      available[key] = ["불가"];
+      newPostTimes.push(["불가"]);
+    } else {
+      newPostTimes.push(value.map((time) => time.substring(0, 5)));
     }
   }
 
   const response = await httpService.put<string>(`/teacher/info/available`, {
     name,
     phoneNumber,
-    available: [available],
+    available: newPostTimes,
   });
 
   return response.data;

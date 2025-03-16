@@ -11,8 +11,9 @@ import { formatAvailableTimes } from "@/utils/formatAvailableTimes";
 export default function TeacherSettingMain() {
   const [isToggled, setIsToggled] = useState(false);
 
-  const teacherName = "김기동";
-  const teacherPhone = "01087654321";
+  const teacherName = "김효중";
+
+  const teacherPhone = "010111111114";
 
   const { data, isLoading, error } = useGetTeacherSettingInfo({
     name: teacherName,
