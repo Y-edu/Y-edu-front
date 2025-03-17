@@ -1,6 +1,6 @@
 import { httpService } from "@/utils/httpService";
 
-export const putTeacherAvaiable = async ({
+export const putTeacherAvailable = async ({
   name,
   phoneNumber,
   available,

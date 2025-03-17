@@ -53,9 +53,9 @@ export function SettingTeacherTime({
           className="pt-[14px]"
         />
         <TimeTable
-          initalName={name}
-          initalPhoneNumber={phoneNumber}
-          initalSelectTime={available}
+          initialName={name}
+          initialPhoneNumber={phoneNumber}
+          initialSelectTime={available}
         />
       </ProfileInfoBox>
       <div className="grid h-auto w-full grid-cols-3 grid-rows-11 gap-3 bg-white px-5 pb-[30px]" />

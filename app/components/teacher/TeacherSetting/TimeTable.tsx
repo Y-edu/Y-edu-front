@@ -2,7 +2,7 @@ import { useState } from "react";
 import { eachMinuteOfInterval, format } from "date-fns";
 
 import { getSplitHoursToStringFormat } from "@/utils/date";
-import { useUpdateTeacherAvaiable } from "@/hooks/mutation/usePutAvaiableTeacherTime";
+import { useUpdateTeacherAvailable } from "@/hooks/mutation/usePutAvailableTeacherTime";
 
 interface TimeCell {
   day: string;
@@ -10,19 +10,19 @@ interface TimeCell {
 }
 
 interface TimeTableProps {
-  initalPhoneNumber: string;
-  initalName: string;
-  initalSelectTime: Record<string, string[]>;
+  initialPhoneNumber: string;
+  initialName: string;
+  initialSelectTime: Record<string, string[]>;
 }
 
 export function TimeTable({
-  initalName,
-  initalPhoneNumber,
-  initalSelectTime,
+  initialName,
+  initialPhoneNumber,
+  initialSelectTime,
 }: TimeTableProps) {
-  const { mutate } = useUpdateTeacherAvaiable();
+  const { mutate } = useUpdateTeacherAvailable();
   const [currentDate, setCurrentDate] =
-    useState<Record<string, string[]>>(initalSelectTime);
+    useState<Record<string, string[]>>(initialSelectTime);
   const [selectedCell, setSelectedCell] = useState<TimeCell>({
     day: "",
     time: "",
@@ -138,11 +138,11 @@ export function TimeTable({
       <div className="mt-[30px] flex h-auto w-full bg-white px-5 pb-[30px]">
         <button
           disabled={
-            Object.entries(initalSelectTime).toString() ===
+            Object.entries(initialSelectTime).toString() ===
             Object.entries(currentDate).toString()
           }
           className={`h-[48px] w-full rounded-[12px] ${
-            Object.entries(initalSelectTime).toString() ===
+            Object.entries(initialSelectTime).toString() ===
             Object.entries(currentDate).toString()
               ? "cursor-not-allowed bg-gray-400"
               : "bg-primaryNormal text-white"
@@ -151,8 +151,8 @@ export function TimeTable({
             if (confirm("변경된 시간을 저장하시겠습니까?")) {
               mutate(
                 {
-                  phoneNumber: initalPhoneNumber,
-                  name: initalName,
+                  phoneNumber: initialPhoneNumber,
+                  name: initialName,
                   available: currentDate,
                 },
                 {
