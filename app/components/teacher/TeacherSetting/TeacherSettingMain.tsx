@@ -13,8 +13,8 @@ import { Modal } from "@/ui/Modal";
 export default function TeacherSettingMain() {
   const router = useRouter();
   const [isToggled, setIsToggled] = useState(false);
-  const [teacherName, setTeacherName] = useState("김효중");
-  const [teacherPhone, setTeacherPhone] = useState("010111111114");
+  const [teacherName, setTeacherName] = useState("");
+  const [teacherPhone, setTeacherPhone] = useState("");
   const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
@@ -31,10 +31,13 @@ export default function TeacherSettingMain() {
     setTeacherPhone(storedPhone);
   }, [router]);
 
-  const { data, isLoading } = useGetTeacherSettingInfo({
-    name: teacherName,
-    phoneNumber: teacherPhone,
-  });
+  const { data, isLoading } = useGetTeacherSettingInfo(
+    {
+      name: teacherName,
+      phoneNumber: teacherPhone,
+    },
+    { enabled: teacherName !== "" && teacherPhone !== "" },
+  );
 
   const { mutate: patchAlarmTalk } = usePatchTeacherSettingAlarmTalk();
 
