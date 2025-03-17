@@ -13,8 +13,8 @@ import { Modal } from "@/ui/Modal";
 export default function TeacherSettingMain() {
   const router = useRouter();
   const [isToggled, setIsToggled] = useState(false);
-  const [teacherName, setTeacherName] = useState("");
-  const [teacherPhone, setTeacherPhone] = useState("");
+  const [teacherName, setTeacherName] = useState("김효중");
+  const [teacherPhone, setTeacherPhone] = useState("010111111114");
   const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
@@ -119,7 +119,9 @@ export default function TeacherSettingMain() {
             </span>
           </SettingBox>
         </Link>
-        <Link href="/teachersetting/time">
+        <Link
+          href={`/teachersetting/time?name=${teacherName}&phoneNumber=${teacherPhone}&available=${JSON.stringify(data.available)}`}
+        >
           <SettingBox title="과외 가능시간">
             <span className="text-primary">
               {Object.entries(data.available)

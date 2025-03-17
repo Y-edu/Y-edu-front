@@ -61,6 +61,7 @@ export function getTeacherColumns({ handleOpenModal }: TeacherColumnsProps) {
         );
       },
     }),
+    columnHelper.accessor("gender", { header: "성별" }),
     columnHelper.accessor("name", { header: "본명" }),
     columnHelper.accessor("phoneNumber", {
       header: "전화번호",
@@ -84,7 +85,7 @@ export function getTeacherColumns({ handleOpenModal }: TeacherColumnsProps) {
         cell: (info) => {
           const { university, major } = info.getValue();
           return (
-            <div className="max-w-[120px] break-words">
+            <div className="max-w-[80px] break-words">
               {university}&nbsp;
               {major}
             </div>
@@ -123,8 +124,8 @@ export function getTeacherColumns({ handleOpenModal }: TeacherColumnsProps) {
       cell: ({ getValue, row }) => {
         const text = getValue() ?? "-";
         return (
-          <div className="flex w-[240px] flex-col justify-between space-x-2">
-            <span className="max-w-[300px] break-words text-sm">{text}</span>
+          <div className="flex w-[220px] flex-col justify-between space-x-2">
+            <span className="w-full break-words text-sm">{text}</span>
             <button
               className="mt-1 inline-flex items-center justify-center self-end rounded border border-blue-500 px-2 py-1 text-xs font-medium text-blue-500 hover:bg-blue-50 focus:outline-none"
               onClick={() => handleOpenModal(row.original, "issue")}
