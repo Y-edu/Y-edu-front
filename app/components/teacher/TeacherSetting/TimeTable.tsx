@@ -72,70 +72,76 @@ export function TimeTable({
   };
 
   return (
-    <div className="m-5 mx-auto flex w-full flex-col">
-      <div className="center flex-end mb-2 flex w-full justify-end gap-1">
+    <div className="m-5 mx-auto flex w-full flex-col pb-[100px]">
+      {/* 요일 영역 */}
+      <div className="mb-3 flex justify-between pl-[61px] pr-5">
         {week.map((day) => (
-          <div
-            key={day}
-            className="mx-1 w-[32px] rounded text-center transition"
-          >
+          <div key={day} className="mx-1 w-[37px] rounded text-center">
             {day}
           </div>
         ))}
       </div>
+      <div className="flex h-[677px] w-full justify-between px-5">
+        {/* 시간 영역 */}
+        <div className="mr-1 mt-[-10px] flex h-[697px] w-[37px] flex-col items-center justify-between">
+          {(() => {
+            const times = getSplitHoursToStringFormat();
 
-      <div className="flex w-full">
-        <div className="flex w-[32px] flex-col items-start">
-          {getSplitHoursToStringFormat().map((v) => (
-            <div
-              key={v}
-              className="flex size-[32px] justify-center rounded align-middle text-[12px] text-primaryNormal"
-            >
-              {v}
-            </div>
-          ))}
+            if (times[times.length - 1] !== "24:00") {
+              times.push("24:00");
+            }
+
+            return times.map((v) => (
+              <div key={v} className="text-[14px] text-primaryNormal">
+                {v}
+              </div>
+            ));
+          })()}
         </div>
+        {/* 테이블 영역 */}
+        <div className="flex w-full">
+          {week.map((day, dayIndex) => {
+            const times = getSplitHoursToStringFormat();
 
-        <div className="flex grow">
-          {week.map((day) => (
-            <div key={day} className="mx-1 flex grow flex-col">
-              {getSplitHoursToStringFormat().map((time) => {
-                const isAvailable = currentDate[day]?.includes(time + ":00");
+            return (
+              <div key={day} className="flex size-full flex-col">
+                {times.map((time, timeIndex) => {
+                  const isAvailable = currentDate[day]?.includes(time + ":00");
+                  const isSelected =
+                    (selectedCell.day === day && selectedCell.time === time) ||
+                    currentDate[day]?.includes(time + ":00");
 
-                const isSelected =
-                  (selectedCell.day === day && selectedCell.time === time) ||
-                  currentDate[day]?.includes(time + ":00");
-
-                return (
-                  <div
-                    role="button"
-                    tabIndex={0}
-                    onClick={() => {
-                      if (isSelected || isAvailable) {
-                        handleNotClick(day, time);
-                      } else {
-                        handleCellClick(day, time);
-                      }
-                    }}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter" || e.key === " ") {
-                        handleCellClick(day, time);
-                      }
-                    }}
-                    key={time}
-                    className={`size-[32px] border border-gray-300 p-2 text-center text-[12px] ${
-                      isAvailable || isSelected
-                        ? "bg-primary text-white"
-                        : "bg-[#E4EFFF] text-primaryNormal"
-                    }`}
-                  />
-                );
-              })}
-            </div>
-          ))}
+                  return (
+                    <div
+                      role="button"
+                      tabIndex={0}
+                      onClick={() => {
+                        if (isSelected || isAvailable) {
+                          handleNotClick(day, time);
+                        } else {
+                          handleCellClick(day, time);
+                        }
+                      }}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" || e.key === " ") {
+                          handleCellClick(day, time);
+                        }
+                      }}
+                      key={time}
+                      className={`size-full border border-gray-300 ${
+                        dayIndex !== week.length - 1 ? "border-r-0" : ""
+                      } ${
+                        timeIndex !== times.length - 1 ? "border-b-0" : ""
+                      } ${isAvailable || isSelected ? "bg-primary" : "bg-white"} `}
+                    />
+                  );
+                })}
+              </div>
+            );
+          })}
         </div>
       </div>
-      <div className="mt-[30px] flex h-auto w-full bg-white px-5 pb-[30px]">
+      <div className="fixed inset-x-0 bottom-0 mx-auto max-w-[375px] bg-white px-5 pb-4 pt-2">
         <button
           disabled={
             Object.entries(initialSelectTime).toString() ===

@@ -8,7 +8,6 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { Snackbar } from "@mui/material";
 
 import BulletList from "@/ui/List/BulletList";
-import ProfileInfoBox from "@/components/teacher/ProfileInfoBox";
 import { buttonLabels } from "@/constants/buttonLabels";
 import { useGetTeacherSettingInfo } from "@/hooks/query/useGetTeacherSettingInfo";
 import { usePatchTeacherSettingRegion } from "@/hooks/mutation/usePatchTeacherSettingRegion";
@@ -129,21 +128,13 @@ export default function TeacherSettingRegion() {
           과외 가능 지역
         </p>
       </div>
-      <ProfileInfoBox
-        title={`${data.name} 선생님의 과외 가능지역`}
-        className="!gap-[4px]"
-      >
-        <span className="text-labelAssistive">
-          선택한 지역의 과외건 공지를 받을 수 있어요
-        </span>
-        <BulletList
-          items={[
-            "지역 버튼을 눌러 가능한 지역을 선택해주세요.",
-            "변경된 지역 저장 버튼을 눌러야 최종 저장됩니다.",
-          ]}
-          className="pt-[14px]"
-        />
-      </ProfileInfoBox>
+      <BulletList
+        items={[
+          "지역 버튼을 눌러 가능한 지역을 선택해주세요.",
+          "변경된 지역 저장 버튼을 눌러야 최종 저장됩니다.",
+        ]}
+        className="mb-10 py-3 pl-10"
+      />
       <div className="grid h-auto w-full grid-cols-3 grid-rows-11 gap-3 bg-white px-5 pb-[100px]">
         {buttons}
       </div>
