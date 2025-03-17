@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import CircularProgress from "@mui/material/CircularProgress";
+import { Snackbar } from "@mui/material";
 
 import BulletList from "@/ui/List/BulletList";
 import ProfileInfoBox from "@/components/teacher/ProfileInfoBox";
@@ -22,6 +23,7 @@ export default function TeacherSettingRegion() {
   const router = useRouter();
   const [activeButtons, setActiveButtons] = useState<number[]>([]);
   const [initialActive, setInitialActive] = useState<number[]>([]);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [teacherName, setTeacherName] = useState("");
   const [teacherPhone, setTeacherPhone] = useState("");
 
@@ -99,12 +101,18 @@ export default function TeacherSettingRegion() {
     const updatedDistricts = buttonLabels.filter((_, index) =>
       activeButtons.includes(index),
     );
-    patchRegion({
-      name: teacherName,
-      phoneNumber: teacherPhone,
-      districts: updatedDistricts,
-    });
-    alert("변경된 지역이 저장되었습니다.");
+    patchRegion(
+      {
+        name: teacherName,
+        phoneNumber: teacherPhone,
+        districts: updatedDistricts,
+      },
+      {
+        onSuccess: () => {
+          setSnackbarOpen(true);
+        },
+      },
+    );
   };
 
   return (
@@ -152,6 +160,17 @@ export default function TeacherSettingRegion() {
           <span>변경된 지역 저장</span>
         </button>
       </div>
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={1500}
+        onClose={() => setSnackbarOpen(false)}
+        message="변경된 지역이 저장되었습니다."
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        sx={{
+          top: "81%",
+          mx: "20px",
+        }}
+      />
     </div>
   );
 }
