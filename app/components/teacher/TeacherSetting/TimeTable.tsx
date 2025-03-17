@@ -24,6 +24,8 @@ export function TimeTable({
   const { mutate: patchTime } = useUpdateTeacherAvailable();
   const [currentDate, setCurrentDate] =
     useState<Record<string, string[]>>(initialSelectTime);
+  const [savedSelectTime, setSavedSelectTime] =
+    useState<Record<string, string[]>>(initialSelectTime);
   const [selectedCell, setSelectedCell] = useState<TimeCell>({
     day: "",
     time: "",
@@ -72,6 +74,9 @@ export function TimeTable({
     }
     setSelectedCell({ day: "", time: "" });
   };
+
+  const isChanged =
+    JSON.stringify(savedSelectTime) !== JSON.stringify(currentDate);
 
   return (
     <div className="m-5 mx-auto flex w-full flex-col pb-[100px]">
@@ -145,13 +150,9 @@ export function TimeTable({
       </div>
       <div className="fixed inset-x-0 bottom-0 mx-auto max-w-[375px] bg-white px-5 pb-4 pt-2">
         <button
-          disabled={
-            Object.entries(initialSelectTime).toString() ===
-            Object.entries(currentDate).toString()
-          }
+          disabled={!isChanged || patchTime === undefined}
           className={`h-[48px] w-full rounded-[12px] ${
-            Object.entries(initialSelectTime).toString() ===
-            Object.entries(currentDate).toString()
+            !isChanged
               ? "cursor-not-allowed bg-gray-400"
               : "bg-primaryNormal text-white"
           }`}
@@ -166,6 +167,7 @@ export function TimeTable({
                 {
                   onSuccess: () => {
                     setSnackbarOpen(true);
+                    setSavedSelectTime(currentDate);
                   },
                 },
               );
