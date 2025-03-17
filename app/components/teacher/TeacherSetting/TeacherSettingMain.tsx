@@ -31,13 +31,10 @@ export default function TeacherSettingMain() {
     setTeacherPhone(storedPhone);
   }, [router]);
 
-  const { data, isLoading } = useGetTeacherSettingInfo(
-    {
-      name: teacherName,
-      phoneNumber: teacherPhone,
-    },
-    { enabled: teacherName !== "" && teacherPhone !== "" },
-  );
+  const { data, isLoading } = useGetTeacherSettingInfo({
+    name: teacherName,
+    phoneNumber: teacherPhone,
+  });
 
   const { mutate: patchAlarmTalk } = usePatchTeacherSettingAlarmTalk();
 
