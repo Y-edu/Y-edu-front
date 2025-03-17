@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { eachMinuteOfInterval, format } from "date-fns";
+import { Snackbar } from "@mui/material";
 
 import { getSplitHoursToStringFormat } from "@/utils/date";
 import { useUpdateTeacherAvailable } from "@/hooks/mutation/usePutAvailableTeacherTime";
@@ -20,13 +21,14 @@ export function TimeTable({
   initialPhoneNumber,
   initialSelectTime,
 }: TimeTableProps) {
-  const { mutate } = useUpdateTeacherAvailable();
+  const { mutate: patchTime } = useUpdateTeacherAvailable();
   const [currentDate, setCurrentDate] =
     useState<Record<string, string[]>>(initialSelectTime);
   const [selectedCell, setSelectedCell] = useState<TimeCell>({
     day: "",
     time: "",
   });
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
 
   const week = ["월", "화", "수", "목", "금", "토", "일"];
 
@@ -155,7 +157,7 @@ export function TimeTable({
           }`}
           onClick={() => {
             if (confirm("변경된 시간을 저장하시겠습니까?")) {
-              mutate(
+              patchTime(
                 {
                   phoneNumber: initialPhoneNumber,
                   name: initialName,
@@ -163,7 +165,7 @@ export function TimeTable({
                 },
                 {
                   onSuccess: () => {
-                    alert("저장되었습니다.");
+                    setSnackbarOpen(true);
                   },
                 },
               );
@@ -173,6 +175,17 @@ export function TimeTable({
           <span className="text-white">변경된 시간 저장</span>
         </button>
       </div>
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={1500}
+        onClose={() => setSnackbarOpen(false)}
+        message="변경된 시간이 저장되었습니다."
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        sx={{
+          top: "81%",
+          mx: "20px",
+        }}
+      />
     </div>
   );
 }

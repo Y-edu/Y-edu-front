@@ -40,7 +40,7 @@ export function SettingTeacherTime({
           "선택 후 다시 누르면 해당 시간이 취소됩니다",
           "변경된 시간 저장 버튼을 눌러 저장하세요",
         ]}
-        className="mb-10 py-3 pl-10"
+        className="mb-10 py-3 pl-[40px]"
       />
       <TimeTable
         initialName={name}
