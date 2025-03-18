@@ -9,6 +9,7 @@ export default function TeacherSettingLogin() {
   const router = useRouter();
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const { data, refetch } = useGetTeacherSettingInfo(
     { name, phoneNumber: phone },
@@ -32,7 +33,9 @@ export default function TeacherSettingLogin() {
       alert("올바른 전화번호 형식으로 입력해주세요.");
       return;
     }
+    setIsLoading(true);
     const result = await refetch();
+    setIsLoading(false);
     if (result.error) {
       alert("이름 또는 전화번호 정보가 일치하지 않습니다.");
     }
@@ -60,9 +63,14 @@ export default function TeacherSettingLogin() {
         />
         <button
           onClick={handleLogin}
-          className="h-[48px] w-full rounded-[12px] bg-primaryNormal text-white"
+          disabled={isLoading}
+          className="relative flex h-[48px] w-full items-center justify-center rounded-[12px] bg-primaryNormal text-white"
         >
-          설정 페이지로 이동
+          {isLoading ? (
+            <span className="loader size-6 rounded-full border-4 border-t-transparent" />
+          ) : (
+            "설정 페이지로 이동"
+          )}
         </button>
       </div>
     </div>
