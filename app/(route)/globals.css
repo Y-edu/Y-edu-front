@@ -6,3 +6,7 @@
   --background: #f5f7fa;
   font-family: Pretendard;
 }
+
+body {
+  font-family: var(--font-pretendard);
+}

@@ -8,14 +8,13 @@ import CircularProgress from "@mui/material/CircularProgress";
 import SettingBox from "@/ui/Box/SettingBox";
 import { useGetTeacherSettingInfo } from "@/hooks/query/useGetTeacherSettingInfo";
 import { usePatchTeacherSettingAlarmTalk } from "@/hooks/mutation/usePatchTeacherSettingAlarmTalk";
-import { formatAvailableTimes } from "@/utils/formatAvailableTimes";
 import { Modal } from "@/ui/Modal";
 
 export default function TeacherSettingMain() {
   const router = useRouter();
   const [isToggled, setIsToggled] = useState(false);
-  const [teacherName, setTeacherName] = useState("김효중");
-  const [teacherPhone, setTeacherPhone] = useState("010111111114");
+  const [teacherName, setTeacherName] = useState("");
+  const [teacherPhone, setTeacherPhone] = useState("");
   const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
@@ -107,7 +106,7 @@ export default function TeacherSettingMain() {
           toggleChecked={isToggled}
           onToggleChange={handleToggleChange}
         >
-          <span className="text-labelAssistive">
+          <span className="text-primary">
             {isToggled
               ? "지역에 맞는 과외건 공지 메세지를 받습니다."
               : "과외건 공지 메세지를 받지 않습니다."}
@@ -115,7 +114,7 @@ export default function TeacherSettingMain() {
         </SettingBox>
         <Link href="/teachersetting/region">
           <SettingBox title="과외 가능지역">
-            <span className="whitespace-pre-line text-labelAssistive">
+            <span className="whitespace-pre-line text-primary">
               {districtStr}
             </span>
           </SettingBox>
@@ -124,8 +123,11 @@ export default function TeacherSettingMain() {
           href={`/teachersetting/time?name=${teacherName}&phoneNumber=${teacherPhone}&available=${JSON.stringify(data.available)}`}
         >
           <SettingBox title="과외 가능시간">
-            <span className="whitespace-pre-line text-labelAssistive">
-              {formatAvailableTimes(data.available).join("\n")}
+            <span className="text-primary">
+              {Object.entries(data.available)
+                .filter(([, times]) => times.length > 0)
+                .map(([day]) => day)
+                .join(", ")}
             </span>
           </SettingBox>
         </Link>

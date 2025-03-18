@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { eachMinuteOfInterval, format } from "date-fns";
+import { Snackbar } from "@mui/material";
 
 import { getSplitHoursToStringFormat } from "@/utils/date";
-import { useUpdateTeacherAvaiable } from "@/hooks/mutation/usePutAvaiableTeacherTime";
+import { useUpdateTeacherAvailable } from "@/hooks/mutation/usePutAvailableTeacherTime";
 
 interface TimeCell {
   day: string;
@@ -10,23 +11,26 @@ interface TimeCell {
 }
 
 interface TimeTableProps {
-  initalPhoneNumber: string;
-  initalName: string;
-  initalSelectTime: Record<string, string[]>;
+  initialPhoneNumber: string;
+  initialName: string;
+  initialSelectTime: Record<string, string[]>;
 }
 
 export function TimeTable({
-  initalName,
-  initalPhoneNumber,
-  initalSelectTime,
+  initialName,
+  initialPhoneNumber,
+  initialSelectTime,
 }: TimeTableProps) {
-  const { mutate } = useUpdateTeacherAvaiable();
+  const { mutate: patchTime } = useUpdateTeacherAvailable();
   const [currentDate, setCurrentDate] =
-    useState<Record<string, string[]>>(initalSelectTime);
+    useState<Record<string, string[]>>(initialSelectTime);
+  const [savedSelectTime, setSavedSelectTime] =
+    useState<Record<string, string[]>>(initialSelectTime);
   const [selectedCell, setSelectedCell] = useState<TimeCell>({
     day: "",
     time: "",
   });
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
 
   const week = ["월", "화", "수", "목", "금", "토", "일"];
 
@@ -71,93 +75,99 @@ export function TimeTable({
     setSelectedCell({ day: "", time: "" });
   };
 
+  const isChanged =
+    JSON.stringify(savedSelectTime) !== JSON.stringify(currentDate);
+
   return (
-    <div className="m-5 mx-auto flex w-full flex-col">
-      <div className="center flex-end mb-2 flex w-full justify-end gap-1">
+    <div className="m-5 mx-auto flex w-full flex-col pb-[100px]">
+      {/* 요일 영역 */}
+      <div className="mb-3 flex justify-between pl-[61px] pr-5">
         {week.map((day) => (
-          <div
-            key={day}
-            className="mx-1 w-[32px] rounded text-center transition"
-          >
+          <div key={day} className="mx-1 w-[37px] rounded text-center">
             {day}
           </div>
         ))}
       </div>
+      <div className="flex h-[677px] w-full justify-between px-5">
+        {/* 시간 영역 */}
+        <div className="mr-1 mt-[-10px] flex h-[697px] w-[37px] flex-col items-center justify-between">
+          {(() => {
+            const times = getSplitHoursToStringFormat();
 
-      <div className="flex w-full">
-        <div className="flex w-[32px] flex-col items-start">
-          {getSplitHoursToStringFormat().map((v) => (
-            <div
-              key={v}
-              className="flex size-[32px] justify-center rounded align-middle text-[12px] text-primaryNormal"
-            >
-              {v}
-            </div>
-          ))}
+            if (times[times.length - 1] !== "24:00") {
+              times.push("24:00");
+            }
+
+            return times.map((v) => (
+              <div key={v} className="text-[14px] text-primaryNormal">
+                {v}
+              </div>
+            ));
+          })()}
         </div>
+        {/* 테이블 영역 */}
+        <div className="flex w-full">
+          {week.map((day, dayIndex) => {
+            const times = getSplitHoursToStringFormat();
 
-        <div className="flex grow">
-          {week.map((day) => (
-            <div key={day} className="mx-1 flex grow flex-col">
-              {getSplitHoursToStringFormat().map((time) => {
-                const isAvailable = currentDate[day]?.includes(time + ":00");
+            return (
+              <div key={day} className="flex size-full flex-col">
+                {times.map((time, timeIndex) => {
+                  const isAvailable = currentDate[day]?.includes(time + ":00");
+                  const isSelected =
+                    (selectedCell.day === day && selectedCell.time === time) ||
+                    currentDate[day]?.includes(time + ":00");
 
-                const isSelected =
-                  (selectedCell.day === day && selectedCell.time === time) ||
-                  currentDate[day]?.includes(time + ":00");
-
-                return (
-                  <div
-                    role="button"
-                    tabIndex={0}
-                    onClick={() => {
-                      if (isSelected || isAvailable) {
-                        handleNotClick(day, time);
-                      } else {
-                        handleCellClick(day, time);
-                      }
-                    }}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter" || e.key === " ") {
-                        handleCellClick(day, time);
-                      }
-                    }}
-                    key={time}
-                    className={`size-[32px] border border-gray-300 p-2 text-center text-[12px] ${
-                      isAvailable || isSelected
-                        ? "bg-primary text-white"
-                        : "bg-[#E4EFFF] text-primaryNormal"
-                    }`}
-                  />
-                );
-              })}
-            </div>
-          ))}
+                  return (
+                    <div
+                      role="button"
+                      tabIndex={0}
+                      onClick={() => {
+                        if (isSelected || isAvailable) {
+                          handleNotClick(day, time);
+                        } else {
+                          handleCellClick(day, time);
+                        }
+                      }}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" || e.key === " ") {
+                          handleCellClick(day, time);
+                        }
+                      }}
+                      key={time}
+                      className={`size-full border border-gray-300 ${
+                        dayIndex !== week.length - 1 ? "border-r-0" : ""
+                      } ${
+                        timeIndex !== times.length - 1 ? "border-b-0" : ""
+                      } ${isAvailable || isSelected ? "bg-primary" : "bg-white"} `}
+                    />
+                  );
+                })}
+              </div>
+            );
+          })}
         </div>
       </div>
-      <div className="mt-[30px] flex h-auto w-full bg-white px-5 pb-[30px]">
+      <div className="fixed inset-x-0 bottom-0 mx-auto max-w-[375px] bg-white px-5 pb-4 pt-2">
         <button
-          disabled={
-            Object.entries(initalSelectTime).toString() ===
-            Object.entries(currentDate).toString()
-          }
+          disabled={!isChanged || patchTime === undefined}
           className={`h-[48px] w-full rounded-[12px] ${
-            Object.entries(initalSelectTime).toString() ===
-            Object.entries(currentDate).toString()
+            !isChanged
               ? "cursor-not-allowed bg-gray-400"
               : "bg-primaryNormal text-white"
           }`}
           onClick={() => {
             if (confirm("변경된 시간을 저장하시겠습니까?")) {
-              mutate(
+              patchTime(
                 {
-                  phoneNumber: initalPhoneNumber,
-                  name: initalName,
+                  phoneNumber: initialPhoneNumber,
+                  name: initialName,
                   available: currentDate,
                 },
                 {
                   onSuccess: () => {
-                    alert("저장되었습니다.");
+                    setSnackbarOpen(true);
+                    setSavedSelectTime(currentDate);
                   },
                 },
               );
@@ -167,6 +177,17 @@ export function TimeTable({
           <span className="text-white">변경된 시간 저장</span>
         </button>
       </div>
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={1500}
+        onClose={() => setSnackbarOpen(false)}
+        message="변경된 시간이 저장되었습니다."
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        sx={{
+          top: "81%",
+          mx: "20px",
+        }}
+      />
     </div>
   );
 }

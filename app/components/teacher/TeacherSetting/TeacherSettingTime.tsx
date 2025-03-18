@@ -3,7 +3,6 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 import BulletList from "@/ui/List/BulletList";
-import ProfileInfoBox from "@/components/teacher/ProfileInfoBox";
 
 import { TimeTable } from "./TimeTable";
 
@@ -36,29 +35,18 @@ export function SettingTeacherTime({
           과외 가능 시간
         </p>
       </div>
-      <ProfileInfoBox
-        title={`${name} 선생님의 과외 가능시간`}
-        className="gap-[4px]"
-      >
-        <span className="text-labelAssistive">
-          가능 시간을 최신 상태로 유지하면 매칭 확률이 늘어나요
-        </span>
-        <BulletList
-          items={[
-            "선택하려는 시간의 시작과 끝 시간을 누르세요",
-            "한 칸만 선택하려면 해당 칸을 두 번 누르세요",
-            "선택된 영역을 다시 누르면 해당 영역이 취소됩니다",
-            "변경 후 아래 저장 버튼을 클릭해 저장하세요",
-          ]}
-          className="pt-[14px]"
-        />
-        <TimeTable
-          initalName={name}
-          initalPhoneNumber={phoneNumber}
-          initalSelectTime={available}
-        />
-      </ProfileInfoBox>
-      <div className="grid h-auto w-full grid-cols-3 grid-rows-11 gap-3 bg-white px-5 pb-[30px]" />
+      <BulletList
+        items={[
+          "선택 후 다시 누르면 해당 시간이 취소됩니다",
+          "변경된 시간 저장 버튼을 눌러 저장하세요",
+        ]}
+        className="mb-10 py-3 pl-[40px]"
+      />
+      <TimeTable
+        initialName={name}
+        initialPhoneNumber={phoneNumber}
+        initialSelectTime={available}
+      />
     </div>
   );
 }

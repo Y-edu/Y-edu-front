@@ -3,6 +3,7 @@
 import { useSearchParams } from "next/navigation";
 
 import { SettingTeacherTime } from "@/components/teacher/TeacherSetting/TeacherSettingTime";
+import ErrorUI from "@/ui/ErrorUI";
 
 export default function TeacherTimeSetting() {
   const searchParams = useSearchParams();
@@ -11,7 +12,7 @@ export default function TeacherTimeSetting() {
   const available = JSON.parse(searchParams.get("available") as string);
 
   if (!phone || !name || !available) {
-    return <div>올바른 선생님이 아닙니다</div>;
+    return <ErrorUI />;
   }
   return (
     <div className="w-full">

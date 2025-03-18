@@ -5,9 +5,10 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import CircularProgress from "@mui/material/CircularProgress";
+import { Snackbar } from "@mui/material";
 
+import ErrorUI from "@/ui/ErrorUI";
 import BulletList from "@/ui/List/BulletList";
-import ProfileInfoBox from "@/components/teacher/ProfileInfoBox";
 import { buttonLabels } from "@/constants/buttonLabels";
 import { useGetTeacherSettingInfo } from "@/hooks/query/useGetTeacherSettingInfo";
 import { usePatchTeacherSettingRegion } from "@/hooks/mutation/usePatchTeacherSettingRegion";
@@ -22,6 +23,7 @@ export default function TeacherSettingRegion() {
   const router = useRouter();
   const [activeButtons, setActiveButtons] = useState<number[]>([]);
   const [initialActive, setInitialActive] = useState<number[]>([]);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [teacherName, setTeacherName] = useState("");
   const [teacherPhone, setTeacherPhone] = useState("");
 
@@ -73,7 +75,7 @@ export default function TeacherSettingRegion() {
           <button
             key={index}
             onClick={() => onClickButton(index)}
-            className={`${btnClass} h-[48px] rounded-[12px]`}
+            className={`${btnClass} h-[48px] rounded-[12px] font-semibold`}
           >
             {label}
           </button>
@@ -93,18 +95,26 @@ export default function TeacherSettingRegion() {
         <CircularProgress />
       </div>
     );
-  if (!data) return <div>Error occurred</div>;
+  if (!data) return <ErrorUI />;
 
   const onClickSave = () => {
     const updatedDistricts = buttonLabels.filter((_, index) =>
       activeButtons.includes(index),
     );
-    patchRegion({
-      name: teacherName,
-      phoneNumber: teacherPhone,
-      districts: updatedDistricts,
-    });
-    alert("변경된 지역이 저장되었습니다.");
+    if (confirm("변경된 지역을 저장하시겠습니까?")) {
+      patchRegion(
+        {
+          name: teacherName,
+          phoneNumber: teacherPhone,
+          districts: updatedDistricts,
+        },
+        {
+          onSuccess: () => {
+            setSnackbarOpen(true);
+          },
+        },
+      );
+    }
   };
 
   return (
@@ -121,21 +131,13 @@ export default function TeacherSettingRegion() {
           과외 가능 지역
         </p>
       </div>
-      <ProfileInfoBox
-        title={`${data.name} 선생님의 과외 가능지역`}
-        className="!gap-[4px]"
-      >
-        <span className="text-labelAssistive">
-          선택한 지역의 과외건 공지를 받을 수 있어요
-        </span>
-        <BulletList
-          items={[
-            "지역 버튼을 눌러 가능한 지역을 선택해주세요.",
-            "변경된 지역 저장 버튼을 눌러야 최종 저장됩니다.",
-          ]}
-          className="pt-[14px]"
-        />
-      </ProfileInfoBox>
+      <BulletList
+        items={[
+          "지역 버튼을 눌러 가능한 지역을 선택해주세요.",
+          "변경된 지역 저장 버튼을 눌러야 최종 저장됩니다.",
+        ]}
+        className="mb-10 py-3 pl-[40px]"
+      />
       <div className="grid h-auto w-full grid-cols-3 grid-rows-11 gap-3 bg-white px-5 pb-[100px]">
         {buttons}
       </div>
@@ -146,12 +148,23 @@ export default function TeacherSettingRegion() {
           className={`h-[48px] w-full rounded-[12px] ${
             hasChanges
               ? "bg-primaryNormal text-white"
-              : "bg-[#eeeeee] text-labelAssistive"
+              : "bg-gray-400 text-white"
           }`}
         >
           <span>변경된 지역 저장</span>
         </button>
       </div>
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={1500}
+        onClose={() => setSnackbarOpen(false)}
+        message="변경된 지역이 저장되었습니다."
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        sx={{
+          top: "81%",
+          mx: "20px",
+        }}
+      />
     </div>
   );
 }
