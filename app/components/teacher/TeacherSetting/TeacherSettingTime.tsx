@@ -1,30 +1,55 @@
 "use client";
+
 import Image from "next/image";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { CircularProgress } from "@mui/material";
 
 import BulletList from "@/ui/List/BulletList";
+import { useGetTeacherSettingInfo } from "@/hooks/query/useGetTeacherSettingInfo";
+import ErrorUI from "@/ui/ErrorUI";
 
 import { TimeTable } from "./TimeTable";
 
 import BackArrow from "public/images/arrow-black.png";
 
-interface SettingTeacherTimeProps {
-  name: string;
-  phoneNumber: string;
-  available: Record<string, string[]>;
-}
-
-export function SettingTeacherTime({
-  name,
-  phoneNumber,
-  available,
-}: SettingTeacherTimeProps) {
+export function SettingTeacherTime() {
   const router = useRouter();
+  const [teacherName, setTeacherName] = useState("");
+  const [teacherPhone, setTeacherPhone] = useState("");
+
+  useEffect(() => {
+    const storedName = localStorage.getItem("teacherName") || "";
+    const storedPhone = localStorage.getItem("teacherPhone") || "";
+
+    if (!storedName || !storedPhone) {
+      alert("로그인하세요");
+      router.push("/teachersetting/login");
+      return;
+    }
+
+    setTeacherName(storedName);
+    setTeacherPhone(storedPhone);
+  }, [router]);
+
+  const { data, isLoading } = useGetTeacherSettingInfo({
+    name: teacherName,
+    phoneNumber: teacherPhone,
+  });
+
+  if (isLoading)
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <CircularProgress />
+      </div>
+    );
+  if (!data) return <ErrorUI />;
+
   return (
     <div>
       <div className="ml-3 flex flex-row items-center border-b border-primaryPale pb-5 pt-10">
         <Image
-          onClick={() => router.back()}
+          onClick={() => router.push("/teachersetting")}
           src={BackArrow}
           width={24}
           height={24}
@@ -43,9 +68,9 @@ export function SettingTeacherTime({
         className="mb-10 py-3 pl-[40px]"
       />
       <TimeTable
-        initialName={name}
-        initialPhoneNumber={phoneNumber}
-        initialSelectTime={available}
+        initialName={teacherName}
+        initialPhoneNumber={teacherPhone}
+        initialSelectTime={data.available}
       />
     </div>
   );
