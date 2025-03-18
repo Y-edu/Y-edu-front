@@ -118,6 +118,19 @@ export function TimeTable({
                     (selectedCell.day === day && selectedCell.time === time) ||
                     currentDate[day]?.includes(time + ":00");
 
+                  // 조건부 border-radius 설정
+                  const extraClasses =
+                    dayIndex === 0 && timeIndex === 0
+                      ? "rounded-tl-[5px]"
+                      : dayIndex === 0 && timeIndex === times.length - 1
+                        ? "rounded-bl-[5px]"
+                        : dayIndex === week.length - 1 && timeIndex === 0
+                          ? "rounded-tr-[5px]"
+                          : dayIndex === week.length - 1 &&
+                              timeIndex === times.length - 1
+                            ? "rounded-br-[5px]"
+                            : "";
+
                   return (
                     <div
                       role="button"
@@ -139,7 +152,7 @@ export function TimeTable({
                         dayIndex !== week.length - 1 ? "border-r-0" : ""
                       } ${
                         timeIndex !== times.length - 1 ? "border-b-0" : ""
-                      } ${isAvailable || isSelected ? "bg-primary" : "bg-white"} `}
+                      } ${isAvailable || isSelected ? "bg-primary" : "bg-white"} ${extraClasses} `}
                     />
                   );
                 })}
