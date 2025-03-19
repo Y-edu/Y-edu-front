@@ -9,6 +9,7 @@ import SettingBox from "@/ui/Box/SettingBox";
 import { useGetTeacherSettingInfo } from "@/hooks/query/useGetTeacherSettingInfo";
 import { usePatchTeacherSettingAlarmTalk } from "@/hooks/mutation/usePatchTeacherSettingAlarmTalk";
 import { Modal } from "@/ui/Modal";
+import ErrorUI from "@/ui/ErrorUI";
 
 export default function TeacherSettingMain() {
   const router = useRouter();
@@ -31,10 +32,16 @@ export default function TeacherSettingMain() {
     setTeacherPhone(storedPhone);
   }, [router]);
 
-  const { data, isLoading } = useGetTeacherSettingInfo({
-    name: teacherName,
-    phoneNumber: teacherPhone,
-  });
+  const isQueryEnabled = Boolean(teacherName && teacherPhone);
+  const { data, isLoading, isError } = useGetTeacherSettingInfo(
+    {
+      name: teacherName,
+      phoneNumber: teacherPhone,
+    },
+    {
+      enabled: isQueryEnabled,
+    },
+  );
 
   const { mutate: patchAlarmTalk } = usePatchTeacherSettingAlarmTalk();
 
@@ -44,13 +51,21 @@ export default function TeacherSettingMain() {
     }
   }, [data]);
 
-  if (isLoading)
+  if (!isQueryEnabled) {
+    return null;
+  }
+
+  if (isLoading) {
     return (
       <div className="flex min-h-screen items-center justify-center">
         <CircularProgress />
       </div>
     );
-  if (!data) return <div>Error occurred</div>;
+  }
+
+  if (isError || !data) {
+    return <ErrorUI />;
+  }
 
   const handleToggleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = event.target.checked;
