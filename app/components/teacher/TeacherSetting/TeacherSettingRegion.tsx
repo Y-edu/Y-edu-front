@@ -41,10 +41,16 @@ export default function TeacherSettingRegion() {
     setTeacherPhone(storedPhone);
   }, [router]);
 
-  const { data, isLoading } = useGetTeacherSettingInfo({
-    name: teacherName,
-    phoneNumber: teacherPhone,
-  });
+  const isQueryEnabled = Boolean(teacherName && teacherPhone);
+  const { data, isLoading, isError } = useGetTeacherSettingInfo(
+    {
+      name: teacherName,
+      phoneNumber: teacherPhone,
+    },
+    {
+      enabled: isQueryEnabled,
+    },
+  );
 
   const { mutate: patchRegion, isPending: patchLoading } =
     usePatchTeacherSettingRegion();
@@ -88,16 +94,7 @@ export default function TeacherSettingRegion() {
     () => !arraysEqual(activeButtons, initialActive),
     [activeButtons, initialActive],
   );
-
   useUnsavedChangeWarning(hasChanges);
-
-  if (isLoading)
-    return (
-      <div className="flex min-h-screen items-center justify-center">
-        <CircularProgress />
-      </div>
-    );
-  if (!data) return <ErrorUI />;
 
   const handleBackClick = () => {
     if (hasChanges) {
@@ -130,6 +127,22 @@ export default function TeacherSettingRegion() {
       );
     }
   };
+
+  if (!isQueryEnabled) {
+    return null;
+  }
+
+  if (isLoading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <CircularProgress />
+      </div>
+    );
+  }
+
+  if (isError || !data) {
+    return <ErrorUI />;
+  }
 
   return (
     <div>

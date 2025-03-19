@@ -33,10 +33,16 @@ export function SettingTeacherTime() {
     setTeacherPhone(storedPhone);
   }, [router]);
 
-  const { data, isLoading } = useGetTeacherSettingInfo({
-    name: teacherName,
-    phoneNumber: teacherPhone,
-  });
+  const isQueryEnabled = Boolean(teacherName && teacherPhone);
+  const { data, isLoading, isError } = useGetTeacherSettingInfo(
+    {
+      name: teacherName,
+      phoneNumber: teacherPhone,
+    },
+    {
+      enabled: isQueryEnabled,
+    },
+  );
 
   const handleBackClick = () => {
     if (hasChanges) {
@@ -50,13 +56,21 @@ export function SettingTeacherTime() {
     }
   };
 
-  if (isLoading)
+  if (!isQueryEnabled) {
+    return null;
+  }
+
+  if (isLoading) {
     return (
       <div className="flex min-h-screen items-center justify-center">
         <CircularProgress />
       </div>
     );
-  if (!data) return <ErrorUI />;
+  }
+
+  if (isError || !data) {
+    return <ErrorUI />;
+  }
 
   return (
     <div>
