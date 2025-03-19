@@ -60,6 +60,12 @@ export function SettingTeacherTime() {
           과외 가능 시간
         </p>
       </div>
+      <div className="m-4 rounded-md border border-blue-300 bg-blue-100 p-4">
+        <p className="text-sm text-blue-800">
+          현재, 가능 시간과 관계 없이 모든 과외건 공지가 전송되며, 추후 설정한
+          시간에 맞는 공지를 받을 수 있도록 기능이 추가될 예정이에요.😊
+        </p>
+      </div>
       <BulletList
         items={[
           "선택 후 다시 누르면 해당 시간이 취소됩니다",

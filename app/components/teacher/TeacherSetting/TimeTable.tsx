@@ -118,7 +118,7 @@ export function TimeTable({
                     (selectedCell.day === day && selectedCell.time === time) ||
                     currentDate[day]?.includes(time + ":00");
 
-                  // 조건부 border-radius 설정
+                  // 각 모서리 border-radius 설정
                   const extraClasses =
                     dayIndex === 0 && timeIndex === 0
                       ? "rounded-tl-[5px]"
