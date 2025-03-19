@@ -17,6 +17,7 @@ export function SettingTeacherTime() {
   const router = useRouter();
   const [teacherName, setTeacherName] = useState("");
   const [teacherPhone, setTeacherPhone] = useState("");
+  const [hasChanges, setHasChanges] = useState(false);
 
   useEffect(() => {
     const storedName = localStorage.getItem("teacherName") || "";
@@ -37,6 +38,18 @@ export function SettingTeacherTime() {
     phoneNumber: teacherPhone,
   });
 
+  const handleBackClick = () => {
+    if (hasChanges) {
+      if (
+        confirm("저장하지 않은 변경사항이 있습니다. 페이지를 떠나시겠습니까?")
+      ) {
+        router.push("/teachersetting");
+      }
+    } else {
+      router.push("/teachersetting");
+    }
+  };
+
   if (isLoading)
     return (
       <div className="flex min-h-screen items-center justify-center">
@@ -48,14 +61,13 @@ export function SettingTeacherTime() {
   return (
     <div>
       <div className="ml-3 flex flex-row items-center border-b border-primaryPale pb-5 pt-10">
-        <Image
-          onClick={() => router.push("/teachersetting")}
-          src={BackArrow}
-          width={24}
-          height={24}
-          alt="뒤로가기"
-          className="mr-2 size-8 cursor-pointer"
-        />
+        <button onClick={handleBackClick} className="flex items-center">
+          <Image
+            src={BackArrow}
+            alt="뒤로가기"
+            className="mr-2 size-8 cursor-pointer"
+          />
+        </button>
         <p className="font-pretendard text-xl font-bold text-labelStrong">
           과외 가능 시간
         </p>
@@ -77,6 +89,7 @@ export function SettingTeacherTime() {
         initialName={teacherName}
         initialPhoneNumber={teacherPhone}
         initialSelectTime={data.available}
+        onHasChangesChange={setHasChanges}
       />
     </div>
   );

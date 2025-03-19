@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { eachMinuteOfInterval, format } from "date-fns";
 import { Snackbar } from "@mui/material";
 
 import { getSplitHoursToStringFormat } from "@/utils/date";
 import { useUpdateTeacherAvailable } from "@/hooks/mutation/usePutAvailableTeacherTime";
+import useUnsavedChangeWarning from "@/hooks/custom/useUnsavedChangeWarning";
 
 interface TimeCell {
   day: string;
@@ -14,12 +15,14 @@ interface TimeTableProps {
   initialPhoneNumber: string;
   initialName: string;
   initialSelectTime: Record<string, string[]>;
+  onHasChangesChange?: (hasChanges: boolean) => void;
 }
 
 export function TimeTable({
   initialName,
   initialPhoneNumber,
   initialSelectTime,
+  onHasChangesChange,
 }: TimeTableProps) {
   const { mutate: patchTime } = useUpdateTeacherAvailable();
   const [currentDate, setCurrentDate] =
@@ -75,8 +78,16 @@ export function TimeTable({
     setSelectedCell({ day: "", time: "" });
   };
 
-  const isChanged =
+  const hasChanges =
     JSON.stringify(savedSelectTime) !== JSON.stringify(currentDate);
+
+  useUnsavedChangeWarning(hasChanges);
+
+  useEffect(() => {
+    if (onHasChangesChange) {
+      onHasChangesChange(hasChanges);
+    }
+  }, [hasChanges, onHasChangesChange]);
 
   return (
     <div className="m-5 mx-auto flex w-full flex-col pb-[100px]">
@@ -163,9 +174,9 @@ export function TimeTable({
       </div>
       <div className="fixed inset-x-0 bottom-0 mx-auto max-w-[375px] bg-white px-5 pb-4 pt-2">
         <button
-          disabled={!isChanged || patchTime === undefined}
+          disabled={!hasChanges || patchTime === undefined}
           className={`h-[48px] w-full rounded-[12px] ${
-            !isChanged
+            !hasChanges
               ? "cursor-not-allowed bg-gray-400"
               : "bg-primaryNormal text-white"
           }`}

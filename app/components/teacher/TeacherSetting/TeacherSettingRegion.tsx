@@ -2,7 +2,6 @@
 
 import { useEffect, useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 import Image from "next/image";
 import CircularProgress from "@mui/material/CircularProgress";
 import { Snackbar } from "@mui/material";
@@ -12,6 +11,7 @@ import BulletList from "@/ui/List/BulletList";
 import { buttonLabels } from "@/constants/buttonLabels";
 import { useGetTeacherSettingInfo } from "@/hooks/query/useGetTeacherSettingInfo";
 import { usePatchTeacherSettingRegion } from "@/hooks/mutation/usePatchTeacherSettingRegion";
+import useUnsavedChangeWarning from "@/hooks/custom/useUnsavedChangeWarning";
 
 import BackArrow from "public/images/arrow-black.png";
 
@@ -89,6 +89,8 @@ export default function TeacherSettingRegion() {
     [activeButtons, initialActive],
   );
 
+  useUnsavedChangeWarning(hasChanges);
+
   if (isLoading)
     return (
       <div className="flex min-h-screen items-center justify-center">
@@ -96,6 +98,18 @@ export default function TeacherSettingRegion() {
       </div>
     );
   if (!data) return <ErrorUI />;
+
+  const handleBackClick = () => {
+    if (hasChanges) {
+      if (
+        confirm("저장하지 않은 변경사항이 있습니다. 페이지를 떠나시겠습니까?")
+      ) {
+        router.push("/teachersetting");
+      }
+    } else {
+      router.push("/teachersetting");
+    }
+  };
 
   const onClickSave = () => {
     const updatedDistricts = buttonLabels.filter((_, index) =>
@@ -120,13 +134,13 @@ export default function TeacherSettingRegion() {
   return (
     <div>
       <div className="ml-3 flex flex-row items-center border-b border-primaryPale pb-5 pt-10">
-        <Link href="/teachersetting">
+        <button onClick={handleBackClick} className="flex items-center">
           <Image
             src={BackArrow}
             alt="뒤로가기"
             className="mr-2 size-8 cursor-pointer"
           />
-        </Link>
+        </button>
         <p className="font-pretendard text-xl font-bold text-labelStrong">
           과외 가능 지역
         </p>
