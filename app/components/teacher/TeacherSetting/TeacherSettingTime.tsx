@@ -17,7 +17,6 @@ export function SettingTeacherTime() {
   const router = useRouter();
   const [teacherName, setTeacherName] = useState("");
   const [teacherPhone, setTeacherPhone] = useState("");
-  const [hasChanges, setHasChanges] = useState(false);
 
   useEffect(() => {
     const storedName = localStorage.getItem("teacherName") || "";
@@ -45,15 +44,7 @@ export function SettingTeacherTime() {
   );
 
   const handleBackClick = () => {
-    if (hasChanges) {
-      if (
-        confirm("저장하지 않은 변경사항이 있습니다. 페이지를 떠나시겠습니까?")
-      ) {
-        router.push("/teachersetting");
-      }
-    } else {
-      router.push("/teachersetting");
-    }
+    router.push("/teachersetting");
   };
 
   if (!isQueryEnabled) {
@@ -103,7 +94,6 @@ export function SettingTeacherTime() {
         initialName={teacherName}
         initialPhoneNumber={teacherPhone}
         initialSelectTime={data.available}
-        onHasChangesChange={setHasChanges}
       />
     </div>
   );

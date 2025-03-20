@@ -1,10 +1,9 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { eachMinuteOfInterval, format } from "date-fns";
 import { Snackbar } from "@mui/material";
 
 import { getSplitHoursToStringFormat } from "@/utils/date";
 import { useUpdateTeacherAvailable } from "@/hooks/mutation/usePutAvailableTeacherTime";
-import useUnsavedChangeWarning from "@/hooks/custom/useUnsavedChangeWarning";
 
 interface TimeCell {
   day: string;
@@ -15,14 +14,12 @@ interface TimeTableProps {
   initialPhoneNumber: string;
   initialName: string;
   initialSelectTime: Record<string, string[]>;
-  onHasChangesChange?: (hasChanges: boolean) => void;
 }
 
 export function TimeTable({
   initialName,
   initialPhoneNumber,
   initialSelectTime,
-  onHasChangesChange,
 }: TimeTableProps) {
   const { mutate: patchTime } = useUpdateTeacherAvailable();
   const [currentDate, setCurrentDate] =
@@ -80,14 +77,6 @@ export function TimeTable({
 
   const hasChanges =
     JSON.stringify(savedSelectTime) !== JSON.stringify(currentDate);
-
-  useUnsavedChangeWarning(hasChanges);
-
-  useEffect(() => {
-    if (onHasChangesChange) {
-      onHasChangesChange(hasChanges);
-    }
-  }, [hasChanges, onHasChangesChange]);
 
   return (
     <div className="m-5 mx-auto flex w-full flex-col pb-[100px]">
