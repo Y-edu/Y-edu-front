@@ -11,7 +11,6 @@ import BulletList from "@/ui/List/BulletList";
 import { buttonLabels } from "@/constants/buttonLabels";
 import { useGetTeacherSettingInfo } from "@/hooks/query/useGetTeacherSettingInfo";
 import { usePatchTeacherSettingRegion } from "@/hooks/mutation/usePatchTeacherSettingRegion";
-import useUnsavedChangeWarning from "@/hooks/custom/useUnsavedChangeWarning";
 
 import BackArrow from "public/images/arrow-black.png";
 
@@ -94,38 +93,27 @@ export default function TeacherSettingRegion() {
     () => !arraysEqual(activeButtons, initialActive),
     [activeButtons, initialActive],
   );
-  useUnsavedChangeWarning(hasChanges);
 
   const handleBackClick = () => {
-    if (hasChanges) {
-      if (
-        confirm("저장하지 않은 변경사항이 있습니다. 페이지를 떠나시겠습니까?")
-      ) {
-        router.push("/teachersetting");
-      }
-    } else {
-      router.push("/teachersetting");
-    }
+    router.push("/teachersetting");
   };
 
   const onClickSave = () => {
     const updatedDistricts = buttonLabels.filter((_, index) =>
       activeButtons.includes(index),
     );
-    if (confirm("변경된 지역을 저장하시겠습니까?")) {
-      patchRegion(
-        {
-          name: teacherName,
-          phoneNumber: teacherPhone,
-          districts: updatedDistricts,
+    patchRegion(
+      {
+        name: teacherName,
+        phoneNumber: teacherPhone,
+        districts: updatedDistricts,
+      },
+      {
+        onSuccess: () => {
+          setSnackbarOpen(true);
         },
-        {
-          onSuccess: () => {
-            setSnackbarOpen(true);
-          },
-        },
-      );
-    }
+      },
+    );
   };
 
   if (!isQueryEnabled) {
@@ -160,8 +148,8 @@ export default function TeacherSettingRegion() {
       </div>
       <BulletList
         items={[
-          "지역 버튼을 눌러 가능한 지역을 선택해주세요.",
-          "변경된 지역 저장 버튼을 눌러야 최종 저장됩니다.",
+          "더 많은 지역을 선택할 수록 빠르게 매칭이 가능해요. ",
+          "‘강남구’, ‘서초구’ 지역이 과외 문의의 50%를 차지해요.",
         ]}
         className="mb-10 py-3 pl-[40px]"
       />
@@ -172,7 +160,7 @@ export default function TeacherSettingRegion() {
         <button
           disabled={!hasChanges || patchLoading}
           onClick={onClickSave}
-          className={`h-[48px] w-full rounded-[12px] ${
+          className={`h-[48px] w-full rounded-[12px] font-bold ${
             hasChanges
               ? "bg-primaryNormal text-white"
               : "bg-gray-400 text-white"

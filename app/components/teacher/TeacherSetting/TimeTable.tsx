@@ -1,10 +1,9 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { eachMinuteOfInterval, format } from "date-fns";
 import { Snackbar } from "@mui/material";
 
 import { getSplitHoursToStringFormat } from "@/utils/date";
 import { useUpdateTeacherAvailable } from "@/hooks/mutation/usePutAvailableTeacherTime";
-import useUnsavedChangeWarning from "@/hooks/custom/useUnsavedChangeWarning";
 
 interface TimeCell {
   day: string;
@@ -15,14 +14,12 @@ interface TimeTableProps {
   initialPhoneNumber: string;
   initialName: string;
   initialSelectTime: Record<string, string[]>;
-  onHasChangesChange?: (hasChanges: boolean) => void;
 }
 
 export function TimeTable({
   initialName,
   initialPhoneNumber,
   initialSelectTime,
-  onHasChangesChange,
 }: TimeTableProps) {
   const { mutate: patchTime } = useUpdateTeacherAvailable();
   const [currentDate, setCurrentDate] =
@@ -80,14 +77,6 @@ export function TimeTable({
 
   const hasChanges =
     JSON.stringify(savedSelectTime) !== JSON.stringify(currentDate);
-
-  useUnsavedChangeWarning(hasChanges);
-
-  useEffect(() => {
-    if (onHasChangesChange) {
-      onHasChangesChange(hasChanges);
-    }
-  }, [hasChanges, onHasChangesChange]);
 
   return (
     <div className="m-5 mx-auto flex w-full flex-col pb-[100px]">
@@ -175,30 +164,28 @@ export function TimeTable({
       <div className="fixed inset-x-0 bottom-0 mx-auto max-w-[375px] bg-white px-5 pb-4 pt-2">
         <button
           disabled={!hasChanges || patchTime === undefined}
-          className={`h-[48px] w-full rounded-[12px] ${
+          className={`h-[48px] w-full rounded-[12px] font-bold ${
             !hasChanges
-              ? "cursor-not-allowed bg-gray-400"
+              ? "bg-gray-400 text-white"
               : "bg-primaryNormal text-white"
           }`}
           onClick={() => {
-            if (confirm("변경된 시간을 저장하시겠습니까?")) {
-              patchTime(
-                {
-                  phoneNumber: initialPhoneNumber,
-                  name: initialName,
-                  available: currentDate,
+            patchTime(
+              {
+                phoneNumber: initialPhoneNumber,
+                name: initialName,
+                available: currentDate,
+              },
+              {
+                onSuccess: () => {
+                  setSnackbarOpen(true);
+                  setSavedSelectTime(currentDate);
                 },
-                {
-                  onSuccess: () => {
-                    setSnackbarOpen(true);
-                    setSavedSelectTime(currentDate);
-                  },
-                },
-              );
-            }
+              },
+            );
           }}
         >
-          <span className="text-white">변경된 시간 저장</span>
+          <span>변경된 시간 저장</span>
         </button>
       </div>
       <Snackbar
