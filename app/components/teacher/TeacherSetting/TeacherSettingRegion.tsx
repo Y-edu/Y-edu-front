@@ -148,8 +148,8 @@ export default function TeacherSettingRegion() {
       </div>
       <BulletList
         items={[
-          "지역 버튼을 눌러 가능한 지역을 선택해주세요.",
-          "변경된 지역 저장 버튼을 눌러야 최종 저장됩니다.",
+          "더 많은 지역을 선택할 수록 빠르게 매칭이 가능해요. ",
+          "‘강남구’, ‘서초구’ 지역이 과외 문의의 50%를 차지해요.",
         ]}
         className="mb-10 py-3 pl-[40px]"
       />

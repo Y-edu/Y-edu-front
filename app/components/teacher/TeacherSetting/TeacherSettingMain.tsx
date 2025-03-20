@@ -93,9 +93,9 @@ export default function TeacherSettingMain() {
     <div>
       <Modal
         isOpen={showModal}
-        title="과외건 공지를 받지 않겠습니까?"
-        message="이 설정을 끄면 지역에 맞는 과외건 공지 메세지가 전송되지 않습니다."
-        confirmText="받지 않기"
+        title="과외 공지 수신을 중단할까요?"
+        message="수신 중단 시, 더 이상 선생님께 카톡으로 과외 공지를 전송드리지 않아요."
+        confirmText="중단"
         cancelText="계속 받기"
         handleOnConfirm={() => {
           setIsToggled(false);
@@ -116,15 +116,15 @@ export default function TeacherSettingMain() {
       </p>
       <div className="flex flex-col gap-[2px] bg-primaryPale">
         <SettingBox
-          title="과외건 공지 받기"
+          title="과외 공지 받기"
           isToggle
           toggleChecked={isToggled}
           onToggleChange={handleToggleChange}
         >
           <span className="text-primary">
             {isToggled
-              ? "지역에 맞는 과외건 공지 메세지를 받습니다."
-              : "과외건 공지 메세지를 받지 않습니다."}
+              ? "카카오톡으로 과외 공지를 받을 수 있어요."
+              : "카카오톡으로 과외 공지를 받을 수 없어요."}
           </span>
         </SettingBox>
         <Link href="/teachersetting/region">
