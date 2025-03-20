@@ -164,30 +164,28 @@ export function TimeTable({
       <div className="fixed inset-x-0 bottom-0 mx-auto max-w-[375px] bg-white px-5 pb-4 pt-2">
         <button
           disabled={!hasChanges || patchTime === undefined}
-          className={`h-[48px] w-full rounded-[12px] ${
+          className={`h-[48px] w-full rounded-[12px] font-bold ${
             !hasChanges
-              ? "cursor-not-allowed bg-gray-400"
+              ? "bg-gray-400 text-white"
               : "bg-primaryNormal text-white"
           }`}
           onClick={() => {
-            if (confirm("변경된 시간을 저장하시겠습니까?")) {
-              patchTime(
-                {
-                  phoneNumber: initialPhoneNumber,
-                  name: initialName,
-                  available: currentDate,
+            patchTime(
+              {
+                phoneNumber: initialPhoneNumber,
+                name: initialName,
+                available: currentDate,
+              },
+              {
+                onSuccess: () => {
+                  setSnackbarOpen(true);
+                  setSavedSelectTime(currentDate);
                 },
-                {
-                  onSuccess: () => {
-                    setSnackbarOpen(true);
-                    setSavedSelectTime(currentDate);
-                  },
-                },
-              );
-            }
+              },
+            );
           }}
         >
-          <span className="text-white">변경된 시간 저장</span>
+          <span>변경된 시간 저장</span>
         </button>
       </div>
       <Snackbar

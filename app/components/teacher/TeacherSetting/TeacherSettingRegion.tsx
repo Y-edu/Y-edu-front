@@ -102,20 +102,18 @@ export default function TeacherSettingRegion() {
     const updatedDistricts = buttonLabels.filter((_, index) =>
       activeButtons.includes(index),
     );
-    if (confirm("변경된 지역을 저장하시겠습니까?")) {
-      patchRegion(
-        {
-          name: teacherName,
-          phoneNumber: teacherPhone,
-          districts: updatedDistricts,
+    patchRegion(
+      {
+        name: teacherName,
+        phoneNumber: teacherPhone,
+        districts: updatedDistricts,
+      },
+      {
+        onSuccess: () => {
+          setSnackbarOpen(true);
         },
-        {
-          onSuccess: () => {
-            setSnackbarOpen(true);
-          },
-        },
-      );
-    }
+      },
+    );
   };
 
   if (!isQueryEnabled) {
@@ -162,7 +160,7 @@ export default function TeacherSettingRegion() {
         <button
           disabled={!hasChanges || patchLoading}
           onClick={onClickSave}
-          className={`h-[48px] w-full rounded-[12px] ${
+          className={`h-[48px] w-full rounded-[12px] font-bold ${
             hasChanges
               ? "bg-primaryNormal text-white"
               : "bg-gray-400 text-white"
