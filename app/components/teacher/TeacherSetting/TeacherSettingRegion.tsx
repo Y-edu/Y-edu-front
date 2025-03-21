@@ -8,9 +8,11 @@ import { Snackbar } from "@mui/material";
 
 import ErrorUI from "@/ui/ErrorUI";
 import BulletList from "@/ui/List/BulletList";
+import { Modal } from "@/ui";
 import { buttonLabels } from "@/constants/buttonLabels";
 import { useGetTeacherSettingInfo } from "@/hooks/query/useGetTeacherSettingInfo";
 import { usePatchTeacherSettingRegion } from "@/hooks/mutation/usePatchTeacherSettingRegion";
+import useUnsavedBackWarning from "@/hooks/custom/useUnsavedBackWarning";
 
 import BackArrow from "public/images/arrow-black.png";
 
@@ -94,9 +96,16 @@ export default function TeacherSettingRegion() {
     [activeButtons, initialActive],
   );
 
-  const handleBackClick = () => {
-    router.push("/teachersetting");
-  };
+  const {
+    isModalOpen,
+    handleBackClick,
+    handleModalConfirm,
+    handleModalCancel,
+  } = useUnsavedBackWarning(
+    hasChanges,
+    () => window.history.go(-1),
+    () => router.push("/teachersetting"),
+  );
 
   const onClickSave = () => {
     const updatedDistricts = buttonLabels.filter((_, index) =>
@@ -111,6 +120,7 @@ export default function TeacherSettingRegion() {
       {
         onSuccess: () => {
           setSnackbarOpen(true);
+          setInitialActive(activeButtons);
         },
       },
     );
@@ -179,6 +189,15 @@ export default function TeacherSettingRegion() {
           top: "81%",
           mx: "20px",
         }}
+      />
+      <Modal
+        title="변경 사항이 저장되지 않았어요!"
+        message="아직 변경된 시간이 저장되지 않았어요. 저장하지 않고 나가시겠습니까?"
+        confirmText="저장하지 않고 나가기"
+        cancelText="머무르기"
+        isOpen={isModalOpen}
+        handleOnConfirm={handleModalConfirm}
+        handleOnCancel={handleModalCancel}
       />
     </div>
   );
