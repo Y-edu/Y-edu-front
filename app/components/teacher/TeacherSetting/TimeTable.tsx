@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { eachMinuteOfInterval, format } from "date-fns";
 import { Snackbar } from "@mui/material";
 
@@ -14,12 +14,14 @@ interface TimeTableProps {
   initialPhoneNumber: string;
   initialName: string;
   initialSelectTime: Record<string, string[]>;
+  onHasTimeChange?: (hasChanges: boolean) => void;
 }
 
 export function TimeTable({
   initialName,
   initialPhoneNumber,
   initialSelectTime,
+  onHasTimeChange,
 }: TimeTableProps) {
   const { mutate: patchTime } = useUpdateTeacherAvailable();
   const [currentDate, setCurrentDate] =
@@ -77,6 +79,12 @@ export function TimeTable({
 
   const hasChanges =
     JSON.stringify(savedSelectTime) !== JSON.stringify(currentDate);
+
+  useEffect(() => {
+    if (onHasTimeChange) {
+      onHasTimeChange(hasChanges);
+    }
+  }, [hasChanges, onHasTimeChange]);
 
   return (
     <div className="m-5 mx-auto flex w-full flex-col pb-[100px]">
