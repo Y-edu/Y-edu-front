@@ -43,10 +43,17 @@ export default function TeacherSettingLogin() {
 
   return (
     <div>
-      <p className="border-b border-primaryPale pb-5 pt-10 text-center font-pretendard text-xl font-bold text-labelStrong">
+      <p className="pb-5 pt-10 text-center font-pretendard text-xl font-bold text-labelStrong">
         <span className="text-primary">Y-Edu</span> 선생님 과외 설정
       </p>
       <div className="flex flex-col px-5">
+        <section>
+          <p className="mb-6 text-center text-sm text-gray-600">
+            선생님 등록 시 입력한 이름과 전화번호를 입력하면
+            <br />
+            본인의 과외 설정 페이지로 이동할 수 있습니다.
+          </p>
+        </section>
         <input
           type="text"
           placeholder="이름 (ex.김에듀)"
