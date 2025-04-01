@@ -192,7 +192,7 @@ export default function TeacherSettingRegion() {
       />
       <Modal
         title="변경 사항이 저장되지 않았어요!"
-        message="아직 변경된 시간이 저장되지 않았어요. 저장하지 않고 나가시겠습니까?"
+        message="아직 변경된 지역이 저장되지 않았어요. 저장하지 않고 나가시겠습니까?"
         confirmText="저장하지 않고 나가기"
         cancelText="머무르기"
         isOpen={isModalOpen}
