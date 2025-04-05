@@ -17,9 +17,10 @@ function getDaysArray(year: number, month: number): string[] {
   return Array.from({ length: daysInMonth }, (_, i) => `${i + 1}일`);
 }
 
-const monthOptions = [currentMonth, currentMonth + 1, currentMonth + 2]
-  .filter((m) => m <= 11)
-  .map((m) => `${m + 1}월`);
+const monthOptions = Array.from({ length: 3 }, (_, i) => {
+  const date = new Date(year, currentMonth + i);
+  return `${date.getMonth() + 1}월`;
+});
 
 const periodOptions = ["오전", "오후"];
 const hourOptions = Array.from({ length: 12 }, (_, i) => String(i + 1));
@@ -31,7 +32,7 @@ type OptionKey = "month" | "day" | "period" | "hour" | "minute";
 
 export default function FirstDayPicker() {
   const [selected, setSelected] = useState({
-    month: `${currentMonth}월`,
+    month: `${currentMonth + 1}월`,
     day: "1일",
     period: "오전",
     hour: "1",
