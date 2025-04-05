@@ -4,7 +4,7 @@ import React, {
   createContext,
   useContext,
   useState,
-  useMemo,
+  useEffect,
   PropsWithChildren,
 } from "react";
 import {
@@ -19,9 +19,18 @@ import { useGetAcceptance } from "@/hooks/query";
 import { AcceptanceSchema } from "@/actions/get-acceptance";
 
 interface AlimTableContextType {
-  alimTable: Table<AcceptanceSchema["alarmTalkResponses"][0]>;
+  alimTable: Table<
+    AcceptanceSchema["alarmTalkResponses"][0] & { receiveAcceptance?: string }
+  >;
   rowSelection: RowSelectionState;
   setRowSelection: React.Dispatch<React.SetStateAction<RowSelectionState>>;
+  setAlimData: React.Dispatch<
+    React.SetStateAction<
+      (AcceptanceSchema["alarmTalkResponses"][0] & {
+        receiveAcceptance: string;
+      })[]
+    >
+  >;
 }
 
 const AlimTableContext = createContext<AlimTableContextType | undefined>(
@@ -36,28 +45,30 @@ export const AlimTableProvider = ({
   const { data } = useGetAcceptance(matchingId, page);
 
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
+  const [alimData, setAlimData] = useState<
+    (AcceptanceSchema["alarmTalkResponses"][0] & {
+      receiveAcceptance: string;
+    })[]
+  >([]);
+
+  useEffect(() => {
+    if (data?.alarmTalkResponses) {
+      setAlimData(
+        data.alarmTalkResponses.map((v) => ({
+          ...v,
+          receiveAcceptance: `${v.accept} / ${v.total}`,
+        })),
+      );
+    }
+  }, [data]);
 
   const statusOrder = {
     전송: 1,
     수락: 2,
     대기: 3,
     거절: 4,
+    매칭: 0,
   };
-
-  const alimData = useMemo<
-    (AcceptanceSchema["alarmTalkResponses"][0] & {
-      receiveAcceptance: string;
-    })[]
-  >(() => {
-    return (
-      data?.alarmTalkResponses?.map((v) => {
-        return {
-          ...v,
-          receiveAcceptance: `${v.accept} / ${v.total}`,
-        };
-      }) || []
-    );
-  }, [data]);
 
   const alimTable = useReactTable({
     columns: AlimTHeaderColumn,
@@ -76,7 +87,7 @@ export const AlimTableProvider = ({
 
   return (
     <AlimTableContext.Provider
-      value={{ alimTable, rowSelection, setRowSelection }}
+      value={{ alimTable, rowSelection, setRowSelection, setAlimData }}
     >
       {children}
     </AlimTableContext.Provider>
