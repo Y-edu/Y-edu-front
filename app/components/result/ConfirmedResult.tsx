@@ -27,7 +27,7 @@ export default function ConfirmedResult() {
       prev.includes(day) ? prev.filter((d) => d !== day) : [...prev, day],
     );
   };
-  const handleToggleTimeVaries = (id: string) => {
+  const handleToggleTimeVaries = () => {
     setIsTimeVariesByDay((prev) => !prev);
   };
   return (
