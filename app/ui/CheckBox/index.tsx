@@ -1,8 +1,7 @@
 import cn from "@/utils/cn";
 import IconCheck from "@/icons/IconCheck";
-import Button from "@/ui/Button";
 
-interface CheckboxWithLabelProps {
+interface CheckboxProps {
   id: string;
   label?: string;
   isChecked: boolean;
@@ -10,24 +9,35 @@ interface CheckboxWithLabelProps {
   isRequired?: boolean;
 }
 
-export default function CheckboxWithLabel({
+export default function Checkbox({
   id,
   label,
   isChecked,
   onChange,
   isRequired = false,
-}: CheckboxWithLabelProps) {
+}: CheckboxProps) {
   return (
     <div className="flex w-full items-center gap-[8px]">
-      <Button
-        onClick={() => onChange(id)}
-        className={cn(
-          "flex h-[24px] w-[24px] cursor-pointer items-center justify-center rounded-lg border-[1px] border-grey-400 bg-white p-0",
-          isChecked && "border-none",
-        )}
-      >
-        <IconCheck IconColor={!isChecked && "transparent"} />
-      </Button>
+      <div className="relative">
+        <input
+          type="checkbox"
+          id={id}
+          checked={isChecked}
+          onChange={() => onChange(id)}
+          className="sr-only"
+          aria-required={isRequired}
+        />
+        <label
+          htmlFor={id}
+          className={cn(
+            "sr-only flex h-[24px] w-[24px] cursor-pointer items-center justify-center rounded-lg border-[1px] border-grey-400 bg-white",
+            isChecked && "border-none",
+          )}
+        >
+          <IconCheck iconColor={!isChecked && "transparent"} />
+        </label>
+      </div>
+
       <span className="text-[14px] font-medium">
         {label}
         {isRequired && <span className="ml-1 text-[#ea7465]">*</span>}

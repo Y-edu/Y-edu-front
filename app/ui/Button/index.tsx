@@ -14,8 +14,7 @@ const Button = forwardRef<HTMLButtonElement, UseButtonProp>(
     });
 
     return (
-      // eslint-disable-next-line react/button-has-type
-      <button {...getButtonProps()}>
+      <button type="button" {...getButtonProps()}>
         {leftIcon}
         {children}
         {rightIcon}
