@@ -25,5 +25,4 @@ export default function ResultPage() {
       </div>
     </HeaderWithBack>
   );
-
 }

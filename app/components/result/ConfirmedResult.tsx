@@ -6,7 +6,7 @@ import Button from "@/ui/Button";
 import cn from "@/utils/cn";
 import IconDown from "@/icons/IconDown";
 import BottomSheet from "@/ui/BottomSheet";
-import CheckboxWithLabel from "@/ui/CheckBox";
+import Checkbox from "@/ui/CheckBox";
 import Textarea from "@/ui/Textarea";
 
 import DivWithLabel from "./DivWIthLabel";
@@ -66,7 +66,7 @@ export default function ConfirmedResult() {
         >
           선택하세요
         </Button>
-        <CheckboxWithLabel
+        <Checkbox
           id="time-picker"
           label="요일마다 수업 시간이 달라요"
           isChecked={isTimeVariesByDay}
