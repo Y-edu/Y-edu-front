@@ -20,7 +20,7 @@ export default function HeaderWithBack({
 }: HeaderWithBackProps) {
   return (
     <div className="flex h-screen flex-col">
-      <header className="border-grey-100 relative flex h-[48px] items-center justify-center border-b py-4">
+      <header className="relative flex h-[48px] items-center justify-center border-b border-grey-100 py-4">
         {hasBack && (
           <IconLeft
             className="absolute left-[8px] cursor-pointer"

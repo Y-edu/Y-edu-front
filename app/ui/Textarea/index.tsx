@@ -42,12 +42,12 @@ export default function Textarea({
         onChange={handleChange}
         className={cn(
           "border-1 min-h-[104px] w-full resize-none rounded-[12px] border border-grey-200 p-[16px] text-[16px] outline-none placeholder:text-gray-400 focus:border-2 focus:border-primary",
-          isError && "border-warning focus:border-warning border-2",
+          isError && "border-2 border-warning focus:border-warning",
         )}
       />
 
       {isError && (
-        <div className="text-warning flex items-center gap-[4px] text-[14px]">
+        <div className="flex items-center gap-[4px] text-[14px] text-warning">
           <IconWarning />
           <span>{maxLengthError || errorMessage}</span>
         </div>
