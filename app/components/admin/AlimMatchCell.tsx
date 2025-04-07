@@ -7,7 +7,6 @@ import { useQueryClient } from "@tanstack/react-query";
 import { AcceptanceSchema } from "@/actions/get-acceptance";
 import { postMatchingSchedule } from "@/actions/post-matching-schedule";
 import { Modal } from "@/ui";
-import cn from "@/utils/cn";
 import { useAlimTableContext } from "@/(route)/(admin)/zuzuclubadmin/[id]/(hooks)/useAlimTable";
 
 type RowType = AcceptanceSchema["alarmTalkResponses"]["0"] & {
@@ -54,10 +53,7 @@ export default function MatchCell({ row }: { row: Row<RowType> }) {
   return (
     <>
       <button
-        className={cn(
-          "rounded px-2 py-0.5 text-xs font-medium",
-          "bg-green-600 text-white hover:bg-green-700",
-        )}
+        className="rounded bg-green-600 px-2 py-0.5 text-xs font-medium text-white hover:bg-green-700"
         onClick={(e) => {
           e.stopPropagation();
           setModalOpen(true);
