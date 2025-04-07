@@ -4,6 +4,7 @@ import { httpService } from "app/utils/httpService";
 
 export interface PostScheduleRequest {
   classMatchingId: string;
+  matchingId?: string;
 }
 
 export interface PostScheduleResponse {

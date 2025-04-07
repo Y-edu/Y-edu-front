@@ -5,6 +5,7 @@ import { postMatchingSchedule } from "@/actions/post-matching-schedule";
 
 export function usePostMatchingSchedule() {
   return useMutation({
-    mutationFn: postMatchingSchedule,
+    mutationFn: (vars: { classMatchingId: string; matchingId: string }) =>
+      postMatchingSchedule({ classMatchingId: vars.classMatchingId }),
   });
 }

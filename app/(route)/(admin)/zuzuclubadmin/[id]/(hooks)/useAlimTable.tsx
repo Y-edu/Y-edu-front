@@ -19,6 +19,7 @@ import { useGetAcceptance } from "@/hooks/query";
 import { AcceptanceSchema } from "@/actions/get-acceptance";
 
 interface AlimTableContextType {
+  matchingId: string;
   alimTable: Table<AcceptanceSchema["alarmTalkResponses"][0]>;
   rowSelection: RowSelectionState;
   setRowSelection: React.Dispatch<React.SetStateAction<RowSelectionState>>;
@@ -79,7 +80,7 @@ export const AlimTableProvider = ({
 
   return (
     <AlimTableContext.Provider
-      value={{ alimTable, rowSelection, setRowSelection }}
+      value={{ matchingId, alimTable, rowSelection, setRowSelection }}
     >
       {children}
     </AlimTableContext.Provider>

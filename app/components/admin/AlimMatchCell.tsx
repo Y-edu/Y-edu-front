@@ -2,11 +2,13 @@
 
 import { useState } from "react";
 import type { Row } from "@tanstack/react-table";
+import { useQueryClient } from "@tanstack/react-query";
 
 import { AcceptanceSchema } from "@/actions/get-acceptance";
 import { postMatchingSchedule } from "@/actions/post-matching-schedule";
 import { Modal } from "@/ui";
 import cn from "@/utils/cn";
+import { useAlimTableContext } from "@/(route)/(admin)/zuzuclubadmin/[id]/(hooks)/useAlimTable";
 
 type RowType = AcceptanceSchema["alarmTalkResponses"]["0"] & {
   receiveAcceptance?: string;
@@ -14,12 +16,27 @@ type RowType = AcceptanceSchema["alarmTalkResponses"]["0"] & {
 
 export default function MatchCell({ row }: { row: Row<RowType> }) {
   const [isModalOpen, setModalOpen] = useState(false);
+  const queryClient = useQueryClient();
+  const { matchingId } = useAlimTableContext();
 
   const handleConfirm = async () => {
     try {
       await postMatchingSchedule({
         classMatchingId: String(row.original.classMatchingId),
       });
+      const cacheKey = [`/acceptance/${matchingId}/1`];
+      const prev = queryClient.getQueryData<AcceptanceSchema>(cacheKey);
+      if (prev) {
+        const next = {
+          ...prev,
+          alarmTalkResponses: prev.alarmTalkResponses.map((item) =>
+            item.classMatchingId === row.original.classMatchingId
+              ? { ...item, status: "매칭" }
+              : item,
+          ),
+        };
+        queryClient.setQueryData(cacheKey, next);
+      }
       alert("매칭 및 알림톡 전송 완료!");
     } catch (error: unknown) {
       if (error instanceof Error) {
