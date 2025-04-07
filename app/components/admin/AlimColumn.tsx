@@ -7,6 +7,8 @@ import type { Table, Row } from "@tanstack/react-table";
 
 import { AcceptanceSchema } from "@/actions/get-acceptance";
 
+import MatchCell from "./AlimMatchCell";
+
 const columnHelper = createColumnHelper<
   AcceptanceSchema["alarmTalkResponses"]["0"] & {
     receiveAcceptance?: string;
@@ -106,5 +108,11 @@ export const AlimTHeaderColumn = [
         </div>
       );
     },
+  }),
+  columnHelper.display({
+    id: "finalMatch",
+    header: "최종 매칭",
+    size: 60,
+    cell: ({ row }) => <MatchCell row={row} />,
   }),
 ];
