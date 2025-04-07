@@ -59,7 +59,13 @@ export function useConfirmedResult() {
     });
   };
 
+  const sortedSelectedDays = useMemo(
+    () => [...selectedDays].sort((a, b) => DAYS.indexOf(a) - DAYS.indexOf(b)),
+    [selectedDays],
+  );
+
   const updateSchedule = (schedule: Schedule) => {
+    // 요일별 다른 수업시간일 경우
     if (schedule.day) {
       setSchedules((prev) => {
         const exists = prev.find((s) => s.day === schedule.day);
@@ -68,15 +74,12 @@ export function useConfirmedResult() {
         }
         return [...prev, schedule];
       });
-    } else {
+    }
+    // 공통 수업시간일 경우
+    else {
       setCommonSchedule(schedule);
     }
   };
-
-  const sortedSelectedDays = useMemo(
-    () => [...selectedDays].sort((a, b) => DAYS.indexOf(a) - DAYS.indexOf(b)),
-    [selectedDays],
-  );
 
   const isScheduleValid = useMemo(() => {
     return isTimeVariesByDay

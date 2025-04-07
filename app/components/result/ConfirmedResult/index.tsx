@@ -61,7 +61,6 @@ export default function ConfirmedResult() {
             ))}
           </div>
         </DivWithLabel>
-
         <div className="flex flex-col gap-[12px]">
           {isTimeVariesByDay ? (
             sortedSelectedDays.map((day) => {
