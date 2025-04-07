@@ -45,11 +45,11 @@ export const AlimTHeaderColumn = [
         onChange={row.getToggleSelectedHandler()} // row를 선택/해제하는 handler
       />
     ),
-    size: 50,
+    size: 30,
   },
   columnHelper.accessor("status", {
     header: "상태",
-    size: 80,
+    size: 50,
     cell: ({ row }) => {
       const rowStatus = row.original.status;
       switch (rowStatus) {
@@ -73,26 +73,27 @@ export const AlimTHeaderColumn = [
   }),
   columnHelper.accessor("nickName", {
     header: "영어이름",
-    size: 150,
+    size: 60,
   }),
   columnHelper.accessor("name", {
     header: "본명",
-    size: 80,
+    size: 60,
   }),
   columnHelper.accessor("phoneNumber", {
     header: "전화번호",
-    size: 80,
+    size: 100,
   }),
   columnHelper.accessor("receiveAcceptance", {
     header: "답변율",
-    size: 80,
+    size: 60,
   }),
   columnHelper.accessor("refuseReason", {
     header: "거절사유",
-    size: 150,
+    size: 200,
   }),
   columnHelper.display({
     header: "프로필 상세보기",
+    size: 70,
     cell: ({ row }) => {
       const teacherId = row.original.teacherId;
       const subject = row.original.subject;
