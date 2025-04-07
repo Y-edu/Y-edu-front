@@ -19,6 +19,7 @@ import { useGetAcceptance } from "@/hooks/query";
 import { AcceptanceSchema } from "@/actions/get-acceptance";
 
 interface AlimTableContextType {
+  matchingId: string;
   alimTable: Table<AcceptanceSchema["alarmTalkResponses"][0]>;
   rowSelection: RowSelectionState;
   setRowSelection: React.Dispatch<React.SetStateAction<RowSelectionState>>;
@@ -38,10 +39,13 @@ export const AlimTableProvider = ({
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
 
   const statusOrder = {
-    전송: 1,
-    수락: 2,
-    대기: 3,
-    거절: 4,
+    매칭: 0,
+    최종매칭: 1,
+    전송: 2,
+    수락: 3,
+    대기: 4,
+    거절: 5,
+    과외결렬: 6,
   };
 
   const alimData = useMemo<
@@ -76,7 +80,7 @@ export const AlimTableProvider = ({
 
   return (
     <AlimTableContext.Provider
-      value={{ alimTable, rowSelection, setRowSelection }}
+      value={{ matchingId, alimTable, rowSelection, setRowSelection }}
     >
       {children}
     </AlimTableContext.Provider>

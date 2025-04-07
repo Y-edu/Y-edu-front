@@ -7,6 +7,8 @@ import type { Table, Row } from "@tanstack/react-table";
 
 import { AcceptanceSchema } from "@/actions/get-acceptance";
 
+import MatchCell from "./AlimMatchCell";
+
 const columnHelper = createColumnHelper<
   AcceptanceSchema["alarmTalkResponses"]["0"] & {
     receiveAcceptance?: string;
@@ -43,11 +45,11 @@ export const AlimTHeaderColumn = [
         onChange={row.getToggleSelectedHandler()} // row를 선택/해제하는 handler
       />
     ),
-    size: 50,
+    size: 30,
   },
   columnHelper.accessor("status", {
     header: "상태",
-    size: 80,
+    size: 50,
     cell: ({ row }) => {
       const rowStatus = row.original.status;
       switch (rowStatus) {
@@ -59,32 +61,39 @@ export const AlimTHeaderColumn = [
           return <span className="text-[#C6AA39]">대기</span>;
         case "거절":
           return <span className="text-[#C00D0D]">거절</span>;
+        case "매칭":
+          return <span className="text-[#2563EB]">매칭*</span>;
+        case "최종매칭":
+          return <span className="text-[#7C3AED]">*최종매칭</span>;
+        case "과외결렬":
+          return <span className="text-[#6B7280]">과외결렬</span>;
       }
     },
     enableSorting: true,
   }),
   columnHelper.accessor("nickName", {
     header: "영어이름",
-    size: 150,
+    size: 60,
   }),
   columnHelper.accessor("name", {
     header: "본명",
-    size: 80,
+    size: 60,
   }),
   columnHelper.accessor("phoneNumber", {
     header: "전화번호",
-    size: 80,
+    size: 100,
   }),
   columnHelper.accessor("receiveAcceptance", {
     header: "답변율",
-    size: 80,
+    size: 60,
   }),
   columnHelper.accessor("refuseReason", {
     header: "거절사유",
-    size: 150,
+    size: 200,
   }),
   columnHelper.display({
     header: "프로필 상세보기",
+    size: 70,
     cell: ({ row }) => {
       const teacherId = row.original.teacherId;
       const subject = row.original.subject;
@@ -106,5 +115,11 @@ export const AlimTHeaderColumn = [
         </div>
       );
     },
+  }),
+  columnHelper.display({
+    id: "finalMatch",
+    header: "최종 매칭",
+    size: 60,
+    cell: ({ row }) => <MatchCell row={row} />,
   }),
 ];
