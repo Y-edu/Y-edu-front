@@ -43,9 +43,20 @@ export function useConfirmedResult() {
   const { mutate } = usePutSchedule();
 
   const toggleDay = (day: string) => {
-    setSelectedDays((prev) =>
-      prev.includes(day) ? prev.filter((d) => d !== day) : [...prev, day],
-    );
+    setSelectedDays((prev) => {
+      const isRemoving = prev.includes(day);
+      const updatedDays = isRemoving
+        ? prev.filter((d) => d !== day)
+        : [...prev, day];
+
+      if (isRemoving) {
+        setSchedules((prevSchedules) =>
+          prevSchedules.filter((s) => s.day !== day),
+        );
+      }
+
+      return updatedDays;
+    });
   };
 
   const updateSchedule = (schedule: Schedule) => {
