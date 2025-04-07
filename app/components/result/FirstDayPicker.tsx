@@ -6,6 +6,8 @@ import { getDaysInMonth } from "date-fns";
 import cn from "@/utils/cn";
 import Button from "@/ui/Button";
 
+import { FirstDay } from "./ConfirmedResult";
+
 const ITEM_HEIGHT = 56;
 
 const today = new Date();
@@ -30,14 +32,24 @@ const minuteOptions = Array.from({ length: 12 }, (_, i) =>
 
 type OptionKey = "month" | "day" | "period" | "hour" | "minute";
 
-export default function FirstDayPicker() {
-  const [selected, setSelected] = useState({
-    month: `${currentMonth + 1}월`,
-    day: "1일",
-    period: "오전",
-    hour: "1",
-    minute: "00",
-  });
+interface FirstDayPickerProps {
+  firstDay: FirstDay | null;
+  onSelect: (value: FirstDay) => void;
+}
+
+export default function FirstDayPicker({
+  firstDay,
+  onSelect,
+}: FirstDayPickerProps) {
+  const [selected, setSelected] = useState<FirstDay>(
+    firstDay || {
+      month: `${currentMonth + 1}월`,
+      day: "1일",
+      period: "오전",
+      hour: "1",
+      minute: "00",
+    },
+  );
 
   const selectedMonthIndex = monthOptions.findIndex(
     (m) => m === selected.month,
@@ -87,29 +99,30 @@ export default function FirstDayPicker() {
       }
     }, 80);
   };
-
   const renderColumn = (key: OptionKey) => (
-    <div
-      ref={(el) => {
-        columnRefs.current[key] = el;
-      }}
-      onScroll={() => handleScroll(key)}
-      className="relative h-[160px] snap-y snap-mandatory overflow-y-scroll scroll-smooth scrollbar-hide"
-    >
-      <div className="pointer-events-none absolute inset-x-0 top-[calc(50%-20px)] h-[40px]" />
-      <div className="flex w-fit flex-col items-center py-[56px]">
-        {options[key].map((opt) => (
-          <div
-            key={opt}
-            className={cn(
-              "flex h-[56px] w-full min-w-[56px] snap-center items-center justify-center whitespace-nowrap px-[14px] text-[16px] font-medium text-[#C9CBCF] transition-all",
-              selected[key] === opt &&
-                "border-y-2 border-gray-200 text-gray-900",
-            )}
-          >
-            {opt}
-          </div>
-        ))}
+    <div className="relative h-[160px]">
+      <div className="pointer-events-none absolute left-0 top-[52px] z-10 h-[2px] w-full bg-grey-200" />
+      <div className="pointer-events-none absolute left-0 top-[104px] z-10 h-[2px] w-full bg-grey-200" />
+      <div
+        ref={(el) => {
+          columnRefs.current[key] = el;
+        }}
+        onScroll={() => handleScroll(key)}
+        className="h-full snap-y snap-mandatory overflow-y-scroll scroll-smooth scrollbar-hide"
+      >
+        <div className="flex w-fit flex-col items-center py-[56px]">
+          {options[key].map((opt) => (
+            <div
+              key={opt}
+              className={cn(
+                "flex h-[56px] w-full min-w-[56px] snap-center items-center justify-center whitespace-nowrap px-[14px] text-[16px] font-medium text-[#C9CBCF] transition-all",
+                selected[key] === opt && "text-grey-900",
+              )}
+            >
+              {opt}
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
@@ -117,7 +130,6 @@ export default function FirstDayPicker() {
   return (
     <div className="mx-auto w-full max-w-[350px] rounded-t-[20px] bg-white p-[20px]">
       <h2 className="mb-[24px] mt-[4px] text-[20px] font-bold">수업 시작일</h2>
-
       <div className="mb-[40px] flex items-center justify-center gap-[12px]">
         {renderColumn("month")}
         {renderColumn("day")}
@@ -131,7 +143,7 @@ export default function FirstDayPicker() {
         {renderColumn("minute")}
       </div>
 
-      <Button>선택</Button>
+      <Button onClick={() => onSelect(selected)}>선택</Button>
     </div>
   );
 }

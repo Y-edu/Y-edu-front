@@ -11,6 +11,22 @@ export const httpService = axios.create({
   baseURL,
 });
 
+httpService.interceptors.response.use(
+  (response) => response,
+  // eslint-disable-next-line promise/prefer-await-to-callbacks
+  (error: unknown) => {
+    if (axios.isAxiosError(error)) {
+      return Promise.reject(new Error(`Axios Error: ${error.message}`));
+    }
+
+    if (error instanceof Error) {
+      return Promise.reject(error);
+    }
+
+    return Promise.reject(new Error("Unknown Error"));
+  },
+);
+
 httpService.interceptors.request.use((config) => {
   const accessToken = useAuthStore.getState().accessToken;
 

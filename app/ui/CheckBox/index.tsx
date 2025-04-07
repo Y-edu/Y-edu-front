@@ -7,6 +7,7 @@ interface CheckboxProps {
   isChecked: boolean;
   onChange: (id: string) => void;
   isRequired?: boolean;
+  className?: string;
 }
 
 export default function Checkbox({
@@ -15,9 +16,10 @@ export default function Checkbox({
   isChecked,
   onChange,
   isRequired = false,
+  className,
 }: CheckboxProps) {
   return (
-    <div className="flex w-full items-center gap-[8px]">
+    <div className={cn("flex w-full items-center gap-[8px]", className)}>
       <div className="relative">
         <input
           type="checkbox"
