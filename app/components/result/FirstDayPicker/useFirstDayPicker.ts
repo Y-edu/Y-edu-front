@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { getDaysInMonth } from "date-fns";
+import { addMonths, format, getDaysInMonth } from "date-fns";
 
 import { FirstDay } from "@/components/result/ConfirmedResult/useConfirmedResult";
 
@@ -8,10 +8,7 @@ const year = today.getFullYear();
 const currentMonth = today.getMonth();
 
 const generateMonthOptions = () =>
-  Array.from({ length: 3 }, (_, i) => {
-    const date = new Date(year, currentMonth + i);
-    return `${date.getMonth() + 1}월`;
-  });
+  Array.from({ length: 3 }, (_, i) => format(addMonths(today, i), "M월"));
 
 const getDaysArray = (year: number, month: number): string[] => {
   const daysInMonth = getDaysInMonth(new Date(year, month));
