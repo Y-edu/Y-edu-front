@@ -15,7 +15,8 @@ export default function FirstDayPicker({
   firstDay,
   onSelect,
 }: FirstDayPickerProps) {
-  const { selected, setSelected, options } = useFirstDayPicker(firstDay);
+  const { selected, setSelected, handleChangeMonth, options } =
+    useFirstDayPicker(firstDay);
 
   return (
     <div className="mx-auto w-full max-w-[350px] rounded-t-[20px] bg-white p-[20px]">
@@ -24,7 +25,7 @@ export default function FirstDayPicker({
         <ScrollPicker
           options={options.month}
           selected={selected.month}
-          onSelect={(val) => setSelected((prev) => ({ ...prev, month: val }))}
+          onSelect={handleChangeMonth}
         />
         <ScrollPicker
           options={options.day}

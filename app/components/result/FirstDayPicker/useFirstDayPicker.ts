@@ -3,9 +3,7 @@ import { addMonths, format, getDaysInMonth } from "date-fns";
 
 import { FirstDay } from "@/components/result/ConfirmedResult/useConfirmedResult";
 
-const today = new Date();
-const year = today.getFullYear();
-const currentMonth = today.getMonth();
+const today = new Date(2024, 11);
 
 const generateMonthOptions = () =>
   Array.from({ length: 3 }, (_, i) => format(addMonths(today, i), "M월"));
@@ -25,7 +23,8 @@ export const useFirstDayPicker = (initial?: FirstDay | null) => {
 
   const [selected, setSelected] = useState<FirstDay>(
     initial || {
-      month: `${currentMonth + 1}월`,
+      year: today.getFullYear(),
+      month: `${today.getMonth() + 1}월`,
       day: "1일",
       period: "오후",
       hour: "1",
@@ -33,19 +32,31 @@ export const useFirstDayPicker = (initial?: FirstDay | null) => {
     },
   );
 
+  const handleChangeMonth = (val: string) => {
+    const monthIndex = monthOptions.findIndex((m) => m === val);
+    const newDate = addMonths(today, monthIndex);
+
+    setSelected((prev) => ({
+      ...prev,
+      year: newDate.getFullYear(),
+      month: val,
+    }));
+  };
+
   const selectedMonthIndex = monthOptions.findIndex(
     (m) => m === selected.month,
   );
-  const selectedMonthNumber = parseInt(monthOptions[selectedMonthIndex]) - 1;
+  const selectedDate = addMonths(today, selectedMonthIndex);
 
   const dayOptions = useMemo(
-    () => getDaysArray(year, selectedMonthNumber),
-    [selectedMonthNumber],
+    () => getDaysArray(selectedDate.getFullYear(), selectedDate.getMonth()),
+    [selectedMonthIndex],
   );
 
   return {
     selected,
     setSelected,
+    handleChangeMonth,
     options: {
       month: monthOptions,
       day: dayOptions,

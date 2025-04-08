@@ -20,6 +20,7 @@ export interface Schedule {
 }
 
 export interface FirstDay {
+  year: number;
   month: string;
   day: string;
   period: string;
@@ -131,11 +132,11 @@ export function useConfirmedResult() {
         }));
 
     const firstDayDTO: FirstDayDTO = {
-      date: `2025-${firstDay.month.replace("월", "").padStart(2, "0")}-${firstDay.day
+      date: `${firstDay.year}-${firstDay.month.replace("월", "").padStart(2, "0")}-${firstDay.day
         .replace("일", "")
         .padStart(2, "0")}`,
       start: `${firstDay.hour.padStart(2, "0")}:${firstDay.minute}`,
-      classMinute: schedules[0]?.classMinute || commonSchedule!.classMinute,
+      classMinute: Number(firstDay.minute),
     };
 
     const payload: ScheduleRequest = {
