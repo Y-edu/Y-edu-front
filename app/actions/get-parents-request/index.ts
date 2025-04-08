@@ -17,6 +17,15 @@ const parentsRequestSchema = z.object({
   goals: z.array(z.string()),
   teacherStyle: z.string(),
   referral: z.string(),
+  scheduledClasses: z
+    .array(
+      z.object({
+        day: z.string(),
+        startTime: z.string(),
+        classTime: z.number(),
+      }),
+    )
+    .optional(),
 });
 
 type ParentsRequestSchema = z.infer<typeof parentsRequestSchema>;
