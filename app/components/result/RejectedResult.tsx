@@ -1,6 +1,25 @@
+"use client";
+
+import { useState } from "react";
+import { useParams } from "next/navigation";
+
 import Button from "@/ui/Button";
+import Textarea from "@/ui/Textarea";
+import { useDeleteSchedule } from "@/hooks/mutation/useDeleteSchedule";
 
 export default function RejectedResult() {
+  const [reason, setReason] = useState("");
+  const { managementId } = useParams();
+
+  const { mutate } = useDeleteSchedule();
+
+  const handleSubmit = () => {
+    mutate({
+      classScheduleManagementId: managementId as string,
+      refuseReason: reason,
+    });
+  };
+
   return (
     <div className="relative flex h-full flex-col gap-[40px]">
       <div className="flex flex-col gap-[8px]">
@@ -12,12 +31,14 @@ export default function RejectedResult() {
           적어주시면 다음 매칭에 잘 반영해드릴게요
         </p>
       </div>
-      <textarea
+      <Textarea
+        value={reason}
+        onChange={setReason}
+        maxLength={100}
         placeholder="예: 일정이 맞지 않았어요 / 스타일이 달랐어요"
-        className="min-h-[104px] w-full rounded-[12px] border border-grey-200 p-[16px] text-[16px] placeholder:text-grey-400 focus:outline-none"
       />
       <div className="absolute bottom-0 w-full">
-        <Button>제출하기</Button>
+        <Button onClick={handleSubmit}>제출하기</Button>
       </div>
     </div>
   );

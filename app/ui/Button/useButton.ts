@@ -46,6 +46,7 @@ export function useButton({
       className: cn(
         "p-[16px] rounded-[12px] text-[18px] text-[#fff] bg-primary font-bold flex items-center gap-10 justify-center whitespace-nowrap w-full",
         (rightIcon || leftIcon) && "justify-between",
+        disabled && "opacity-30",
         className,
       ),
     }),
