@@ -1,27 +1,26 @@
 "use client";
 
-import { useState } from "react";
+import { useSearchParams } from "next/navigation";
 
-import HeaderWithBack from "@/components/result/HeaderWithBack";
-import OnBoarding from "@/components/result/OnBoarding";
-import RejectedResult from "@/components/result/RejectedResult";
 import ConfirmedResult from "@/components/result/ConfirmedResult";
-
-type StepType = "onBoarding" | "confirmed" | "rejected";
+import RejectedResult from "@/components/result/RejectedResult";
+import OnBoarding from "@/components/result/OnBoarding";
+import HeaderWithBack from "@/components/result/HeaderWithBack";
 
 export default function ResultPage() {
-  const [currentStep, setCurrentStep] = useState<StepType>("onBoarding");
+  const searchParams = useSearchParams();
+  const step = searchParams.get("step") ?? "onBoarding";
 
   return (
     <HeaderWithBack
-      onBack={() => setCurrentStep("onBoarding")}
+      onBack={() => history.back()}
       title="상담 결과 공유"
-      hasBack={currentStep !== "onBoarding"}
+      hasBack={step !== "onBoarding"}
     >
       <div className="h-full px-[20px] py-[32px]">
-        {currentStep === "onBoarding" && <OnBoarding onNext={setCurrentStep} />}
-        {currentStep === "confirmed" && <ConfirmedResult />}
-        {currentStep === "rejected" && <RejectedResult />}
+        {step === "onBoarding" && <OnBoarding />}
+        {step === "confirmed" && <ConfirmedResult />}
+        {step === "rejected" && <RejectedResult />}
       </div>
     </HeaderWithBack>
   );
