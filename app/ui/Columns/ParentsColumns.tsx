@@ -20,6 +20,25 @@ export function getParentColumns(
       header: "수업 시수",
       cell: (props) => props.getValue(),
     }),
+    columnHelper.accessor("scheduledClasses", {
+      header: "확정 수업 정보",
+      cell: ({ getValue }) => {
+        const classes = getValue();
+        if (!classes || classes.length === 0) return "-";
+        return (
+          <div className="flex flex-col space-y-1">
+            {classes.map((cls, idx) => {
+              const hour = cls.startTime.split(":")[0];
+              return (
+                <div key={idx}>
+                  {cls.day} {parseInt(hour, 10)}시부터 ({cls.classTime}분)
+                </div>
+              );
+            })}
+          </div>
+        );
+      },
+    }),
     columnHelper.accessor("pay", {
       header: "월 수업료",
       cell: (info) => formatMonthlyFee(info.getValue()),
