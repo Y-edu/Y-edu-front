@@ -9,7 +9,6 @@ export interface ScheduleDTO {
 export interface FirstDayDTO {
   date: string;
   start: string;
-  classMinute: number;
 }
 
 export interface ScheduleRequest {

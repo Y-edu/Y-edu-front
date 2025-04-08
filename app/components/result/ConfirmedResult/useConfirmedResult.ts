@@ -136,7 +136,6 @@ export function useConfirmedResult() {
         .replace("일", "")
         .padStart(2, "0")}`,
       start: `${firstDay.hour.padStart(2, "0")}:${firstDay.minute}`,
-      classMinute: Number(firstDay.minute),
     };
 
     const payload: ScheduleRequest = {
