@@ -22,7 +22,15 @@ export default function TimePicker({
   const MINUTES = Array.from({ length: 12 }, (_, i) =>
     `${i * 5}`.padStart(2, "0"),
   );
-  const DURATIONS = ["50분 진행", "60분 진행", "70분 진행"];
+  const DURATIONS = [
+    "50분 진행",
+    "60분 진행",
+    "75분 진행",
+    "100분 진행",
+    "120분 진행",
+    "150분 진행",
+    "200분 진행",
+  ];
 
   const { selected, handleChange, getSchedule } = useTimePicker(schedule);
 
