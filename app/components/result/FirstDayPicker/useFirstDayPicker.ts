@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { getDaysInMonth } from "date-fns";
 
-import { FirstDay } from "@/components/result/ConfirmedResult";
+import { FirstDay } from "@/components/result/ConfirmedResult/useConfirmedResult";
 
 const today = new Date();
 const year = today.getFullYear();

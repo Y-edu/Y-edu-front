@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { Schedule } from "@/app/components/result/ConfirmedResult";
+import { Schedule } from "@/components/result/ConfirmedResult/useConfirmedResult";
 
 type OptionKey = "period" | "hour" | "minute" | "duration";
 
