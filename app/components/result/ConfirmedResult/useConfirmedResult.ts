@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
+import { useParams } from "next/navigation";
 
 import {
   FirstDayDTO,
@@ -41,6 +42,7 @@ export function useConfirmedResult() {
   const [bookInfo, setBookInfo] = useState("");
 
   const { mutate } = usePutSchedule();
+  const { managementId } = useParams();
 
   const toggleDay = (day: string) => {
     setSelectedDays((prev) => {
@@ -137,7 +139,7 @@ export function useConfirmedResult() {
     };
 
     const payload: ScheduleRequest = {
-      classScheduleManagementId: "c4ca4238-a0b9-3382-8dcc-509a6f75849b",
+      classScheduleManagementId: managementId as string,
       textBook: bookInfo,
       schedules: scheduleList,
       firstDay: firstDayDTO,
