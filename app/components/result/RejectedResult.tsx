@@ -15,11 +15,17 @@ export default function RejectedResult() {
   const { mutate } = useDeleteSchedule();
 
   const handleSubmit = () => {
-    mutate({
-      classScheduleManagementId: managementId as string,
-      refuseReason: reason,
-    });
-    router.push(`?step=submitted`);
+    mutate(
+      {
+        classScheduleManagementId: managementId as string,
+        refuseReason: reason,
+      },
+      {
+        onSuccess: () => {
+          router.push(`?step=submitted`);
+        },
+      },
+    );
   };
 
   return (

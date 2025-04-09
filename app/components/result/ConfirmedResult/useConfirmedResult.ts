@@ -146,8 +146,11 @@ export function useConfirmedResult() {
       firstDay: firstDayDTO,
     };
 
-    mutate(payload);
-    router.push(`?step=submitted`);
+    mutate(payload, {
+      onSuccess: () => {
+        router.push(`?step=submitted`);
+      },
+    });
   };
 
   return {
