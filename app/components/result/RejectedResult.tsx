@@ -1,13 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 
 import Button from "@/ui/Button";
 import Textarea from "@/ui/Textarea";
 import { useDeleteSchedule } from "@/hooks/mutation/useDeleteSchedule";
 
 export default function RejectedResult() {
+  const router = useRouter();
   const [reason, setReason] = useState("");
   const { managementId } = useParams();
 
@@ -18,6 +19,7 @@ export default function RejectedResult() {
       classScheduleManagementId: managementId as string,
       refuseReason: reason,
     });
+    router.push(`?step=submitted`);
   };
 
   return (

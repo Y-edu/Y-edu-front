@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 
 import {
   FirstDayDTO,
@@ -29,6 +29,7 @@ export interface FirstDay {
 }
 
 export function useConfirmedResult() {
+  const router = useRouter();
   const [selectedDays, setSelectedDays] = useState<string[]>([]);
   const [selectedDayForTimePicker, setSelectedDayForTimePicker] = useState("");
 
@@ -146,6 +147,7 @@ export function useConfirmedResult() {
     };
 
     mutate(payload);
+    router.push(`?step=submitted`);
   };
 
   return {

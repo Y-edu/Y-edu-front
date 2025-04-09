@@ -6,6 +6,7 @@ import ConfirmedResult from "@/components/result/ConfirmedResult";
 import RejectedResult from "@/components/result/RejectedResult";
 import OnBoarding from "@/components/result/OnBoarding";
 import HeaderWithBack from "@/components/result/HeaderWithBack";
+import SubmittedResult from "@/components/result/SubmittedResult";
 
 export default function ResultPage() {
   const searchParams = useSearchParams();
@@ -21,6 +22,7 @@ export default function ResultPage() {
         {step === "onBoarding" && <OnBoarding />}
         {step === "confirmed" && <ConfirmedResult />}
         {step === "rejected" && <RejectedResult />}
+        {step === "submitted" && <SubmittedResult />}
       </div>
     </HeaderWithBack>
   );
