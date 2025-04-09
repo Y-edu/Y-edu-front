@@ -3,7 +3,7 @@ import { addMonths, format, getDaysInMonth } from "date-fns";
 
 import { FirstDay } from "@/components/result/ConfirmedResult/useConfirmedResult";
 
-const today = new Date(2024, 11);
+const today = new Date();
 
 const generateMonthOptions = () =>
   Array.from({ length: 3 }, (_, i) => format(addMonths(today, i), "M월"));
@@ -50,7 +50,7 @@ export const useFirstDayPicker = (initial?: FirstDay | null) => {
 
   const dayOptions = useMemo(
     () => getDaysArray(selectedDate.getFullYear(), selectedDate.getMonth()),
-    [selectedMonthIndex],
+    [selectedDate],
   );
 
   return {
