@@ -11,15 +11,12 @@ import HeaderWithBack from "@/components/result/HeaderWithBack";
 
 export default function ResultPage() {
   const searchParams = useSearchParams();
-  const params = useParams();
-  const managementId = Array.isArray(params.managementId)
-    ? params.managementId[0]
-    : params.managementId;
+  const { managementId } = useParams();
 
   const step = searchParams.get("step") ?? "onBoarding";
 
   const { data, isLoading } = useGetMatchingSchedule({
-    classScheduleManagementId: managementId,
+    classScheduleManagementId: managementId as string,
   });
 
   if (isLoading) {
