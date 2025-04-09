@@ -24,9 +24,19 @@ export const getMatchingSchedule = async (params: {
   classScheduleManagementId?: string;
   classMatchingId?: string;
 }): Promise<MatchingScheduleResponse> => {
-  const { data } = await httpService.get<MatchingScheduleResponse>(
+  const response = await httpService.get<MatchingScheduleResponse>(
     "/matching/schedule",
     { params },
   );
-  return data;
+  if (response.status === 204) {
+    return {
+      exist: false,
+      classMatchingId: null,
+      classScheduleManagementId: null,
+      textBook: null,
+      schedules: null,
+      firstDay: null,
+    };
+  }
+  return response.data;
 };
