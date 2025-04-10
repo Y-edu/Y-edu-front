@@ -74,7 +74,7 @@ export default function ConfirmedResult() {
                   <SelectButton
                     text={
                       matched &&
-                      `${matched.period} ${matched.time}부터 ${matched.classMinute}분 진행`
+                      `${matched.period} ${matched.time} ${matched.classMinute}분 진행`
                     }
                     isActive={
                       isTimePickerOpen && selectedDayForTimePicker === day
@@ -89,7 +89,7 @@ export default function ConfirmedResult() {
               <SelectButton
                 text={
                   commonSchedule &&
-                  `${commonSchedule.period} ${commonSchedule.time} 부터 ${commonSchedule.classMinute}분 진행`
+                  `${commonSchedule.period} ${commonSchedule.time} ${commonSchedule.classMinute}분 진행`
                 }
                 isActive={isTimePickerOpen && selectedDayForTimePicker === ""}
                 onClick={() => handleOpenTimePicker("")}
