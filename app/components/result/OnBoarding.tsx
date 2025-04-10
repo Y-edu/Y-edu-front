@@ -5,7 +5,7 @@ import Button from "@/ui/Button";
 export default function OnBoarding() {
   const router = useRouter();
   return (
-    <div className="flex h-full flex-col items-center justify-center gap-[40px]">
+    <div className="flex h-full flex-col items-center justify-center gap-[40px] pb-[48px]">
       <p className="text-center text-[24px] font-bold">
         전화 상담 후<br /> 첫 수업일이 정해졌나요?
       </p>

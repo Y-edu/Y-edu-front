@@ -43,7 +43,7 @@ export default function ConfirmedResult() {
   };
 
   return (
-    <div className="flex h-full flex-col">
+    <div className="flex h-full flex-col gap-[80px]">
       <div className="flex grow flex-col gap-[40px]">
         <h1 className="text-[24px] font-bold leading-[140%]">
           확정된 수업 정보를
