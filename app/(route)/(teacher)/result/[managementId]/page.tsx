@@ -21,27 +21,17 @@ export default function ResultPage() {
     classScheduleManagementId: managementId as string,
   });
 
-  useEffect(() => {
-    if (data && !data.exist && step !== "submitted") {
-      router.replace("?step=submitted");
-    }
-  }, [data, step]);
+  // useEffect(() => {
+  //   if (data && !data.exist && step !== "submitted") {
+  //     router.replace("?step=submitted");
+  //   }
+  // }, [data, step]);
 
   if (isLoading) {
     return (
       <HeaderWithBack onBack={() => history.back()} title="상담 결과 공유">
         <div className="h-full px-[20px] py-[32px]">
           <p>Loading...</p>
-        </div>
-      </HeaderWithBack>
-    );
-  }
-
-  if (data && !data.exist) {
-    return (
-      <HeaderWithBack title="상담 결과 공유">
-        <div className="h-full px-[20px] py-[32px]">
-          <SubmittedResult />
         </div>
       </HeaderWithBack>
     );
