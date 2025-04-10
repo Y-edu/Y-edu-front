@@ -21,11 +21,11 @@ export default function ResultPage() {
     classScheduleManagementId: managementId as string,
   });
 
-  // useEffect(() => {
-  //   if (data && !data.exist && step !== "submitted") {
-  //     router.replace("?step=submitted");
-  //   }
-  // }, [data, step]);
+  useEffect(() => {
+    if (data && !data.exist && step !== "submitted") {
+      router.replace("?step=submitted");
+    }
+  }, [data, step]);
 
   if (isLoading) {
     return (
