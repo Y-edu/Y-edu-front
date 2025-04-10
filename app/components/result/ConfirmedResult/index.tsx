@@ -110,7 +110,7 @@ export default function ConfirmedResult() {
           <SelectButton
             text={
               firstDay &&
-              `${firstDay.month} ${firstDay.day} ${firstDay.period} ${firstDay.hour}:${firstDay.minute}`
+              `${firstDay.month} ${firstDay.day} ${firstDay.period} ${firstDay.time}`
             }
             isActive={isFirstDayPickerOpen}
             onClick={() => setIsFirstDayPickerOpen(true)}
@@ -121,14 +121,19 @@ export default function ConfirmedResult() {
           <Textarea
             value={bookInfo}
             onChange={setBookInfo}
-            placeholder="사용하실 교재명을 적어주세요. <br/> (예 : 천재교육 수학 중1-1)"
+            placeholder={`사용하실 교재명을 적어주세요.\n(예 : 천재교육 수학 중1-1)`}
             maxLength={30}
           />
         </DivWithLabel>
       </div>
 
-      <div className="sticky bottom-0">
-        <Button disabled={!isFormValid} onClick={handleSubmit}>
+      <div className="sticky bottom-0 bg-white pb-[20px]">
+        <div className="absolute top-[-20px] h-[20px] w-full bg-gradient-to-t from-white to-transparent" />
+        <Button
+          disabled={!isFormValid}
+          onClick={handleSubmit}
+          className="h-[59px]"
+        >
           제출하기
         </Button>
       </div>
