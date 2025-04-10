@@ -24,8 +24,7 @@ export interface FirstDay {
   month: string;
   day: string;
   period: string;
-  hour: string;
-  minute: string;
+  time: string;
 }
 
 export function useConfirmedResult() {
@@ -136,7 +135,7 @@ export function useConfirmedResult() {
       date: `${firstDay.year}-${firstDay.month.replace("월", "").padStart(2, "0")}-${firstDay.day
         .replace("일", "")
         .padStart(2, "0")}`,
-      start: `${firstDay.hour.padStart(2, "0")}:${firstDay.minute}`,
+      start: to24HourFormat(firstDay.period, firstDay.time),
     };
 
     const payload: ScheduleRequest = {

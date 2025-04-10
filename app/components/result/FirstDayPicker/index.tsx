@@ -15,8 +15,13 @@ export default function FirstDayPicker({
   firstDay,
   onSelect,
 }: FirstDayPickerProps) {
-  const { selected, setSelected, handleChangeMonth, options } =
-    useFirstDayPicker(firstDay);
+  const {
+    selected,
+    setSelected,
+    handleChangeMonth,
+    convertToFirstDayDTO,
+    options,
+  } = useFirstDayPicker(firstDay);
 
   return (
     <div className="mx-auto w-full max-w-[350px] rounded-t-[20px] bg-white p-[20px]">
@@ -53,7 +58,7 @@ export default function FirstDayPicker({
           onSelect={(val) => setSelected((prev) => ({ ...prev, minute: val }))}
         />
       </div>
-      <Button onClick={() => onSelect(selected)}>선택</Button>
+      <Button onClick={() => onSelect(convertToFirstDayDTO())}>선택</Button>
     </div>
   );
 }

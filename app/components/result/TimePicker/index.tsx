@@ -19,8 +19,9 @@ export default function TimePicker({
 }: TimePickerProps) {
   const PERIODS = ["오전", "오후"];
   const HOURS = Array.from({ length: 12 }, (_, i) => String(i + 1));
-  const MINUTES = Array.from({ length: 12 }, (_, i) =>
-    `${i * 5}`.padStart(2, "0"),
+  const MINUTES = Array.from(
+    { length: 12 },
+    (_, i) => `${(i * 5).toString().padStart(2, "0")} 부터`,
   );
   const DURATIONS = [
     "50분 진행",
@@ -58,6 +59,7 @@ export default function TimePicker({
           selected={selected.minute}
           onSelect={(val) => handleChange("minute", val)}
         />
+
         <ScrollPicker
           options={DURATIONS}
           selected={selected.duration}
