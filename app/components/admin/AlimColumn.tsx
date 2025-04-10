@@ -64,7 +64,7 @@ export const AlimTHeaderColumn = [
         case "매칭":
           return <span className="text-[#2563EB]">매칭*</span>;
         case "최종매칭":
-          return <span className="text-[#7C3AED]">*최종매칭</span>;
+          return <span className="text-[#7C3AED]">최종매칭*</span>;
         case "과외결렬":
           return <span className="text-[#6B7280]">과외결렬</span>;
       }
