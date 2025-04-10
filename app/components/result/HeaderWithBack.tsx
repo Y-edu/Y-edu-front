@@ -4,8 +4,8 @@ import IconLeft from "@/icons/IconLeft";
 import cn from "@/utils/cn";
 
 interface HeaderWithBackProps {
-  onBack: () => void;
-  hasBack: boolean;
+  onBack?: () => void;
+  hasBack?: boolean;
   title: string;
   mainClassName?: string;
   children: React.ReactNode;
@@ -15,7 +15,7 @@ export default function HeaderWithBack({
   children,
   onBack,
   title,
-  hasBack,
+  hasBack = false,
   mainClassName,
 }: HeaderWithBackProps) {
   return (

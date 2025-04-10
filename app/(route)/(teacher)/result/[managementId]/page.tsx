@@ -21,11 +21,7 @@ export default function ResultPage() {
 
   if (isLoading) {
     return (
-      <HeaderWithBack
-        onBack={() => history.back()}
-        title="상담 결과 공유"
-        hasBack
-      >
+      <HeaderWithBack onBack={() => history.back()} title="상담 결과 공유">
         <div className="h-full px-[20px] py-[32px]">
           <p>Loading...</p>
         </div>
@@ -35,11 +31,7 @@ export default function ResultPage() {
 
   if (data && !data.exist) {
     return (
-      <HeaderWithBack
-        onBack={() => history.back()}
-        title="상담 결과 공유"
-        hasBack
-      >
+      <HeaderWithBack title="상담 결과 공유">
         <div className="h-full px-[20px] py-[32px]">
           <SubmittedResult />
         </div>
