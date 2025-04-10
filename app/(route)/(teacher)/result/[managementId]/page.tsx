@@ -1,6 +1,7 @@
 "use client";
 
-import { useSearchParams, useParams } from "next/navigation";
+import { useSearchParams, useParams, useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 import { useGetMatchingSchedule } from "@/hooks/query/useGetMatchingSchedule";
 import OnBoarding from "@/components/result/OnBoarding";
@@ -12,12 +13,19 @@ import HeaderWithBack from "@/components/result/HeaderWithBack";
 export default function ResultPage() {
   const searchParams = useSearchParams();
   const { managementId } = useParams();
+  const router = useRouter();
 
   const step = searchParams.get("step") ?? "onBoarding";
 
   const { data, isLoading } = useGetMatchingSchedule({
     classScheduleManagementId: managementId as string,
   });
+
+  useEffect(() => {
+    if (data && !data.exist && step !== "submitted") {
+      router.replace("?step=submitted");
+    }
+  }, [data, step]);
 
   if (isLoading) {
     return (

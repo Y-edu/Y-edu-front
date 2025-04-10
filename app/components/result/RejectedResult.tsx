@@ -22,7 +22,7 @@ export default function RejectedResult() {
       },
       {
         onSuccess: () => {
-          router.push(`?step=submitted`);
+          router.replace(`?step=submitted`);
         },
       },
     );

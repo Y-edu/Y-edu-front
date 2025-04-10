@@ -148,7 +148,7 @@ export function useConfirmedResult() {
 
     mutate(payload, {
       onSuccess: () => {
-        router.push(`?step=submitted`);
+        router.replace(`?step=submitted`);
       },
     });
   };
