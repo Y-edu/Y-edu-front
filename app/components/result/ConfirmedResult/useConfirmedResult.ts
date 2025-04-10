@@ -99,7 +99,8 @@ export function useConfirmedResult() {
     );
   }, [bookInfo, firstDay, selectedDays.length, isScheduleValid]);
 
-  const to24HourFormat = (period: string, time: string): string => {
+  const to24HourFormat = (period: string, timeWithSuffix: string): string => {
+    const time = timeWithSuffix.replace("부터", "");
     const [hourStr, minuteStr] = time.split(":");
     let hour = parseInt(hourStr, 10);
     const minute = minuteStr.padStart(2, "0");
