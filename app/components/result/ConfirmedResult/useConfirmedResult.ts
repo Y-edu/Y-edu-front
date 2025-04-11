@@ -9,6 +9,7 @@ import {
   ScheduleRequest,
 } from "@/actions/put-schedule";
 import { usePutSchedule } from "@/hooks/mutation/usePutSchedule";
+import { useTextareaWithMaxLength } from "@/ui/Textarea/useMaxLengthValidator";
 
 export const DAYS = ["월", "화", "수", "목", "금", "토", "일"];
 
@@ -40,10 +41,14 @@ export function useConfirmedResult() {
     "day"
   > | null>(null);
   const [firstDay, setFirstDay] = useState<FirstDay | null>(null);
-  const [bookInfo, setBookInfo] = useState("");
 
   const { mutate } = usePutSchedule();
   const { managementId } = useParams();
+  const {
+    value: bookInfo,
+    error: bookInfoError,
+    onChange: setBookInfo,
+  } = useTextareaWithMaxLength(30);
 
   const toggleDay = (day: string) => {
     setSelectedDays((prev) => {
@@ -166,6 +171,7 @@ export function useConfirmedResult() {
     setFirstDay,
     bookInfo,
     setBookInfo,
+    bookInfoError,
     handleSubmit,
     selectedDayForTimePicker,
     setSelectedDayForTimePicker,

@@ -28,6 +28,7 @@ export default function ConfirmedResult() {
     setFirstDay,
     bookInfo,
     setBookInfo,
+    bookInfoError,
     selectedDayForTimePicker,
     setSelectedDayForTimePicker,
     handleSubmit,
@@ -122,7 +123,7 @@ export default function ConfirmedResult() {
             value={bookInfo}
             onChange={setBookInfo}
             placeholder={`사용하실 교재명을 적어주세요.\n(예 : 천재교육 수학 중1-1)`}
-            maxLength={30}
+            errorMessage={bookInfoError}
           />
         </DivWithLabel>
       </div>
