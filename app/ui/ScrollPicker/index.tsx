@@ -38,7 +38,7 @@ export default function ScrollPicker({
     if (ref.current) {
       ref.current.scrollTop = index * ITEM_HEIGHT;
     }
-  }, [selected]);
+  }, [options, selected]);
 
   return (
     <div className="relative h-[160px]">

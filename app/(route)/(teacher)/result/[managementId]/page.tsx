@@ -25,7 +25,7 @@ export default function ResultPage() {
     if (data && !data.exist && step !== "submitted") {
       router.replace("?step=submitted");
     }
-  }, [data, step]);
+  }, [data, step, router]);
 
   if (isLoading) {
     return (
@@ -41,7 +41,7 @@ export default function ResultPage() {
     <HeaderWithBack
       onBack={() => history.back()}
       title="상담 결과 공유"
-      hasBack={step !== "onBoarding"}
+      hasBack={step !== "onBoarding" && step !== "submitted"}
     >
       <div className="h-full px-[20px] py-[32px]">
         {step === "onBoarding" && <OnBoarding />}
