@@ -21,11 +21,30 @@ const config = {
         disabled: "#D9D9D9",
         tabBarBorder: "#F0F2F6",
         statusInactive: "#F4F4F5",
+        grey: {
+          100: "#F1F5F9",
+          200: "#E2E8F0",
+          400: "#94A3B8",
+          500: "#64748B",
+          800: "#1E293B",
+          900: "#0F172A",
+        },
+        warning: "#FF4848",
       },
       fontFamily: {
-        pretendard: ["var(--font-pretendard)"],
+        pretendard: ['"var(--font-pretendard)"'],
+      },
+      keyframes: {
+        "slide-up": {
+          "0%": { transform: "translateY(100%)" },
+          "100%": { transform: "translateY(0)" },
+        },
+      },
+      animation: {
+        "slide-up": "slide-up 300ms ease-out forwards",
       },
     },
   },
+  plugins: [require("tailwind-scrollbar-hide")],
 };
 export default config;

@@ -12,7 +12,7 @@ export function AlimTable() {
   return (
     <div className="mb-6">
       <div className="overflow-hidden rounded-3xl border border-gray-300 bg-white shadow-lg">
-        <table className="w-full table-auto border-collapse">
+        <table className="w-full table-fixed border-collapse">
           <thead className="bg-gray-100">
             {alimTable.getHeaderGroups().map((headerGroup) => (
               <tr
@@ -22,6 +22,7 @@ export function AlimTable() {
                 {headerGroup.headers.map((header) => (
                   <th
                     key={header.id}
+                    style={{ width: header.getSize() }}
                     className="px-4 py-2 text-left text-sm font-semibold"
                   >
                     {header.isPlaceholder
@@ -57,6 +58,7 @@ export function AlimTable() {
                   {row.getVisibleCells().map((cell) => (
                     <td
                       key={cell.id}
+                      style={{ width: cell.column.getSize() }}
                       className={`text-left text-sm ${
                         cell.column.columnDef.header === "프로필 상세보기"
                           ? ""

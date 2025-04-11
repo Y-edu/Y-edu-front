@@ -4,9 +4,11 @@
 
 :root {
   --background: #f5f7fa;
-  font-family: Pretendard;
+  --font-pretendard: "Pretendard";
+  --text-color: #0f172a;
 }
 
 body {
   font-family: var(--font-pretendard);
+  color: var(--text-color);
 }

@@ -25,9 +25,9 @@ export default function RootLayout({
   return (
     <IntegrateMSW>
       <html lang="ko">
-        <QueryProvider>
-          <body className={`${pretendard.variable}`}>{children}</body>
-        </QueryProvider>
+        <body className={`${pretendard.variable}`}>
+          <QueryProvider>{children} </QueryProvider>
+        </body>
       </html>
     </IntegrateMSW>
   );

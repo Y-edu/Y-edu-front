@@ -23,7 +23,21 @@ function ParentsRequest({ applicationFormId }: { applicationFormId: string }) {
             maxWidth="1/5"
             direction="vertical"
           />
-
+          <TitleDesc
+            title={PARENTS_REQUEST_TITLE.scheduledClasses}
+            desc={
+              data?.scheduledClasses && data.scheduledClasses.length > 0
+                ? data.scheduledClasses
+                    .map((cls) => {
+                      const hour = parseInt(cls.startTime.split(":")[0], 10);
+                      return `${cls.day} ${hour}시부터 (${cls.classTime}분)`;
+                    })
+                    .join(", ")
+                : "상담 결과 미전달"
+            }
+            maxWidth="1/5"
+            direction="vertical"
+          />
           <TitleDesc
             title={PARENTS_REQUEST_TITLE.childAge}
             desc={data ? data.age : "아이 나이"}
