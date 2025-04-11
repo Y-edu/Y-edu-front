@@ -51,7 +51,12 @@ export default function RejectedResult() {
         placeholder="예: 일정이 맞지 않았어요 / 스타일이 달랐어요"
       />
       <div className="absolute bottom-0 w-full">
-        <Button onClick={handleSubmit}>제출하기</Button>
+        <Button
+          onClick={handleSubmit}
+          disabled={reason.trim() === "" || reason.length > 100}
+        >
+          제출하기
+        </Button>
       </div>
     </div>
   );

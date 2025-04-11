@@ -98,6 +98,7 @@ export function useConfirmedResult() {
   const isFormValid = useMemo(() => {
     return (
       bookInfo.trim() !== "" &&
+      bookInfo.length <= 30 &&
       !!firstDay &&
       selectedDays.length > 0 &&
       isScheduleValid
