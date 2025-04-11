@@ -9,6 +9,7 @@ import {
   ScheduleRequest,
 } from "@/actions/put-schedule";
 import { usePutSchedule } from "@/hooks/mutation/usePutSchedule";
+import { useTextareaWithMaxLength } from "@/ui/Textarea/useMaxLengthValidator";
 
 export const DAYS = ["월", "화", "수", "목", "금", "토", "일"];
 
@@ -24,8 +25,7 @@ export interface FirstDay {
   month: string;
   day: string;
   period: string;
-  hour: string;
-  minute: string;
+  time: string;
 }
 
 export function useConfirmedResult() {
@@ -41,10 +41,14 @@ export function useConfirmedResult() {
     "day"
   > | null>(null);
   const [firstDay, setFirstDay] = useState<FirstDay | null>(null);
-  const [bookInfo, setBookInfo] = useState("");
 
   const { mutate } = usePutSchedule();
   const { managementId } = useParams();
+  const {
+    value: bookInfo,
+    error: bookInfoError,
+    onChange: setBookInfo,
+  } = useTextareaWithMaxLength(30);
 
   const toggleDay = (day: string) => {
     setSelectedDays((prev) => {
@@ -100,7 +104,8 @@ export function useConfirmedResult() {
     );
   }, [bookInfo, firstDay, selectedDays.length, isScheduleValid]);
 
-  const to24HourFormat = (period: string, time: string): string => {
+  const to24HourFormat = (period: string, timeWithSuffix: string): string => {
+    const time = timeWithSuffix.replace("부터", "");
     const [hourStr, minuteStr] = time.split(":");
     let hour = parseInt(hourStr, 10);
     const minute = minuteStr.padStart(2, "0");
@@ -136,7 +141,7 @@ export function useConfirmedResult() {
       date: `${firstDay.year}-${firstDay.month.replace("월", "").padStart(2, "0")}-${firstDay.day
         .replace("일", "")
         .padStart(2, "0")}`,
-      start: `${firstDay.hour.padStart(2, "0")}:${firstDay.minute}`,
+      start: to24HourFormat(firstDay.period, firstDay.time),
     };
 
     const payload: ScheduleRequest = {
@@ -148,7 +153,7 @@ export function useConfirmedResult() {
 
     mutate(payload, {
       onSuccess: () => {
-        router.push(`?step=submitted`);
+        router.replace(`?step=submitted`);
       },
     });
   };
@@ -166,6 +171,7 @@ export function useConfirmedResult() {
     setFirstDay,
     bookInfo,
     setBookInfo,
+    bookInfoError,
     handleSubmit,
     selectedDayForTimePicker,
     setSelectedDayForTimePicker,

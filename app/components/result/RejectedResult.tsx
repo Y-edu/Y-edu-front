@@ -1,16 +1,21 @@
 "use client";
 
-import { useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 
 import Button from "@/ui/Button";
 import Textarea from "@/ui/Textarea";
 import { useDeleteSchedule } from "@/hooks/mutation/useDeleteSchedule";
+import { useTextareaWithMaxLength } from "@/ui/Textarea/useMaxLengthValidator";
 
 export default function RejectedResult() {
   const router = useRouter();
-  const [reason, setReason] = useState("");
   const { managementId } = useParams();
+
+  const {
+    value: reason,
+    error: reasonError,
+    onChange: setReason,
+  } = useTextareaWithMaxLength(100);
 
   const { mutate } = useDeleteSchedule();
 
@@ -22,7 +27,7 @@ export default function RejectedResult() {
       },
       {
         onSuccess: () => {
-          router.push(`?step=submitted`);
+          router.replace(`?step=submitted`);
         },
       },
     );
@@ -42,7 +47,7 @@ export default function RejectedResult() {
       <Textarea
         value={reason}
         onChange={setReason}
-        maxLength={100}
+        errorMessage={reasonError}
         placeholder="예: 일정이 맞지 않았어요 / 스타일이 달랐어요"
       />
       <div className="absolute bottom-0 w-full">

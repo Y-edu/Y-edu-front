@@ -12,8 +12,5 @@ export function usePutSchedule() {
         alert("오류가 발생했어요.");
       }
     },
-    onSuccess: () => {
-      alert("성공적으로 등록되었어요!");
-    },
   });
 }

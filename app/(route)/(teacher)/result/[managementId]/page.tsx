@@ -1,6 +1,7 @@
 "use client";
 
-import { useSearchParams, useParams } from "next/navigation";
+import { useSearchParams, useParams, useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 import { useGetMatchingSchedule } from "@/hooks/query/useGetMatchingSchedule";
 import OnBoarding from "@/components/result/OnBoarding";
@@ -12,6 +13,7 @@ import HeaderWithBack from "@/components/result/HeaderWithBack";
 export default function ResultPage() {
   const searchParams = useSearchParams();
   const { managementId } = useParams();
+  const router = useRouter();
 
   const step = searchParams.get("step") ?? "onBoarding";
 
@@ -19,29 +21,17 @@ export default function ResultPage() {
     classScheduleManagementId: managementId as string,
   });
 
+  useEffect(() => {
+    if (data && !data.exist && step !== "submitted") {
+      router.replace("?step=submitted");
+    }
+  }, [data, step]);
+
   if (isLoading) {
     return (
-      <HeaderWithBack
-        onBack={() => history.back()}
-        title="상담 결과 공유"
-        hasBack
-      >
+      <HeaderWithBack onBack={() => history.back()} title="상담 결과 공유">
         <div className="h-full px-[20px] py-[32px]">
           <p>Loading...</p>
-        </div>
-      </HeaderWithBack>
-    );
-  }
-
-  if (data && !data.exist) {
-    return (
-      <HeaderWithBack
-        onBack={() => history.back()}
-        title="상담 결과 공유"
-        hasBack
-      >
-        <div className="h-full px-[20px] py-[32px]">
-          <SubmittedResult />
         </div>
       </HeaderWithBack>
     );
