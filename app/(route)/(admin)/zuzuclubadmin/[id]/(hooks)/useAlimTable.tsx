@@ -39,8 +39,8 @@ export const AlimTableProvider = ({
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
 
   const statusOrder = {
-    매칭: 0,
-    최종매칭: 1,
+    최종매칭: 0,
+    매칭: 1,
     전송: 2,
     수락: 3,
     대기: 4,
