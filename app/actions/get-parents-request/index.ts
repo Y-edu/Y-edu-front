@@ -26,6 +26,7 @@ const parentsRequestSchema = z.object({
       }),
     )
     .optional(),
+  textBook: z.string().optional(),
 });
 
 type ParentsRequestSchema = z.infer<typeof parentsRequestSchema>;

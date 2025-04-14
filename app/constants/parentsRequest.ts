@@ -10,5 +10,6 @@ export const PARENTS_REQUEST_TITLE = {
   teacherCondition: "선생님 조건 및 스타일",
   referral: "알게된 경로",
   dong: "동",
-  scheduledClasses: "확정 수업 정보",
+  scheduledClasses: "확정된 수업 시간",
+  textBook: "교재",
 } as const;
