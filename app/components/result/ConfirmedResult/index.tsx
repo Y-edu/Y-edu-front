@@ -107,7 +107,7 @@ export default function ConfirmedResult() {
           />
         </div>
 
-        <DivWithLabel label="수업 시작일">
+        <DivWithLabel label="첫 수업 날짜">
           <SelectButton
             text={
               firstDay &&
@@ -122,9 +122,12 @@ export default function ConfirmedResult() {
           <Textarea
             value={bookInfo}
             onChange={setBookInfo}
-            placeholder={`사용하실 교재명을 적어주세요.\n(예 : 천재교육 수학 중1-1)`}
+            placeholder={`사용하실 교재명을 적어주세요.\n(예 : 천재교육 수학 중1-1\n정해지지 않았다면 ‘미정’ 입력)`}
             errorMessage={bookInfoError}
           />
+          <p className="mt-2 text-[12px] text-gray-400">
+            작성하신 내용은 학부모님께 전달됩니다.
+          </p>
         </DivWithLabel>
       </div>
 
