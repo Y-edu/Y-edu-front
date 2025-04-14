@@ -12,4 +12,5 @@ export const PARENTS_REQUEST_TITLE = {
   dong: "동",
   scheduledClasses: "확정된 수업 시간",
   textBook: "교재",
+  firstClassInfo: "첫 수업 일시",
 } as const;

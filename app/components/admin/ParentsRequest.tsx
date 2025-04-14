@@ -4,6 +4,7 @@ import { useGetParentsRequest } from "@/hooks/query/useGetParentsRequest";
 import { Accordion, TitleDesc } from "@/ui";
 import { PARENTS_REQUEST_TITLE } from "@/constants/parentsRequest";
 import { formatMonthlyFee } from "@/utils/formatMonthlyFee";
+import { formatFirstClassInfo } from "@/utils/formatFirstClassInfo";
 
 function ParentsRequest({ applicationFormId }: { applicationFormId: string }) {
   const { data } = useGetParentsRequest(applicationFormId);
@@ -34,6 +35,16 @@ function ParentsRequest({ applicationFormId }: { applicationFormId: string }) {
               <TitleDesc
                 title={PARENTS_REQUEST_TITLE.textBook}
                 desc={data.textBook ? data.textBook : "상담결과 미전달"}
+                maxWidth="1/5"
+                direction="vertical"
+              />
+              <TitleDesc
+                title={PARENTS_REQUEST_TITLE.firstClassInfo}
+                desc={
+                  data?.firstDay && data?.firstDayStart
+                    ? formatFirstClassInfo(data.firstDay, data.firstDayStart)
+                    : "상담결과 미전달"
+                }
                 maxWidth="1/5"
                 direction="vertical"
               />

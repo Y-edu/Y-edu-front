@@ -26,6 +26,8 @@ const parentsRequestSchema = z.object({
       }),
     )
     .optional(),
+  firstDay: z.string().nullable().optional(),
+  firstDayStart: z.string().nullable().optional(),
   textBook: z.string().nullable().optional(),
 });
 
