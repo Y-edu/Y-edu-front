@@ -54,7 +54,7 @@ export default function ScrollPicker({
             <div
               key={opt}
               className={cn(
-                "flex h-[56px] w-full snap-center items-center justify-center whitespace-nowrap px-[14px] text-[16px] font-medium text-[#C9CBCF] transition-all",
+                "flex h-[56px] w-full snap-center items-center justify-center whitespace-nowrap px-[12px] text-[16px] font-medium text-[#C9CBCF] transition-all",
                 selected === opt && "text-grey-900",
               )}
             >

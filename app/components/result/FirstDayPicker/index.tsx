@@ -26,7 +26,7 @@ export default function FirstDayPicker({
   return (
     <div className="mx-auto w-full max-w-[350px] rounded-t-[20px] bg-white p-[20px]">
       <h2 className="mb-[24px] mt-[4px] text-[20px] font-bold">수업 시작일</h2>
-      <div className="mb-[40px] flex items-center justify-center gap-[12px]">
+      <div className="mb-[40px] flex items-center justify-center gap-[10px]">
         <ScrollPicker
           options={options.month}
           selected={selected.month}
