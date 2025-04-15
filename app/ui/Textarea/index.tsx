@@ -24,7 +24,7 @@ export default function Textarea({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         className={cn(
-          "border-1 min-h-[104px] w-full resize-none rounded-[12px] border border-grey-200 p-[16px] text-[16px] outline-none placeholder:text-gray-400 focus:border-2 focus:border-primary",
+          "border-1 min-h-[108px] w-full resize-none rounded-[12px] border border-grey-200 p-[16px] text-[16px] outline-none placeholder:text-gray-400 focus:border-2 focus:border-primary",
           errorMessage && "border-2 border-warning focus:border-warning",
         )}
       />
