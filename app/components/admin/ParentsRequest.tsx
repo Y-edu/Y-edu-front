@@ -17,40 +17,7 @@ function ParentsRequest({ applicationFormId }: { applicationFormId: string }) {
     <Accordion
       visibleContent={
         <div className="flex flex-col gap-4">
-          {isConfirmed && (
-            <div className="mb-4 flex gap-10 overflow-x-auto whitespace-nowrap">
-              <TitleDesc
-                title={PARENTS_REQUEST_TITLE.scheduledClasses}
-                desc={
-                  data?.scheduledClasses
-                    ?.map((cls) => {
-                      const hour = parseInt(cls.startTime.split(":")[0], 10);
-                      return `${cls.day} ${hour}시부터 (${cls.classTime}분)`;
-                    })
-                    ?.join(",\n") || "상담결과 미전달"
-                }
-                maxWidth="1/5"
-                direction="vertical"
-              />
-              <TitleDesc
-                title={PARENTS_REQUEST_TITLE.textBook}
-                desc={data.textBook ? data.textBook : "상담결과 미전달"}
-                maxWidth="1/5"
-                direction="vertical"
-              />
-              <TitleDesc
-                title={PARENTS_REQUEST_TITLE.firstClassInfo}
-                desc={
-                  data?.firstDay && data?.firstDayStart
-                    ? formatFirstClassInfo(data.firstDay, data.firstDayStart)
-                    : "상담결과 미전달"
-                }
-                maxWidth="1/5"
-                direction="vertical"
-              />
-            </div>
-          )}
-          <div className="flex gap-10 overflow-x-auto whitespace-nowrap">
+          <div className="mb-2 flex gap-10 overflow-x-auto whitespace-nowrap">
             <TitleDesc
               title={PARENTS_REQUEST_TITLE.classTime}
               desc={
@@ -100,6 +67,39 @@ function ParentsRequest({ applicationFormId }: { applicationFormId: string }) {
               direction="vertical"
             />
           </div>
+          {isConfirmed && (
+            <div className="mb-2 flex gap-10 overflow-x-auto whitespace-nowrap">
+              <TitleDesc
+                title={PARENTS_REQUEST_TITLE.scheduledClasses}
+                desc={
+                  data?.scheduledClasses
+                    ?.map((cls) => {
+                      const hour = parseInt(cls.startTime.split(":")[0], 10);
+                      return `${cls.day} ${hour}시부터 (${cls.classTime}분)`;
+                    })
+                    ?.join(",\n") || "상담결과 미전달"
+                }
+                maxWidth="1/5"
+                direction="vertical"
+              />
+              <TitleDesc
+                title={PARENTS_REQUEST_TITLE.textBook}
+                desc={data.textBook ? data.textBook : "상담결과 미전달"}
+                maxWidth="1/5"
+                direction="vertical"
+              />
+              <TitleDesc
+                title={PARENTS_REQUEST_TITLE.firstClassInfo}
+                desc={
+                  data?.firstDay && data?.firstDayStart
+                    ? formatFirstClassInfo(data.firstDay, data.firstDayStart)
+                    : "상담결과 미전달"
+                }
+                maxWidth="1/5"
+                direction="vertical"
+              />
+            </div>
+          )}
         </div>
       }
       hiddenContent={
