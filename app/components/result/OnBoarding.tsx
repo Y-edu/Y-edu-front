@@ -7,11 +7,11 @@ export default function OnBoarding() {
   return (
     <div className="flex h-full flex-col items-center justify-center gap-[40px] pb-[48px]">
       <p className="text-center text-[24px] font-bold">
-        전화 상담 후<br /> 첫 수업일이 정해졌나요?
+        전화 상담 후<br /> 수업이 확정되었나요?
       </p>
       <div className="flex w-full flex-col gap-[4px]">
         <Button onClick={() => router.push(`?step=confirmed`)}>
-          네, 정해졌어요
+          네, 확정됐어요
         </Button>
         <Button
           onClick={() => router.push(`?step=rejected`)}

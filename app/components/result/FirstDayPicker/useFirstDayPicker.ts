@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { addMonths, format, getDaysInMonth } from "date-fns";
+import { ko } from "date-fns/locale";
 
 import { FirstDay } from "@/components/result/ConfirmedResult/useConfirmedResult";
 
@@ -10,7 +11,11 @@ const generateMonthOptions = () =>
 
 const getDaysArray = (year: number, month: number): string[] => {
   const daysInMonth = getDaysInMonth(new Date(year, month));
-  return Array.from({ length: daysInMonth }, (_, i) => `${i + 1}일`);
+  return Array.from({ length: daysInMonth }, (_, i) => {
+    const currentDate = new Date(year, month, i + 1);
+    const dayOfWeek = format(currentDate, "eee", { locale: ko });
+    return `${i + 1}일 (${dayOfWeek})`;
+  });
 };
 
 type OptionKey = "month" | "day" | "period" | "hour" | "minute";

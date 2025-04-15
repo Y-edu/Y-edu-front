@@ -1,5 +1,7 @@
 "use client";
 
+import { usePathname } from "next/navigation";
+
 import { useModal } from "@/hooks/custom";
 import { Modal } from "@/ui";
 import { usePostNewMatchingAcceptance } from "@/hooks/mutation";
@@ -28,6 +30,7 @@ function TeacherListSearch({
   teacherData,
   selectedTeacherRowList,
 }: TeacherListSearchProps) {
+  const pathname = usePathname();
   const selectedTeacherNicknames = teacherData
     ? getSelectedTeacherNicknames(teacherData, selectedTeacherRowList)
     : [];
@@ -60,18 +63,20 @@ function TeacherListSearch({
             조회하기
           </button>
         </div>
-        <button
-          className="mr-6 rounded bg-primary px-3 py-[6px] text-white hover:bg-[#4762B4]"
-          onClick={() => {
-            if (selectedTeachers.length === 0) {
-              alert("이 과외건을 추가로 제안할 선생님을 선택해주세요.");
-              return;
-            }
-            openModal();
-          }}
-        >
-          과외건 추가 제안
-        </button>
+        {pathname !== "/zuzuclubadmin/teacher-management" && (
+          <button
+            className="mr-6 rounded bg-primary px-3 py-[6px] text-white hover:bg-[#4762B4]"
+            onClick={() => {
+              if (selectedTeachers.length === 0) {
+                alert("이 과외건을 추가로 제안할 선생님을 선택해주세요.");
+                return;
+              }
+              openModal();
+            }}
+          >
+            과외건 추가 제안
+          </button>
+        )}
         <Modal
           isOpen={isModalOpen}
           handleOnConfirm={() => {
