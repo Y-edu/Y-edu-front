@@ -4,6 +4,7 @@ import { Snackbar } from "@mui/material";
 
 import { getSplitHoursToStringFormat } from "@/utils/date";
 import { useUpdateTeacherAvailable } from "@/hooks/mutation/usePutAvailableTeacherTime";
+import Button from "@/ui/Button";
 
 interface TimeCell {
   day: string;
@@ -67,6 +68,23 @@ export function TimeTable({
     }
   };
 
+  const handleSubmit = () => {
+    if (!patchTime) return;
+    patchTime(
+      {
+        phoneNumber: initialPhoneNumber,
+        name: initialName,
+        available: currentDate,
+      },
+      {
+        onSuccess: () => {
+          setSnackbarOpen(true);
+          setSavedSelectTime(currentDate);
+        },
+      },
+    );
+  };
+
   const handleNotClick = (day: string, time: string) => {
     if (currentDate[day]?.includes(time + ":00")) {
       setCurrentDate((prev) => ({
@@ -96,21 +114,46 @@ export function TimeTable({
           </div>
         ))}
       </div>
-      <div className="flex h-[677px] w-full justify-between px-5">
+      <div className="mb-[40px] flex h-[677px] w-full justify-between px-5">
         {/* 시간 영역 */}
-        <div className="mr-1 mt-[-10px] flex h-[697px] w-[37px] flex-col items-center justify-between">
+        <div className="mr-1 mt-[-14px] flex h-[697px] w-[37px] flex-col items-center">
           {(() => {
-            const times = getSplitHoursToStringFormat();
+            const times = Array.from(
+              { length: 23 - 9 + 1 },
+              (_, i) => `${9 + i}:00`,
+            );
+            const gaps = [
+              18, // 9→10
+              24, // 10→11
+              10, // 11→12
+              16, // 12→13
+              ...Array(23 - 11).fill(24),
+              0,
+            ];
 
-            if (times[times.length - 1] !== "24:00") {
-              times.push("24:00");
-            }
+            return times.map((time, i) => {
+              const hour = parseInt(time, 10);
+              const gap = gaps[i] ?? 0;
+              const isSpecial = hour === 9 || hour === 12;
+              const label = hour === 9 ? "오전" : hour === 12 ? "오후" : null;
 
-            return times.map((v) => (
-              <div key={v} className="text-[14px] text-primaryNormal">
-                {v}
-              </div>
-            ));
+              return (
+                <div
+                  key={time}
+                  className={`text-[14px] text-gray-500 ${isSpecial ? "flex flex-col items-center" : ""} `}
+                  style={{ marginBottom: `${gap}px` }}
+                >
+                  {isSpecial ? (
+                    <>
+                      <span>{label}</span>
+                      <span>{hour}</span>
+                    </>
+                  ) : (
+                    <span>{hour}</span>
+                  )}
+                </div>
+              );
+            });
           })()}
         </div>
         {/* 테이블 영역 */}
@@ -169,32 +212,15 @@ export function TimeTable({
           })}
         </div>
       </div>
-      <div className="fixed inset-x-0 bottom-0 mx-auto max-w-[375px] bg-white px-5 pb-4 pt-2">
-        <button
+      <div className="fixed inset-x-0 bottom-0 bg-white px-5 pb-5">
+        <div className="absolute top-[-20px] h-[20px] w-full bg-gradient-to-t from-white to-transparent" />
+        <Button
           disabled={!hasChanges || patchTime === undefined}
-          className={`h-[48px] w-full rounded-[12px] font-bold ${
-            !hasChanges
-              ? "bg-gray-400 text-white"
-              : "bg-primaryNormal text-white"
-          }`}
-          onClick={() => {
-            patchTime(
-              {
-                phoneNumber: initialPhoneNumber,
-                name: initialName,
-                available: currentDate,
-              },
-              {
-                onSuccess: () => {
-                  setSnackbarOpen(true);
-                  setSavedSelectTime(currentDate);
-                },
-              },
-            );
-          }}
+          onClick={handleSubmit}
+          className="h-[59px] w-full rounded-[12px] font-bold"
         >
-          <span>변경된 시간 저장</span>
-        </button>
+          변경된 시간 저장
+        </Button>
       </div>
       <Snackbar
         open={snackbarOpen}
