@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { eachMinuteOfInterval, format } from "date-fns";
 
 import { getSplitHoursToStringFormat } from "@/utils/date";
@@ -6,9 +6,10 @@ import { useUpdateTeacherAvailable } from "@/hooks/mutation/usePutAvailableTeach
 
 export type Mode = "teacher" | "parent";
 
-export interface TimeCell {
+export interface Session {
   day: string;
-  time: string;
+  startTime: string;
+  slots: string[];
 }
 
 export function useTimeTable(
@@ -21,158 +22,144 @@ export function useTimeTable(
   onHasTimeChange?: (has: boolean) => void,
 ) {
   const { mutate: patchTime } = useUpdateTeacherAvailable();
-
   const times = getSplitHoursToStringFormat();
 
   const [currentDate, setCurrentDate] = useState(initialSelectTime);
-  const [savedSelectTime, setSavedSelectTime] = useState(initialSelectTime);
-  const [selectedCell, setSelectedCell] = useState<TimeCell>({
-    day: "",
-    time: "",
-  });
-  const [selectedSessions, setSelectedSessions] = useState<
-    Array<{ day: string; startTime: string; slots: string[] }>
-  >([]);
-
+  const [selectedCell, setSelectedCell] = useState<{
+    day: string;
+    time: string;
+  }>({ day: "", time: "" });
+  const [selectedSessions, setSelectedSessions] = useState<Session[]>([]);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
 
   useEffect(() => {
     setCurrentDate(initialSelectTime);
-    setSavedSelectTime(initialSelectTime);
+    setSelectedSessions([]);
   }, [initialSelectTime]);
 
-  const handleCellClick = (day: string, time: string) => {
-    const timeWithSeconds = time + ":00";
+  const getCandidate = useCallback(
+    (day: string, time: string) => {
+      if (mode !== "parent" || sessionDuration === undefined) return null;
+      const slotCount = Math.ceil((sessionDuration ?? 0) / 50);
+      if (slotCount <= 0) return null;
+      const idx = times.indexOf(time);
+      if (idx < 0) return null;
+      const segment = times.slice(idx, idx + slotCount);
+      if (segment.length < slotCount) return null;
+      const slots = segment.map((t) => t + ":00");
+      const available = initialSelectTime[day] || [];
+      return slots.every((s) => available.includes(s))
+        ? { startTime: segment[0], slots }
+        : null;
+    },
+    [initialSelectTime, sessionDuration, times, mode],
+  );
 
-    if (mode === "teacher") {
-      if (day === selectedCell.day && time === selectedCell.time) {
-        setSelectedCell({ day: "", time: "" });
-        setCurrentDate((prev) => ({
-          ...prev,
-          [day]: prev[day].filter((t) => t !== timeWithSeconds),
-        }));
-      } else {
-        setSelectedCell({ day, time });
-        const [startHour, startMinute] = time.split(":").map(Number);
-        const selectedDateRange = eachMinuteOfInterval({
-          start: new Date(2025, 2, 26, startHour, startMinute),
-          end: new Date(2025, 2, 26, startHour, startMinute + 59),
-        });
-        const splitByMinutes = selectedDateRange.filter((_, i) => i % 60 === 0);
-        const toFormat = splitByMinutes.map((d) => format(d, "HH:mm") + ":00");
-        setCurrentDate((prev) => {
-          const merged = Array.from(new Set([...prev[day], ...toFormat]));
-          merged.sort();
-          return { ...prev, [day]: merged };
-        });
-      }
-    } else {
-      const slotCount = Math.ceil((sessionDuration ?? 100) / 50);
-      const idx = times.findIndex((t) => t === time);
-      if (idx === -1) return;
-
-      const candidateTimes = times.slice(idx, idx + slotCount);
-      if (candidateTimes.length < slotCount) return;
-
-      const candidateSlots = candidateTimes.map((t) => t + ":00");
-
-      const availableSlots = initialSelectTime[day] || [];
-      const allAvailable = candidateSlots.every((s) =>
-        availableSlots.includes(s),
-      );
-      if (!allAvailable) {
-        return;
-      }
-
+  const handleParentClick = useCallback(
+    (day: string, time: string) => {
+      const candidate = getCandidate(day, time);
+      if (!candidate) return;
       setSelectedSessions((prev) => {
-        const existsIdx = prev.findIndex((s) => s.day === day);
-
-        if (existsIdx > -1 && prev[existsIdx].startTime === time) {
-          const copy = [...prev];
-          copy.splice(existsIdx, 1);
-          return copy;
+        const idx = prev.findIndex((s) => s.day === day);
+        const maxCount = sessionCount ?? 1;
+        if (idx > -1 && prev[idx].startTime === candidate.startTime) {
+          return prev.filter((_, i) => i !== idx);
         }
-
-        if (existsIdx > -1) {
-          const copy = [...prev];
-          copy[existsIdx] = {
-            day,
-            startTime: candidateTimes[0],
-            slots: candidateSlots,
-          };
-          return copy;
+        if (idx > -1) {
+          return prev.map((s, i) => (i === idx ? { day, ...candidate } : s));
         }
-
-        if (prev.length < (sessionCount ?? 1)) {
-          return [
-            ...prev,
-            {
-              day,
-              startTime: candidateTimes[0],
-              slots: candidateSlots,
-            },
-          ];
+        if (prev.length < maxCount) {
+          return [...prev, { day, ...candidate }];
         }
         return prev;
       });
-    }
-  };
+    },
+    [getCandidate, sessionCount],
+  );
 
-  const handleNotClick = (day: string, time: string) => {
-    if (mode === "teacher") {
-      if (currentDate[day]?.includes(time + ":00")) {
+  const handleTeacherClick = useCallback(
+    (day: string, time: string) => {
+      const timeKey = time + ":00";
+      if (selectedCell.day === day && selectedCell.time === time) {
+        setSelectedCell({ day: "", time: "" });
         setCurrentDate((prev) => ({
           ...prev,
-          [day]: prev[day].filter((t) => t !== time + ":00"),
+          [day]: prev[day].filter((t) => t !== timeKey),
+        }));
+      } else {
+        setSelectedCell({ day, time });
+        const [h, m] = time.split(":").map(Number);
+        const range = eachMinuteOfInterval({
+          start: new Date(2025, 2, 26, h, m),
+          end: new Date(2025, 2, 26, h, m + 59),
+        });
+        const slots = range
+          .filter((_, i) => i % 60 === 0)
+          .map((d) => format(d, "HH:mm") + ":00");
+        setCurrentDate((prev) => ({
+          ...prev,
+          [day]: Array.from(new Set([...prev[day], ...slots])).sort(),
         }));
       }
-      setSelectedCell({ day: "", time: "" });
-    } else {
-      setSelectedSessions((prev) =>
-        prev.filter((s) => !(s.day === day && s.startTime === time)),
+    },
+    [selectedCell],
+  );
+
+  const handleCellClick = useCallback(
+    (day: string, time: string) => {
+      if (mode === "teacher") handleTeacherClick(day, time);
+      else handleParentClick(day, time);
+      onHasTimeChange?.(
+        mode === "teacher"
+          ? Object.values(currentDate).some((arr) => arr.length > 0)
+          : selectedSessions.length === (sessionCount ?? 1),
       );
-    }
-  };
+    },
+    [
+      mode,
+      handleTeacherClick,
+      handleParentClick,
+      onHasTimeChange,
+      currentDate,
+      selectedSessions,
+      sessionCount,
+    ],
+  );
 
-  let canSave = false;
-  if (mode === "teacher") {
-    const hasDiff =
-      JSON.stringify(savedSelectTime) !== JSON.stringify(currentDate);
-    const anySelected = Object.values(currentDate).some(
-      (arr) => arr.length > 0,
-    );
-    canSave = hasDiff && anySelected;
-  } else {
-    canSave = (sessionCount ?? 1) === selectedSessions.length;
-  }
+  const handleCellUnclick = useCallback(
+    (day: string, time: string) => {
+      if (mode === "teacher") {
+        handleTeacherClick(day, time);
+      } else {
+        setSelectedSessions((prev) => prev.filter((s) => s.day !== day));
+      }
+    },
+    [mode, handleTeacherClick],
+  );
 
-  useEffect(() => onHasTimeChange?.(canSave), [canSave, onHasTimeChange]);
-
-  const handleSubmit = () => {
-    if (mode !== "teacher" || !patchTime) return;
+  const handleSubmit = useCallback(() => {
+    if (mode !== "teacher") return;
     patchTime(
       {
         phoneNumber: initialPhoneNumber,
         name: initialName,
         available: currentDate,
       },
-      {
-        onSuccess: () => {
-          setSavedSelectTime(currentDate);
-          setSnackbarOpen(true);
-        },
-      },
+      { onSuccess: () => setSnackbarOpen(true) },
     );
-  };
+  }, [mode, patchTime, initialName, initialPhoneNumber, currentDate]);
 
   return {
     currentDate,
     selectedCell,
     selectedSessions,
     snackbarOpen,
-    hasChanges: canSave,
+    hasChanges:
+      mode === "teacher"
+        ? JSON.stringify(currentDate) !== JSON.stringify(initialSelectTime)
+        : selectedSessions.length === (sessionCount ?? 1),
     handleCellClick,
-    handleNotClick,
+    handleNotClick: handleCellUnclick,
     handleSubmit,
     closeSnackbar: () => setSnackbarOpen(false),
   };
