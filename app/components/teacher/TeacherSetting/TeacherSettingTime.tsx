@@ -51,7 +51,7 @@ export function TeacherSettingTime() {
     handleNotClick,
     handleSubmit,
     closeSnackbar,
-  } = useTimeTable(data?.available ?? {}, teacherName, teacherPhone);
+  } = useTimeTable(data?.available ?? {}, teacherName, teacherPhone, "teacher");
 
   const {
     isModalOpen,
@@ -109,6 +109,7 @@ export function TeacherSettingTime() {
 
       {/* 타임테이블 */}
       <TimeTable
+        mode="teacher"
         currentDate={currentDate}
         selectedCell={selectedCell}
         onCellClick={handleCellClick}
