@@ -1,8 +1,7 @@
 "use client";
 
-import { Snackbar } from "@mui/material";
-
 import { getSplitHoursToStringFormat } from "@/utils/date";
+import GlobalSnackbar from "@/ui/Snackbar";
 import Button from "@/ui/Button";
 
 import { useTimeTable } from "./useTimeTable";
@@ -146,13 +145,10 @@ export function TimeTable(props: TimeTableProps) {
       </div>
 
       {/* 스낵바 */}
-      <Snackbar
+      <GlobalSnackbar
         open={snackbarOpen}
-        autoHideDuration={1500}
-        onClose={closeSnackbar}
         message="변경된 시간이 저장되었습니다."
-        anchorOrigin={{ vertical: "top", horizontal: "center" }}
-        sx={{ top: "81%", mx: "20px" }}
+        onClose={closeSnackbar}
       />
     </div>
   );
