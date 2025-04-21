@@ -10,8 +10,7 @@ import ErrorUI from "@/ui/ErrorUI";
 import { Modal } from "@/ui";
 import { useGetTeacherSettingInfo } from "@/hooks/query/useGetTeacherSettingInfo";
 import useUnsavedBackWarning from "@/hooks/custom/useUnsavedBackWarning";
-
-import { TimeTable } from "./TimeTable";
+import { TimeTable } from "@/components/teacher/TimeTable";
 
 import BackArrow from "public/images/arrow-black.png";
 
