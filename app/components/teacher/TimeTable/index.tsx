@@ -12,7 +12,7 @@ interface Session {
 
 interface TimeTableProps {
   mode: Mode;
-  currentDate: Record<string, string[]>;
+  currentTime: Record<string, string[]>;
   selectedCell?: { day: string; time: string };
   selectedSessions?: Session[];
   onCellClick: (day: string, time: string) => void;
@@ -21,7 +21,7 @@ interface TimeTableProps {
 
 export default function TimeTable({
   mode,
-  currentDate,
+  currentTime,
   selectedSessions,
   onCellClick,
   onCellUnclick,
@@ -87,7 +87,7 @@ export default function TimeTable({
                 const slotKey = `${time}:00`;
                 const session = selectedSessions?.find((s) => s.day === day);
                 const isAvailable =
-                  currentDate[day]?.includes(slotKey) ?? false;
+                  currentTime[day]?.includes(slotKey) ?? false;
                 const isSelected =
                   mode === "parent" && session?.slots.includes(slotKey);
 

@@ -24,7 +24,7 @@ export function useTimeTable(
   const { mutate: patchTime } = useUpdateTeacherAvailable();
   const times = getSplitHoursToStringFormat();
 
-  const [currentDate, setCurrentDate] = useState(initialSelectTime);
+  const [currentTime, setCurrentTime] = useState(initialSelectTime);
   const [selectedCell, setSelectedCell] = useState<{
     day: string;
     time: string;
@@ -33,7 +33,7 @@ export function useTimeTable(
   const [snackbarOpen, setSnackbarOpen] = useState(false);
 
   useEffect(() => {
-    setCurrentDate(initialSelectTime);
+    setCurrentTime(initialSelectTime);
     setSelectedSessions([]);
   }, [initialSelectTime]);
 
@@ -82,7 +82,7 @@ export function useTimeTable(
       const timeKey = time + ":00";
       if (selectedCell.day === day && selectedCell.time === time) {
         setSelectedCell({ day: "", time: "" });
-        setCurrentDate((prev) => ({
+        setCurrentTime((prev) => ({
           ...prev,
           [day]: prev[day].filter((t) => t !== timeKey),
         }));
@@ -96,7 +96,7 @@ export function useTimeTable(
         const slots = range
           .filter((_, i) => i % 60 === 0)
           .map((d) => format(d, "HH:mm") + ":00");
-        setCurrentDate((prev) => ({
+        setCurrentTime((prev) => ({
           ...prev,
           [day]: Array.from(new Set([...prev[day], ...slots])).sort(),
         }));
@@ -111,7 +111,7 @@ export function useTimeTable(
       else handleParentClick(day, time);
       onHasTimeChange?.(
         mode === "teacher"
-          ? Object.values(currentDate).some((arr) => arr.length > 0)
+          ? Object.values(currentTime).some((arr) => arr.length > 0)
           : selectedSessions.length === (sessionCount ?? 1),
       );
     },
@@ -120,7 +120,7 @@ export function useTimeTable(
       handleTeacherClick,
       handleParentClick,
       onHasTimeChange,
-      currentDate,
+      currentTime,
       selectedSessions,
       sessionCount,
     ],
@@ -143,20 +143,20 @@ export function useTimeTable(
       {
         phoneNumber: initialPhoneNumber,
         name: initialName,
-        available: currentDate,
+        available: currentTime,
       },
       { onSuccess: () => setSnackbarOpen(true) },
     );
-  }, [mode, patchTime, initialName, initialPhoneNumber, currentDate]);
+  }, [mode, patchTime, initialName, initialPhoneNumber, currentTime]);
 
   return {
-    currentDate,
+    currentTime,
     selectedCell,
     selectedSessions,
     snackbarOpen,
     hasChanges:
       mode === "teacher"
-        ? JSON.stringify(currentDate) !== JSON.stringify(initialSelectTime)
+        ? JSON.stringify(currentTime) !== JSON.stringify(initialSelectTime)
         : selectedSessions.length === (sessionCount ?? 1),
     handleCellClick,
     handleNotClick: handleCellUnclick,

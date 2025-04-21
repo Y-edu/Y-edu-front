@@ -43,7 +43,7 @@ export function TeacherSettingTime() {
   );
 
   const {
-    currentDate,
+    currentTime,
     selectedCell,
     hasChanges,
     snackbarOpen,
@@ -110,7 +110,7 @@ export function TeacherSettingTime() {
       {/* 타임테이블 */}
       <TimeTable
         mode="teacher"
-        currentDate={currentDate}
+        currentTime={currentTime}
         selectedCell={selectedCell}
         onCellClick={handleCellClick}
         onCellUnclick={handleNotClick}
