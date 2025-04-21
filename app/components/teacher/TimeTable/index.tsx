@@ -30,7 +30,7 @@ export default function TimeTable({
   const times = getSplitHoursToStringFormat();
   const gaps = [18, 24, 10, 16, ...Array(times.length - 4).fill(24), 0];
 
-  // 각 모서리 border-radius 계산 헬퍼
+  // 각 모서리 border-radius
   const getCornerClass = (dayIdx: number, timeIdx: number) => {
     if (dayIdx === 0 && timeIdx === 0) return "rounded-tl-[5px]";
     if (dayIdx === WEEK.length - 1 && timeIdx === 0) return "rounded-tr-[5px]";
