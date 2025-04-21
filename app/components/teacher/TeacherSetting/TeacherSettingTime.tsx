@@ -48,7 +48,7 @@ export function TeacherSettingTime() {
     hasChanges,
     snackbarOpen,
     handleCellClick,
-    handleNotClick,
+    handleCellUnclick,
     handleSubmit,
     closeSnackbar,
   } = useTimeTable(data?.available ?? {}, teacherName, teacherPhone, "teacher");
@@ -113,7 +113,7 @@ export function TeacherSettingTime() {
         currentTime={currentTime}
         selectedCell={selectedCell}
         onCellClick={handleCellClick}
-        onCellUnclick={handleNotClick}
+        onCellUnclick={handleCellUnclick}
       />
 
       {/* 저장 버튼 */}

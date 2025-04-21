@@ -159,7 +159,7 @@ export function useTimeTable(
         ? JSON.stringify(currentTime) !== JSON.stringify(initialSelectTime)
         : selectedSessions.length === (sessionCount ?? 1),
     handleCellClick,
-    handleNotClick: handleCellUnclick,
+    handleCellUnclick,
     handleSubmit,
     closeSnackbar: () => setSnackbarOpen(false),
   };
