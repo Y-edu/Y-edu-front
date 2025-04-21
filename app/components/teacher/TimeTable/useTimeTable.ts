@@ -73,9 +73,13 @@ export function useTimeTable(
     setSelectedCell({ day: "", time: "" });
   };
 
-  const hasChanges =
+  const hasDiff =
     JSON.stringify(savedSelectTime) !== JSON.stringify(currentDate);
-  useEffect(() => onHasTimeChange?.(hasChanges), [hasChanges, onHasTimeChange]);
+  const anySelected = Object.values(currentDate).some(
+    (times) => times.length > 0,
+  );
+  const canSave = hasDiff && anySelected;
+  useEffect(() => onHasTimeChange?.(canSave), [canSave, onHasTimeChange]);
 
   const handleSubmit = () => {
     if (!patchTime) return;
@@ -98,7 +102,7 @@ export function useTimeTable(
     currentDate,
     selectedCell,
     snackbarOpen,
-    hasChanges,
+    hasChanges: canSave,
     handleCellClick,
     handleNotClick,
     handleSubmit,
