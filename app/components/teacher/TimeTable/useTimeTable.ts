@@ -23,36 +23,53 @@ export function useTimeTable(
   });
   const [snackbarOpen, setSnackbarOpen] = useState(false);
 
+  useEffect(() => {
+    setCurrentDate(initialSelectTime);
+    setSavedSelectTime(initialSelectTime);
+  }, [initialSelectTime]);
+
   const handleCellClick = (day: string, time: string) => {
-    const t = time + ":00";
+    const timeWithSeconds = time + ":00";
+
     if (day === selectedCell.day && time === selectedCell.time) {
       setSelectedCell({ day: "", time: "" });
       setCurrentDate((prev) => ({
         ...prev,
-        [day]: prev[day].filter((x) => x !== t),
+        [day]: prev[day].filter((t) => t !== timeWithSeconds),
       }));
-      return;
+    } else {
+      setSelectedCell({ day, time });
+      const [startHour, startMinute] = time.split(":").map(Number);
+
+      const selectedDateRange = eachMinuteOfInterval({
+        start: new Date(2025, 2, 26, startHour, startMinute),
+        end: new Date(2025, 2, 26, startHour, startMinute + 59),
+      });
+      const splitByMinutes = selectedDateRange.filter(
+        (_, index) => index % 60 === 0,
+      );
+      const toFormatHHMM = splitByMinutes.map(
+        (date) => format(date, "HH:mm") + ":00",
+      );
+
+      setCurrentDate((prev) => {
+        const merged = Array.from(new Set([...prev[day], ...toFormatHHMM]));
+        merged.sort();
+        return {
+          ...prev,
+          [day]: merged,
+        };
+      });
     }
-    setSelectedCell({ day, time });
-    const [h, m] = time.split(":").map(Number);
-    const minutes = eachMinuteOfInterval({
-      start: new Date(2025, 2, 26, h, m),
-      end: new Date(2025, 2, 26, h, m + 59),
-    })
-      .filter((_, i) => i % 60 === 0)
-      .map((d) => format(d, "HH:mm") + ":00");
-    setCurrentDate((prev) => ({
-      ...prev,
-      [day]: Array.from(new Set([...prev[day], ...minutes])),
-    }));
   };
 
   const handleNotClick = (day: string, time: string) => {
-    const t = time + ":00";
-    setCurrentDate((prev) => ({
-      ...prev,
-      [day]: prev[day].filter((x) => x !== t),
-    }));
+    if (currentDate[day]?.includes(time + ":00")) {
+      setCurrentDate((prev) => ({
+        ...prev,
+        [day]: prev[day].filter((t) => t !== time + ":00"),
+      }));
+    }
     setSelectedCell({ day: "", time: "" });
   };
 
