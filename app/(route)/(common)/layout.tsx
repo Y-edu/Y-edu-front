@@ -1,4 +1,4 @@
-export default function TeacherLayout({
+export default function CommonLayout({
   children,
 }: {
   children: React.ReactNode;
