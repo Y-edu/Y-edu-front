@@ -111,7 +111,7 @@ export default function TimeTable({
                       ? onCellUnclick(day, time)
                       : onCellClick(day, time);
                   } else {
-                    if (session && session.startTime === time) {
+                    if (session?.slots.includes(slotKey)) {
                       onCellUnclick(day, time);
                     } else {
                       onCellClick(day, time);

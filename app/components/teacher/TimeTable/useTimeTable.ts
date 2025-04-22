@@ -40,17 +40,26 @@ export function useTimeTable(
   const getCandidate = useCallback(
     (day: string, time: string) => {
       if (mode !== "parent" || sessionDuration === undefined) return null;
-      const slotCount = Math.ceil((sessionDuration ?? 0) / 50);
+      const slotCount = Math.ceil(sessionDuration / 50);
       if (slotCount <= 0) return null;
-      const idx = times.indexOf(time);
-      if (idx < 0) return null;
-      const segment = times.slice(idx, idx + slotCount);
-      if (segment.length < slotCount) return null;
-      const slots = segment.map((t) => t + ":00");
+
       const available = initialSelectTime[day] || [];
-      return slots.every((s) => available.includes(s))
-        ? { startTime: segment[0], slots }
-        : null;
+      const availableShort = available.map((t) => t.slice(0, 5));
+
+      const idx = availableShort.indexOf(time);
+      if (idx < 0) return null;
+
+      const maxStartIdx = availableShort.length - slotCount;
+      const startIdx = idx <= maxStartIdx ? idx : maxStartIdx;
+      const segment = availableShort.slice(startIdx, startIdx + slotCount);
+      if (segment.length < slotCount) return null;
+
+      const globalIdx = segment.map((t) => times.indexOf(t));
+      if (globalIdx.some((gi, i) => i > 0 && gi - globalIdx[i - 1] !== 1))
+        return null;
+
+      const slots = segment.map((t) => t + ":00");
+      return { startTime: segment[0], slots };
     },
     [initialSelectTime, sessionDuration, times, mode],
   );
@@ -58,11 +67,17 @@ export function useTimeTable(
   const handleParentClick = useCallback(
     (day: string, time: string) => {
       const candidate = getCandidate(day, time);
-      if (!candidate) return;
+      if (!candidate) {
+        if ((initialSelectTime[day] || []).includes(time + ":00")) {
+          setSnackbarOpen(true);
+        }
+        return;
+      }
       setSelectedSessions((prev) => {
         const idx = prev.findIndex((s) => s.day === day);
         const maxCount = sessionCount ?? 1;
-        if (idx > -1 && prev[idx].startTime === candidate.startTime) {
+
+        if (idx > -1 && prev[idx].slots.includes(time + ":00")) {
           return prev.filter((_, i) => i !== idx);
         }
         if (idx > -1) {
@@ -71,10 +86,11 @@ export function useTimeTable(
         if (prev.length < maxCount) {
           return [...prev, { day, ...candidate }];
         }
+
         return prev;
       });
     },
-    [getCandidate, sessionCount],
+    [getCandidate, sessionCount, initialSelectTime],
   );
 
   const handleTeacherClick = useCallback(
