@@ -92,7 +92,8 @@ export default function TimeTable({
                   mode === "parent" && session?.slots.includes(slotKey);
 
                 const clickable =
-                  mode === "teacher" || (mode === "parent" && isAvailable);
+                  mode === "teacher" ||
+                  (mode === "parent" && (isAvailable || isSelected));
 
                 let bgClass = "bg-white";
                 if (mode === "teacher") {
