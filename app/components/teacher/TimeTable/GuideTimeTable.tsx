@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion, useAnimation } from "framer-motion";
+import { domAnimation, LazyMotion, m, useAnimation } from "framer-motion";
 import Image from "next/image";
 
 import cn from "@/utils/cn";
@@ -56,17 +56,19 @@ export default function GuideTimeTable() {
                 !showSecondBlock && "opacity-0",
               )}
             />
-            <motion.div
-              className="absolute right-[-30px] top-[10px]"
-              animate={fingerControls}
-            >
-              <Image
-                src="/images/finger-tap.svg"
-                alt="finger"
-                width={58}
-                height={59}
-              />
-            </motion.div>
+            <LazyMotion features={domAnimation}>
+              <m.div
+                className="absolute right-[-30px] top-[10px]"
+                animate={fingerControls}
+              >
+                <Image
+                  src="/images/finger-tap.svg"
+                  alt="finger"
+                  width={58}
+                  height={59}
+                />
+              </m.div>
+            </LazyMotion>
           </div>
         </div>
       </div>
