@@ -2,12 +2,12 @@ import { ReactNode } from "react";
 
 import cn from "@/utils/cn";
 
-interface TimerTableHeaderProps {
+interface TitleSectionProps {
   children: ReactNode;
   className?: string;
 }
 
-function TimeTableHeader({ children, className }: TimerTableHeaderProps) {
+function TitleSection({ children, className }: TitleSectionProps) {
   return (
     <div className={cn("flex flex-col items-start gap-[8px]", className)}>
       {children}
@@ -15,7 +15,7 @@ function TimeTableHeader({ children, className }: TimerTableHeaderProps) {
   );
 }
 
-TimeTableHeader.Title = function SubtitleTitle({
+TitleSection.Title = function TitleSectionTitle({
   className,
   children,
 }: {
@@ -29,7 +29,7 @@ TimeTableHeader.Title = function SubtitleTitle({
   );
 };
 
-TimeTableHeader.Description = function SubtitleDescription({
+TitleSection.Description = function TitleSectionDescription({
   children,
   className,
 }: {
@@ -48,4 +48,4 @@ TimeTableHeader.Description = function SubtitleDescription({
   );
 };
 
-export default TimeTableHeader;
+export default TitleSection;
