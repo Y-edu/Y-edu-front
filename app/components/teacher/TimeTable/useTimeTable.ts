@@ -1,5 +1,4 @@
 import { useEffect, useState, useCallback } from "react";
-import { eachMinuteOfInterval, format } from "date-fns";
 
 import { getSplitHoursToStringFormat } from "@/utils/date";
 import { useUpdateTeacherAvailable } from "@/hooks/mutation/usePutAvailableTeacherTime";
@@ -25,7 +24,7 @@ export function useTimeTable(
   const times = getSplitHoursToStringFormat();
 
   const [currentTime, setCurrentTime] = useState(initialSelectTime);
-  const [selectedCell, setSelectedCell] = useState<{
+  const [selectedCell] = useState<{
     day: string;
     time: string;
   }>({ day: "", time: "" });
@@ -112,33 +111,19 @@ export function useTimeTable(
     ],
   );
 
-  const handleTeacherClick = useCallback(
-    (day: string, time: string) => {
-      const timeKey = time + ":00";
-      if (selectedCell.day === day && selectedCell.time === time) {
-        setSelectedCell({ day: "", time: "" });
-        setCurrentTime((prev) => ({
-          ...prev,
-          [day]: prev[day].filter((t) => t !== timeKey),
-        }));
-      } else {
-        setSelectedCell({ day, time });
-        const [h, m] = time.split(":").map(Number);
-        const range = eachMinuteOfInterval({
-          start: new Date(2025, 2, 26, h, m),
-          end: new Date(2025, 2, 26, h, m + 59),
-        });
-        const slots = range
-          .filter((_, i) => i % 60 === 0)
-          .map((d) => format(d, "HH:mm") + ":00");
-        setCurrentTime((prev) => ({
-          ...prev,
-          [day]: Array.from(new Set([...prev[day], ...slots])).sort(),
-        }));
-      }
-    },
-    [selectedCell],
-  );
+  const handleTeacherClick = useCallback((day: string, time: string) => {
+    const timeKey = time + ":00";
+    setCurrentTime((prev) => {
+      const daySlots = prev[day] ?? [];
+      const idx = daySlots.indexOf(timeKey);
+      const newSlots =
+        idx > -1
+          ? daySlots.filter((t) => t !== timeKey)
+          : [...daySlots, timeKey];
+      newSlots.sort();
+      return { ...prev, [day]: newSlots };
+    });
+  }, []);
 
   const handleCellClick = useCallback(
     (day: string, time: string) => {
