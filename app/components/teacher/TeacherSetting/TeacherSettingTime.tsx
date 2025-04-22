@@ -1,3 +1,4 @@
+// teacher 모드 TimeTable
 "use client";
 
 import Image from "next/image";
