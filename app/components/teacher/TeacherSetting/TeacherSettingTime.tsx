@@ -43,15 +43,15 @@ export function TeacherSettingTime() {
   );
 
   const {
-    currentDate,
+    currentTime,
     selectedCell,
     hasChanges,
     snackbarOpen,
     handleCellClick,
-    handleNotClick,
+    handleCellUnclick,
     handleSubmit,
     closeSnackbar,
-  } = useTimeTable(data?.available ?? {}, teacherName, teacherPhone);
+  } = useTimeTable(data?.available ?? {}, teacherName, teacherPhone, "teacher");
 
   const {
     isModalOpen,
@@ -109,10 +109,11 @@ export function TeacherSettingTime() {
 
       {/* 타임테이블 */}
       <TimeTable
-        currentDate={currentDate}
+        mode="teacher"
+        currentTime={currentTime}
         selectedCell={selectedCell}
         onCellClick={handleCellClick}
-        onCellUnclick={handleNotClick}
+        onCellUnclick={handleCellUnclick}
       />
 
       {/* 저장 버튼 */}

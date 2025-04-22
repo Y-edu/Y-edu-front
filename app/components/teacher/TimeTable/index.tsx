@@ -2,16 +2,27 @@
 
 import { getSplitHoursToStringFormat } from "@/utils/date";
 
+export type Mode = "teacher" | "parent";
+
+interface Session {
+  day: string;
+  startTime: string;
+  slots: string[];
+}
+
 interface TimeTableProps {
-  currentDate: Record<string, string[]>;
-  selectedCell: { day: string; time: string };
+  mode: Mode;
+  currentTime: Record<string, string[]>;
+  selectedCell?: { day: string; time: string };
+  selectedSessions?: Session[];
   onCellClick: (day: string, time: string) => void;
   onCellUnclick: (day: string, time: string) => void;
 }
 
 export default function TimeTable({
-  currentDate,
-  selectedCell,
+  mode,
+  currentTime,
+  selectedSessions,
   onCellClick,
   onCellUnclick,
 }: TimeTableProps) {
@@ -19,7 +30,7 @@ export default function TimeTable({
   const times = getSplitHoursToStringFormat();
   const gaps = [18, 24, 10, 16, ...Array(times.length - 4).fill(24), 0];
 
-  // 각 모서리 border-radius 계산 헬퍼
+  // 각 모서리 border-radius
   const getCornerClass = (dayIdx: number, timeIdx: number) => {
     if (dayIdx === 0 && timeIdx === 0) return "rounded-tl-[5px]";
     if (dayIdx === WEEK.length - 1 && timeIdx === 0) return "rounded-tr-[5px]";
@@ -70,32 +81,56 @@ export default function TimeTable({
 
         {/* 요일별 셀 */}
         <div className="flex w-full">
-          {WEEK.map((day, dayIdx) => (
-            <div key={day} className="flex size-full flex-col">
-              {times.map((time, timeIdx) => {
-                const slotKey = time + ":00";
-                const isAvailable = currentDate[day]?.includes(slotKey);
+          {WEEK.map((day, dIdx) => (
+            <div key={day} className="flex flex-1 flex-col">
+              {times.map((time, tIdx) => {
+                const slotKey = `${time}:00`;
+                const session = selectedSessions?.find((s) => s.day === day);
+                const isAvailable =
+                  currentTime[day]?.includes(slotKey) ?? false;
                 const isSelected =
-                  selectedCell.day === day && selectedCell.time === time;
-                const isActive = isAvailable || isSelected;
-                const cornerClass = getCornerClass(dayIdx, timeIdx);
-                const toggle = () =>
-                  isActive ? onCellUnclick(day, time) : onCellClick(day, time);
+                  mode === "parent" && session?.slots.includes(slotKey);
+
+                const clickable =
+                  mode === "teacher" || (mode === "parent" && isAvailable);
+
+                let bgClass = "bg-white";
+                if (mode === "teacher") {
+                  bgClass = isAvailable ? "bg-primary" : "bg-white";
+                } else {
+                  if (isSelected) bgClass = "bg-primary";
+                  else if (isAvailable) bgClass = "bg-primary opacity-20";
+                }
+
+                const cornerClass = getCornerClass(dIdx, tIdx);
+                const toggle = () => {
+                  if (!clickable) return;
+
+                  if (mode === "teacher") {
+                    isAvailable
+                      ? onCellUnclick(day, time)
+                      : onCellClick(day, time);
+                  } else {
+                    if (session?.slots.includes(slotKey)) {
+                      onCellUnclick(day, time);
+                    } else {
+                      onCellClick(day, time);
+                    }
+                  }
+                };
 
                 return (
                   <div
                     key={time}
-                    role="button"
-                    tabIndex={0}
+                    role={clickable ? "button" : undefined}
+                    tabIndex={clickable ? 0 : undefined}
                     onClick={toggle}
                     onKeyDown={(e) =>
-                      (e.key === "Enter" || e.key === " ") && toggle()
+                      clickable &&
+                      (e.key === "Enter" || e.key === " ") &&
+                      toggle()
                     }
-                    className={`size-full border border-gray-300 ${
-                      dayIdx !== WEEK.length - 1 ? "border-r-0" : ""
-                    } ${timeIdx !== times.length - 1 ? "border-b-0" : ""} ${
-                      isActive ? "bg-primary" : "bg-white"
-                    } ${cornerClass}`}
+                    className={`flex-1 border border-gray-300 ${dIdx !== WEEK.length - 1 ? "border-r-0" : ""} ${tIdx !== times.length - 1 ? "border-b-0" : ""} ${bgClass} ${cornerClass} `}
                   />
                 );
               })}

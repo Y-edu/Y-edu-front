@@ -1,110 +1,201 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { eachMinuteOfInterval, format } from "date-fns";
 
+import { getSplitHoursToStringFormat } from "@/utils/date";
 import { useUpdateTeacherAvailable } from "@/hooks/mutation/usePutAvailableTeacherTime";
 
-export interface TimeCell {
+export type Mode = "teacher" | "parent";
+
+export interface Session {
   day: string;
-  time: string;
+  startTime: string;
+  slots: string[];
 }
 
 export function useTimeTable(
   initialSelectTime: Record<string, string[]>,
   initialName: string,
   initialPhoneNumber: string,
+  mode: Mode,
+  sessionDuration?: number,
+  sessionCount?: number,
   onHasTimeChange?: (has: boolean) => void,
 ) {
   const { mutate: patchTime } = useUpdateTeacherAvailable();
-  const [currentDate, setCurrentDate] = useState(initialSelectTime);
-  const [savedSelectTime, setSavedSelectTime] = useState(initialSelectTime);
-  const [selectedCell, setSelectedCell] = useState<TimeCell>({
-    day: "",
-    time: "",
-  });
+  const times = getSplitHoursToStringFormat();
+
+  const [currentTime, setCurrentTime] = useState(initialSelectTime);
+  const [selectedCell, setSelectedCell] = useState<{
+    day: string;
+    time: string;
+  }>({ day: "", time: "" });
+  const [selectedSessions, setSelectedSessions] = useState<Session[]>([]);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState<string>("");
 
   useEffect(() => {
-    setCurrentDate(initialSelectTime);
-    setSavedSelectTime(initialSelectTime);
+    setCurrentTime(initialSelectTime);
+    setSelectedSessions([]);
   }, [initialSelectTime]);
 
-  const handleCellClick = (day: string, time: string) => {
-    const timeWithSeconds = time + ":00";
+  const getCandidate = useCallback(
+    (day: string, time: string) => {
+      if (mode !== "parent" || sessionDuration === undefined) return null;
+      const slotCount = Math.ceil(sessionDuration / 50);
+      if (slotCount <= 0) return null;
 
-    if (day === selectedCell.day && time === selectedCell.time) {
-      setSelectedCell({ day: "", time: "" });
-      setCurrentDate((prev) => ({
-        ...prev,
-        [day]: prev[day].filter((t) => t !== timeWithSeconds),
-      }));
-    } else {
-      setSelectedCell({ day, time });
-      const [startHour, startMinute] = time.split(":").map(Number);
+      const available = initialSelectTime[day] || [];
+      const availableShort = available.map((t) => t.slice(0, 5));
 
-      const selectedDateRange = eachMinuteOfInterval({
-        start: new Date(2025, 2, 26, startHour, startMinute),
-        end: new Date(2025, 2, 26, startHour, startMinute + 59),
-      });
-      const splitByMinutes = selectedDateRange.filter(
-        (_, index) => index % 60 === 0,
-      );
-      const toFormatHHMM = splitByMinutes.map(
-        (date) => format(date, "HH:mm") + ":00",
-      );
+      const idx = availableShort.indexOf(time);
+      if (idx < 0) return null;
 
-      setCurrentDate((prev) => {
-        const merged = Array.from(new Set([...prev[day], ...toFormatHHMM]));
-        merged.sort();
-        return {
-          ...prev,
-          [day]: merged,
-        };
-      });
-    }
-  };
+      const maxStartIdx = availableShort.length - slotCount;
+      const startIdx = idx <= maxStartIdx ? idx : maxStartIdx;
+      const segment = availableShort.slice(startIdx, startIdx + slotCount);
+      if (segment.length < slotCount) return null;
 
-  const handleNotClick = (day: string, time: string) => {
-    if (currentDate[day]?.includes(time + ":00")) {
-      setCurrentDate((prev) => ({
-        ...prev,
-        [day]: prev[day].filter((t) => t !== time + ":00"),
-      }));
-    }
-    setSelectedCell({ day: "", time: "" });
-  };
+      const globalIdx = segment.map((t) => times.indexOf(t));
+      if (globalIdx.some((gi, i) => i > 0 && gi - globalIdx[i - 1] !== 1))
+        return null;
 
-  const hasDiff =
-    JSON.stringify(savedSelectTime) !== JSON.stringify(currentDate);
-  const anySelected = Object.values(currentDate).some(
-    (times) => times.length > 0,
+      const slots = segment.map((t) => t + ":00");
+      return { startTime: segment[0], slots };
+    },
+    [initialSelectTime, sessionDuration, times, mode],
   );
-  const canSave = hasDiff && anySelected;
-  useEffect(() => onHasTimeChange?.(canSave), [canSave, onHasTimeChange]);
 
-  const handleSubmit = () => {
-    if (!patchTime) return;
+  const handleParentClick = useCallback(
+    (day: string, time: string) => {
+      const candidate = getCandidate(day, time);
+      const maxCount = sessionCount ?? 1;
+      const slotKey = time + ":00";
+      const availableSlots = initialSelectTime[day] || [];
+      if (!candidate) {
+        if (availableSlots.includes(slotKey)) {
+          if (selectedSessions.length >= maxCount) {
+            setSnackbarMessage(`${maxCount}개만 선택할 수 있어요`);
+            setSnackbarOpen(true);
+          } else {
+            setSnackbarMessage(
+              `${sessionDuration}분 수업이라 이 시간은 선택할 수 없어요.`,
+            );
+            setSnackbarOpen(true);
+          }
+        }
+        return;
+      }
+
+      setSelectedSessions((prev) => {
+        const idx = prev.findIndex((s) => s.day === day);
+
+        if (idx > -1 && prev[idx].slots.includes(time + ":00")) {
+          return prev.filter((_, i) => i !== idx);
+        }
+        if (idx > -1) {
+          return prev.map((s, i) => (i === idx ? { day, ...candidate } : s));
+        }
+        if (prev.length < maxCount) {
+          return [...prev, { day, ...candidate }];
+        }
+        setSnackbarMessage(`${maxCount}개만 선택할 수 있어요`);
+        setSnackbarOpen(true);
+        return prev;
+      });
+    },
+    [
+      getCandidate,
+      sessionCount,
+      initialSelectTime,
+      selectedSessions,
+      sessionDuration,
+    ],
+  );
+
+  const handleTeacherClick = useCallback(
+    (day: string, time: string) => {
+      const timeKey = time + ":00";
+      if (selectedCell.day === day && selectedCell.time === time) {
+        setSelectedCell({ day: "", time: "" });
+        setCurrentTime((prev) => ({
+          ...prev,
+          [day]: prev[day].filter((t) => t !== timeKey),
+        }));
+      } else {
+        setSelectedCell({ day, time });
+        const [h, m] = time.split(":").map(Number);
+        const range = eachMinuteOfInterval({
+          start: new Date(2025, 2, 26, h, m),
+          end: new Date(2025, 2, 26, h, m + 59),
+        });
+        const slots = range
+          .filter((_, i) => i % 60 === 0)
+          .map((d) => format(d, "HH:mm") + ":00");
+        setCurrentTime((prev) => ({
+          ...prev,
+          [day]: Array.from(new Set([...prev[day], ...slots])).sort(),
+        }));
+      }
+    },
+    [selectedCell],
+  );
+
+  const handleCellClick = useCallback(
+    (day: string, time: string) => {
+      if (mode === "teacher") handleTeacherClick(day, time);
+      else handleParentClick(day, time);
+      onHasTimeChange?.(
+        mode === "teacher"
+          ? Object.values(currentTime).some((arr) => arr.length > 0)
+          : selectedSessions.length === (sessionCount ?? 1),
+      );
+    },
+    [
+      mode,
+      handleTeacherClick,
+      handleParentClick,
+      onHasTimeChange,
+      currentTime,
+      selectedSessions,
+      sessionCount,
+    ],
+  );
+
+  const handleCellUnclick = useCallback(
+    (day: string, time: string) => {
+      if (mode === "teacher") {
+        handleTeacherClick(day, time);
+      } else {
+        setSelectedSessions((prev) => prev.filter((s) => s.day !== day));
+      }
+    },
+    [mode, handleTeacherClick],
+  );
+
+  const handleSubmit = useCallback(() => {
+    if (mode !== "teacher") return;
     patchTime(
       {
         phoneNumber: initialPhoneNumber,
         name: initialName,
-        available: currentDate,
+        available: currentTime,
       },
-      {
-        onSuccess: () => {
-          setSavedSelectTime(currentDate);
-          setSnackbarOpen(true);
-        },
-      },
+      { onSuccess: () => setSnackbarOpen(true) },
     );
-  };
+  }, [mode, patchTime, initialName, initialPhoneNumber, currentTime]);
 
   return {
-    currentDate,
+    currentTime,
     selectedCell,
+    selectedSessions,
     snackbarOpen,
-    hasChanges: canSave,
+    snackbarMessage,
+    hasChanges:
+      mode === "teacher"
+        ? JSON.stringify(currentTime) !== JSON.stringify(initialSelectTime)
+        : selectedSessions.length === (sessionCount ?? 1),
     handleCellClick,
-    handleNotClick,
+    handleCellUnclick,
     handleSubmit,
     closeSnackbar: () => setSnackbarOpen(false),
   };
