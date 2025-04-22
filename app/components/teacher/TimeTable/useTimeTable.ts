@@ -31,6 +31,7 @@ export function useTimeTable(
   }>({ day: "", time: "" });
   const [selectedSessions, setSelectedSessions] = useState<Session[]>([]);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState<string>("");
 
   useEffect(() => {
     setCurrentTime(initialSelectTime);
@@ -67,15 +68,26 @@ export function useTimeTable(
   const handleParentClick = useCallback(
     (day: string, time: string) => {
       const candidate = getCandidate(day, time);
+      const maxCount = sessionCount ?? 1;
+      const slotKey = time + ":00";
+      const availableSlots = initialSelectTime[day] || [];
       if (!candidate) {
-        if ((initialSelectTime[day] || []).includes(time + ":00")) {
-          setSnackbarOpen(true);
+        if (availableSlots.includes(slotKey)) {
+          if (selectedSessions.length >= maxCount) {
+            setSnackbarMessage(`${maxCount}개만 선택할 수 있어요`);
+            setSnackbarOpen(true);
+          } else {
+            setSnackbarMessage(
+              `${sessionDuration}분 수업이라 이 시간은 선택할 수 없어요.`,
+            );
+            setSnackbarOpen(true);
+          }
         }
         return;
       }
+
       setSelectedSessions((prev) => {
         const idx = prev.findIndex((s) => s.day === day);
-        const maxCount = sessionCount ?? 1;
 
         if (idx > -1 && prev[idx].slots.includes(time + ":00")) {
           return prev.filter((_, i) => i !== idx);
@@ -86,11 +98,18 @@ export function useTimeTable(
         if (prev.length < maxCount) {
           return [...prev, { day, ...candidate }];
         }
-
+        setSnackbarMessage(`${maxCount}개만 선택할 수 있어요`);
+        setSnackbarOpen(true);
         return prev;
       });
     },
-    [getCandidate, sessionCount, initialSelectTime],
+    [
+      getCandidate,
+      sessionCount,
+      initialSelectTime,
+      selectedSessions,
+      sessionDuration,
+    ],
   );
 
   const handleTeacherClick = useCallback(
@@ -170,6 +189,7 @@ export function useTimeTable(
     selectedCell,
     selectedSessions,
     snackbarOpen,
+    snackbarMessage,
     hasChanges:
       mode === "teacher"
         ? JSON.stringify(currentTime) !== JSON.stringify(initialSelectTime)
