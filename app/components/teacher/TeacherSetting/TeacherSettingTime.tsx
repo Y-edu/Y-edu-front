@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { CircularProgress } from "@mui/material";
 
 import BulletList from "@/ui/List/BulletList";
@@ -16,15 +16,17 @@ import { useTimeTable } from "@/components/teacher/TimeTable/useTimeTable";
 import TimeTable from "@/components/teacher/TimeTable/index";
 import GuideTimeTable from "@/components/teacher/TimeTable/GuideTimeTable";
 
-
 import BackArrow from "public/images/arrow-black.png";
 
 export function TeacherSettingTime() {
   const router = useRouter();
+  const token = useSearchParams().get("token");
   const [teacherName, setTeacherName] = useState("");
   const [teacherPhone, setTeacherPhone] = useState("");
 
   useEffect(() => {
+    if (token) return;
+
     const storedName = localStorage.getItem("teacherName") || "";
     const storedPhone = localStorage.getItem("teacherPhone") || "";
 
@@ -66,14 +68,13 @@ export function TeacherSettingTime() {
     () => router.push("/teachersetting"),
   );
 
-  if (!isQueryEnabled) return null;
-  if (isLoading)
+  if (isQueryEnabled && isLoading)
     return (
       <div className="flex min-h-screen items-center justify-center">
         <CircularProgress />
       </div>
     );
-  if (isError || !data) return <ErrorUI />;
+  if (isQueryEnabled && (isError || !data)) return <ErrorUI />;
 
   return (
     <div>
