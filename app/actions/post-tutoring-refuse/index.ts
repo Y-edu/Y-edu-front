@@ -3,19 +3,15 @@ import { AxiosError } from "axios";
 import { httpService } from "app/utils/httpService";
 
 export async function postTutoringRefuse({
-  applicationFormId,
-  teacherId,
-  phoneNumber,
+  token,
   refuseReason,
 }: {
-  applicationFormId: string;
-  teacherId: string;
-  phoneNumber: string;
+  token: string;
   refuseReason: string;
 }) {
   try {
     const response = await httpService.put<string>(
-      `/matching/application/refuse/${applicationFormId}/${teacherId}/${phoneNumber}`,
+      `/matching/application/refuse?token=${token}`,
       {
         refuseReason,
       },

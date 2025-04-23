@@ -3,6 +3,13 @@ import { AxiosError } from "axios";
 
 import { httpService } from "app/utils/httpService";
 
+const dayTimeSchema = z.object({
+  day: z.string(),
+  times: z.array(
+    z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/, "Invalid time format"),
+  ),
+});
+
 const tutoringResponse = z.object({
   applicationFormId: z.string(),
   classType: z.union([z.literal("수학"), z.literal("영어")]),
@@ -15,7 +22,7 @@ const tutoringResponse = z.object({
   dong: z.string(),
   goals: z.array(z.string()),
   favoriteStyle: z.string(),
-  favoriteTime: z.string(),
+  dayTimes: z.array(dayTimeSchema),
   matchStatus: z.union([
     z.literal("거절"),
     z.literal("대기"),
@@ -26,18 +33,10 @@ const tutoringResponse = z.object({
 
 export type TutoringResponse = z.infer<typeof tutoringResponse>;
 
-export async function getTutoring({
-  teacherId,
-  applcationFormId,
-  phoneNumber,
-}: {
-  teacherId: string;
-  applcationFormId: string;
-  phoneNumber: string;
-}) {
+export async function getTutoring({ token }: { token: string }) {
   try {
     const response = await httpService.get<TutoringResponse>(
-      `/matching/application/${applcationFormId}/${teacherId}/${phoneNumber}`,
+      `/matching/application?token=${token}`,
     );
     const parseResult = tutoringResponse.safeParse(response.data);
 
