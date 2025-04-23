@@ -44,6 +44,7 @@ export default function GlobalSnackbar({
             padding: "6px 18px",
             justifyContent: "center",
             alignItems: "center",
+            backgroundColor: "rgba(87, 101, 122, 0.8)",
           },
         },
       }}
