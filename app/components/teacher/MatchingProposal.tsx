@@ -2,6 +2,9 @@
 "use client";
 import { ReactNode, useState } from "react";
 
+import formatDayTimes from "@/utils/formatDayTimes";
+import BulletList from "@/ui/List/BulletList";
+
 import { MatchingModal } from "./MatchingModal";
 import { MatchingInfo } from "./MatchingInfo";
 import IconTitleChip from "./IconTitleChip";
@@ -17,21 +20,9 @@ import {
   GOALS_CONTRACT,
 } from "app/constants/goalsIconMapping";
 
-interface MatchingProposalProps {
-  teacherId: string;
-  phoneNumber: string;
-  applcationFormId: string;
-}
-
-export function MatchingProposal({
-  teacherId,
-  phoneNumber,
-  applcationFormId,
-}: MatchingProposalProps) {
+export function MatchingProposal({ token }: { token: string }) {
   const { data, error } = useGetTutoring({
-    teacherId,
-    applcationFormId,
-    phoneNumber,
+    token,
   });
   const { openModal, isModalOpen, closeModal } = useModal();
   const [matchingStatus, setMatchingStatus] = useState<"REJECT" | "ACCEPT">(
@@ -78,7 +69,6 @@ export function MatchingProposal({
         dong={data.dong}
         goals={data.goals}
         favoriteStyle={data.favoriteStyle}
-        favoriteTime={data.favoriteTime}
         matchStatus={data.matchStatus}
         pay={data.pay}
       />
@@ -118,7 +108,7 @@ export function MatchingProposal({
           <div className="flex flex-col gap-1">
             <p>
               학부모님이
-              <span className="text-primaryNormal">선호하는 시간</span>
+              <span className="text-primaryNormal"> 선호하는 시간</span>
               이에요!
             </p>
             <p className="text-[15px] font-medium leading-[152%] text-labelAssistive">
@@ -127,7 +117,7 @@ export function MatchingProposal({
           </div>
         }
       >
-        {data.favoriteTime}
+        <BulletList items={formatDayTimes(data.dayTimes)} />
       </ProfileInfoBox>
       {finalStatus === "대기" && (
         <>
@@ -148,9 +138,7 @@ export function MatchingProposal({
                 setFinalStatus("수락");
                 openModal();
                 postTutoringAccept({
-                  teacherId,
-                  applicationFormId: data.applicationFormId,
-                  phoneNumber,
+                  token,
                 });
               }}
             >
@@ -184,9 +172,7 @@ export function MatchingProposal({
           postTutoringReject(
             {
               refuseReason: reason,
-              applicationFormId: data.applicationFormId,
-              phoneNumber,
-              teacherId,
+              token,
             },
             {
               onSuccess: () => {
