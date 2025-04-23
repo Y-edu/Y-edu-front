@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 "use client";
 import { ReactNode, useState } from "react";
+import { useRouter } from "next/navigation";
 
 import formatDayTimes from "@/utils/formatDayTimes";
 import BulletList from "@/ui/List/BulletList";
@@ -13,7 +14,6 @@ import ProfileInfoBox from "./ProfileInfoBox";
 import Layers from "public/images/Eyes.png";
 import { useGetTutoring } from "app/hooks/query";
 import { useModal } from "app/hooks/custom";
-import { usePostTutoringAccept } from "app/hooks/mutation/usePostTutoringAccept";
 import { usePostTutoringRefuse } from "app/hooks/mutation/usePostTutoringRefuse";
 import {
   GOALS_STYLE_ICON,
@@ -21,6 +21,7 @@ import {
 } from "app/constants/goalsIconMapping";
 
 export function MatchingProposal({ token }: { token: string }) {
+  const router = useRouter();
   const { data, error } = useGetTutoring({
     token,
   });
@@ -31,7 +32,6 @@ export function MatchingProposal({ token }: { token: string }) {
   const [finalStatus, setFinalStatus] = useState<
     "거절" | "대기" | "전송" | "수락"
   >(data.matchStatus);
-  const { mutate: postTutoringAccept } = usePostTutoringAccept();
   const { mutate: postTutoringReject } = usePostTutoringRefuse();
 
   if (error) throw error;
@@ -134,12 +134,7 @@ export function MatchingProposal({ token }: { token: string }) {
             <button
               className="order-0 flex h-[58px] w-[160px] flex-none flex-row items-center justify-center gap-[6px] self-stretch rounded-[8px] bg-primaryNormal p-[16px] px-[36px] font-bold text-white"
               onClick={() => {
-                setMatchingStatus("ACCEPT");
-                setFinalStatus("수락");
-                openModal();
-                postTutoringAccept({
-                  token,
-                });
+                router.push(`teacher/request/${token}/select-time`);
               }}
             >
               신청할게요
