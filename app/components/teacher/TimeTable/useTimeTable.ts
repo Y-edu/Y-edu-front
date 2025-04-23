@@ -2,6 +2,7 @@ import { useEffect, useState, useCallback } from "react";
 
 import { getSplitHoursToStringFormat } from "@/utils/date";
 import { useUpdateTeacherAvailable } from "@/hooks/mutation/usePutAvailableTeacherTime";
+import { usePostMatchingTimetable } from "@/hooks/mutation/usePostMatchingTimeTable";
 
 export type Mode = "teacher" | "parent";
 
@@ -18,9 +19,11 @@ export function useTimeTable(
   mode: Mode,
   sessionDuration?: number,
   sessionCount?: number,
+  classMatchingToken?: string,
   onHasTimeChange?: (has: boolean) => void,
 ) {
   const { mutate: patchTime } = useUpdateTeacherAvailable();
+  const { mutate: postMatching } = usePostMatchingTimetable();
   const times = getSplitHoursToStringFormat();
 
   const [currentTime, setCurrentTime] = useState(initialSelectTime);
@@ -157,7 +160,7 @@ export function useTimeTable(
     [mode, handleTeacherClick],
   );
 
-  const handleSubmit = useCallback(() => {
+  const handleTeacherSubmit = useCallback(() => {
     if (mode !== "teacher") return;
     patchTime(
       {
@@ -168,6 +171,17 @@ export function useTimeTable(
       { onSuccess: () => setSnackbarOpen(true) },
     );
   }, [mode, patchTime, initialName, initialPhoneNumber, currentTime]);
+
+  const handleParentSubmit = useCallback(() => {
+    if (mode !== "parent" || !classMatchingToken) return;
+    postMatching(
+      { classMatchingToken, selectedSessions },
+      {
+        onError: (error) => setSnackbarMessage(error.message),
+        onSettled: () => setSnackbarOpen(true),
+      },
+    );
+  }, [mode, classMatchingToken, selectedSessions, postMatching]);
 
   return {
     currentTime,
@@ -181,7 +195,8 @@ export function useTimeTable(
         : selectedSessions.length === (sessionCount ?? 1),
     handleCellClick,
     handleCellUnclick,
-    handleSubmit,
+    handleTeacherSubmit,
+    handleParentSubmit,
     closeSnackbar: () => setSnackbarOpen(false),
   };
 }
