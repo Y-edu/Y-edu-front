@@ -13,7 +13,7 @@ const parentsRequestSchema = z.object({
   district: z.string(),
   dong: z.string(),
   online: z.string(),
-  wantTime: z.string(),
+  wantTime: z.string().nullable(),
   goals: z.array(z.string()),
   teacherStyle: z.string(),
   referral: z.string(),
