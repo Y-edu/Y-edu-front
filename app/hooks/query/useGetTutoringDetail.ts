@@ -2,18 +2,10 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 
 import { getTutoring } from "@/actions/get-tutoring";
 
-export function useGetTutoring({
-  teacherId,
-  applcationFormId,
-  phoneNumber,
-}: {
-  teacherId: string;
-  applcationFormId: string;
-  phoneNumber: string;
-}) {
+export function useGetTutoring({ token }: { token: string }) {
   return useSuspenseQuery({
     queryKey: ["tutoring"],
-    queryFn: () => getTutoring({ teacherId, applcationFormId, phoneNumber }),
+    queryFn: () => getTutoring({ token }),
     staleTime: Infinity,
     retry: 0,
   });
