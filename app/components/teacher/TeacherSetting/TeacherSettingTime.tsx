@@ -15,6 +15,8 @@ import { useGetTeacherSettingInfo } from "@/hooks/query/useGetTeacherSettingInfo
 import useUnsavedBackWarning from "@/hooks/custom/useUnsavedBackWarning";
 import { useTimeTable } from "@/components/teacher/TimeTable/useTimeTable";
 import TimeTable from "@/components/teacher/TimeTable/index";
+import GuideTimeTable from "@/components/teacher/TimeTable/GuideTimeTable";
+
 
 import BackArrow from "public/images/arrow-black.png";
 
@@ -76,6 +78,7 @@ export function TeacherSettingTime() {
 
   return (
     <div>
+      <GuideTimeTable />
       {/* 헤더 */}
       <div className="ml-3 flex items-center border-b border-primaryPale pb-5 pt-10">
         <button onClick={handleBackClick} className="flex items-center">
