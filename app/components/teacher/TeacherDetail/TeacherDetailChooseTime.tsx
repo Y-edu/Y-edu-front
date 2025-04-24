@@ -29,7 +29,7 @@ export default function TeacherDetailChooseTime() {
   const [sessionCount, setSessionCount] = useState<number>(0);
   const [sessionDuration, setSessionDuration] = useState<number>(0);
 
-  const TEST_TOKEN = "6ef83871-5dbe-3e79-8fc0-2c16034fa5ec";
+  const TEST_TOKEN = process.env.NEXT_PUBLIC_TEST_TOKEN;
   const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL;
   const SERVER_PORT = process.env.NEXT_PUBLIC_PORT;
 
