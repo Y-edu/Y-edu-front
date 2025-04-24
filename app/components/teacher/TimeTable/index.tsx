@@ -100,7 +100,7 @@ export default function TimeTable({
                   bgClass = isAvailable ? "bg-primary" : "bg-white";
                 } else {
                   if (isSelected) bgClass = "bg-primary";
-                  else if (isAvailable) bgClass = "bg-primary opacity-20";
+                  else if (isAvailable) bgClass = "bg-[#C9DEFF]";
                 }
 
                 const cornerClass = getCornerClass(dIdx, tIdx);
