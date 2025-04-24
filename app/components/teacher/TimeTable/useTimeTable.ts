@@ -1,4 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
+import { useRouter } from "next/navigation";
 
 import { getSplitHoursToStringFormat } from "@/utils/date";
 import { useUpdateTeacherAvailable } from "@/hooks/mutation/usePutAvailableTeacherTime";
@@ -22,6 +23,7 @@ export function useTimeTable(
   classMatchingToken?: string,
   onHasTimeChange?: (has: boolean) => void,
 ) {
+  const router = useRouter();
   const { mutate: patchTime } = useUpdateTeacherAvailable();
   const { mutate: postMatching } = usePostMatchingTimetable();
   const times = getSplitHoursToStringFormat();
@@ -184,11 +186,14 @@ export function useTimeTable(
     postMatching(
       { classMatchingToken, selectedSessions },
       {
+        onSuccess: () => {
+          router.push(`/teacher/recommend/${classMatchingToken}/complete`);
+        },
         onError: (error) => setSnackbarMessage(error.message),
         onSettled: () => setSnackbarOpen(true),
       },
     );
-  }, [mode, classMatchingToken, selectedSessions, postMatching]);
+  }, [mode, classMatchingToken, selectedSessions, postMatching, router]);
 
   return {
     currentTime,
