@@ -1,5 +1,4 @@
-// 테스트 데이터 넣은 학부모 시간선택 테이블 컴포넌트
-
+// parent 모드 TimeTable
 "use client";
 
 import { useRouter } from "next/navigation";
@@ -31,6 +30,8 @@ export default function TeacherDetailChooseTime() {
   const [sessionDuration, setSessionDuration] = useState<number>(0);
 
   const TEST_TOKEN = "6ef83871-5dbe-3e79-8fc0-2c16034fa5ec";
+  const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL;
+  const SERVER_PORT = process.env.NEXT_PUBLIC_PORT;
 
   const {
     currentTime,
@@ -55,8 +56,9 @@ export default function TeacherDetailChooseTime() {
   useEffect(() => {
     async function fetchTeacherInfo() {
       try {
+        const baseUrl = `${SERVER_URL}:${SERVER_PORT}`;
         const res = await fetch(
-          `https://dev.yedu-develop.com:8181/bff/teacher/info?token=${TEST_TOKEN}`,
+          `${baseUrl}/bff/teacher/info?token=${TEST_TOKEN}`,
         );
         if (!res.ok) throw new Error(`API error ${res.status}`);
         const json = (await res.json()) as TeacherInfo;
@@ -76,7 +78,7 @@ export default function TeacherDetailChooseTime() {
       }
     }
     fetchTeacherInfo();
-  }, []);
+  }, [TEST_TOKEN, SERVER_URL, SERVER_PORT]);
 
   if (isLoading) {
     return (
