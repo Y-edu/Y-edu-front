@@ -1,6 +1,6 @@
 import { Result } from "@/ui/Result";
 
-function RequestResultPage() {
+function NotifyResultPage() {
   return (
     <div className="flex h-screen w-full items-center justify-center">
       <Result>
@@ -14,4 +14,4 @@ function RequestResultPage() {
   );
 }
 
-export default RequestResultPage;
+export default NotifyResultPage;
