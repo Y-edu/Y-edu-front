@@ -1,7 +1,11 @@
 import { useEffect, useState, useCallback } from "react";
+import { useSearchParams } from "next/navigation";
 
 import { getSplitHoursToStringFormat } from "@/utils/date";
-import { useUpdateTeacherAvailable } from "@/hooks/mutation/usePutAvailableTeacherTime";
+import {
+  useUpdateTeacherAvailable,
+  useUpdateTeacherAvailableWithToken,
+} from "@/hooks/mutation/usePutAvailableTeacherTime";
 import { usePostMatchingTimetable } from "@/hooks/mutation/usePostMatchingTimeTable";
 
 export type Mode = "teacher" | "parent";
@@ -20,10 +24,13 @@ export function useTimeTable(
   sessionDuration?: number,
   sessionCount?: number,
   classMatchingToken?: string,
-  onHasTimeChange?: (has: boolean) => void,
 ) {
+  const token = useSearchParams().get("token") ?? "";
+
   const { mutate: patchTime } = useUpdateTeacherAvailable();
   const { mutate: postMatching } = usePostMatchingTimetable();
+  const { mutate: patchTimeWithToken } = useUpdateTeacherAvailableWithToken();
+
   const times = getSplitHoursToStringFormat();
 
   const [currentTime, setCurrentTime] = useState(initialSelectTime);
@@ -132,17 +139,12 @@ export function useTimeTable(
     (day: string, time: string) => {
       if (mode === "teacher") handleTeacherClick(day, time);
       else handleParentClick(day, time);
-      onHasTimeChange?.(
-        mode === "teacher"
-          ? Object.values(currentTime).some((arr) => arr.length > 0)
-          : selectedSessions.length === (sessionCount ?? 1),
-      );
     },
     [
       mode,
       handleTeacherClick,
       handleParentClick,
-      onHasTimeChange,
+
       currentTime,
       selectedSessions,
       sessionCount,
@@ -162,8 +164,18 @@ export function useTimeTable(
 
   const handleTeacherSubmit = useCallback(() => {
     if (mode !== "teacher") return;
+
+    if (token) {
+      patchTimeWithToken(
+        { token, available: currentTime },
+        { onSuccess: () => setSnackbarOpen(true) },
+      );
+      return;
+    }
+
     patchTime(
       {
+        token,
         phoneNumber: initialPhoneNumber,
         name: initialName,
         available: currentTime,
