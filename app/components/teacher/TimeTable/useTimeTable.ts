@@ -26,6 +26,7 @@ export function useTimeTable(
   const { mutate: postMatching } = usePostMatchingTimetable();
   const times = getSplitHoursToStringFormat();
 
+  const [baseTime, setBaseTime] = useState(initialSelectTime);
   const [currentTime, setCurrentTime] = useState(initialSelectTime);
   const [selectedCell] = useState<{
     day: string;
@@ -36,6 +37,7 @@ export function useTimeTable(
   const [snackbarMessage, setSnackbarMessage] = useState<string>("");
 
   useEffect(() => {
+    setBaseTime(initialSelectTime);
     setCurrentTime(initialSelectTime);
     setSelectedSessions([]);
   }, [initialSelectTime]);
@@ -168,7 +170,12 @@ export function useTimeTable(
         name: initialName,
         available: currentTime,
       },
-      { onSuccess: () => setSnackbarOpen(true) },
+      {
+        onSuccess: () => {
+          setSnackbarOpen(true);
+          setBaseTime(currentTime);
+        },
+      },
     );
   }, [mode, patchTime, initialName, initialPhoneNumber, currentTime]);
 
@@ -191,7 +198,7 @@ export function useTimeTable(
     snackbarMessage,
     hasChanges:
       mode === "teacher"
-        ? JSON.stringify(currentTime) !== JSON.stringify(initialSelectTime)
+        ? JSON.stringify(currentTime) !== JSON.stringify(baseTime)
         : selectedSessions.length === (sessionCount ?? 1),
     handleCellClick,
     handleCellUnclick,
