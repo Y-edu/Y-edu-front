@@ -19,6 +19,10 @@ interface TimeTableProps {
   onCellUnclick: (day: string, time: string) => void;
 }
 
+const WEEK = ["월", "화", "수", "목", "금", "토", "일"];
+const times = getSplitHoursToStringFormat();
+const gaps = [18, 24, 10, 16, ...Array(times.length - 4).fill(24), 0];
+
 export default function TimeTable({
   mode,
   currentTime,
@@ -26,9 +30,8 @@ export default function TimeTable({
   onCellClick,
   onCellUnclick,
 }: TimeTableProps) {
-  const WEEK = ["월", "화", "수", "목", "금", "토", "일"];
-  const times = getSplitHoursToStringFormat();
-  const gaps = [18, 24, 10, 16, ...Array(times.length - 4).fill(24), 0];
+  const isTeacher = mode === "teacher";
+  const isParent = mode === "parent";
 
   // 각 모서리 border-radius
   const getCornerClass = (dayIdx: number, timeIdx: number) => {
@@ -88,25 +91,24 @@ export default function TimeTable({
                 const session = selectedSessions?.find((s) => s.day === day);
                 const isAvailable =
                   currentTime[day]?.includes(slotKey) ?? false;
-                const isSelected =
-                  mode === "parent" && session?.slots.includes(slotKey);
+                const isSelected = isParent && session?.slots.includes(slotKey);
 
                 const clickable =
-                  mode === "teacher" || (mode === "parent" && isAvailable);
+                  isTeacher || (isParent && (isAvailable || isSelected));
 
                 let bgClass = "bg-white";
-                if (mode === "teacher") {
+                if (isTeacher) {
                   bgClass = isAvailable ? "bg-primary" : "bg-white";
                 } else {
                   if (isSelected) bgClass = "bg-primary";
-                  else if (isAvailable) bgClass = "bg-primary opacity-20";
+                  else if (isAvailable) bgClass = "bg-[#C9DEFF]";
                 }
 
                 const cornerClass = getCornerClass(dIdx, tIdx);
                 const toggle = () => {
                   if (!clickable) return;
 
-                  if (mode === "teacher") {
+                  if (isTeacher) {
                     isAvailable
                       ? onCellUnclick(day, time)
                       : onCellClick(day, time);

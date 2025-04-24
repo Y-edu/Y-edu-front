@@ -1,11 +1,10 @@
+// teacher 모드 TimeTable
 "use client";
 
-import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { CircularProgress } from "@mui/material";
 
-import BulletList from "@/ui/List/BulletList";
 import ErrorUI from "@/ui/ErrorUI";
 import { Modal } from "@/ui";
 import GlobalSnackbar from "@/ui/Snackbar";
@@ -15,9 +14,8 @@ import useUnsavedBackWarning from "@/hooks/custom/useUnsavedBackWarning";
 import { useTimeTable } from "@/components/teacher/TimeTable/useTimeTable";
 import TimeTable from "@/components/teacher/TimeTable/index";
 import GuideTimeTable from "@/components/teacher/TimeTable/GuideTimeTable";
-
-
-import BackArrow from "public/images/arrow-black.png";
+import TitleSection from "@/ui/TitleSection";
+import HeaderWithBack from "@/components/result/HeaderWithBack";
 
 export function TeacherSettingTime() {
   const router = useRouter();
@@ -51,7 +49,7 @@ export function TeacherSettingTime() {
     snackbarOpen,
     handleCellClick,
     handleCellUnclick,
-    handleSubmit,
+    handleTeacherSubmit,
     closeSnackbar,
   } = useTimeTable(data?.available ?? {}, teacherName, teacherPhone, "teacher");
 
@@ -76,39 +74,21 @@ export function TeacherSettingTime() {
   if (isError || !data) return <ErrorUI />;
 
   return (
-    <div>
+    <HeaderWithBack hasBack onBack={handleBackClick} title="과외 가능 시간">
+      {/* 가이드 타임테이블 */}
       <GuideTimeTable />
+
       {/* 헤더 */}
-      <div className="ml-3 flex items-center border-b border-primaryPale pb-5 pt-10">
-        <button onClick={handleBackClick} className="flex items-center">
-          <Image
-            src={BackArrow}
-            alt="뒤로가기"
-            className="mr-2 size-8 cursor-pointer"
-          />
-        </button>
-        <p className="font-pretendard text-xl font-bold text-labelStrong">
-          과외 가능 시간
-        </p>
-      </div>
-
-      {/* 안내 문구 */}
-      <div className="m-5 rounded-md border border-blue-300 bg-blue-100 p-4">
-        <p className="text-sm text-blue-800">
-          과외 공지는 설정하신 가능시간과 상관 없이 발송되며,
+      <TitleSection className="m-5 mb-10 mt-8">
+        <TitleSection.Title>
+          정말 수업이 가능한 시간을
           <br />
-          시간 기반 매칭은 곧 출시 예정이에요 😊
-        </p>
-      </div>
-
-      {/* 포인트 리스트 */}
-      <BulletList
-        items={[
-          "가능시간이 많을수록, 매칭에 유리해요",
-          "꼭 3개월 지도 가능한 정기일정을 설정해주세요",
-        ]}
-        className="mb-10 py-3 pl-[40px]"
-      />
+          모두 선택해 주세요
+        </TitleSection.Title>
+        <TitleSection.Description>
+          선택한 시간대에 맞는 학부모님과 매칭돼요
+        </TitleSection.Description>
+      </TitleSection>
 
       {/* 타임테이블 */}
       <TimeTable
@@ -124,7 +104,7 @@ export function TeacherSettingTime() {
         <div className="absolute top-[-20px] h-[20px] w-full bg-gradient-to-t from-white to-transparent" />
         <Button
           disabled={!hasChanges}
-          onClick={handleSubmit}
+          onClick={handleTeacherSubmit}
           className="h-[59px] w-full rounded-[12px] font-bold"
         >
           변경된 시간 저장
@@ -148,6 +128,6 @@ export function TeacherSettingTime() {
         handleOnConfirm={handleModalConfirm}
         handleOnCancel={handleModalCancel}
       />
-    </div>
+    </HeaderWithBack>
   );
 }
