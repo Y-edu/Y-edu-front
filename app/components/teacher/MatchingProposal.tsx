@@ -134,7 +134,7 @@ export function MatchingProposal({ token }: { token: string }) {
             <button
               className="order-0 flex h-[58px] w-[160px] flex-none flex-row items-center justify-center gap-[6px] self-stretch rounded-[8px] bg-primaryNormal p-[16px] px-[36px] font-bold text-white"
               onClick={() => {
-                router.push(`teacher/request/${token}/select-time`);
+                router.push(`/teacher/request/${token}/select-time`);
               }}
             >
               신청할게요
