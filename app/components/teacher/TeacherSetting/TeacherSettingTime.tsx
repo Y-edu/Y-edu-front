@@ -1,7 +1,7 @@
 // teacher 모드 TimeTable
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { CircularProgress } from "@mui/material";
 
@@ -45,6 +45,8 @@ export function TeacherSettingTime() {
     { enabled: isQueryEnabled },
   );
 
+  const initialTime = useMemo(() => data?.available ?? {}, [data]);
+
   const {
     currentTime,
     selectedCell,
@@ -54,7 +56,15 @@ export function TeacherSettingTime() {
     handleCellUnclick,
     handleTeacherSubmit,
     closeSnackbar,
-  } = useTimeTable(data?.available ?? {}, teacherName, teacherPhone, "teacher");
+  } = useTimeTable(
+    initialTime,
+    teacherName,
+    teacherPhone,
+    "teacher",
+    undefined,
+    undefined,
+    token ?? "",
+  );
 
   const {
     isModalOpen,

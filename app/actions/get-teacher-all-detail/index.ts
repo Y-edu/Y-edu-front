@@ -1,6 +1,5 @@
 import { httpService } from "@/utils/httpService";
-
-import { DayOfWeek } from "../get-teacher-detail";
+import { DayOfWeek } from "@/actions/get-teacher-detail";
 
 export interface TeacherTokenParams {
   token: string;
