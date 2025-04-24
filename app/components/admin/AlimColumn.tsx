@@ -61,6 +61,8 @@ export const AlimTHeaderColumn = [
           return <span className="text-[#C6AA39]">대기</span>;
         case "거절":
           return <span className="text-[#C00D0D]">거절</span>;
+        case "입금단계":
+          return <span className="text-[#ce83eb]">입금단계</span>;
         case "매칭":
           return <span className="text-[#2563EB]">매칭*</span>;
         case "최종매칭":

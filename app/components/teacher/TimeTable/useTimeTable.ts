@@ -1,8 +1,8 @@
 import { useEffect, useState, useCallback } from "react";
-import { eachMinuteOfInterval, format } from "date-fns";
 
 import { getSplitHoursToStringFormat } from "@/utils/date";
 import { useUpdateTeacherAvailable } from "@/hooks/mutation/usePutAvailableTeacherTime";
+import { usePostMatchingTimetable } from "@/hooks/mutation/usePostMatchingTimeTable";
 
 export type Mode = "teacher" | "parent";
 
@@ -19,13 +19,15 @@ export function useTimeTable(
   mode: Mode,
   sessionDuration?: number,
   sessionCount?: number,
+  classMatchingToken?: string,
   onHasTimeChange?: (has: boolean) => void,
 ) {
   const { mutate: patchTime } = useUpdateTeacherAvailable();
+  const { mutate: postMatching } = usePostMatchingTimetable();
   const times = getSplitHoursToStringFormat();
 
   const [currentTime, setCurrentTime] = useState(initialSelectTime);
-  const [selectedCell, setSelectedCell] = useState<{
+  const [selectedCell] = useState<{
     day: string;
     time: string;
   }>({ day: "", time: "" });
@@ -112,33 +114,19 @@ export function useTimeTable(
     ],
   );
 
-  const handleTeacherClick = useCallback(
-    (day: string, time: string) => {
-      const timeKey = time + ":00";
-      if (selectedCell.day === day && selectedCell.time === time) {
-        setSelectedCell({ day: "", time: "" });
-        setCurrentTime((prev) => ({
-          ...prev,
-          [day]: prev[day].filter((t) => t !== timeKey),
-        }));
-      } else {
-        setSelectedCell({ day, time });
-        const [h, m] = time.split(":").map(Number);
-        const range = eachMinuteOfInterval({
-          start: new Date(2025, 2, 26, h, m),
-          end: new Date(2025, 2, 26, h, m + 59),
-        });
-        const slots = range
-          .filter((_, i) => i % 60 === 0)
-          .map((d) => format(d, "HH:mm") + ":00");
-        setCurrentTime((prev) => ({
-          ...prev,
-          [day]: Array.from(new Set([...prev[day], ...slots])).sort(),
-        }));
-      }
-    },
-    [selectedCell],
-  );
+  const handleTeacherClick = useCallback((day: string, time: string) => {
+    const timeKey = time + ":00";
+    setCurrentTime((prev) => {
+      const daySlots = prev[day] ?? [];
+      const idx = daySlots.indexOf(timeKey);
+      const newSlots =
+        idx > -1
+          ? daySlots.filter((t) => t !== timeKey)
+          : [...daySlots, timeKey];
+      newSlots.sort();
+      return { ...prev, [day]: newSlots };
+    });
+  }, []);
 
   const handleCellClick = useCallback(
     (day: string, time: string) => {
@@ -172,7 +160,7 @@ export function useTimeTable(
     [mode, handleTeacherClick],
   );
 
-  const handleSubmit = useCallback(() => {
+  const handleTeacherSubmit = useCallback(() => {
     if (mode !== "teacher") return;
     patchTime(
       {
@@ -183,6 +171,17 @@ export function useTimeTable(
       { onSuccess: () => setSnackbarOpen(true) },
     );
   }, [mode, patchTime, initialName, initialPhoneNumber, currentTime]);
+
+  const handleParentSubmit = useCallback(() => {
+    if (mode !== "parent" || !classMatchingToken) return;
+    postMatching(
+      { classMatchingToken, selectedSessions },
+      {
+        onError: (error) => setSnackbarMessage(error.message),
+        onSettled: () => setSnackbarOpen(true),
+      },
+    );
+  }, [mode, classMatchingToken, selectedSessions, postMatching]);
 
   return {
     currentTime,
@@ -196,7 +195,8 @@ export function useTimeTable(
         : selectedSessions.length === (sessionCount ?? 1),
     handleCellClick,
     handleCellUnclick,
-    handleSubmit,
+    handleTeacherSubmit,
+    handleParentSubmit,
     closeSnackbar: () => setSnackbarOpen(false),
   };
 }
