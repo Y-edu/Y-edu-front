@@ -4,7 +4,9 @@ export const putTeacherAvailable = async ({
   name,
   phoneNumber,
   available,
+  token,
 }: {
+  token?: string;
   name: string;
   phoneNumber: string;
   available: Record<string, string[]>;
@@ -17,6 +19,16 @@ export const putTeacherAvailable = async ({
       newPostTimes.push(value.map((time) => time.substring(0, 5)));
     }
   }
+  if (token) {
+    const { data } = await httpService.put<string>(
+      `/teacher/token/info/available`,
+      {
+        token,
+        dayTimes: newPostTimes,
+      },
+    );
+    return data;
+  }
 
   const response = await httpService.put<string>(`/teacher/info/available`, {
     name,
@@ -25,4 +37,23 @@ export const putTeacherAvailable = async ({
   });
 
   return response.data;
+};
+
+export const putTeacherAvailableToken = async (
+  token: string,
+  available: Record<string, string[]>,
+) => {
+  const dayTimes = Object.entries(available).map(([day, times]) => ({
+    day,
+    times: times.map((t) => t.slice(0, 5)),
+  }));
+
+  const { data } = await httpService.put<string>(
+    `/teacher/token/info/available`,
+    {
+      token,
+      dayTimes,
+    },
+  );
+  return data;
 };
