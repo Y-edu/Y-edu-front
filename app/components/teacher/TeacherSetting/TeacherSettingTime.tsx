@@ -14,7 +14,6 @@ import useUnsavedBackWarning from "@/hooks/custom/useUnsavedBackWarning";
 import { useTimeTable } from "@/components/teacher/TimeTable/useTimeTable";
 import TimeTable from "@/components/teacher/TimeTable/index";
 import GuideTimeTable from "@/components/teacher/TimeTable/GuideTimeTable";
-
 import TitleSection from "@/ui/TitleSection";
 import HeaderWithBack from "@/components/result/HeaderWithBack";
 
@@ -38,7 +37,7 @@ export function TeacherSettingTime() {
 
     setTeacherName(storedName);
     setTeacherPhone(storedPhone);
-  }, [router]);
+  }, [router, token]);
 
   const isQueryEnabled = Boolean(teacherName && teacherPhone);
   const { data, isLoading, isError } = useGetTeacherSettingInfo(
