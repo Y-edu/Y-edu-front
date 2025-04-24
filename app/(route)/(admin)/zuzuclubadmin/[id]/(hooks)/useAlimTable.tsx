@@ -46,6 +46,7 @@ export const AlimTableProvider = ({
     대기: 4,
     거절: 5,
     과외결렬: 6,
+    입금단계: 7,
   };
 
   const alimData = useMemo<
