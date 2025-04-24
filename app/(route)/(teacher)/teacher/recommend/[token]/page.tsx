@@ -1,5 +1,7 @@
 "use client"; // client component 분리는 리팩토링때 진행하겠습니다 😅
 import { ErrorBoundary } from "react-error-boundary";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 import TeacherDetailRegionTime from "@/components/teacher/TeacherDetail/TeacherDetailRegionTime";
 import ProfileTop from "@/components/teacher/ProfileTop";
@@ -9,14 +11,23 @@ import TabBar from "@/ui/Bar/TabBar";
 import ErrorUI from "@/ui/ErrorUI";
 import { useGetTeacherAllDetails } from "@/hooks/query/useGetTeacherAllDetails";
 import Button from "@/ui/Button";
-import { useRouter } from "next/navigation";
+import { useRecommendStore } from "@/store/teacher/recommend/useRecommendStore";
 
 export default function TeacherPage({ params }: { params: { token: string } }) {
   const router = useRouter();
   const { token } = params;
   const { data, error } = useGetTeacherAllDetails({ token });
+  const { setClassTime, setClassCount, setAvailable } = useRecommendStore();
 
   if (error) throw error;
+
+  useEffect(() => {
+    if (data) {
+      setClassTime(data.classTime);
+      setClassCount(data.classCount);
+      setAvailable(data.available);
+    }
+  }, [data, setClassTime, setClassCount, setAvailable]);
 
   return (
     <ErrorBoundary fallback={<ErrorUI />}>
