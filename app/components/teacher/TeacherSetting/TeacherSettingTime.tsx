@@ -2,7 +2,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { CircularProgress } from "@mui/material";
 
 import ErrorUI from "@/ui/ErrorUI";
@@ -14,15 +14,19 @@ import useUnsavedBackWarning from "@/hooks/custom/useUnsavedBackWarning";
 import { useTimeTable } from "@/components/teacher/TimeTable/useTimeTable";
 import TimeTable from "@/components/teacher/TimeTable/index";
 import GuideTimeTable from "@/components/teacher/TimeTable/GuideTimeTable";
+
 import TitleSection from "@/ui/TitleSection";
 import HeaderWithBack from "@/components/result/HeaderWithBack";
 
 export function TeacherSettingTime() {
   const router = useRouter();
+  const token = useSearchParams().get("token");
   const [teacherName, setTeacherName] = useState("");
   const [teacherPhone, setTeacherPhone] = useState("");
 
   useEffect(() => {
+    if (token) return;
+
     const storedName = localStorage.getItem("teacherName") || "";
     const storedPhone = localStorage.getItem("teacherPhone") || "";
 
@@ -64,14 +68,13 @@ export function TeacherSettingTime() {
     () => router.push("/teachersetting"),
   );
 
-  if (!isQueryEnabled) return null;
-  if (isLoading)
+  if (isQueryEnabled && isLoading)
     return (
       <div className="flex min-h-screen items-center justify-center">
         <CircularProgress />
       </div>
     );
-  if (isError || !data) return <ErrorUI />;
+  if (isQueryEnabled && (isError || !data)) return <ErrorUI />;
 
   return (
     <HeaderWithBack hasBack onBack={handleBackClick} title="과외 가능 시간">
