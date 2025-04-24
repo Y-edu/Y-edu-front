@@ -9,8 +9,10 @@ import TabBar from "@/ui/Bar/TabBar";
 import ErrorUI from "@/ui/ErrorUI";
 import { useGetTeacherAllDetails } from "@/hooks/query/useGetTeacherAllDetails";
 import Button from "@/ui/Button";
+import { useRouter } from "next/navigation";
 
 export default function TeacherPage({ params }: { params: { token: string } }) {
+  const router = useRouter();
   const { token } = params;
   const { data, error } = useGetTeacherAllDetails({ token });
 
@@ -62,7 +64,12 @@ export default function TeacherPage({ params }: { params: { token: string } }) {
               },
             ]}
           />
-          <Button className="fixed bottom-[10px] left-1/2 z-50 w-[335px] -translate-x-1/2">
+          <Button
+            className="fixed bottom-[10px] left-1/2 z-50 w-[335px] -translate-x-1/2"
+            onClick={() => {
+              router.push(`/teacher/recommend/${token}/select-time`);
+            }}
+          >
             이 선생님과 할래요
           </Button>
         </div>
