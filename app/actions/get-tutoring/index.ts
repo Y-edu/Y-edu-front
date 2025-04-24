@@ -22,7 +22,8 @@ const tutoringResponse = z.object({
   dong: z.string(),
   goals: z.array(z.string()),
   favoriteStyle: z.string(),
-  dayTimes: z.array(dayTimeSchema),
+  parentDayTimes: z.array(dayTimeSchema),
+  teacherDayTimes: z.array(dayTimeSchema),
   matchStatus: z.union([
     z.literal("거절"),
     z.literal("대기"),
