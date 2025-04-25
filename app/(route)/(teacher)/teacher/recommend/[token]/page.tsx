@@ -35,6 +35,7 @@ export default function TeacherPage({ params }: { params: { token: string } }) {
         <div className="w-full pb-[60px]">
           <ProfileTop profile={data.profile} nickName={data.nickName} />
           <TabBar
+            scrollMode
             tabs={[
               {
                 trigger: "선생님",
