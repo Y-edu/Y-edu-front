@@ -1,6 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
-import { useSearchParams } from "next/navigation";
-import { useRouter } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 
 import { getSplitHoursToStringFormat } from "@/utils/date";
 import {
@@ -144,15 +143,7 @@ export function useTimeTable(
       if (mode === "teacher") handleTeacherClick(day, time);
       else handleParentClick(day, time);
     },
-    [
-      mode,
-      handleTeacherClick,
-      handleParentClick,
-
-      currentTime,
-      selectedSessions,
-      sessionCount,
-    ],
+    [mode, handleTeacherClick, handleParentClick],
   );
 
   const handleCellUnclick = useCallback(
@@ -191,7 +182,15 @@ export function useTimeTable(
         },
       },
     );
-  }, [mode, patchTime, initialName, initialPhoneNumber, currentTime]);
+  }, [
+    mode,
+    patchTime,
+    patchTimeWithToken,
+    initialName,
+    initialPhoneNumber,
+    currentTime,
+    token,
+  ]);
 
   const handleParentSubmit = useCallback(() => {
     if (mode !== "parent" || !classMatchingToken) return;
@@ -201,8 +200,10 @@ export function useTimeTable(
         onSuccess: () => {
           router.push(`/teacher/recommend/${classMatchingToken}/complete`);
         },
-        onError: (error) => setSnackbarMessage(error.message),
-        onSettled: () => setSnackbarOpen(true),
+        onError: (error) => {
+          setSnackbarMessage(error.message);
+          setSnackbarOpen(true);
+        },
       },
     );
   }, [mode, classMatchingToken, selectedSessions, postMatching, router]);
