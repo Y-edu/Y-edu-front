@@ -2,7 +2,6 @@
 "use client";
 
 import { useRouter, useParams } from "next/navigation";
-import { CircularProgress } from "@mui/material";
 
 import { useTimeTable } from "@/components/teacher/TimeTable/useTimeTable";
 import TimeTable from "@/components/teacher/TimeTable";
@@ -21,11 +20,13 @@ export default function TeacherDetailChooseTime() {
     throw new Error("유효하지 않은 토큰입니다.");
   }
   const token = params.token;
-  const { available, classCount, classTime } = useRecommendStore();
+  const available = useRecommendStore((s) => s.available);
+  const classCountStr = useRecommendStore((s) => s.classCount);
+  const classTimeStr = useRecommendStore((s) => s.classTime);
 
-  const countMatch = classCount?.match(/\d+/);
+  const countMatch = classCountStr?.match(/\d+/);
   const sessionCount = countMatch ? parseInt(countMatch[0], 10) : 0;
-  const timeMatch = classTime?.match(/\d+/);
+  const timeMatch = classTimeStr?.match(/\d+/);
   const sessionDuration = timeMatch ? parseInt(timeMatch[0], 10) : 0;
 
   const {
@@ -47,19 +48,6 @@ export default function TeacherDetailChooseTime() {
     sessionCount,
     token,
   );
-
-  const isDataReady =
-    sessionCount > 0 &&
-    sessionDuration > 0 &&
-    Object.keys(available || {}).length > 0;
-
-  if (!isDataReady) {
-    return (
-      <div className="flex min-h-screen items-center justify-center">
-        <CircularProgress />
-      </div>
-    );
-  }
 
   return (
     <HeaderWithBack hasBack onBack={() => router.back()} title="과외시간 선택">
