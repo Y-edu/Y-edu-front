@@ -74,12 +74,12 @@ export default function TeacherDetailChooseTime() {
       />
 
       {/* 저장 버튼 */}
-      <div className="fixed inset-x-0 bottom-0 bg-white px-5 pb-5">
+      <div className="sticky bottom-0 bg-white pb-[20px]">
         <div className="absolute top-[-20px] h-[20px] w-full bg-gradient-to-t from-white to-transparent" />
         <Button
           disabled={!hasChanges}
           onClick={handleParentSubmit}
-          className="h-[59px] w-full rounded-[12px] font-bold"
+          className="h-[59px]"
         >
           수업시간 확정하기
         </Button>
