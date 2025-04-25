@@ -1,5 +1,7 @@
+// src/app/teacher/[token]/select-time/page.tsx
 "use client";
-import { useParams, useRouter } from "next/navigation";
+
+import { useRouter } from "next/navigation";
 import { CircularProgress } from "@mui/material";
 
 import ErrorUI from "@/ui/ErrorUI";
@@ -8,17 +10,28 @@ import { usePostTutoringAccept } from "@/hooks/mutation/usePostTutoringAccept";
 import { useUpdateTeacherAvailableWithToken } from "@/hooks/mutation/usePutAvailableTeacherTime";
 import { useGetTutoring } from "@/hooks/query/useGetTutoringDetail";
 
-export default function TeacherClassMatchingSelectTimePage() {
-  const { token } = useParams();
-  if (!token || Array.isArray(token)) {
-    throw new Error("유효하지 않은 토큰입니다.");
-  }
-  const matchingToken = token;
+interface Props {
+  params: { token: string };
+}
+
+export default function TeacherClassMatchingSelectTimePage({ params }: Props) {
+  const matchingToken = params.token;
   const router = useRouter();
 
   const { data, isLoading, isError } = useGetTutoring({ token: matchingToken });
   const { mutateAsync: updateAvailable } = useUpdateTeacherAvailableWithToken();
   const { mutate: acceptMatch } = usePostTutoringAccept();
+
+  if (isLoading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <CircularProgress />
+      </div>
+    );
+  }
+  if (isError || !data) {
+    return <ErrorUI />;
+  }
 
   const initialAvailable = data.teacherDayTimes.reduce<
     Record<string, string[]>
@@ -44,17 +57,6 @@ export default function TeacherClassMatchingSelectTimePage() {
       alert(err);
     }
   };
-
-  if (isLoading) {
-    return (
-      <div className="flex min-h-screen items-center justify-center">
-        <CircularProgress />
-      </div>
-    );
-  }
-  if (isError || !data) {
-    return <ErrorUI />;
-  }
 
   return (
     <TeacherSettingTime
