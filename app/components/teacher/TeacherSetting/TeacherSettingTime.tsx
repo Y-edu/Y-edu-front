@@ -158,7 +158,7 @@ export function TeacherSettingTime({
         />
 
         {/* 저장 버튼 */}
-        <div className="sticky bottom-0 bg-white pb-[20px]">
+        <div className="sticky bottom-0 mx-5 bg-white pb-[10px]">
           <div className="absolute top-[-20px] h-[20px] w-full bg-gradient-to-t from-white to-transparent" />
           <Button
             disabled={!hasChanges}
