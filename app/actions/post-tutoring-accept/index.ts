@@ -2,18 +2,13 @@ import { AxiosError } from "axios";
 
 import { httpService } from "app/utils/httpService";
 
-export async function postTutoringAccept({
-  token,
-  available,
-}: {
-  token: string;
-  available: Record<string, string[]>;
-}) {
+export async function postTutoringAccept({ token }: { token: string }) {
   try {
     const response = await httpService.put<string>(
       `/matching/application/accept?token=${token}`,
-      { available },
+      {},
     );
+
     return response.data;
   } catch (error) {
     if (error instanceof AxiosError) {
