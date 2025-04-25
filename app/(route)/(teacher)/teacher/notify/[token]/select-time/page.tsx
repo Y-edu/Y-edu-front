@@ -5,6 +5,7 @@ import { CircularProgress } from "@mui/material";
 import ErrorUI from "@/ui/ErrorUI";
 import { TeacherSettingTime } from "@/components/teacher/TeacherSetting/TeacherSettingTime";
 import { usePostTutoringAccept } from "@/hooks/mutation/usePostTutoringAccept";
+import { useUpdateTeacherAvailableWithToken } from "@/hooks/mutation/usePutAvailableTeacherTime";
 import { useGetTutoring } from "@/hooks/query/useGetTutoringDetail";
 
 export default function TeacherClassMatchingSelectTimePage() {
@@ -14,8 +15,10 @@ export default function TeacherClassMatchingSelectTimePage() {
   }
   const matchingToken = token;
   const router = useRouter();
+
   const { data, isLoading, isError } = useGetTutoring({ token: matchingToken });
-  const { mutate } = usePostTutoringAccept();
+  const { mutateAsync: updateAvailable } = useUpdateTeacherAvailableWithToken();
+  const { mutate: acceptMatch } = usePostTutoringAccept();
 
   const initialAvailable = data.teacherDayTimes.reduce<
     Record<string, string[]>
@@ -26,15 +29,20 @@ export default function TeacherClassMatchingSelectTimePage() {
     return acc;
   }, {});
 
-  const handleMatch = (currentTime: Record<string, string[]>) => {
-    mutate(
-      { token: matchingToken, available: currentTime },
-      {
-        onSuccess: () => {
-          router.push(`/teacher/notify/${matchingToken}/complete`);
+  const handleMatch = async (currentTime: Record<string, string[]>) => {
+    try {
+      await updateAvailable({ token: matchingToken, available: currentTime });
+      acceptMatch(
+        { token: matchingToken },
+        {
+          onSuccess: () => {
+            router.push(`/teacher/notify/${matchingToken}/complete`);
+          },
         },
-      },
-    );
+      );
+    } catch (err) {
+      alert(err);
+    }
   };
 
   if (isLoading) {
