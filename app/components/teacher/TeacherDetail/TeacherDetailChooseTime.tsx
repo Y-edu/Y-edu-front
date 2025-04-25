@@ -1,9 +1,7 @@
 // parent 모드 TimeTable
 "use client";
 
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import { CircularProgress } from "@mui/material";
+import { useRouter, useParams } from "next/navigation";
 
 import { useTimeTable } from "@/components/teacher/TimeTable/useTimeTable";
 import TimeTable from "@/components/teacher/TimeTable";
@@ -12,26 +10,24 @@ import TitleSection from "@/ui/TitleSection";
 import Button from "@/ui/Button";
 import GlobalSnackbar from "@/ui/Snackbar";
 import IconWarning from "@/icons/IconWarning";
-import ErrorUI from "@/ui/ErrorUI";
-
-interface TeacherInfo {
-  available: Record<string, string[]>;
-  classCount: string;
-  classTime: string;
-}
+import { useRecommendStore } from "@/store/teacher/recommend/useRecommendStore";
 
 export default function TeacherDetailChooseTime() {
   const router = useRouter();
-  const [data, setData] = useState<TeacherInfo | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [isError, setIsError] = useState(false);
+  const params = useParams();
 
-  const [sessionCount, setSessionCount] = useState<number>(0);
-  const [sessionDuration, setSessionDuration] = useState<number>(0);
+  if (!params.token || Array.isArray(params.token)) {
+    throw new Error("유효하지 않은 토큰입니다.");
+  }
+  const token = params.token;
+  const available = useRecommendStore((s) => s.available);
+  const classCountStr = useRecommendStore((s) => s.classCount);
+  const classTimeStr = useRecommendStore((s) => s.classTime);
 
-  const TEST_TOKEN = process.env.NEXT_PUBLIC_TEST_TOKEN;
-  const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL;
-  const SERVER_PORT = process.env.NEXT_PUBLIC_PORT;
+  const countMatch = classCountStr?.match(/\d+/);
+  const sessionCount = countMatch ? parseInt(countMatch[0], 10) : 0;
+  const timeMatch = classTimeStr?.match(/\d+/);
+  const sessionDuration = timeMatch ? parseInt(timeMatch[0], 10) : 0;
 
   const {
     currentTime,
@@ -44,53 +40,14 @@ export default function TeacherDetailChooseTime() {
     snackbarMessage,
     closeSnackbar,
   } = useTimeTable(
-    data?.available ?? {},
+    available,
     "",
     "",
     "parent",
     sessionDuration,
     sessionCount,
-    TEST_TOKEN,
+    token,
   );
-
-  useEffect(() => {
-    async function fetchTeacherInfo() {
-      try {
-        const baseUrl = `${SERVER_URL}:${SERVER_PORT}`;
-        const res = await fetch(
-          `${baseUrl}/bff/teacher/info?token=${TEST_TOKEN}`,
-        );
-        if (!res.ok) throw new Error(`API error ${res.status}`);
-        const json = (await res.json()) as TeacherInfo;
-
-        const countMatch = json.classCount.match(/\d+/);
-        setSessionCount(countMatch ? parseInt(countMatch[0], 10) : 0);
-
-        const timeMatch = json.classTime.match(/\d+/);
-        setSessionDuration(timeMatch ? parseInt(timeMatch[0], 10) : 0);
-
-        setData(json);
-      } catch (error) {
-        alert(error);
-        setIsError(true);
-      } finally {
-        setIsLoading(false);
-      }
-    }
-    fetchTeacherInfo();
-  }, [TEST_TOKEN, SERVER_URL, SERVER_PORT]);
-
-  if (isLoading) {
-    return (
-      <div className="flex min-h-screen items-center justify-center">
-        <CircularProgress />
-      </div>
-    );
-  }
-
-  if (isError || !data) {
-    return <ErrorUI />;
-  }
 
   return (
     <HeaderWithBack hasBack onBack={() => router.back()} title="과외시간 선택">
@@ -124,7 +81,7 @@ export default function TeacherDetailChooseTime() {
           onClick={handleParentSubmit}
           className="h-[59px] w-full rounded-[12px] font-bold"
         >
-          변경된 시간 저장
+          수업시간 확정하기
         </Button>
       </div>
 

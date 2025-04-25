@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 
 import { getSplitHoursToStringFormat } from "@/utils/date";
 import {
@@ -27,12 +27,14 @@ export function useTimeTable(
 ) {
   const token = useSearchParams().get("token") ?? "";
 
+  const router = useRouter();
   const { mutate: patchTime } = useUpdateTeacherAvailable();
   const { mutate: postMatching } = usePostMatchingTimetable();
   const { mutate: patchTimeWithToken } = useUpdateTeacherAvailableWithToken();
 
   const times = getSplitHoursToStringFormat();
 
+  const [baseTime, setBaseTime] = useState(initialSelectTime);
   const [currentTime, setCurrentTime] = useState(initialSelectTime);
   const [selectedCell] = useState<{
     day: string;
@@ -43,6 +45,7 @@ export function useTimeTable(
   const [snackbarMessage, setSnackbarMessage] = useState<string>("");
 
   useEffect(() => {
+    setBaseTime(initialSelectTime);
     setCurrentTime(initialSelectTime);
     setSelectedSessions([]);
   }, [initialSelectTime]);
@@ -140,15 +143,7 @@ export function useTimeTable(
       if (mode === "teacher") handleTeacherClick(day, time);
       else handleParentClick(day, time);
     },
-    [
-      mode,
-      handleTeacherClick,
-      handleParentClick,
-
-      currentTime,
-      selectedSessions,
-      sessionCount,
-    ],
+    [mode, handleTeacherClick, handleParentClick],
   );
 
   const handleCellUnclick = useCallback(
@@ -180,20 +175,38 @@ export function useTimeTable(
         name: initialName,
         available: currentTime,
       },
-      { onSuccess: () => setSnackbarOpen(true) },
+      {
+        onSuccess: () => {
+          setSnackbarOpen(true);
+          setBaseTime(currentTime);
+        },
+      },
     );
-  }, [mode, patchTime, initialName, initialPhoneNumber, currentTime]);
+  }, [
+    mode,
+    patchTime,
+    patchTimeWithToken,
+    initialName,
+    initialPhoneNumber,
+    currentTime,
+    token,
+  ]);
 
   const handleParentSubmit = useCallback(() => {
     if (mode !== "parent" || !classMatchingToken) return;
     postMatching(
       { classMatchingToken, selectedSessions },
       {
-        onError: (error) => setSnackbarMessage(error.message),
-        onSettled: () => setSnackbarOpen(true),
+        onSuccess: () => {
+          router.push(`/teacher/recommend/${classMatchingToken}/complete`);
+        },
+        onError: (error) => {
+          setSnackbarMessage(error.message);
+          setSnackbarOpen(true);
+        },
       },
     );
-  }, [mode, classMatchingToken, selectedSessions, postMatching]);
+  }, [mode, classMatchingToken, selectedSessions, postMatching, router]);
 
   return {
     currentTime,
@@ -203,7 +216,7 @@ export function useTimeTable(
     snackbarMessage,
     hasChanges:
       mode === "teacher"
-        ? JSON.stringify(currentTime) !== JSON.stringify(initialSelectTime)
+        ? JSON.stringify(currentTime) !== JSON.stringify(baseTime)
         : selectedSessions.length === (sessionCount ?? 1),
     handleCellClick,
     handleCellUnclick,
