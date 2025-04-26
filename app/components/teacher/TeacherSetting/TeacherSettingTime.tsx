@@ -18,6 +18,7 @@ import TitleSection from "@/ui/TitleSection";
 import HeaderWithBack from "@/components/result/HeaderWithBack";
 
 interface TeacherSettingTimeProps {
+  alwaysEnableSubmit?: boolean;
   submitLabel?: string;
   onSubmit?: (currentTime: Record<string, string[]>) => void;
   onPopstateConfirm?: () => void;
@@ -34,6 +35,7 @@ interface TeacherSettingTimeProps {
 }
 
 export function TeacherSettingTime({
+  alwaysEnableSubmit = false,
   submitLabel = "변경된 시간 저장",
   onSubmit,
   onPopstateConfirm,
@@ -161,7 +163,7 @@ export function TeacherSettingTime({
         <div className="sticky bottom-0 mx-5 bg-white pb-[10px]">
           <div className="absolute top-[-20px] h-[20px] w-full bg-gradient-to-t from-white to-transparent" />
           <Button
-            disabled={!hasChanges}
+            disabled={!hasChanges && !alwaysEnableSubmit}
             onClick={handleClick}
             className="h-[59px]"
           >

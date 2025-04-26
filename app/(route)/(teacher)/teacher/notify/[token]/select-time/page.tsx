@@ -1,4 +1,3 @@
-// src/app/teacher/[token]/select-time/page.tsx
 "use client";
 
 import { useRouter } from "next/navigation";
@@ -64,6 +63,7 @@ export default function TeacherClassMatchingSelectTimePage({ params }: Props) {
       initialAvailable={initialAvailable}
       submitLabel="매칭 신청하기"
       onSubmit={handleMatch}
+      alwaysEnableSubmit
       disableUnsavedWarning
       onBackButtonConfirm={() => window.history.back()}
       onPopstateConfirm={() => window.history.back()}
