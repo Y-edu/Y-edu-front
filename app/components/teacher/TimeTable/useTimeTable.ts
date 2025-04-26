@@ -90,7 +90,7 @@ export function useTimeTable(
             setSnackbarOpen(true);
           } else {
             setSnackbarMessage(
-              `${sessionDuration}분 수업이라 이 시간은 선택할 수 없어요.`,
+              `${sessionDuration}분 수업이라 이 시간은 선택할 수 없어요`,
             );
             setSnackbarOpen(true);
           }
@@ -200,8 +200,8 @@ export function useTimeTable(
         onSuccess: () => {
           router.push(`/teacher/recommend/${classMatchingToken}/complete`);
         },
-        onError: (error) => {
-          setSnackbarMessage(error.message);
+        onError: () => {
+          setSnackbarMessage("이미 신청한 매칭건입니다.");
           setSnackbarOpen(true);
         },
       },
