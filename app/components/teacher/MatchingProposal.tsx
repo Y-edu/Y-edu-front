@@ -109,7 +109,7 @@ export function MatchingProposal({ token }: { token: string }) {
             <p>
               학부모님이
               <span className="text-primaryNormal"> 선호하는 시간</span>
-              이에요!
+              이에요.
             </p>
             <p className="text-[15px] font-medium leading-[152%] text-labelAssistive">
               학부모님과 협의하여 시간을 조율할 수 있어요.

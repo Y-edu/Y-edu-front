@@ -232,7 +232,7 @@ export default function SampleTeacher() {
                           <span className="text-primaryNormal">
                             선호하는 시간
                           </span>
-                          이에요!
+                          이에요.
                         </p>
                       }
                     >
