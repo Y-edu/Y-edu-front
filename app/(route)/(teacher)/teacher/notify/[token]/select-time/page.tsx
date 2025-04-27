@@ -68,10 +68,10 @@ export default function TeacherClassMatchingSelectTimePage({ params }: Props) {
       onBackButtonConfirm={() => window.history.back()}
       onPopstateConfirm={() => window.history.back()}
       isConfirm={{
-        title: "매칭 신청 확인",
-        message: "정말 이 시간으로 매칭 신청을 진행하시겠습니까?",
-        confirmText: "신청하기",
-        cancelText: "취소",
+        title: "정말 가능한 시간만 선택했나요?",
+        message: `선택한 시간으로 매칭된 과외를 거절하면\n이후 매칭의 우선순위가 낮아져요`,
+        confirmText: "정말 가능해요",
+        cancelText: "다시 수정할게요",
       }}
     />
   );
