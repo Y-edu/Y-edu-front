@@ -73,7 +73,7 @@ export default function TeacherClassMatchingSelectTimePage({ params }: Props) {
       initialAvailable={initialAvailable}
       submitLabel="매칭 신청하기"
       onSubmit={handleMatch}
-      alwaysEnableSubmit
+      requireCellSelection
       disableUnsavedWarning
       onBackButtonConfirm={() => window.history.back()}
       onPopstateConfirm={() => window.history.back()}
