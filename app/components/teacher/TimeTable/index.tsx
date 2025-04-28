@@ -1,5 +1,7 @@
 "use client";
 
+import Button from "@/ui/Button";
+import cn from "@/utils/cn";
 import { getSplitHoursToStringFormat } from "@/utils/date";
 
 export type Mode = "teacher" | "parent";
@@ -122,24 +124,19 @@ export default function TimeTable({
                 };
 
                 return (
-                  <div
+                  <Button
                     key={time}
-                    role={clickable ? "button" : undefined}
-                    tabIndex={clickable ? 0 : undefined}
                     onClick={() => {
                       toggle();
                     }}
-                    // iOS/Safari ghost click 방지
-                    onTouchEnd={(e) => {
-                      e.preventDefault();
-                      toggle();
-                    }}
-                    onKeyDown={(e) =>
-                      clickable &&
-                      (e.key === "Enter" || e.key === " ") &&
-                      toggle()
-                    }
-                    className={`flex-1 border border-gray-300 ${dIdx !== WEEK.length - 1 ? "border-r-0" : ""} ${tIdx !== times.length - 1 ? "border-b-0" : ""} ${bgClass} ${cornerClass} `}
+                    disabled={!clickable}
+                    className={cn(
+                      "flex-1 rounded-none border border-gray-300",
+                      bgClass,
+                      cornerClass,
+                      dIdx !== WEEK.length - 1 && "border-r-0",
+                      tIdx !== times.length - 1 && "border-b-0",
+                    )}
                   />
                 );
               })}

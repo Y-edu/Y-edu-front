@@ -1,15 +1,11 @@
 "use client";
 
-import {
-  MouseEvent,
-  useCallback,
-  ButtonHTMLAttributes,
-  ReactNode,
-} from "react";
+import { useCallback, ButtonHTMLAttributes, ReactNode } from "react";
 
 import { ReactRef } from "@/types/react";
 import useDOMRef from "@/hooks/custom/useDOMRef";
 import cn from "@/utils/cn";
+import { useSafeClick } from "@/hooks/custom/useSafeClick";
 
 export type UseButtonProp = ButtonHTMLAttributes<HTMLButtonElement> & {
   ref?: ReactRef<HTMLButtonElement>;
@@ -20,6 +16,7 @@ export type UseButtonProp = ButtonHTMLAttributes<HTMLButtonElement> & {
 export function useButton({
   ref,
   onClick,
+  onTouchEnd,
   disabled,
   className,
   leftIcon,
@@ -28,21 +25,14 @@ export function useButton({
 }: UseButtonProp) {
   const domRef = useDOMRef(ref);
 
-  const handleClick = useCallback(
-    (e: MouseEvent<HTMLButtonElement>) => {
-      if (!disabled) {
-        onClick?.(e);
-      }
-    },
-    [disabled, onClick],
-  );
+  const { clickHandlers } = useSafeClick(onClick, onTouchEnd);
 
   const getButtonProps = useCallback(
     () => ({
       disabled,
       ...otherProps,
       ref: domRef,
-      onClick: handleClick,
+      ...clickHandlers,
       className: cn(
         "p-[16px] rounded-[12px] text-[18px] text-[#fff] bg-primary font-bold flex items-center gap-10 justify-center whitespace-nowrap w-full",
         (rightIcon || leftIcon) && "justify-between",
@@ -50,7 +40,15 @@ export function useButton({
         className,
       ),
     }),
-    [handleClick, otherProps, disabled, className, domRef, leftIcon, rightIcon],
+    [
+      otherProps,
+      disabled,
+      className,
+      domRef,
+      leftIcon,
+      rightIcon,
+      clickHandlers,
+    ],
   );
 
   return { getButtonProps };
