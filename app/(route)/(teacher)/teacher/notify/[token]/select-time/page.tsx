@@ -1,6 +1,6 @@
-// src/app/teacher/[token]/select-time/page.tsx
 "use client";
 
+import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { CircularProgress } from "@mui/material";
 
@@ -21,6 +21,12 @@ export default function TeacherClassMatchingSelectTimePage({ params }: Props) {
   const { data, isLoading, isError } = useGetTutoring({ token: matchingToken });
   const { mutateAsync: updateAvailable } = useUpdateTeacherAvailableWithToken();
   const { mutate: acceptMatch } = usePostTutoringAccept();
+
+  useEffect(() => {
+    if (data && data.matchStatus !== "대기") {
+      router.replace(`/teacher/notify/${matchingToken}/complete`);
+    }
+  }, [data, router, matchingToken]);
 
   if (isLoading) {
     return (
@@ -51,6 +57,9 @@ export default function TeacherClassMatchingSelectTimePage({ params }: Props) {
           onSuccess: () => {
             router.push(`/teacher/notify/${matchingToken}/complete`);
           },
+          onError: () => {
+            alert("이미 신청한 매칭건입니다.");
+          },
         },
       );
     } catch (err) {
@@ -64,6 +73,7 @@ export default function TeacherClassMatchingSelectTimePage({ params }: Props) {
       initialAvailable={initialAvailable}
       submitLabel="매칭 신청하기"
       onSubmit={handleMatch}
+      requireCellSelection
       disableUnsavedWarning
       onBackButtonConfirm={() => window.history.back()}
       onPopstateConfirm={() => window.history.back()}

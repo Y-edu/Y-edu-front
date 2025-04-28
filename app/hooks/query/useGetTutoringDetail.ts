@@ -6,7 +6,8 @@ export function useGetTutoring({ token }: { token: string }) {
   return useSuspenseQuery({
     queryKey: ["tutoring", token],
     queryFn: () => getTutoring({ token }),
-    staleTime: Infinity,
+    staleTime: 0,
+    refetchOnMount: true,
     retry: 0,
   });
 }

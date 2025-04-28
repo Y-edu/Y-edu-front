@@ -19,7 +19,7 @@ export default function GlobalSnackbar({
   icon,
   message,
   onClose,
-  duration = 1800,
+  duration = 1500,
   anchor = { vertical: "top", horizontal: "center" },
 }: GlobalSnackbarProps) {
   return (
@@ -28,11 +28,16 @@ export default function GlobalSnackbar({
       onClose={onClose}
       autoHideDuration={duration}
       anchorOrigin={anchor}
-      sx={{ top: "80%", mx: "20px" }}
+      sx={{
+        top: "83% !important",
+        left: "50% !important",
+        transform: "translateX(-50%) !important",
+        width: "max-content !important",
+      }}
       message={
         <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
           {icon}
-          <Box component="span" sx={{ flex: 1, textAlign: "center" }}>
+          <Box component="span" sx={{ textAlign: "center", fontWeight: 600 }}>
             {message}
           </Box>
         </Box>
@@ -44,7 +49,7 @@ export default function GlobalSnackbar({
             padding: "6px 18px",
             justifyContent: "center",
             alignItems: "center",
-            backgroundColor: "rgba(87, 101, 122, 0.8)",
+            backgroundColor: "#64748B",
           },
         },
       }}
