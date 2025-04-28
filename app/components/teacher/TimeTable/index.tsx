@@ -126,7 +126,14 @@ export default function TimeTable({
                     key={time}
                     role={clickable ? "button" : undefined}
                     tabIndex={clickable ? 0 : undefined}
-                    onClick={toggle}
+                    onClick={() => {
+                      toggle();
+                    }}
+                    // iOS/Safari ghost click 방지
+                    onTouchEnd={(e) => {
+                      e.preventDefault();
+                      toggle();
+                    }}
                     onKeyDown={(e) =>
                       clickable &&
                       (e.key === "Enter" || e.key === " ") &&
