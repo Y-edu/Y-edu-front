@@ -132,7 +132,7 @@ export default function TimeTable({
                       (e.key === "Enter" || e.key === " ") &&
                       toggle()
                     }
-                    className={`flex-1 touch-none border border-gray-300 ${dIdx !== WEEK.length - 1 ? "border-r-0" : ""} ${tIdx !== times.length - 1 ? "border-b-0" : ""} ${bgClass} ${cornerClass} `}
+                    className={`flex-1 border border-gray-300 ${dIdx !== WEEK.length - 1 ? "border-r-0" : ""} ${tIdx !== times.length - 1 ? "border-b-0" : ""} ${bgClass} ${cornerClass} `}
                   />
                 );
               })}
