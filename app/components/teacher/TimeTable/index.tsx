@@ -22,6 +22,10 @@ interface TimeTableProps {
 const WEEK = ["월", "화", "수", "목", "금", "토", "일"];
 const times = getSplitHoursToStringFormat();
 const gaps = [18, 24, 10, 16, ...Array(times.length - 4).fill(24), 0];
+const isIOS =
+  typeof navigator !== "undefined" &&
+  /iPad|iPhone|iPod/.test(navigator.userAgent) &&
+  !("MSStream" in window);
 
 export default function TimeTable({
   mode,
@@ -126,19 +130,18 @@ export default function TimeTable({
                     key={time}
                     role={clickable ? "button" : undefined}
                     tabIndex={clickable ? 0 : undefined}
-                    onClick={() => {
-                      toggle();
-                    }}
-                    // iOS/Safari ghost click 방지
-                    onTouchEnd={(e) => {
-                      e.preventDefault();
-                      toggle();
-                    }}
+                    onPointerUp={isIOS ? () => toggle() : undefined}
+                    onClick={!isIOS ? () => toggle() : undefined}
                     onKeyDown={(e) =>
                       clickable &&
                       (e.key === "Enter" || e.key === " ") &&
                       toggle()
                     }
+                    style={{
+                      touchAction: "pan-y",
+                      cursor: "pointer",
+                      overscrollBehaviorY: "contain",
+                    }}
                     className={`flex-1 border border-gray-300 ${dIdx !== WEEK.length - 1 ? "border-r-0" : ""} ${tIdx !== times.length - 1 ? "border-b-0" : ""} ${bgClass} ${cornerClass} `}
                   />
                 );
