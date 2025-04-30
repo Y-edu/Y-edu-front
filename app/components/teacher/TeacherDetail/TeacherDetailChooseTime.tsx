@@ -60,7 +60,7 @@ export default function TeacherDetailChooseTime() {
           주세요
         </TitleSection.Title>
         <TitleSection.Description>
-          선생님이 가능한 시간이에요
+          색칠된 시간 중에서 골라주세요
         </TitleSection.Description>
       </TitleSection>
 
