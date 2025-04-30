@@ -44,7 +44,7 @@ export default function TeacherDetailMain(props: TeacherDetailMainProps) {
 
   return (
     <div className="w-full">
-      <div className="flex flex-col gap-[10px] bg-primaryPale">
+      <div className="flex flex-col gap-[10px] bg-primaryPale pb-[10px]">
         <ProfileInfoBox title={comment}>{introduce}</ProfileInfoBox>
         <ProfileInfoBox
           title={

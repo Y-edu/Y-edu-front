@@ -53,7 +53,7 @@ export default function TabBar({ tabs, scrollMode = false }: TabBarProps) {
 
   return (
     <div className="w-full">
-      <div className="sticky top-0 z-10 flex w-full gap-6 border-b border-tabBarBorder bg-white px-4">
+      <div className="sticky top-0 z-10 flex w-full border-b border-tabBarBorder bg-white px-4">
         {tabs.map((tab) => (
           <button
             key={tab.trigger}
@@ -70,14 +70,13 @@ export default function TabBar({ tabs, scrollMode = false }: TabBarProps) {
       </div>
 
       {scrollMode ? (
-        <div className="space-y-12">
+        <div>
           {tabs.map((tab) => (
             <div
               key={tab.trigger}
               ref={(el) => {
                 sectionRefs[tab.trigger] = el;
               }}
-              className="scroll-mt-20"
             >
               {tab.content}
             </div>
