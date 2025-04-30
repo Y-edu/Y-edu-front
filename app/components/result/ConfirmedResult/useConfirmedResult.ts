@@ -106,7 +106,7 @@ export function useConfirmedResult() {
   }, [bookInfo, firstDay, selectedDays.length, isScheduleValid]);
 
   const to24HourFormat = (period: string, timeWithSuffix: string): string => {
-    const time = timeWithSuffix.replace("부터", "");
+    const time = timeWithSuffix.replace("부터", "").trim();
     const [hourStr, minuteStr] = time.split(":");
     let hour = parseInt(hourStr, 10);
     const minute = minuteStr.padStart(2, "0");
@@ -138,10 +138,18 @@ export function useConfirmedResult() {
           classMinute: commonSchedule!.classMinute,
         }));
 
+    const cleanMonth = firstDay.month
+      .replace(/\s*\(.*\)$/, "")
+      .replace("월", "")
+      .padStart(2, "0");
+
+    const cleanDay = firstDay.day
+      .replace(/\s*\(.*\)$/, "")
+      .replace("일", "")
+      .padStart(2, "0");
+
     const firstDayDTO: FirstDayDTO = {
-      date: `${firstDay.year}-${firstDay.month.replace("월", "").padStart(2, "0")}-${firstDay.day
-        .replace("일", "")
-        .padStart(2, "0")}`,
+      date: `${firstDay.year}-${cleanMonth}-${cleanDay}`,
       start: to24HourFormat(firstDay.period, firstDay.time),
     };
 
