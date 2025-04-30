@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { CircularProgress } from "@mui/material";
 
@@ -17,6 +17,7 @@ interface Props {
 export default function TeacherClassMatchingSelectTimePage({ params }: Props) {
   const matchingToken = params.token;
   const router = useRouter();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const { data, isLoading, isError } = useGetTutoring({ token: matchingToken });
   const { mutateAsync: updateAvailable } = useUpdateTeacherAvailableWithToken();
@@ -49,6 +50,7 @@ export default function TeacherClassMatchingSelectTimePage({ params }: Props) {
   }, {});
 
   const handleMatch = async (currentTime: Record<string, string[]>) => {
+    setIsSubmitting(true);
     try {
       await updateAvailable({ token: matchingToken, available: currentTime });
       acceptMatch(
@@ -59,11 +61,13 @@ export default function TeacherClassMatchingSelectTimePage({ params }: Props) {
           },
           onError: () => {
             alert("이미 신청한 매칭건입니다.");
+            setIsSubmitting(false);
           },
         },
       );
     } catch (err) {
       alert(err);
+      setIsSubmitting(false);
     }
   };
 
@@ -73,6 +77,7 @@ export default function TeacherClassMatchingSelectTimePage({ params }: Props) {
       initialAvailable={initialAvailable}
       submitLabel="매칭 신청하기"
       onSubmit={handleMatch}
+      isSubmitting={isSubmitting}
       requireCellSelection
       disableUnsavedWarning
       onBackButtonConfirm={() => window.history.back()}
