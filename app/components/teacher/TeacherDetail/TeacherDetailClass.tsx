@@ -11,7 +11,7 @@ export default function TeacherDetailClass(props: TeacherDetailClassProps) {
   const { teachingStyle, video } = props;
 
   return (
-    <div className="flex flex-col gap-[10px] bg-primaryPale">
+    <div className="flex flex-col gap-[10px] bg-primaryPale pb-[10px]">
       <ProfileInfoBox
         title={
           <div className="flex flex-col gap-1">
