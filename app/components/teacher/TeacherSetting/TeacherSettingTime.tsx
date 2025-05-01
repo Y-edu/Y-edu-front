@@ -137,9 +137,6 @@ export function TeacherSettingTime({
   return (
     <>
       <HeaderWithBack hasBack onBack={handleBackClick} title="과외 가능 시간">
-        {/* 가이드 타임테이블 */}
-        <GuideTimeTable />
-
         {/* 헤더 */}
         <TitleSection className="m-5 mb-10 mt-8">
           <TitleSection.Title>
@@ -162,7 +159,7 @@ export function TeacherSettingTime({
         />
 
         {/* 저장 버튼 */}
-        <div className="sticky bottom-0 mx-5 bg-white pb-[10px]">
+        <div className="fixed bottom-0 left-1/2 z-10 w-full max-w-[500px] -translate-x-1/2 bg-white pb-[10px]">
           <div className="absolute top-[-20px] h-[20px] w-full bg-gradient-to-t from-white to-transparent" />
           <Button
             disabled={
@@ -172,7 +169,7 @@ export function TeacherSettingTime({
                 : !hasChanges)
             }
             onClick={handleClick}
-            className="flex h-[59px] items-center justify-center"
+            className="mx-auto flex h-[59px] w-[335px] items-center justify-center"
           >
             {isSubmitting ? (
               <CircularProgress size={24} sx={{ color: "#fff" }} />
