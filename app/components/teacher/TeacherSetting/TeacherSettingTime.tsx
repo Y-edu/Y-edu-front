@@ -21,7 +21,6 @@ interface TeacherSettingTimeProps {
   requireCellSelection?: boolean;
   submitLabel?: string;
   onSubmit?: (currentTime: Record<string, string[]>) => void;
-  isSubmitting?: boolean;
   onPopstateConfirm?: () => void;
   onBackButtonConfirm?: () => void;
   disableUnsavedWarning?: boolean;
@@ -39,7 +38,6 @@ export function TeacherSettingTime({
   requireCellSelection = false,
   submitLabel = "변경된 시간 저장",
   onSubmit,
-  isSubmitting = false,
   onPopstateConfirm,
   onBackButtonConfirm,
   disableUnsavedWarning = false,
@@ -166,19 +164,14 @@ export function TeacherSettingTime({
           <div className="absolute top-[-20px] h-[20px] w-full bg-gradient-to-t from-white to-transparent" />
           <Button
             disabled={
-              isSubmitting ||
-              (requireCellSelection
-                ? !Object.values(currentTime).some((slots) => slots.length > 0)
-                : !hasChanges)
+              requireCellSelection
+                ? !Object.values(currentTime).some((s) => s.length > 0)
+                : !hasChanges
             }
             onClick={handleClick}
-            className="flex h-[59px] items-center justify-center"
+            className="h-[59px] w-full rounded-[12px] font-bold"
           >
-            {isSubmitting ? (
-              <CircularProgress size={24} sx={{ color: "#fff" }} />
-            ) : (
-              submitLabel
-            )}
+            {submitLabel}
           </Button>
         </div>
 
