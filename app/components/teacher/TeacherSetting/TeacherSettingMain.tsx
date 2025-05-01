@@ -94,7 +94,7 @@ export default function TeacherSettingMain() {
       <Modal
         isOpen={showModal}
         title="과외 공지 수신을 중단할까요?"
-        message="수신 중단 시, 더 이상 선생님께 카톡으로 과외 공지를 전송드리지 않아요."
+        message={`수신 중단 시, 더 이상 선생님께 카톡으로\n과외 공지를 전송드리지 않아요.`}
         confirmText="중단"
         cancelText="계속 받기"
         handleOnConfirm={() => {
