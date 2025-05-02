@@ -84,6 +84,8 @@ export default function TeacherClassMatchingSelectTimePage({ params }: Props) {
       pageToken={matchingToken}
       initialAvailable={initialAvailable}
       submitLabel="매칭 신청하기"
+      headerTitle={`과외가 가능한 시간을\n모두 업데이트해주세요`}
+      headerDescription={`학부모님이 선호하는 시간과 상관없이\n평소 수업이 가능한 시간을 모두 선택해주세요`}
       onSubmit={handleMatch}
       requireCellSelection
       disableUnsavedWarning
