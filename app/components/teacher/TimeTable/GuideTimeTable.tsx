@@ -8,6 +8,7 @@ import cn from "@/utils/cn";
 
 export default function GuideTimeTable() {
   const [visible, setVisible] = useState(true);
+
   const [showSecondBlock, setShowSecondBlock] = useState(false);
   const fingerControls = useAnimation();
 
@@ -32,7 +33,7 @@ export default function GuideTimeTable() {
     };
 
     animate();
-  }, [fingerControls]);
+  }, []);
 
   if (!visible) return null;
 
