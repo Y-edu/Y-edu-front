@@ -18,6 +18,8 @@ import TitleSection from "@/ui/TitleSection";
 import HeaderWithBack from "@/components/result/HeaderWithBack";
 
 interface TeacherSettingTimeProps {
+  headerTitle?: React.ReactNode;
+  headerDescription?: React.ReactNode;
   requireCellSelection?: boolean;
   submitLabel?: string;
   onSubmit?: (currentTime: Record<string, string[]>) => void;
@@ -35,6 +37,8 @@ interface TeacherSettingTimeProps {
 }
 
 export function TeacherSettingTime({
+  headerTitle,
+  headerDescription,
   requireCellSelection = false,
   submitLabel = "변경된 시간 저장",
   onSubmit,
@@ -140,13 +144,11 @@ export function TeacherSettingTime({
 
         {/* 헤더 */}
         <TitleSection className="m-5 mb-10 mt-8">
-          <TitleSection.Title>
-            정말 수업이 가능한 시간을
-            <br />
-            모두 선택해 주세요
+          <TitleSection.Title className="whitespace-pre-line">
+            {headerTitle ?? `정말 수업이 가능한 시간을\n모두 선택해주세요`}
           </TitleSection.Title>
-          <TitleSection.Description>
-            선택한 시간대에 맞는 학부모님과 매칭돼요
+          <TitleSection.Description className="whitespace-pre-line">
+            {headerDescription ?? "선택한 시간대에 맞는 학부모님과 매칭돼요"}
           </TitleSection.Description>
         </TitleSection>
 
