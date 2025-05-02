@@ -71,13 +71,20 @@ export default function TeacherClassMatchingSelectTimePage({ params }: Props) {
     }
   };
 
+  if (isSubmitting) {
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <CircularProgress />
+      </div>
+    );
+  }
+
   return (
     <TeacherSettingTime
       pageToken={matchingToken}
       initialAvailable={initialAvailable}
       submitLabel="매칭 신청하기"
       onSubmit={handleMatch}
-      isSubmitting={isSubmitting}
       requireCellSelection
       disableUnsavedWarning
       onBackButtonConfirm={() => window.history.back()}
