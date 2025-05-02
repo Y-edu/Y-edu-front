@@ -53,7 +53,7 @@ export function useTimeTable(
   const getCandidate = useCallback(
     (day: string, time: string) => {
       if (mode !== "parent" || sessionDuration === undefined) return null;
-      const slotCount = Math.ceil(sessionDuration / 50);
+      const slotCount = Math.ceil(sessionDuration / 60);
       if (slotCount <= 0) return null;
 
       const available = initialSelectTime[day] || [];
