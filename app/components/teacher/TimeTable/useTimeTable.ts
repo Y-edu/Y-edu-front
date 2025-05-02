@@ -163,7 +163,12 @@ export function useTimeTable(
     if (token) {
       patchTimeWithToken(
         { token, available: currentTime },
-        { onSuccess: () => setSnackbarOpen(true) },
+        {
+          onSuccess: () => {
+            setSnackbarOpen(true);
+            setBaseTime(currentTime);
+          },
+        },
       );
       return;
     }
