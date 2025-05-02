@@ -41,11 +41,12 @@ export const AlimTableProvider = ({
   const statusOrder = {
     최종매칭: 0,
     매칭: 1,
-    전송: 2,
-    수락: 3,
-    대기: 4,
-    거절: 5,
-    과외결렬: 6,
+    입금단계: 2,
+    전송: 3,
+    수락: 4,
+    대기: 5,
+    거절: 6,
+    과외결렬: 7,
   };
 
   const alimData = useMemo<

@@ -62,7 +62,7 @@ function ParentsRequest({ applicationFormId }: { applicationFormId: string }) {
             />
             <TitleDesc
               title={PARENTS_REQUEST_TITLE.wantTime}
-              desc={data ? data.wantTime : "원하는 수업시간"}
+              desc={data.wantTime || "원하는 수업시간"}
               maxWidth="1/7"
               direction="vertical"
             />

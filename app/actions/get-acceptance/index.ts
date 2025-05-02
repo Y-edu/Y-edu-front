@@ -14,6 +14,7 @@ const acceptanceSchema = z.object({
         z.literal("대기"),
         z.literal("수락"),
         z.literal("전송"),
+        z.literal("입금단계"),
         z.literal("매칭"),
         z.literal("최종매칭"),
         z.literal("과외결렬"),

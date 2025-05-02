@@ -16,7 +16,9 @@
       "@typescript-eslint/parser": [".ts", ".tsx"]
     },
     "import/resolver": {
-      "typescript": {}
+      "typescript": {
+        "paths": ["./app"]
+      }
     }
   },
   "rules": {

@@ -48,7 +48,7 @@ export default function MatchCell({ row }: { row: Row<RowType> }) {
     }
   };
 
-  if (row.original.status !== "전송") return null;
+  if (row.original.status !== "입금단계") return null;
 
   return (
     <>

@@ -1,6 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 "use client";
 import { ReactNode, useState } from "react";
+import { useRouter } from "next/navigation";
+
+import formatDayTimes from "@/utils/formatDayTimes";
+import BulletList from "@/ui/List/BulletList";
 
 import { MatchingModal } from "./MatchingModal";
 import { MatchingInfo } from "./MatchingInfo";
@@ -10,37 +14,31 @@ import ProfileInfoBox from "./ProfileInfoBox";
 import Layers from "public/images/Eyes.png";
 import { useGetTutoring } from "app/hooks/query";
 import { useModal } from "app/hooks/custom";
-import { usePostTutoringAccept } from "app/hooks/mutation/usePostTutoringAccept";
 import { usePostTutoringRefuse } from "app/hooks/mutation/usePostTutoringRefuse";
 import {
   GOALS_STYLE_ICON,
   GOALS_CONTRACT,
 } from "app/constants/goalsIconMapping";
 
-interface MatchingProposalProps {
-  teacherId: string;
-  phoneNumber: string;
-  applcationFormId: string;
-}
-
-export function MatchingProposal({
-  teacherId,
-  phoneNumber,
-  applcationFormId,
-}: MatchingProposalProps) {
+export function MatchingProposal({ token }: { token: string }) {
+  const router = useRouter();
   const { data, error } = useGetTutoring({
-    teacherId,
-    applcationFormId,
-    phoneNumber,
+    token,
   });
   const { openModal, isModalOpen, closeModal } = useModal();
   const [matchingStatus, setMatchingStatus] = useState<"REJECT" | "ACCEPT">(
     "REJECT",
   );
   const [finalStatus, setFinalStatus] = useState<
-    "거절" | "대기" | "전송" | "수락"
+    | "거절"
+    | "대기"
+    | "전송"
+    | "수락"
+    | "입금단계"
+    | "매칭"
+    | "최종매칭"
+    | "과외결렬"
   >(data.matchStatus);
-  const { mutate: postTutoringAccept } = usePostTutoringAccept();
   const { mutate: postTutoringReject } = usePostTutoringRefuse();
 
   if (error) throw error;
@@ -78,7 +76,6 @@ export function MatchingProposal({
         dong={data.dong}
         goals={data.goals}
         favoriteStyle={data.favoriteStyle}
-        favoriteTime={data.favoriteTime}
         matchStatus={data.matchStatus}
         pay={data.pay}
       />
@@ -118,8 +115,8 @@ export function MatchingProposal({
           <div className="flex flex-col gap-1">
             <p>
               학부모님이
-              <span className="text-primaryNormal">선호하는 시간</span>
-              이에요!
+              <span className="text-primaryNormal"> 선호하는 시간</span>
+              이에요.
             </p>
             <p className="text-[15px] font-medium leading-[152%] text-labelAssistive">
               학부모님과 협의하여 시간을 조율할 수 있어요.
@@ -127,7 +124,7 @@ export function MatchingProposal({
           </div>
         }
       >
-        {data.favoriteTime}
+        <BulletList items={formatDayTimes(data.parentDayTimes)} />
       </ProfileInfoBox>
       {finalStatus === "대기" && (
         <>
@@ -144,14 +141,7 @@ export function MatchingProposal({
             <button
               className="order-0 flex h-[58px] w-[160px] flex-none flex-row items-center justify-center gap-[6px] self-stretch rounded-[8px] bg-primaryNormal p-[16px] px-[36px] font-bold text-white"
               onClick={() => {
-                setMatchingStatus("ACCEPT");
-                setFinalStatus("수락");
-                openModal();
-                postTutoringAccept({
-                  teacherId,
-                  applicationFormId: data.applicationFormId,
-                  phoneNumber,
-                });
+                router.push(`/teacher/notify/${token}/select-time`);
               }}
             >
               신청할게요
@@ -164,7 +154,9 @@ export function MatchingProposal({
         </>
       )}
 
-      {["거절", "수락", "전송"].includes(finalStatus) && (
+      {["거절", "수락", "전송", "매칭", "최종매칭", "과외결렬"].includes(
+        finalStatus,
+      ) && (
         <div className="mb-6 flex w-full justify-center">
           <button className="h-[58px] w-[89%] cursor-not-allowed rounded-xl bg-statusInactive text-lg font-bold text-labelAssistive">
             {finalStatus === "거절"
@@ -184,9 +176,7 @@ export function MatchingProposal({
           postTutoringReject(
             {
               refuseReason: reason,
-              applicationFormId: data.applicationFormId,
-              phoneNumber,
-              teacherId,
+              token,
             },
             {
               onSuccess: () => {

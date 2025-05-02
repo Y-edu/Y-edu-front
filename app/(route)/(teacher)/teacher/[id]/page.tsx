@@ -1,67 +1,89 @@
-import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
-import { Suspense } from "react";
+"use client"; // client component 분리는 리팩토링때 진행하겠습니다 😅
+import { ErrorBoundary } from "react-error-boundary";
+import { useSearchParams } from "next/navigation";
 
-import { getQueryClient } from "@/utils/getQueryClient";
-import {
-  getTeacherDetailsAvailable,
-  getTeacherDetailsClass,
-  getTeacherDetailsTeacher,
-} from "@/actions/get-teacher-detail";
+import TeacherDetailRegionTime from "@/components/teacher/TeacherDetail/TeacherDetailRegionTime";
+import ProfileTop from "@/components/teacher/ProfileTop";
+import TeacherDetailClass from "@/components/teacher/TeacherDetail/TeacherDetailClass";
+import TeacherDetailMain from "@/components/teacher/TeacherDetail/TeacherDetailMain";
+import TabBar from "@/ui/Bar/TabBar";
+import ErrorUI from "@/ui/ErrorUI";
+import { SubjectType } from "@/actions/get-teacher-detail";
+import { useGetTeacherAllDetailsByTeacherId } from "@/hooks/query/useGetTeacherDetails";
 
-import TeacherPage from "./TeacherPage";
+export default function TeacherIdPage({ params }: { params: { id: string } }) {
+  const { id: teacherId } = params;
+  const searchParams = useSearchParams();
+  const subject = searchParams.get("subject") as SubjectType;
+  const { data, isLoading, error } = useGetTeacherAllDetailsByTeacherId({
+    teacherId,
+    subject,
+  });
 
-export default async function HydrationTeacherDetail({
-  searchParams,
-  params,
-}: {
-  params: { id: string };
-  searchParams: {
-    [key: string]: string;
-  };
-}) {
-  const queryClient = getQueryClient();
-  const paramsProps = {
-    teacherId: String(params.id),
-    subject: searchParams.subject as "english" | "math",
-  };
+  if (isLoading) return null;
+  if (error) return <ErrorUI />;
 
-  await Promise.allSettled([
-    queryClient.prefetchQuery({
-      queryKey: ["teacher-details-teacher", paramsProps],
-      queryFn: async () => {
-        const res = await getTeacherDetailsTeacher(paramsProps);
-        return res;
-      },
-    }),
-    queryClient.prefetchQuery({
-      queryKey: ["teacher-details-class", paramsProps],
-      queryFn: async () => {
-        const res = await getTeacherDetailsClass(paramsProps);
-        return res;
-      },
-    }),
-    queryClient.prefetchQuery({
-      queryKey: [
-        "teacher-details-available",
-        {
-          teacherId: params.id,
-        },
-      ],
-      queryFn: async () => {
-        const res = await getTeacherDetailsAvailable({
-          teacherId: params.id,
-        });
-        return res;
-      },
-    }),
-  ]);
-
-  const dehydrateState = dehydrate(queryClient);
   return (
-    <Suspense fallback={<div />}>
-      <HydrationBoundary state={dehydrateState}>
-        <TeacherPage />
-      </HydrationBoundary>
-    </Suspense>
+    <ErrorBoundary fallback={<ErrorUI />}>
+      {data && (
+        <div className="w-full pb-[60px]">
+          <ProfileTop
+            profile={data.profile || ""}
+            nickName={data.nickName || ""}
+          />
+          <TabBar
+            tabs={[
+              {
+                trigger: "선생님",
+                content: (
+                  <TeacherDetailMain
+                    comment={data.comment || ""}
+                    introduce={data.introduce || ""}
+                    teachingHistory={data.teachingHistory || 0}
+                    teachingExperiences={data.teachingExperiences || []}
+                    foreignExperiences={data.foreignExperiences}
+                    university={data.university || ""}
+                    major={data.major || ""}
+                    highSchool={data.highSchool || ""}
+                    teachingStyle1={data.teachingStyle1 || ""}
+                    teachingStyleInfo1={data.teachingStyleInfo1 || ""}
+                    teachingStyle2={data.teachingStyle2 || ""}
+                    teachingStyleInfo2={data.teachingStyleInfo2 || ""}
+                  />
+                ),
+              },
+              {
+                trigger: "수업",
+                content: (
+                  <TeacherDetailClass
+                    teachingStyle={data.teachingStyle || ""}
+                    video={data.video}
+                  />
+                ),
+              },
+              {
+                trigger: "지역/시간",
+                content: (
+                  <TeacherDetailRegionTime
+                    districts={data.districts || []}
+                    available={
+                      data.available || {
+                        월: [],
+                        화: [],
+                        수: [],
+                        목: [],
+                        금: [],
+                        토: [],
+                        일: [],
+                      }
+                    }
+                  />
+                ),
+              },
+            ]}
+          />
+        </div>
+      )}
+    </ErrorBoundary>
   );
 }
