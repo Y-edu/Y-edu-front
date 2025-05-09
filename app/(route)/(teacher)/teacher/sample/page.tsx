@@ -4,7 +4,7 @@ import { Suspense } from "react";
 
 import BulletList from "@/ui/List/BulletList";
 import TabBar from "@/ui/Bar/TabBar";
-import ToggleBox from "@/ui/ToggleBox";
+import ToggleBox from "@/ui/Box/ToggleBox";
 import { SubjectType } from "@/actions/get-teacher-detail";
 import { TEACHER_STYLE_ICON } from "@/constants/teacherStyle";
 import { formatAvailableTimes } from "@/utils/formatAvailableTimes";

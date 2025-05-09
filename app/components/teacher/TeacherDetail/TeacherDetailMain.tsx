@@ -1,7 +1,7 @@
 "use client";
 import { useSearchParams } from "next/navigation";
 
-import ToggleBox from "@/ui/ToggleBox";
+import ToggleBox from "@/ui/Box/ToggleBox";
 
 import IconTitleChip from "app/components/teacher/IconTitleChip";
 import ProfileInfoBox from "app/components/teacher/ProfileInfoBox";
