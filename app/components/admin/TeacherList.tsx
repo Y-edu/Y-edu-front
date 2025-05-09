@@ -14,7 +14,7 @@ import type {
   TeacherSearchParams,
   FilteringTeacher,
 } from "@/actions/get-teacher-search";
-import { TeacherUpdateModal } from "@/ui/TeacherUpdateModal";
+import { TeacherUpdateModal } from "@/ui/Modal/TeacherUpdateModal";
 import { useGetTeacherSearch } from "@/hooks/query/useGetTeacherSearch";
 import { Pagination } from "@/ui/Pagination";
 

@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-import ToggleSwitch from "@/ui/ToggleSwitch";
+import ToggleSwitch from "@/ui/Switch/ToggleSwitch";
 
 import Arrow from "public/images/arrow-light.png";
 

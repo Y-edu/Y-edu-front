@@ -3,5 +3,5 @@ export * from "./Bar/Sidebar";
 export * from "./Accordion";
 export * from "./TitleDesc";
 export * from "./Header";
-export * from "./Modal";
+export * from "./Modal/Modal";
 export * from "./Pagination";
