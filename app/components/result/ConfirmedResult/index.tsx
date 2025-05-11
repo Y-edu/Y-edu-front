@@ -7,10 +7,10 @@ import BottomSheet from "@/ui/BottomSheet";
 import Checkbox from "@/ui/CheckBox";
 import Textarea from "@/ui/Textarea";
 import DivWithLabel from "@/components/result/DivWIthLabel";
-import DayButton from "@/components/result/DayBtn";
 import SelectButton from "@/components/result/SelectButton";
 import TimePicker from "@/components/result/TimePicker";
 import FirstDayPicker from "@/components/result/FirstDayPicker";
+import Chip from "@/ui/Chip";
 
 import { useConfirmedResult, DAYS } from "./useConfirmedResult";
 
@@ -53,9 +53,9 @@ export default function ConfirmedResult() {
         <DivWithLabel label="수업 요일">
           <div className="flex flex-wrap justify-between">
             {DAYS.map((day) => (
-              <DayButton
+              <Chip
                 key={day}
-                day={day}
+                chipText={day}
                 isSelected={selectedDays.includes(day)}
                 onClick={() => toggleDay(day)}
               />
