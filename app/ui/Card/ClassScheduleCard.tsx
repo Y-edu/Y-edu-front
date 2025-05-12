@@ -17,6 +17,7 @@ export interface ClassScheduleCardProps {
   time: string;
   statusLabel: string;
   actions: ActionButton[];
+  showMoneyReminder?: boolean;
   className?: string;
 }
 
@@ -25,28 +26,39 @@ export default function ClassScheduleCard({
   time,
   statusLabel,
   actions,
+  showMoneyReminder,
   className = "",
 }: ClassScheduleCardProps) {
-  const isToggle = statusLabel !== "오늘";
-  const [isOpen, setIsOpen] = useState(statusLabel === "오늘");
+  const defaultOpen = statusLabel === "오늘" || showMoneyReminder;
+  const [isOpen, setIsOpen] = useState(defaultOpen);
+  const isToggle = !defaultOpen;
 
   return (
     <div className={cn("rounded-xl bg-white p-4 shadow", className)}>
       <div
         className={cn(
           "flex items-center justify-between",
-          isOpen ? "mb-4" : "mb-0",
+          isOpen ? "mb-1" : "mb-0",
         )}
       >
         <div className="flex items-center">
           {statusLabel && (
-            <span className="mr-2 text-[16px] font-semibold text-primary">
+            <span
+              className={cn(
+                "mr-2 font-semibold",
+                statusLabel === "오늘"
+                  ? "text-[16px] text-primary"
+                  : statusLabel === "휴강"
+                    ? "text-[16px] text-red-500"
+                    : "text-[14px] text-gray-500",
+              )}
+            >
               {statusLabel}
             </span>
           )}
-          <span className="text-[16px] font-bold text-gray-900">
+          <span className="text-[16px] font-[600] text-gray-900">
             {date.toLocaleDateString("ko-KR", {
-              month: "numeric",
+              month: "long",
               day: "numeric",
               weekday: "short",
             })}{" "}
@@ -54,16 +66,16 @@ export default function ClassScheduleCard({
           </span>
         </div>
         {isToggle && (
-          <button
-            onClick={() => setIsOpen(!isOpen)}
-            className="p-2"
-            aria-label={isOpen ? "Hide actions" : "Show actions"}
-          >
-            {isOpen ? <IconDown className="rotate-180" /> : <IconDown />}
+          <button onClick={() => setIsOpen((prev) => !prev)} className="p-2">
+            <IconDown className={cn(isOpen && "rotate-180")} />
           </button>
         )}
       </div>
-
+      {showMoneyReminder && (
+        <p className="mb-4 text-[14px] text-gray-500">
+          보수를 받으려면 과외 완료를 꼭 눌러주세요
+        </p>
+      )}
       {isOpen && (
         <div className="flex gap-2">
           {actions.map((btn, idx) => (
@@ -71,7 +83,7 @@ export default function ClassScheduleCard({
               key={idx}
               onClick={btn.handleOnClick}
               className={cn(
-                "h-11 flex-1",
+                "h-11 flex-1 font-[700]",
                 btn.variant === "primary"
                   ? "bg-primary text-white"
                   : btn.variant === "secondary"
