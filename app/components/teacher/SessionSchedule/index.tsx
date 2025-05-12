@@ -1,11 +1,15 @@
 "use client";
 import { useState } from "react";
+import Image from "next/image";
 
 import ClassScheduleCard from "@/ui/Card/ClassScheduleCard";
 import { SessionResponse } from "@/actions/post-getSessions";
 import Chip from "@/ui/Chip";
+import Button from "@/ui/Button";
 
 import { useSessionSchedule, SessionItem } from "./useSessionSchedule";
+
+import Calender from "public/images/calendar.svg";
 
 interface SessionScheduleProps {
   sessions: SessionResponse[];
@@ -18,18 +22,28 @@ export default function SessionSchedule({ sessions }: SessionScheduleProps) {
 
   return (
     <div className="space-y-4 bg-gray-50 p-4">
-      <div className="mb-4 flex gap-2">
-        <Chip
-          chipText="미완료"
-          isSelected={!showCompleted}
-          onClick={() => setShowCompleted(false)}
-        />
-        <Chip
-          chipText="완료"
-          isSelected={showCompleted}
-          onClick={() => setShowCompleted(true)}
-        />
-      </div>
+      <section className="flex items-center justify-between">
+        <div className="flex gap-2">
+          <Chip
+            chipText="미완료"
+            isSelected={!showCompleted}
+            onClick={() => setShowCompleted(false)}
+          />
+          <Chip
+            chipText="완료"
+            isSelected={showCompleted}
+            onClick={() => setShowCompleted(true)}
+          />
+        </div>
+        <Button
+          leftIcon={
+            <Image src={Calender} width={20} height={20} alt="calender" />
+          }
+          className="text-grey-700 w-fit justify-normal gap-1 bg-transparent px-3 py-[6px] text-sm"
+        >
+          전체 일정 변경
+        </Button>
+      </section>
       {filtered.length === 0 ? (
         <div className="text-center text-gray-500">조회된 일정이 없습니다.</div>
       ) : (
