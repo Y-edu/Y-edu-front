@@ -83,7 +83,8 @@ export default function ClassScheduleCard({
               key={idx}
               onClick={btn.handleOnClick}
               className={cn(
-                "h-11 flex-1 font-[700]",
+                "h-11 flex-1 whitespace-normal text-[16px] font-[700]",
+                "max-[355px]:text-sm",
                 btn.variant === "primary"
                   ? "bg-primary text-white"
                   : btn.variant === "secondary"
