@@ -23,7 +23,7 @@ export default function HeaderWithBack({
   return (
     <div className="flex h-dvh flex-col">
       <header
-        className={`py-4, relative flex h-[48px] items-center justify-center border-b border-grey-100 ${className}`}
+        className={`relative flex h-[48px] items-center justify-center border-b border-grey-100 py-4 ${className}`}
       >
         {hasBack && (
           <IconLeft
