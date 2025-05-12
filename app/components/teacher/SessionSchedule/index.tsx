@@ -2,7 +2,7 @@
 import { useState } from "react";
 import Image from "next/image";
 
-import ClassScheduleCard from "@/ui/Card/ClassScheduleCard";
+import SessionScheduleCard from "@/ui/Card/SessionScheduleCard";
 import { SessionResponse } from "@/actions/post-getSessions";
 import Chip from "@/ui/Chip";
 import Button from "@/ui/Button";
@@ -48,7 +48,7 @@ export default function SessionSchedule({ sessions }: SessionScheduleProps) {
         <div className="text-center text-gray-500">조회된 일정이 없습니다.</div>
       ) : (
         filtered.map((session) => (
-          <ClassScheduleCard
+          <SessionScheduleCard
             key={session.id}
             date={session.date}
             time={session.time}

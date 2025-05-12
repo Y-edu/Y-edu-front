@@ -12,7 +12,7 @@ export interface ActionButton {
   handleOnClick?: () => void;
 }
 
-export interface ClassScheduleCardProps {
+export interface SessionScheduleCardProps {
   date: Date;
   time: string;
   statusLabel: string;
@@ -21,14 +21,14 @@ export interface ClassScheduleCardProps {
   className?: string;
 }
 
-export default function ClassScheduleCard({
+export default function SessionScheduleCard({
   date,
   time,
   statusLabel,
   actions,
   showMoneyReminder,
   className = "",
-}: ClassScheduleCardProps) {
+}: SessionScheduleCardProps) {
   const defaultOpen = statusLabel === "오늘" || showMoneyReminder;
   const [isOpen, setIsOpen] = useState(defaultOpen);
   const isToggle = !defaultOpen;
