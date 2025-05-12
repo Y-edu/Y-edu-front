@@ -1,5 +1,6 @@
 "use client";
 
+import { useSearchParams } from "next/navigation";
 import { ErrorBoundary } from "react-error-boundary";
 import { CircularProgress } from "@mui/material";
 
@@ -9,13 +10,9 @@ import SessionSchedule from "@/components/teacher/SessionSchedule";
 import { useGetSessions } from "@/hooks/query/useGetSessions";
 import TabBar from "@/ui/Bar/TabBar";
 
-export default function TeacherSessionSchedulePage({
-  params,
-}: {
-  params: { token: string };
-}) {
-  const { token } = params;
-  const { data, isLoading, isError } = useGetSessions(token);
+export default function TeacherSessionSchedulePage() {
+  const token = useSearchParams().get("token") ?? "";
+  const { data, isLoading } = useGetSessions(token);
 
   if (isLoading) {
     return (
@@ -24,11 +21,8 @@ export default function TeacherSessionSchedulePage({
       </div>
     );
   }
-  if (isError || !data) {
-    return <ErrorUI />;
-  }
 
-  const tabs = Object.entries(data.schedules).map(([classId, sessions]) => ({
+  const tabs = Object.entries(data!.schedules).map(([classId, sessions]) => ({
     trigger: classId,
     content: <SessionSchedule sessions={sessions} />,
   }));

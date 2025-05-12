@@ -11,5 +11,6 @@ export function useGetSessions(token: string) {
     },
     staleTime: Infinity,
     gcTime: Infinity,
+    throwOnError: true,
   });
 }
