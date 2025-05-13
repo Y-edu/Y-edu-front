@@ -2,8 +2,11 @@
 
 import { Snackbar as MuiSnackbar, Box } from "@mui/material";
 
+import { SnackbarIconMap } from "./type";
+
 interface GlobalSnackbarProps {
   open: boolean;
+  type?: "success" | "warning";
   icon?: React.ReactNode;
   message: string;
   onClose: () => void;
@@ -16,12 +19,15 @@ interface GlobalSnackbarProps {
 
 export default function GlobalSnackbar({
   open,
+  type,
   icon,
   message,
   onClose,
   duration = 1500,
   anchor = { vertical: "top", horizontal: "center" },
 }: GlobalSnackbarProps) {
+  const toastIcon = type ? SnackbarIconMap[type] : null;
+
   return (
     <MuiSnackbar
       open={open}
@@ -36,7 +42,7 @@ export default function GlobalSnackbar({
       }}
       message={
         <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-          {icon}
+          {toastIcon || icon}
           <Box component="span" sx={{ textAlign: "center", fontWeight: 600 }}>
             {message}
           </Box>

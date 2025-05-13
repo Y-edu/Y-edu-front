@@ -3,6 +3,8 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { GoogleAnalytics, GoogleTagManager } from "@next/third-parties/google";
 
+import { GlobalSnackbarProvider } from "@/providers/GlobalSnackBar";
+
 import { QueryProvider } from "app/providers";
 import IntegrateMSW from "app/providers/MSWProvider";
 
@@ -29,7 +31,9 @@ export default function RootLayout({
         <body className={`${pretendard.variable}`}>
           <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID || ""} />
           <GoogleTagManager gtmId={process.env.NEXT_PUBLIC_GTM_ID || ""} />
-          <QueryProvider>{children} </QueryProvider>
+          <QueryProvider>
+            <GlobalSnackbarProvider>{children}</GlobalSnackbarProvider>
+          </QueryProvider>
         </body>
       </html>
     </IntegrateMSW>
