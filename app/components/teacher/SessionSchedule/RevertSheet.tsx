@@ -19,7 +19,7 @@ export default function RevertSheet({
     <>
       <h2 className="mb-[24px] mt-[4px] text-[20px] font-bold">
         학부모님과 상의 후에 <br />
-        날짜를 변경했나요?
+        휴강을 취소했나요?
       </h2>
       <Button onClick={handleSubmit}>네 맞아요</Button>
     </>

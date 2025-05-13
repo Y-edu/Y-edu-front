@@ -2,7 +2,13 @@ import { useMemo } from "react";
 
 import { ActionButton } from "@/ui/Card/SessionScheduleCard";
 import { SessionResponse } from "@/actions/post-getSessions";
-import { createSessionActionButtons } from "@/ui/Card/SessionScheduleCard/ActionButtons";
+import {
+  BTN_CANCEL,
+  BTN_CANCEL_RESTORE,
+  BTN_COMPLETE,
+  BTN_RESCHEDULE,
+  BTN_VIEW_REVIEW,
+} from "@/ui/Card/SessionScheduleCard/ActionButtons";
 
 export interface SessionItem {
   id: number;
@@ -27,14 +33,6 @@ export function useSessionSchedule(data: SessionResponse[]): SessionItem[] {
         classDate,
         classStart,
       } = session;
-
-      const {
-        BTN_CANCEL,
-        BTN_CANCEL_RESTORE,
-        BTN_COMPLETE,
-        BTN_RESCHEDULE,
-        BTN_VIEW_REVIEW,
-      } = createSessionActionButtons();
 
       // Date 객체 생성 및 시간 포맷
       const dateObj = new Date(`${classDate}T${classStart}`);
