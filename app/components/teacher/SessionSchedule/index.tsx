@@ -49,6 +49,7 @@ export default function SessionSchedule({ sessions }: SessionScheduleProps) {
       ) : (
         filtered.map((session) => (
           <SessionScheduleCard
+            classSessionId={session.id}
             key={session.id}
             date={session.date}
             time={session.time}

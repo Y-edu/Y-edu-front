@@ -4,7 +4,7 @@ import { getSessions } from "@/actions/post-getSessions";
 
 export function useGetSessions(token: string) {
   return useQuery({
-    queryKey: ["sessions", token],
+    queryKey: ["sessions"],
     queryFn: async () => {
       const res = await getSessions(token);
       return res;
