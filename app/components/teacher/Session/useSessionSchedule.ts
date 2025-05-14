@@ -21,7 +21,7 @@ export interface Schedule {
   classMinute: number;
 }
 
-// 바텀시트 UI 표시용 타입
+// UI 표시용 타입
 export interface DisplaySchedule {
   period: string;
   time: string;
@@ -29,7 +29,7 @@ export interface DisplaySchedule {
   classMinute: number;
 }
 
-// 시간 변환 함수 (바텀시트 UI 표시용 -> 서버 전송용)
+// 시간 변환 함수 (UI 표시용 -> 서버 전송용)
 export function convertToTimeFormat(period: string, time: string): string {
   const timeMatch = time.match(/(\d+):(\d+)/);
   if (!timeMatch) return "00:00";
@@ -49,7 +49,7 @@ export function convertToTimeFormat(period: string, time: string): string {
   return `${formattedHours}:${minutes}`;
 }
 
-// 시간 변환 함수 (서버 전송용 -> 바텀시트 UI 표시용)
+// 시간 변환 함수 (서버 전송용 -> UI 표시용)
 export function convertFromTimeFormat(time: string): {
   period: string;
   time: string;
@@ -142,7 +142,7 @@ export function useSessionSchedule({
   };
 
   const updateSchedule = (schedule: DisplaySchedule) => {
-    // 바텀시트 UI 표시 형식에서 서버에 보낼 형식으로 변환
+    // UI 표시 형식에서 서버에 보낼 형식으로 변환
     const convertedSchedule: Schedule = {
       start: convertToTimeFormat(schedule.period, schedule.time),
       day: schedule.day,
