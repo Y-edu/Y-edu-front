@@ -8,6 +8,7 @@ import Chip from "@/ui/Chip";
 import Checkbox from "@/ui/CheckBox";
 import SelectButton from "@/components/result/SelectButton";
 import BottomSheet from "@/ui/BottomSheet";
+import cn from "@/utils/cn";
 
 import {
   DAYS,
@@ -17,10 +18,11 @@ import {
 
 export interface SessionScheduleProps {
   title: string;
+  className?: string;
 }
 
 export default function SessionSchedule(props: SessionScheduleProps) {
-  const { title } = props;
+  const { title, className = "" } = props;
   const {
     selectedDays,
     toggleDay,
@@ -41,7 +43,7 @@ export default function SessionSchedule(props: SessionScheduleProps) {
   };
 
   return (
-    <div className="flex flex-col gap-10 px-5">
+    <div className={cn("flex flex-col gap-10 px-5", className)}>
       <TitleSection>
         <TitleSection.Title className="whitespace-pre">
           {title}
@@ -49,7 +51,7 @@ export default function SessionSchedule(props: SessionScheduleProps) {
       </TitleSection>
       <div>
         <DivWithLabel label="수업 요일">
-          <div className="flex flex-wrap justify-between">
+          <div className="flex flex-wrap justify-between gap-1">
             {DAYS.map((day) => (
               <Chip
                 key={day}
