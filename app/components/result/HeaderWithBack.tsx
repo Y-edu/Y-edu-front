@@ -21,7 +21,7 @@ export default function HeaderWithBack({
   className = "",
 }: HeaderWithBackProps) {
   return (
-    <div className="flex h-dvh flex-col">
+    <div className="flex h-dvh w-full flex-col">
       <header
         className={`relative flex h-[48px] items-center justify-center border-b border-grey-100 py-4 ${className}`}
       >
