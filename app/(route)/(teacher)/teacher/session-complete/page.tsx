@@ -6,17 +6,15 @@ import { CircularProgress } from "@mui/material";
 import { useGetSchedules } from "@/hooks/query/useGetSchedules";
 import SessionSchedule from "@/components/teacher/Session/SessionSchedule";
 import HeaderWithBack from "@/components/result/HeaderWithBack";
-import TitleSection from "@/ui/TitleSection";
-import DivWithLabel from "@/components/result/DivWIthLabel";
-import Radio from "@/ui/Radio";
-import { HOMEWORK_PROGRESS_LIST } from "@/constants/session/homework";
-import Textarea from "@/ui/Textarea";
 import SessionComplete from "@/components/teacher/Session/SessionComplete";
+import { useGetSessionByToken } from "@/hooks/query/useGetSessionByToken";
+import { formatDateShort } from "@/utils/getDayOfWeek";
 
 export default function SessionCompletePage() {
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
   const { data, isLoading } = useGetSchedules({ token: token ?? "" });
+  const { data: sessionData } = useGetSessionByToken({ token: token ?? "" });
   const [isEmpty, setIsEmpty] = useState(false);
 
   useEffect(() => {
@@ -51,11 +49,11 @@ export default function SessionCompletePage() {
       ) : (
         <div className="flex w-full flex-col items-center">
           <HeaderWithBack
-            title="수업 리뷰"
+            title={sessionData ? formatDateShort(sessionData) : "과외 완료"}
             hasBack
             mainClassName="pt-8 w-full px-5"
           >
-            <SessionComplete />
+            <SessionComplete token={token ?? ""} />
           </HeaderWithBack>
         </div>
       )}
