@@ -29,7 +29,7 @@ export default function SessionCompletePage() {
   return (
     <div>
       {/* 일정 비어 있으면 일정 설정 페이지, 아니면 과외 완료 페이지 */}
-      {!isEmpty ? (
+      {isEmpty ? (
         <div className="flex flex-col items-center">
           <HeaderWithBack title="과외 식별자" mainClassName="pt-8">
             <SessionSchedule
