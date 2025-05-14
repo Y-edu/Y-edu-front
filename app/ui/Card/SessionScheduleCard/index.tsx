@@ -5,14 +5,21 @@ import { useState } from "react";
 import Button from "@/ui/Button";
 import IconDown from "@/icons/IconDown";
 import cn from "@/utils/cn";
+import BottomSheet from "@/ui/BottomSheet";
+import { useBottomSheet } from "@/components/teacher/SessionSchedule/useBottomSheet";
+import RescheduleSheet from "@/components/teacher/SessionSchedule/RescheduleSheet";
+import CancelSheet from "@/components/teacher/SessionSchedule/CancelSheet";
+import RevertSheet from "@/components/teacher/SessionSchedule/RevertSheet";
 
 export interface ActionButton {
   label: string;
   variant?: "primary" | "secondary" | "outline";
+  value: string;
   handleOnClick?: () => void;
 }
 
 export interface SessionScheduleCardProps {
+  classSessionId: number;
   date: Date;
   time: string;
   statusLabel: string;
@@ -22,6 +29,7 @@ export interface SessionScheduleCardProps {
 }
 
 export default function SessionScheduleCard({
+  classSessionId,
   date,
   time,
   statusLabel,
@@ -29,6 +37,8 @@ export default function SessionScheduleCard({
   showMoneyReminder,
   className = "",
 }: SessionScheduleCardProps) {
+  const { sheetType, openSheet, closeSheet, isSheetOpen } = useBottomSheet();
+
   const defaultOpen = statusLabel === "오늘" || showMoneyReminder;
   const [isOpen, setIsOpen] = useState(defaultOpen);
   const isToggle = !defaultOpen;
@@ -81,7 +91,7 @@ export default function SessionScheduleCard({
           {actions.map((btn, idx) => (
             <Button
               key={idx}
-              onClick={btn.handleOnClick}
+              onClick={() => openSheet(btn.value)}
               className={cn(
                 "h-11 flex-1 whitespace-normal text-[16px] font-[700]",
                 "max-[355px]:text-sm",
@@ -97,6 +107,18 @@ export default function SessionScheduleCard({
           ))}
         </div>
       )}
+
+      <BottomSheet isOpen={isSheetOpen} onClose={closeSheet}>
+        {sheetType === "reschedule" && (
+          <RescheduleSheet sessionId={classSessionId} close={closeSheet} />
+        )}
+        {sheetType === "cancel" && (
+          <CancelSheet sessionId={classSessionId} close={closeSheet} />
+        )}
+        {sheetType === "cancel_restore" && (
+          <RevertSheet sessionId={classSessionId} close={closeSheet} />
+        )}
+      </BottomSheet>
     </div>
   );
 }

@@ -1,9 +1,10 @@
 "use client";
 
 import Image from "next/image";
-import Calender from "public/images/calendar.svg";
 
 import Button from "@/ui/Button";
+
+import Calender from "public/images/calendar.svg";
 
 export default function SessionCompletePage() {
   return (
