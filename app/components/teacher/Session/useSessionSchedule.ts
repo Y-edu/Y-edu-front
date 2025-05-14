@@ -84,10 +84,6 @@ export function useSessionSchedule() {
     "day"
   > | null>(null);
 
-  useEffect(() => {
-    console.log(schedules);
-  }, [schedules]);
-
   const toggleDay = (day: DayOfWeek) => {
     setSelectedDays((prev) => {
       const isRemoving = prev.includes(day);

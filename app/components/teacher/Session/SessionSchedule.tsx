@@ -8,6 +8,7 @@ import Chip from "@/ui/Chip";
 import Checkbox from "@/ui/CheckBox";
 import SelectButton from "@/components/result/SelectButton";
 import BottomSheet from "@/ui/BottomSheet";
+import Button from "@/ui/Button";
 import cn from "@/utils/cn";
 
 import {
@@ -106,6 +107,15 @@ export default function SessionSchedule(props: SessionScheduleProps) {
           onChange={() => setIsTimeVariesByDay((prev) => !prev)}
           className="mt-[4px]"
         />
+
+        <div className="fixed inset-x-0 bottom-0 flex justify-center bg-white p-4 shadow-lg">
+          <Button
+            className="w-[335px]"
+            disabled={Object.keys(schedules).length === 0}
+          >
+            완료하기
+          </Button>
+        </div>
       </div>
 
       <BottomSheet
