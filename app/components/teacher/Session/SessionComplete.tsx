@@ -1,10 +1,21 @@
+"use client";
+import { useState } from "react";
+
 import DivWithLabel from "@/components/result/DivWIthLabel";
 import { HOMEWORK_PROGRESS_LIST } from "@/constants/session/homework";
 import Radio from "@/ui/Radio";
 import Textarea from "@/ui/Textarea";
 import TitleSection from "@/ui/TitleSection";
+import Button from "@/ui/Button";
 
-export default function SessionComplete() {
+export default function SessionComplete({ token }: { token: string }) {
+  const [homeworkPercentage, setHomeworkPercentage] = useState<number | null>(
+    null,
+  );
+  const [understanding, setUnderstanding] = useState("");
+  const isFormValid =
+    homeworkPercentage !== null && understanding.trim().length > 0;
+
   return (
     <div className="flex w-full flex-col">
       <div className="mb-5 flex flex-col gap-10">
@@ -19,8 +30,10 @@ export default function SessionComplete() {
             <div key={item.value} className="py-4">
               <Radio
                 label={item.label}
-                selected={false}
-                onClick={() => {}}
+                selected={homeworkPercentage === item.value}
+                onClick={() => {
+                  setHomeworkPercentage(item.value);
+                }}
                 {...(item.value !== 0 && {
                   subLabel: `${item.value}%`,
                 })}
@@ -33,11 +46,20 @@ export default function SessionComplete() {
       <div className="-mx-5 border-t-8 border-gray-100" />
       <DivWithLabel label="아이의 이해도" className="mb-40 mt-5">
         <Textarea
-          value=""
-          onChange={() => {}}
+          value={understanding}
+          onChange={setUnderstanding}
           placeholder={`예) 'I go to bed at 9'처럼 일상 표현은 금방 따라왔지만, 의문문으로 바꾸는 건 어려워했어요.`}
         />
       </DivWithLabel>
+      <div className="fixed inset-x-0 bottom-0 flex justify-center bg-white p-4 shadow-lg">
+        <Button
+          className="w-[335px]"
+          disabled={!isFormValid}
+          onClick={() => {}}
+        >
+          완료하기
+        </Button>
+      </div>
     </div>
   );
 }
