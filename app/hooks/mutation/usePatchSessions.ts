@@ -1,13 +1,24 @@
+"use client";
+import { useRouter } from "next/navigation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import {
   patchSessionCancel,
   patchSessionChange,
+  patchSessionComplete,
   patchSessionRevertCancel,
 } from "@/actions/patch-sessions";
 import { useGlobalSnackbar } from "@/providers/GlobalSnackBar";
 
+interface CompleteSessionVariables {
+  token: string;
+  homeworkPercentage: number;
+  understanding: string;
+  date: string;
+}
+
 export function useSessionMutations() {
+  const router = useRouter();
   const queryClient = useQueryClient();
   const toast = useGlobalSnackbar();
 
@@ -41,9 +52,20 @@ export function useSessionMutations() {
     },
   });
 
+  const completeMutation = useMutation({
+    mutationFn: patchSessionComplete,
+    onSuccess: (data, variables: CompleteSessionVariables) => {
+      const { token, date } = variables;
+      router.push(`/teacher/session-schedule?token=${token}`);
+      toast.success(`${date} 과외가 완료되었어요`);
+      queryClient.invalidateQueries({ queryKey: ["schedules", token] });
+    },
+  });
+
   return {
     changeMutation,
     cancelMutation,
     revertMutation,
+    completeMutation,
   };
 }
