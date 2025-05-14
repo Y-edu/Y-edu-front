@@ -8,6 +8,7 @@ export interface ClassTimeDTO {
 }
 
 export interface SchedulesResponse {
+  applicationFormId: string;
   schedules: Partial<Record<DayOfWeek, ClassTimeDTO[]>>;
 }
 
