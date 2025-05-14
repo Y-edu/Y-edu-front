@@ -4,7 +4,7 @@ import { DayOfWeek } from "../get-teacher-detail";
 
 export interface ClassTimeDTO {
   start: string;
-  classTime: number;
+  classMinute: number;
 }
 
 export interface SchedulesResponse {
