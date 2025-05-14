@@ -102,7 +102,6 @@ export default function SessionSchedule(props: SessionScheduleProps) {
             />
           </DivWithLabel>
         )}
-
         <Checkbox
           id="time-picker"
           label="요일마다 수업 시간이 달라요"
@@ -111,6 +110,7 @@ export default function SessionSchedule(props: SessionScheduleProps) {
           className="mt-[4px]"
         />
 
+        {/* 나중에 toast alert 추가하기 */}
         <div className="fixed inset-x-0 bottom-0 flex justify-center bg-white p-4 shadow-lg">
           <Button
             className="w-[335px]"

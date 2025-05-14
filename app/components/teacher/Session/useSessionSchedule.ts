@@ -187,7 +187,7 @@ export function useSessionSchedule({ token }: { token: string }) {
   }, [isTimeVariesByDay, schedules, selectedDays.length, commonSchedule]);
 
   const handleSubmit = () => {
-    if (token) {
+    if (token && isScheduleValid) {
       mutate(
         {
           token,
