@@ -3,18 +3,37 @@ import { useState } from "react";
 
 import DivWithLabel from "@/components/result/DivWIthLabel";
 import { HOMEWORK_PROGRESS_LIST } from "@/constants/session/homework";
+import { useSessionMutations } from "@/hooks/mutation/usePatchSessions";
 import Radio from "@/ui/Radio";
 import Textarea from "@/ui/Textarea";
 import TitleSection from "@/ui/TitleSection";
 import Button from "@/ui/Button";
+import { formatDateShort } from "@/utils/getDayOfWeek";
 
-export default function SessionComplete({ token }: { token: string }) {
+interface SessionCompleteProps {
+  token: string;
+  date: string;
+}
+
+export default function SessionComplete({ token, date }: SessionCompleteProps) {
   const [homeworkPercentage, setHomeworkPercentage] = useState<number | null>(
     null,
   );
   const [understanding, setUnderstanding] = useState("");
+  const { completeMutation } = useSessionMutations();
   const isFormValid =
     homeworkPercentage !== null && understanding.trim().length > 0;
+
+  const handleComplete = () => {
+    if (!isFormValid || homeworkPercentage === null) return;
+
+    completeMutation.mutate({
+      token,
+      homeworkPercentage,
+      understanding: understanding.trim(),
+      date: formatDateShort(date),
+    });
+  };
 
   return (
     <div className="flex w-full flex-col">
@@ -54,8 +73,8 @@ export default function SessionComplete({ token }: { token: string }) {
       <div className="fixed inset-x-0 bottom-0 flex justify-center bg-white p-4 shadow-lg">
         <Button
           className="w-[335px]"
-          disabled={!isFormValid}
-          onClick={() => {}}
+          disabled={!isFormValid || completeMutation.isPending}
+          onClick={handleComplete}
         >
           완료하기
         </Button>

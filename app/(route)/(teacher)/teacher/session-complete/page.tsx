@@ -53,7 +53,7 @@ export default function SessionCompletePage() {
             hasBack
             mainClassName="pt-8 w-full px-5"
           >
-            <SessionComplete token={token ?? ""} />
+            <SessionComplete token={token ?? ""} date={sessionData || ""} />
           </HeaderWithBack>
         </div>
       )}
