@@ -50,7 +50,9 @@ export default function CancelSheet({
             ))}
           </div>
 
-          <Button onClick={handleSubmit}>완료하기</Button>
+          <Button disabled={!selected} onClick={handleSubmit}>
+            완료하기
+          </Button>
         </>
       )}
     </>
