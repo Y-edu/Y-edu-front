@@ -5,6 +5,7 @@ import { CircularProgress } from "@mui/material";
 
 import { useGetSchedules } from "@/hooks/query/useGetSchedules";
 import SessionSchedule from "@/components/teacher/Session/SessionSchedule";
+import HeaderWithBack from "@/components/result/HeaderWithBack";
 
 export default function SessionCompletePage() {
   const searchParams = useSearchParams();
@@ -30,14 +31,13 @@ export default function SessionCompletePage() {
       {/* 일정 비어 있으면 일정 설정 페이지, 아니면 과외 완료 페이지 */}
       {!isEmpty ? (
         <div className="flex flex-col items-center">
-          <div className="mb-8 flex h-12 w-full items-center justify-center text-lg text-grey-900">
-            과외 식별자
-          </div>
-          <SessionSchedule
-            className="mb-24"
-            title={`Y-edu 에게 진행 중인\n과외 일정을 알려주세요`}
-            token={token ?? ""}
-          />
+          <HeaderWithBack title="과외 식별자" mainClassName="pt-8">
+            <SessionSchedule
+              className="mb-24"
+              title={`Y-edu 에게 진행 중인\n과외 일정을 알려주세요`}
+              token={token ?? ""}
+            />
+          </HeaderWithBack>
         </div>
       ) : (
         <div>과외 완료 기능 페이지</div>
