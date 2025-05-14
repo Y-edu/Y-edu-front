@@ -19,11 +19,12 @@ import {
 
 export interface SessionScheduleProps {
   title: string;
+  token: string;
   className?: string;
 }
 
 export default function SessionSchedule(props: SessionScheduleProps) {
-  const { title, className = "" } = props;
+  const { title, className = "", token } = props;
   const {
     selectedDays,
     toggleDay,
@@ -35,7 +36,9 @@ export default function SessionSchedule(props: SessionScheduleProps) {
     selectedDayForTimePicker,
     setSelectedDayForTimePicker,
     sortedSelectedDays,
-  } = useSessionSchedule();
+    handleSubmit,
+    isScheduleValid,
+  } = useSessionSchedule({ token });
   const [isTimePickerOpen, setIsTimePickerOpen] = useState(false);
 
   const handleOpenTimePicker = (day: string) => {
@@ -111,7 +114,8 @@ export default function SessionSchedule(props: SessionScheduleProps) {
         <div className="fixed inset-x-0 bottom-0 flex justify-center bg-white p-4 shadow-lg">
           <Button
             className="w-[335px]"
-            disabled={Object.keys(schedules).length === 0}
+            disabled={!isScheduleValid}
+            onClick={handleSubmit}
           >
             완료하기
           </Button>

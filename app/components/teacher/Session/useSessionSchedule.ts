@@ -1,6 +1,8 @@
 import { useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 
 import { DayOfWeek } from "@/actions/get-teacher-detail";
+import { usePutSchedules } from "@/hooks/mutation/usePutSchedules";
 
 export const DAYS: Array<DayOfWeek> = [
   "월",
@@ -27,7 +29,7 @@ export interface DisplaySchedule {
   classMinute: number;
 }
 
-// 시간 변환 함수 (UI 표시용 -> 서버 전송용)
+// 시간 변환 함수 (바텀시트 UI 표시용 -> 서버 전송용)
 export function convertToTimeFormat(period: string, time: string): string {
   const timeMatch = time.match(/(\d+):(\d+)/);
   if (!timeMatch) return "00:00";
@@ -47,7 +49,7 @@ export function convertToTimeFormat(period: string, time: string): string {
   return `${formattedHours}:${minutes}`;
 }
 
-// 시간 변환 함수 (내부 저장용 -> UI 표시용)
+// 시간 변환 함수 (서버 전송용 -> 바텀시트 UI 표시용)
 export function convertFromTimeFormat(time: string): {
   period: string;
   time: string;
@@ -71,7 +73,8 @@ export function convertFromTimeFormat(time: string): {
   };
 }
 
-export function useSessionSchedule() {
+export function useSessionSchedule({ token }: { token: string }) {
+  const router = useRouter();
   const [selectedDays, setSelectedDays] = useState<DayOfWeek[]>([]);
   const [selectedDayForTimePicker, setSelectedDayForTimePicker] = useState("");
   const [schedules, setSchedules] = useState<Schedule[]>([]);
@@ -80,6 +83,8 @@ export function useSessionSchedule() {
     Schedule,
     "day"
   > | null>(null);
+
+  const { mutate } = usePutSchedules();
 
   const toggleDay = (day: DayOfWeek) => {
     setSelectedDays((prev) => {
@@ -99,7 +104,7 @@ export function useSessionSchedule() {
   };
 
   const updateSchedule = (schedule: DisplaySchedule) => {
-    // Display 형식에서 서버에 보낼 형식으로 변환
+    // 바텀시트 UI 표시 형식에서 서버에 보낼 형식으로 변환
     const convertedSchedule: Schedule = {
       start: convertToTimeFormat(schedule.period, schedule.time),
       day: schedule.day,
@@ -175,6 +180,32 @@ export function useSessionSchedule() {
     [selectedDays],
   );
 
+  const isScheduleValid = useMemo(() => {
+    return isTimeVariesByDay
+      ? schedules.length === selectedDays.length
+      : !!commonSchedule?.start && !!commonSchedule?.classMinute;
+  }, [isTimeVariesByDay, schedules, selectedDays.length, commonSchedule]);
+
+  const handleSubmit = () => {
+    if (token) {
+      mutate(
+        {
+          token,
+          schedules: schedules.map((schedule) => ({
+            start: schedule.start,
+            day: schedule.day,
+            classMinute: schedule.classMinute,
+          })),
+        },
+        {
+          onSuccess: () => {
+            router.push(`/session-schedules?token=${token}`);
+          },
+        },
+      );
+    }
+  };
+
   return {
     selectedDays,
     selectedDayForTimePicker,
@@ -186,5 +217,7 @@ export function useSessionSchedule() {
     commonSchedule: displayCommonSchedule,
     updateSchedule,
     sortedSelectedDays,
+    handleSubmit,
+    isScheduleValid,
   };
 }
