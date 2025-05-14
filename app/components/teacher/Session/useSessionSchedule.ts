@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import { DayOfWeek } from "@/actions/get-teacher-detail";
@@ -73,7 +73,13 @@ export function convertFromTimeFormat(time: string): {
   };
 }
 
-export function useSessionSchedule({ token }: { token: string }) {
+export function useSessionSchedule({
+  token,
+  initialSchedules,
+}: {
+  token: string;
+  initialSchedules?: Schedule[];
+}) {
   const router = useRouter();
   const [selectedDays, setSelectedDays] = useState<DayOfWeek[]>([]);
   const [selectedDayForTimePicker, setSelectedDayForTimePicker] = useState("");
@@ -85,6 +91,38 @@ export function useSessionSchedule({ token }: { token: string }) {
   > | null>(null);
 
   const { mutate } = usePutSchedules();
+
+  useEffect(() => {
+    if (initialSchedules && initialSchedules.length > 0) {
+      // 초기 선택된 요일 설정
+      const days = initialSchedules.map(
+        (schedule) => schedule.day as DayOfWeek,
+      );
+      setSelectedDays(days);
+
+      // 스케줄 데이터 설정
+      setSchedules(initialSchedules);
+
+      // 요일별로 시간이 다른지 확인
+      const hasVaryingTimes = initialSchedules.some((schedule, _, arr) =>
+        arr.some(
+          (s) =>
+            s.start !== schedule.start ||
+            s.classMinute !== schedule.classMinute,
+        ),
+      );
+
+      setIsTimeVariesByDay(hasVaryingTimes);
+
+      // 만약 시간이 모두 같다면 공통 스케줄 설정
+      if (!hasVaryingTimes && initialSchedules[0]) {
+        setCommonSchedule({
+          start: initialSchedules[0].start,
+          classMinute: initialSchedules[0].classMinute,
+        });
+      }
+    }
+  }, [initialSchedules]);
 
   const toggleDay = (day: DayOfWeek) => {
     setSelectedDays((prev) => {

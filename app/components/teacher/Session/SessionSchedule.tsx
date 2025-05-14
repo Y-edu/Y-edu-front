@@ -15,16 +15,18 @@ import {
   DAYS,
   useSessionSchedule,
   DisplaySchedule,
+  Schedule,
 } from "./useSessionSchedule";
 
 export interface SessionScheduleProps {
   title: string;
   token: string;
   className?: string;
+  initialSchedules?: Schedule[];
 }
 
 export default function SessionSchedule(props: SessionScheduleProps) {
-  const { title, className = "", token } = props;
+  const { title, className = "", token, initialSchedules = [] } = props;
   const {
     selectedDays,
     toggleDay,
@@ -38,7 +40,7 @@ export default function SessionSchedule(props: SessionScheduleProps) {
     sortedSelectedDays,
     handleSubmit,
     isScheduleValid,
-  } = useSessionSchedule({ token });
+  } = useSessionSchedule({ token, initialSchedules });
   const [isTimePickerOpen, setIsTimePickerOpen] = useState(false);
 
   const handleOpenTimePicker = (day: string) => {
