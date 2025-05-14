@@ -49,7 +49,7 @@ export default function TabBar({ tabs, scrollMode = false }: TabBarProps) {
     });
 
     return () => observer.disconnect();
-  }, [scrollMode, tabs]);
+  }, [scrollMode, tabs, sectionRefs]);
 
   return (
     <div className="w-full">
@@ -77,6 +77,7 @@ export default function TabBar({ tabs, scrollMode = false }: TabBarProps) {
               ref={(el) => {
                 sectionRefs[tab.trigger] = el;
               }}
+              className="scroll-mt-[80px]"
             >
               {tab.content}
             </div>
