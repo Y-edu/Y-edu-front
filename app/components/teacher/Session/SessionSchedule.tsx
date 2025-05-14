@@ -9,7 +9,11 @@ import Checkbox from "@/ui/CheckBox";
 import SelectButton from "@/components/result/SelectButton";
 import BottomSheet from "@/ui/BottomSheet";
 
-import { DAYS, useSessionSchedule } from "./useSessionSchedule";
+import {
+  DAYS,
+  useSessionSchedule,
+  DisplaySchedule,
+} from "./useSessionSchedule";
 
 export interface SessionScheduleProps {
   title: string;
@@ -113,7 +117,7 @@ export default function SessionSchedule(props: SessionScheduleProps) {
               ? schedules.find((s) => s.day === selectedDayForTimePicker)
               : commonSchedule
           }
-          onSelect={(selected) => {
+          onSelect={(selected: DisplaySchedule) => {
             updateSchedule(selected);
             setIsTimePickerOpen(false);
           }}
