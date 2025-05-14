@@ -27,7 +27,7 @@ export default function SessionCompletePage() {
 
   return (
     <div>
-      {/* 일정 비어 있으면 일정 설정 페이지, 아니면 일정 확인 페이지 */}
+      {/* 일정 비어 있으면 일정 설정 페이지, 아니면 과외 완료 페이지 */}
       {!isEmpty ? (
         <div className="flex flex-col items-center">
           <div className="mb-8 flex h-12 w-full items-center justify-center text-lg text-grey-900">
@@ -40,20 +40,7 @@ export default function SessionCompletePage() {
           />
         </div>
       ) : (
-        <div>
-          {Object.entries(data?.schedules ?? {}).map(([day, times]) => (
-            <div key={day}>
-              <h3>{day}</h3>
-              <ul>
-                {times.map((time, idx) => (
-                  <li key={idx}>
-                    시작 시간: {time.start}, 수업 시간: {time.classMinute}분
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
+        <div>과외 완료 기능 페이지</div>
       )}
     </div>
   );
