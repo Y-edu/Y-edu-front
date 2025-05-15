@@ -6,7 +6,7 @@ interface CustomRadioProps {
   label: string;
   subLabel?: string;
   selected: boolean;
-  onClick: () => void;
+  onClick?: () => void;
 }
 
 export default function Radio({
