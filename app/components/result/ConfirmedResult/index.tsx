@@ -6,7 +6,7 @@ import Button from "@/ui/Button";
 import BottomSheet from "@/ui/BottomSheet";
 import Checkbox from "@/ui/CheckBox";
 import Textarea from "@/ui/Textarea";
-import DivWithLabel from "@/components/result/DivWIthLabel";
+import DivWithLabel from "@/components/result/DivWithLabel";
 import SelectButton from "@/components/result/SelectButton";
 import TimePicker from "@/components/result/TimePicker";
 import FirstDayPicker from "@/components/result/FirstDayPicker";

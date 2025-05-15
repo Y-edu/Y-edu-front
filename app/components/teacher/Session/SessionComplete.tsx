@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 
-import DivWithLabel from "@/components/result/DivWIthLabel";
+import DivWithLabel from "@/components/result/DivWithLabel";
 import { HOMEWORK_PROGRESS_LIST } from "@/constants/session/homework";
 import { useSessionMutations } from "@/hooks/mutation/usePatchSessions";
 import Radio from "@/ui/Radio";
