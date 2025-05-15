@@ -1,6 +1,5 @@
 "use client";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
 import { CircularProgress } from "@mui/material";
 
 import { useGetSchedules } from "@/hooks/query/useGetSchedules";
@@ -15,12 +14,7 @@ export default function SessionCompletePage() {
   const token = searchParams.get("token");
   const { data, isLoading } = useGetSchedules({ token: token ?? "" });
   const { data: sessionData } = useGetSessionByToken({ token: token ?? "" });
-  const [isEmpty, setIsEmpty] = useState(false);
-
-  useEffect(() => {
-    if (Object.keys(data?.schedules ?? {}).length === 0) setIsEmpty(true);
-    else setIsEmpty(false);
-  }, [data]);
+  const isEmpty = !data || Object.keys(data.schedules ?? {}).length === 0;
 
   if (isLoading) {
     return (
