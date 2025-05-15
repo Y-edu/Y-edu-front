@@ -9,6 +9,7 @@ import ErrorUI from "@/ui/ErrorUI";
 import HeaderWithBack from "@/components/result/HeaderWithBack";
 import SessionReviewView from "@/components/teacher/Session/SessionReviewView";
 import { useGetSessions } from "@/hooks/query/useGetSessions";
+import { formatDateShort } from "@/utils/getDayOfWeek";
 import type { SessionResponse } from "@/actions/post-getSessions";
 
 export default function SessionReviewPage() {
@@ -46,7 +47,7 @@ export default function SessionReviewPage() {
     <div className="flex w-full flex-col items-center">
       <ErrorBoundary fallback={<ErrorUI />}>
         <HeaderWithBack
-          title={targetSession!.classDate ?? "수업 리뷰"}
+          title={formatDateShort(targetSession!.classDate) ?? "수업 리뷰"}
           hasBack
           onBack={onClickBack}
           mainClassName="pt-8 w-full px-5"
