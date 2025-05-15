@@ -1,4 +1,4 @@
-import type { ActionButton } from "@/ui/Card/SessionScheduleCard";
+import type { ActionButton } from "@/ui/Card/SessionListCard";
 
 export const BTN_RESCHEDULE: ActionButton = {
   label: "날짜 변경",

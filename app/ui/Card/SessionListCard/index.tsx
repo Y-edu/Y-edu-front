@@ -6,10 +6,10 @@ import Button from "@/ui/Button";
 import IconDown from "@/icons/IconDown";
 import cn from "@/utils/cn";
 import BottomSheet from "@/ui/BottomSheet";
-import { useBottomSheet } from "@/components/teacher/SessionSchedule/useBottomSheet";
-import RescheduleSheet from "@/components/teacher/SessionSchedule/RescheduleSheet";
-import CancelSheet from "@/components/teacher/SessionSchedule/CancelSheet";
-import RevertSheet from "@/components/teacher/SessionSchedule/RevertSheet";
+import { useBottomSheet } from "@/components/teacher/SessionList/useBottomSheet";
+import RescheduleSheet from "@/components/teacher/SessionList/RescheduleSheet";
+import CancelSheet from "@/components/teacher/SessionList/CancelSheet";
+import RevertSheet from "@/components/teacher/SessionList/RevertSheet";
 
 export interface ActionButton {
   label: string;
@@ -18,7 +18,7 @@ export interface ActionButton {
   handleOnClick?: () => void;
 }
 
-export interface SessionScheduleCardProps {
+export interface SessionListCardProps {
   classSessionId: number;
   date: Date;
   time: string;
@@ -28,7 +28,7 @@ export interface SessionScheduleCardProps {
   className?: string;
 }
 
-export default function SessionScheduleCard({
+export default function SessionListCard({
   classSessionId,
   date,
   time,
@@ -36,7 +36,7 @@ export default function SessionScheduleCard({
   actions,
   showMoneyReminder,
   className = "",
-}: SessionScheduleCardProps) {
+}: SessionListCardProps) {
   const { sheetType, openSheet, closeSheet, isSheetOpen } = useBottomSheet();
 
   const defaultOpen = statusLabel === "오늘" || showMoneyReminder;

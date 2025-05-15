@@ -6,11 +6,11 @@ import { CircularProgress } from "@mui/material";
 
 import ErrorUI from "@/ui/ErrorUI";
 import HeaderWithBack from "@/components/result/HeaderWithBack";
-import SessionSchedule from "@/components/teacher/SessionSchedule";
+import SessionList from "@/components/teacher/SessionList";
 import { useGetSessions } from "@/hooks/query/useGetSessions";
 import TabBar from "@/ui/Bar/TabBar";
 
-export default function TeacherSessionSchedulePage() {
+export default function TeacherSessionScheduleListPage() {
   const token = useSearchParams().get("token") ?? "";
   const { data, isLoading } = useGetSessions(token);
 
@@ -24,7 +24,7 @@ export default function TeacherSessionSchedulePage() {
 
   const tabs = Object.entries(data!.schedules).map(([classId, sessions]) => ({
     trigger: classId,
-    content: <SessionSchedule sessions={sessions} />,
+    content: <SessionList sessions={sessions} />,
   }));
 
   return (
