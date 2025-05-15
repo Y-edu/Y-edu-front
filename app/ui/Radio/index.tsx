@@ -4,11 +4,17 @@ import IconRoundCheck from "@/icons/IconRoundCheck";
 
 interface CustomRadioProps {
   label: string;
+  subLabel?: string;
   selected: boolean;
   onClick: () => void;
 }
 
-export default function Radio({ label, selected, onClick }: CustomRadioProps) {
+export default function Radio({
+  label,
+  selected,
+  onClick,
+  subLabel = "",
+}: CustomRadioProps) {
   return (
     <button
       type="button"
@@ -19,8 +25,9 @@ export default function Radio({ label, selected, onClick }: CustomRadioProps) {
     >
       <div className="flex items-center gap-[8px]">
         <IconRoundCheck isFill={selected} />
-        <span className="text-grey-700">{label}</span>
+        <span className="text-gray-700">{label}</span>
       </div>
+      {subLabel && <span className="font-bold text-gray-700">{subLabel}</span>}
     </button>
   );
 }

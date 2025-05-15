@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 
-import DivWithLabel from "@/components/result/DivWIthLabel";
+import DivWithLabel from "@/components/result/DivWithLabel";
 import TitleSection from "@/ui/TitleSection";
 import TimePicker from "@/components/result/TimePicker";
 import Chip from "@/ui/Chip";

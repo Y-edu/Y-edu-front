@@ -1,22 +1,20 @@
 "use client";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
 import { CircularProgress } from "@mui/material";
 
 import { useGetSchedules } from "@/hooks/query/useGetSchedules";
 import SessionSchedule from "@/components/teacher/Session/SessionSchedule";
 import HeaderWithBack from "@/components/result/HeaderWithBack";
+import SessionComplete from "@/components/teacher/Session/SessionComplete";
+import { useGetSessionByToken } from "@/hooks/query/useGetSessionByToken";
+import { formatDateShort } from "@/utils/getDayOfWeek";
 
 export default function SessionCompletePage() {
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
   const { data, isLoading } = useGetSchedules({ token: token ?? "" });
-  const [isEmpty, setIsEmpty] = useState(false);
-
-  useEffect(() => {
-    if (Object.keys(data?.schedules ?? {}).length === 0) setIsEmpty(true);
-    else setIsEmpty(false);
-  }, [data]);
+  const { data: sessionData } = useGetSessionByToken({ token: token ?? "" });
+  const isEmpty = !data || Object.keys(data.schedules ?? {}).length === 0;
 
   if (isLoading) {
     return (
@@ -27,7 +25,7 @@ export default function SessionCompletePage() {
   }
 
   return (
-    <div>
+    <div className="w-full">
       {/* 일정 비어 있으면 일정 설정 페이지, 아니면 과외 완료 페이지 */}
       {isEmpty ? (
         <div className="flex flex-col items-center">
@@ -43,7 +41,15 @@ export default function SessionCompletePage() {
           </HeaderWithBack>
         </div>
       ) : (
-        <div>과외 완료 기능 페이지</div>
+        <div className="flex w-full flex-col items-center">
+          <HeaderWithBack
+            title={sessionData ? formatDateShort(sessionData) : "과외 완료"}
+            hasBack
+            mainClassName="pt-8 w-full px-5"
+          >
+            <SessionComplete token={token ?? ""} date={sessionData || ""} />
+          </HeaderWithBack>
+        </div>
       )}
     </div>
   );
