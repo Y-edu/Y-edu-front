@@ -6,7 +6,7 @@ export function getDayOfWeek(date: Date): string {
 
 export function formatDateShort(dateString: string): string {
   const date = new Date(dateString);
-  const month = date.getMonth();
+  const month = date.getMonth() + 1;
   const day = date.getDate();
   const dayOfWeek = getDayOfWeek(date);
 
