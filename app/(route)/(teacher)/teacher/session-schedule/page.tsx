@@ -24,7 +24,7 @@ export default function TeacherSessionScheduleListPage() {
 
   const tabs = Object.entries(data!.schedules).map(([classId, sessions]) => ({
     trigger: classId,
-    content: <SessionList sessions={sessions} />,
+    content: <SessionList classId={classId} sessions={sessions} />,
   }));
 
   return (
