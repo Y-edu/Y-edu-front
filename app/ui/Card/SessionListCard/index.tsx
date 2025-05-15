@@ -1,15 +1,16 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 
 import Button from "@/ui/Button";
 import IconDown from "@/icons/IconDown";
 import cn from "@/utils/cn";
 import BottomSheet from "@/ui/BottomSheet";
-import { useBottomSheet } from "@/components/teacher/SessionSchedule/useBottomSheet";
-import RescheduleSheet from "@/components/teacher/SessionSchedule/RescheduleSheet";
-import CancelSheet from "@/components/teacher/SessionSchedule/CancelSheet";
-import RevertSheet from "@/components/teacher/SessionSchedule/RevertSheet";
+import { useBottomSheet } from "@/components/teacher/SessionList/useBottomSheet";
+import RescheduleSheet from "@/components/teacher/SessionList/RescheduleSheet";
+import CancelSheet from "@/components/teacher/SessionList/CancelSheet";
+import RevertSheet from "@/components/teacher/SessionList/RevertSheet";
 
 export interface ActionButton {
   label: string;
@@ -18,7 +19,7 @@ export interface ActionButton {
   handleOnClick?: () => void;
 }
 
-export interface SessionScheduleCardProps {
+export interface SessionListCardProps {
   classSessionId: number;
   date: Date;
   time: string;
@@ -28,7 +29,7 @@ export interface SessionScheduleCardProps {
   className?: string;
 }
 
-export default function SessionScheduleCard({
+export default function SessionListCard({
   classSessionId,
   date,
   time,
@@ -36,12 +37,34 @@ export default function SessionScheduleCard({
   actions,
   showMoneyReminder,
   className = "",
-}: SessionScheduleCardProps) {
+}: SessionListCardProps) {
+  const router = useRouter();
+  const token = useSearchParams().get("token") ?? "";
   const { sheetType, openSheet, closeSheet, isSheetOpen } = useBottomSheet();
 
   const defaultOpen = statusLabel === "오늘" || showMoneyReminder;
   const [isOpen, setIsOpen] = useState(defaultOpen);
   const isToggle = !defaultOpen;
+
+  const handleActionClick = useCallback(
+    (value: string) => {
+      switch (value) {
+        case "complete":
+          router.push(
+            `/teacher/session-complete?token=${token}&sessionId=${classSessionId}`,
+          );
+          break;
+        case "view_review":
+          router.push(
+            `/teacher/session-review?token=${token}&sessionId=${classSessionId}`,
+          );
+          break;
+        default:
+          openSheet(value);
+      }
+    },
+    [router, token, classSessionId, openSheet],
+  );
 
   return (
     <div className={cn("rounded-xl bg-white p-4 shadow", className)}>
@@ -91,7 +114,7 @@ export default function SessionScheduleCard({
           {actions.map((btn, idx) => (
             <Button
               key={idx}
-              onClick={() => openSheet(btn.value)}
+              onClick={() => handleActionClick(btn.value)}
               className={cn(
                 "h-11 flex-1 whitespace-normal text-[16px] font-[700]",
                 "max-[355px]:text-sm",

@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 
-import { ActionButton } from "@/ui/Card/SessionScheduleCard";
+import { ActionButton } from "@/ui/Card/SessionListCard";
 import { SessionResponse } from "@/actions/post-getSessions";
 import {
   BTN_CANCEL,
@@ -8,7 +8,7 @@ import {
   BTN_COMPLETE,
   BTN_RESCHEDULE,
   BTN_VIEW_REVIEW,
-} from "@/ui/Card/SessionScheduleCard/ActionButtons";
+} from "@/ui/Card/SessionListCard/ActionButtons";
 
 export interface SessionItem {
   id: number;
@@ -20,7 +20,7 @@ export interface SessionItem {
   complete: boolean;
 }
 
-export function useSessionSchedule(data: SessionResponse[]): SessionItem[] {
+export function useSessionList(data: SessionResponse[]): SessionItem[] {
   return useMemo(() => {
     const today = new Date();
     today.setHours(0, 0, 0, 0);

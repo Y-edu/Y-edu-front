@@ -9,8 +9,8 @@ export function useGetSessions(token: string) {
       const res = await getSessions(token);
       return res;
     },
-    staleTime: Infinity,
-    gcTime: Infinity,
+    staleTime: 0,
+    gcTime: 1000 * 60 * 30,
     throwOnError: true,
   });
 }

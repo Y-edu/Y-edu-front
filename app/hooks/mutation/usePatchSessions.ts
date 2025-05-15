@@ -12,6 +12,7 @@ import { useGlobalSnackbar } from "@/providers/GlobalSnackBar";
 
 interface CompleteSessionVariables {
   token: string;
+  classSessionId: string;
   homeworkPercentage: number;
   understanding: string;
   date: string;
@@ -54,11 +55,20 @@ export function useSessionMutations() {
 
   const completeMutation = useMutation({
     mutationFn: patchSessionComplete,
-    onSuccess: (data, variables: CompleteSessionVariables) => {
-      const { token, date } = variables;
-      router.push(`/teacher/session-schedule?token=${token}`);
+    onSuccess: async (data, variables: CompleteSessionVariables) => {
+      const { token, classSessionId, date } = variables;
+      if (token) {
+        await queryClient.invalidateQueries({
+          queryKey: ["schedules", token],
+        });
+      }
+      if (classSessionId) {
+        await queryClient.invalidateQueries({
+          queryKey: ["schedules", classSessionId],
+        });
+      }
+      router.push(`/teacher/session-schedule?token=${token ?? ""}`);
       toast.success(`${date} 과외가 완료되었어요`);
-      queryClient.invalidateQueries({ queryKey: ["schedules", token] });
     },
   });
 

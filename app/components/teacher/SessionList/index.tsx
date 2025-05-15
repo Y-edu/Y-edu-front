@@ -3,24 +3,24 @@ import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 
-import SessionScheduleCard from "@/ui/Card/SessionScheduleCard";
+import SessionListCard from "@/ui/Card/SessionListCard";
 import { SessionResponse } from "@/actions/post-getSessions";
 import Chip from "@/ui/Chip";
 import Button from "@/ui/Button";
 
-import { useSessionSchedule, SessionItem } from "./useSessionSchedule";
+import { useSessionList, SessionItem } from "./useSessionList";
 
 import Calender from "public/images/calendar.svg";
 
-interface SessionScheduleProps {
+interface SessionListProps {
   sessions: SessionResponse[];
 }
 
-export default function SessionSchedule({ sessions }: SessionScheduleProps) {
+export default function SessionList({ sessions }: SessionListProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
-  const items: SessionItem[] = useSessionSchedule(sessions);
+  const items: SessionItem[] = useSessionList(sessions);
   const [showCompleted, setShowCompleted] = useState(false);
   const filtered = items.filter((item) => item.complete === showCompleted);
 
@@ -53,7 +53,7 @@ export default function SessionSchedule({ sessions }: SessionScheduleProps) {
         <div className="text-center text-gray-500">조회된 일정이 없습니다.</div>
       ) : (
         filtered.map((session) => (
-          <SessionScheduleCard
+          <SessionListCard
             classSessionId={session.id}
             key={session.id}
             date={session.date}

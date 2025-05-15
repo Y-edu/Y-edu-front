@@ -33,13 +33,22 @@ export function patchSessionRevertCancel({ sessionId }: { sessionId: number }) {
 
 export function patchSessionComplete({
   token,
+  classSessionId,
   understanding,
   homeworkPercentage,
 }: {
-  token: string;
+  token?: string;
+  classSessionId?: string;
   understanding: string;
   homeworkPercentage: number;
 }) {
+  if (classSessionId) {
+    return httpService.patch(`/sessions/${classSessionId}/complete`, {
+      classSessionId,
+      understanding,
+      homeworkPercentage,
+    });
+  }
   return httpService.patch("/token/sessions/complete", {
     token,
     understanding,
