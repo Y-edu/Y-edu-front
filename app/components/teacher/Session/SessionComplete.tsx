@@ -12,10 +12,15 @@ import { formatDateShort } from "@/utils/getDayOfWeek";
 
 interface SessionCompleteProps {
   token: string;
+  classSessionId: string;
   date: string;
 }
 
-export default function SessionComplete({ token, date }: SessionCompleteProps) {
+export default function SessionComplete({
+  token,
+  date,
+  classSessionId,
+}: SessionCompleteProps) {
   const [homeworkPercentage, setHomeworkPercentage] = useState<number | null>(
     null,
   );
@@ -29,6 +34,7 @@ export default function SessionComplete({ token, date }: SessionCompleteProps) {
 
     completeMutation.mutate({
       token,
+      classSessionId,
       homeworkPercentage,
       understanding: understanding.trim(),
       date: formatDateShort(date),
