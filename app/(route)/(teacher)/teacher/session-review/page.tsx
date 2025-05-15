@@ -10,7 +10,6 @@ import HeaderWithBack from "@/components/result/HeaderWithBack";
 import SessionReviewView from "@/components/teacher/Session/SessionReviewView";
 import { useGetSessions } from "@/hooks/query/useGetSessions";
 import { formatDateShort } from "@/utils/getDayOfWeek";
-import type { SessionResponse } from "@/actions/post-getSessions";
 
 export default function SessionReviewPage() {
   const router = useRouter();
@@ -21,14 +20,12 @@ export default function SessionReviewPage() {
 
   const { data, isLoading } = useGetSessions(token);
 
-  const targetSession: SessionResponse | undefined = useMemo(() => {
-    if (!data) return undefined;
-
-    for (const sessions of Object.values(data.schedules)) {
-      const found = sessions.find((s) => s.classSessionId === sessionId);
-      if (found) return found;
-    }
-    return undefined;
+  const targetSession = useMemo(() => {
+    return data
+      ? Object.values(data.schedules)
+          .flat()
+          .find((s) => s.classSessionId === sessionId)
+      : undefined;
   }, [data, sessionId]);
 
   const onClickBack = () => {
