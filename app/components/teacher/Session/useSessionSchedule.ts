@@ -219,10 +219,54 @@ export function useSessionSchedule({
   );
 
   const isScheduleValid = useMemo(() => {
-    return isTimeVariesByDay
-      ? schedules.length === selectedDays.length
-      : !!commonSchedule?.start && !!commonSchedule?.classMinute;
-  }, [isTimeVariesByDay, schedules, selectedDays.length, commonSchedule]);
+    // 초기 스케줄이 없는 경우
+    if (!initialSchedules) {
+      return isTimeVariesByDay
+        ? schedules.length === selectedDays.length &&
+            schedules.every((s) => s.start && s.classMinute > 0)
+        : !!commonSchedule?.start && !!commonSchedule?.classMinute;
+    }
+
+    // 초기 스케줄이 있는 경우
+    if (isTimeVariesByDay) {
+      // 1. 스케줄 개수가 같고
+      // 2. 모든 스케줄이 유효하고
+      // 3. 초기 스케줄과 다른 경우 (요일이 제거되었거나 시간이 변경된 경우)
+      return (
+        schedules.length === selectedDays.length &&
+        schedules.every((s) => s.start && s.classMinute > 0) &&
+        (selectedDays.length !== initialSchedules.length || // 요일 개수가 다른 경우
+          schedules.some(
+            (schedule) =>
+              !initialSchedules.some(
+                (initial) =>
+                  initial.day === schedule.day &&
+                  initial.start === schedule.start &&
+                  initial.classMinute === schedule.classMinute,
+              ),
+          ))
+      );
+    } else {
+      // 1. 공통 스케줄이 유효하고
+      // 2. 초기 스케줄과 다른 경우
+      return (
+        !!commonSchedule?.start &&
+        !!commonSchedule?.classMinute &&
+        commonSchedule.classMinute > 0 &&
+        initialSchedules.some(
+          (initial) =>
+            initial.start !== commonSchedule.start ||
+            initial.classMinute !== commonSchedule.classMinute,
+        )
+      );
+    }
+  }, [
+    isTimeVariesByDay,
+    schedules,
+    selectedDays.length,
+    commonSchedule,
+    initialSchedules,
+  ]);
 
   const handleSubmit = () => {
     if (token && isScheduleValid) {
