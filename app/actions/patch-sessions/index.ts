@@ -42,7 +42,7 @@ export function patchSessionComplete({
   understanding: string;
   homeworkPercentage: number;
 }) {
-  if (token || classSessionId) {
+  if (classSessionId) {
     return httpService.patch(`/sessions/${classSessionId}/complete`, {
       classSessionId,
       understanding,
