@@ -41,7 +41,8 @@ export default function SessionChangePage() {
     return result;
   };
 
-  const schedules = convertToSchedules(data?.schedules);
+  const target = data?.find((item) => item.applicationFormId === classId);
+  const schedules = convertToSchedules(target?.schedules);
 
   if (isLoading) {
     return (
