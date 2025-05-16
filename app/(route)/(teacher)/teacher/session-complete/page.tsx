@@ -1,5 +1,6 @@
 "use client";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useQueryClient } from "@tanstack/react-query";
 import { CircularProgress } from "@mui/material";
 
 import { useGetSchedules } from "@/hooks/query/useGetSchedules";
@@ -8,6 +9,11 @@ import HeaderWithBack from "@/components/result/HeaderWithBack";
 import SessionComplete from "@/components/teacher/Session/SessionComplete";
 import { useGetSessionByToken } from "@/hooks/query/useGetSessionByToken";
 import { formatDateShort } from "@/utils/getDayOfWeek";
+import { SessionResponse } from "@/actions/post-getSessions";
+
+interface SessionsCache {
+  schedules: Record<string, SessionResponse[]>;
+}
 
 export default function SessionCompletePage() {
   const router = useRouter();
@@ -15,8 +21,33 @@ export default function SessionCompletePage() {
   const token = searchParams.get("token");
   const classSessionId = searchParams.get("sessionId");
   const { data, isLoading } = useGetSchedules({ token: token ?? "" });
+  const target = data?.[0];
   const { data: sessionData } = useGetSessionByToken({ token: token ?? "" });
-  const isEmpty = !data || Object.keys(data.schedules ?? {}).length === 0;
+  const isEmpty =
+    !target ||
+    Object.values(target.schedules).every((arr) => (arr ?? []).length === 0);
+
+  const queryClient = useQueryClient();
+  const sessionsCache = queryClient.getQueryData<SessionsCache>([
+    "sessions",
+    token ?? "",
+  ]);
+
+  let cachedDate: string | undefined;
+
+  if (sessionsCache && classSessionId) {
+    for (const arr of Object.values(sessionsCache.schedules)) {
+      const found = arr.find(
+        (s) => s.classSessionId === Number(classSessionId),
+      );
+      if (found) {
+        cachedDate = found.classDate;
+        break;
+      }
+    }
+  }
+
+  const titleDate = cachedDate ? formatDateShort(cachedDate) : "과외 완료";
 
   const onClickBack = () => {
     router.push(`/teacher/session-schedule?token=${token}`);
@@ -36,12 +67,13 @@ export default function SessionCompletePage() {
       {isEmpty ? (
         <div className="flex flex-col items-center">
           <HeaderWithBack
-            title={data?.applicationFormId || "과외 일정"}
+            title={target?.applicationFormId || "과외 일정"}
             mainClassName="pt-8"
           >
             <SessionSchedule
               className="mb-24"
               title={`Y-edu 에게 진행 중인\n과외 일정을 알려주세요`}
+              classMatchingId={target?.classMatchingId}
               token={token ?? ""}
             />
           </HeaderWithBack>
@@ -49,7 +81,7 @@ export default function SessionCompletePage() {
       ) : (
         <div className="flex w-full flex-col items-center">
           <HeaderWithBack
-            title={sessionData ? formatDateShort(sessionData) : "과외 완료"}
+            title={titleDate}
             hasBack
             onBack={onClickBack}
             mainClassName="pt-8 w-full px-5"
