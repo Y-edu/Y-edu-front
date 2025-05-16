@@ -47,7 +47,13 @@ export default function SessionCompletePage() {
     }
   }
 
-  const titleDate = cachedDate ? formatDateShort(cachedDate) : "과외 완료";
+  const titleDate = classSessionId
+    ? cachedDate
+      ? formatDateShort(cachedDate)
+      : "과외 완료"
+    : sessionData
+      ? formatDateShort(sessionData)
+      : "과외 완료";
 
   const onClickBack = () => {
     router.push(`/teacher/session-schedule?token=${token}`);
