@@ -65,7 +65,8 @@ export default function SessionChangePage() {
             <SessionSchedule
               className="mb-24"
               title={`학부모와 협의 후\n일정을 업데이트해 주세요`}
-              token={token ?? ""}
+              token={classId ? undefined : (token ?? undefined)}
+              classMatchingId={target?.classMatchingId}
               initialSchedules={schedules}
             />
           </HeaderWithBack>

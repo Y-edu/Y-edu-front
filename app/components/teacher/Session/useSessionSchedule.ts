@@ -3,6 +3,7 @@ import { useRouter } from "next/navigation";
 
 import { DayOfWeek } from "@/actions/get-teacher-detail";
 import { usePutSchedules } from "@/hooks/mutation/usePutSchedules";
+import { SchedulesRequestProps } from "@/actions/put-schedules";
 
 export const DAYS: Array<DayOfWeek> = [
   "월",
@@ -75,9 +76,11 @@ export function convertFromTimeFormat(time: string): {
 
 export function useSessionSchedule({
   token,
+  classMatchingId,
   initialSchedules,
 }: {
-  token: string;
+  token?: string;
+  classMatchingId?: number;
   initialSchedules?: Schedule[];
 }) {
   const router = useRouter();
@@ -225,23 +228,31 @@ export function useSessionSchedule({
   }, [isTimeVariesByDay, schedules, selectedDays.length, commonSchedule]);
 
   const handleSubmit = () => {
-    if (token && isScheduleValid) {
-      mutate(
-        {
-          token,
-          schedules: schedules.map((schedule) => ({
-            start: schedule.start,
-            day: schedule.day,
-            classMinute: schedule.classMinute,
-          })),
-        },
-        {
-          onSuccess: () => {
-            router.push(`/session-schedules?token=${token}`);
-          },
-        },
-      );
+    if (!isScheduleValid) return;
+
+    const sendSchedules: Schedule[] = isTimeVariesByDay
+      ? schedules
+      : selectedDays.map((day) => ({
+          day,
+          start: commonSchedule!.start,
+          classMinute: commonSchedule!.classMinute,
+        }));
+
+    const payload: SchedulesRequestProps = { schedules: sendSchedules };
+
+    if (classMatchingId) payload.classMatchingId = classMatchingId;
+    else if (token) payload.token = token;
+    else {
+      alert("토큰이나 classMatchingId가 없습니다.");
+      return;
     }
+
+    mutate(payload, {
+      onSuccess: () => {
+        if (token) router.push(`/teacher/session-schedule?token=${token}`);
+        else router.back();
+      },
+    });
   };
 
   return {
