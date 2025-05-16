@@ -55,7 +55,7 @@ export function useSessionMutations() {
 
   const completeMutation = useMutation({
     mutationFn: patchSessionComplete,
-    onSuccess: async (data, variables: CompleteSessionVariables) => {
+    onSuccess: async (_data, variables: CompleteSessionVariables) => {
       const { token, classSessionId, date } = variables;
       if (token) {
         await queryClient.invalidateQueries({

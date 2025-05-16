@@ -20,13 +20,20 @@ import {
 
 export interface SessionScheduleProps {
   title: string;
-  token: string;
+  token?: string;
+  classMatchingId?: number;
   className?: string;
   initialSchedules?: Schedule[];
 }
 
 export default function SessionSchedule(props: SessionScheduleProps) {
-  const { title, className = "", token, initialSchedules = [] } = props;
+  const {
+    title,
+    className = "",
+    token,
+    classMatchingId,
+    initialSchedules = [],
+  } = props;
   const {
     selectedDays,
     toggleDay,
@@ -40,7 +47,7 @@ export default function SessionSchedule(props: SessionScheduleProps) {
     sortedSelectedDays,
     handleSubmit,
     isScheduleValid,
-  } = useSessionSchedule({ token, initialSchedules });
+  } = useSessionSchedule({ token, classMatchingId, initialSchedules });
   const [isTimePickerOpen, setIsTimePickerOpen] = useState(false);
 
   const handleOpenTimePicker = (day: string) => {

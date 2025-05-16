@@ -1,5 +1,5 @@
 "use client";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { CircularProgress } from "@mui/material";
 
 import { useGetSchedules } from "@/hooks/query/useGetSchedules";
@@ -10,9 +10,15 @@ import { DayOfWeek } from "@/actions/get-teacher-detail";
 import { ClassTimeDTO } from "@/actions/get-schedules";
 
 export default function SessionChangePage() {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
+  const classId = searchParams.get("classid");
   const { data, isLoading } = useGetSchedules({ token: token ?? "" });
+
+  const onClickBack = () => {
+    router.push(`/teacher/session-schedule?token=${token}`);
+  };
 
   const convertToSchedules = (
     scheduleData: Partial<Record<DayOfWeek, ClassTimeDTO[]>> | undefined,
@@ -35,7 +41,8 @@ export default function SessionChangePage() {
     return result;
   };
 
-  const schedules = convertToSchedules(data?.schedules);
+  const target = data?.find((item) => item.applicationFormId === classId);
+  const schedules = convertToSchedules(target?.schedules);
 
   if (isLoading) {
     return (
@@ -50,14 +57,16 @@ export default function SessionChangePage() {
       {data && (
         <div className="flex flex-col items-center">
           <HeaderWithBack
-            title={data.applicationFormId || "과외 일정"}
+            title={classId || "과외 일정"}
             mainClassName="pt-8"
             hasBack
+            onBack={onClickBack}
           >
             <SessionSchedule
               className="mb-24"
               title={`학부모와 협의 후\n일정을 업데이트해 주세요`}
-              token={token ?? ""}
+              token={classId ? undefined : (token ?? undefined)}
+              classMatchingId={target?.classMatchingId}
               initialSchedules={schedules}
             />
           </HeaderWithBack>

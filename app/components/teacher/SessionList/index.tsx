@@ -13,10 +13,11 @@ import { useSessionList, SessionItem } from "./useSessionList";
 import Calender from "public/images/calendar.svg";
 
 interface SessionListProps {
+  classId: string;
   sessions: SessionResponse[];
 }
 
-export default function SessionList({ sessions }: SessionListProps) {
+export default function SessionList({ classId, sessions }: SessionListProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
@@ -44,7 +45,11 @@ export default function SessionList({ sessions }: SessionListProps) {
             <Image src={Calender} width={20} height={20} alt="calender" />
           }
           className="text-grey-700 w-fit cursor-pointer justify-normal gap-1 bg-transparent px-3 py-[6px] text-sm"
-          onClick={() => router.push(`/teacher/session-change?token=${token}`)}
+          onClick={() =>
+            router.push(
+              `/teacher/session-change?token=${token}&classid=${classId}`,
+            )
+          }
         >
           전체 일정 변경
         </Button>
