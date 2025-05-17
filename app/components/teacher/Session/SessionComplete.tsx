@@ -8,7 +8,6 @@ import Radio from "@/ui/Radio";
 import Textarea from "@/ui/Textarea";
 import TitleSection from "@/ui/TitleSection";
 import Button from "@/ui/Button";
-import { formatDateShort } from "@/utils/getDayOfWeek";
 
 interface SessionCompleteProps {
   token: string;
@@ -37,7 +36,7 @@ export default function SessionComplete({
       classSessionId,
       homeworkPercentage,
       understanding: understanding.trim(),
-      date: formatDateShort(date),
+      date,
     });
   };
 
