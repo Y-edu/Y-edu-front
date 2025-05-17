@@ -78,7 +78,11 @@ export function useSessionList(data: SessionResponse[]): SessionItem[] {
 
         // 4) 미래 일정
         case diffDays > 0:
-          statusLabel = `${diffDays}일 전`;
+          if (diffDays <= 7) {
+            statusLabel = `${diffDays}일 전`;
+          } else {
+            statusLabel = "";
+          }
           actions = [BTN_RESCHEDULE, BTN_CANCEL];
           break;
 
