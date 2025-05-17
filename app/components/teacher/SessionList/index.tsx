@@ -26,8 +26,8 @@ export default function SessionList({ classId, sessions }: SessionListProps) {
   const filtered = items.filter((item) => item.complete === showCompleted);
 
   return (
-    <div className="space-y-4 bg-gray-50 p-4">
-      <section className="flex items-center justify-between">
+    <div className="min-h-screen space-y-3 bg-gray-50 p-4">
+      <section className="mb-4 flex items-center justify-between">
         <div className="flex gap-2">
           <Chip
             chipText="미완료"

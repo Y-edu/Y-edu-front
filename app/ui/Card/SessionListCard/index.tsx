@@ -69,7 +69,8 @@ export default function SessionListCard({
   return (
     <div
       className={cn(
-        "rounded-xl bg-white p-4 shadow",
+        "rounded-[16px] bg-white p-4",
+        "shadow-[0px_4px_24px_0px_rgba(0,0,0,0.05)]",
         className,
         isToggle && "cursor-pointer",
       )}
@@ -131,7 +132,8 @@ export default function SessionListCard({
                 handleActionClick(btn.value);
               }}
               className={cn(
-                "mt-2 h-11 flex-1 whitespace-normal text-[16px] font-[700]",
+                { "mt-3": isToggle && isOpen },
+                "h-11 flex-1 whitespace-normal text-[16px] font-[700]",
                 "max-[355px]:text-sm",
                 btn.variant === "primary"
                   ? "bg-primary text-white"
