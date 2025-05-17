@@ -67,7 +67,17 @@ export default function SessionListCard({
   );
 
   return (
-    <div className={cn("rounded-xl bg-white p-4 shadow", className)}>
+    <div
+      className={cn(
+        "rounded-xl bg-white p-4 shadow",
+        className,
+        isToggle && "cursor-pointer",
+      )}
+      onClick={() => {
+        if (isToggle) setIsOpen((prev) => !prev);
+      }}
+      aria-hidden="true"
+    >
       <div
         className={cn(
           "flex items-center justify-between",
@@ -98,11 +108,12 @@ export default function SessionListCard({
             {time}
           </span>
         </div>
-        {isToggle && (
-          <button onClick={() => setIsOpen((prev) => !prev)} className="p-2">
-            <IconDown className={cn(isOpen && "rotate-180")} />
-          </button>
-        )}
+        <IconDown
+          className={cn({
+            hidden: !isToggle,
+            "rotate-180": isOpen,
+          })}
+        />
       </div>
       {showMoneyReminder && (
         <p className="mb-4 text-[14px] text-gray-500">
@@ -114,9 +125,13 @@ export default function SessionListCard({
           {actions.map((btn, idx) => (
             <Button
               key={idx}
-              onClick={() => handleActionClick(btn.value)}
+              onClick={(e) => {
+                e.stopPropagation();
+                btn.handleOnClick?.();
+                handleActionClick(btn.value);
+              }}
               className={cn(
-                "h-11 flex-1 whitespace-normal text-[16px] font-[700]",
+                "mt-2 h-11 flex-1 whitespace-normal text-[16px] font-[700]",
                 "max-[355px]:text-sm",
                 btn.variant === "primary"
                   ? "bg-primary text-white"
