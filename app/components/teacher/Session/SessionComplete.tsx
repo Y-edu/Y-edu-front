@@ -1,4 +1,5 @@
 "use client";
+
 import { useState } from "react";
 
 import DivWithLabel from "@/components/result/DivWithLabel";
@@ -9,6 +10,7 @@ import Textarea from "@/ui/Textarea";
 import TitleSection from "@/ui/TitleSection";
 import Button from "@/ui/Button";
 import { formatDateShort } from "@/utils/getDayOfWeek";
+import { mixpanelTrack } from "@/utils/mixpanel";
 
 interface SessionCompleteProps {
   token: string;
@@ -31,6 +33,11 @@ export default function SessionComplete({
 
   const handleComplete = () => {
     if (!isFormValid || homeworkPercentage === null) return;
+
+    mixpanelTrack("수업 리뷰 전송", {
+      homeworkPercentage,
+      understanding: understanding.trim(),
+    });
 
     completeMutation.mutate({
       token,
