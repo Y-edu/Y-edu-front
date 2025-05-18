@@ -95,7 +95,7 @@ export default function SessionCompletePage() {
             <SessionComplete
               token={token ?? ""}
               classSessionId={classSessionId || ""}
-              date={sessionData || ""}
+              date={titleDate}
             />
           </HeaderWithBack>
         </div>

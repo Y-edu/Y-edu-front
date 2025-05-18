@@ -44,7 +44,7 @@ export default function SessionComplete({
       classSessionId,
       homeworkPercentage,
       understanding: understanding.trim(),
-      date: formatDateShort(date),
+      date,
     });
   };
 

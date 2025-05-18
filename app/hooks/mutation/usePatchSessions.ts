@@ -56,7 +56,7 @@ export function useSessionMutations() {
   const completeMutation = useMutation({
     mutationFn: patchSessionComplete,
     onSuccess: async (_data, variables: CompleteSessionVariables) => {
-      const { token, classSessionId, date } = variables;
+      const { token, classSessionId } = variables;
       if (token) {
         await queryClient.invalidateQueries({
           queryKey: ["schedules", token],
@@ -68,7 +68,7 @@ export function useSessionMutations() {
         });
       }
       router.push(`/teacher/session-schedule?token=${token ?? ""}`);
-      toast.success(`${date} 과외가 완료되었어요`);
+      toast.success(`${variables.date} 과외가 완료되었어요`);
     },
   });
 
