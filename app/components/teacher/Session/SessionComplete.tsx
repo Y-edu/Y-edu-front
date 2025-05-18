@@ -9,7 +9,6 @@ import Radio from "@/ui/Radio";
 import Textarea from "@/ui/Textarea";
 import TitleSection from "@/ui/TitleSection";
 import Button from "@/ui/Button";
-import { formatDateShort } from "@/utils/getDayOfWeek";
 import { mixpanelTrack } from "@/utils/mixpanel";
 
 interface SessionCompleteProps {
