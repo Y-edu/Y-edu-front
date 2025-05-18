@@ -73,7 +73,7 @@ export function useSessionList(data: SessionResponse[]): SessionItem[] {
         // 3) 오늘
         case diffDays === 0:
           statusLabel = "오늘";
-          actions = [BTN_RESCHEDULE, BTN_CANCEL, BTN_COMPLETE];
+          actions = [BTN_CANCEL, BTN_RESCHEDULE, BTN_COMPLETE];
           break;
 
         // 4) 미래 일정
@@ -83,13 +83,13 @@ export function useSessionList(data: SessionResponse[]): SessionItem[] {
           } else {
             statusLabel = "";
           }
-          actions = [BTN_RESCHEDULE, BTN_CANCEL];
+          actions = [BTN_CANCEL, BTN_RESCHEDULE];
           break;
 
         // 5) 과거(미완료)
         default:
           statusLabel = "";
-          actions = [BTN_RESCHEDULE, BTN_CANCEL, BTN_COMPLETE];
+          actions = [BTN_CANCEL, BTN_RESCHEDULE, BTN_COMPLETE];
       }
 
       return {
