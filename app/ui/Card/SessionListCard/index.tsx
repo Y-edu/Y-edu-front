@@ -133,7 +133,12 @@ export default function SessionListCard({
 
       <BottomSheet isOpen={isSheetOpen} onClose={closeSheet}>
         {sheetType === "reschedule" && (
-          <RescheduleSheet sessionId={classSessionId} close={closeSheet} />
+          <RescheduleSheet
+            sessionId={classSessionId}
+            date={date}
+            time={time}
+            close={closeSheet}
+          />
         )}
         {sheetType === "cancel" && (
           <CancelSheet sessionId={classSessionId} close={closeSheet} />

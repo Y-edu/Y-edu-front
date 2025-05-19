@@ -28,22 +28,28 @@ export const useFirstDayPicker = (firstDay?: FirstDay | null) => {
     `${i * 5}`.padStart(2, "0"),
   );
 
-  const {
-    year = today.getFullYear(),
-    month = `${today.getMonth() + 1}월`,
-    day = "1일",
-    period = "오후",
-    time = "2:00",
-  } = firstDay ?? {};
+  const getInitialSelected = () => {
+    const {
+      year = today.getFullYear(),
+      month = `${today.getMonth() + 1}월`,
+      day = `1일 (${today.getDay()})`,
+      period = "오후",
+      time = "2:00",
+    } = firstDay ?? {};
 
-  const [selected, setSelected] = useState({
-    year,
-    month,
-    day,
-    period,
-    hour: time.split(":")[0],
-    minute: time.split(":")[1],
-  });
+    const [hour = "2", minute = "00"] = time.split(":");
+
+    return {
+      year,
+      month,
+      day,
+      period,
+      hour,
+      minute,
+    };
+  };
+
+  const [selected, setSelected] = useState(getInitialSelected);
 
   const handleChangeMonth = (val: string) => {
     const monthIndex = MONTHS.findIndex((m) => m === val);

@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { format } from "date-fns";
+import { ko } from "date-fns/locale";
 
 import FirstDayPicker from "@/components/result/FirstDayPicker";
 import { FirstDay } from "@/components/result/ConfirmedResult/useConfirmedResult";
@@ -7,14 +9,20 @@ import { useSessionMutations } from "@/hooks/mutation/usePatchSessions";
 
 interface RescheduleSheetProps {
   sessionId: number;
+  date: Date;
+  time: string; // ex. 오전 5:00
   close: () => void;
 }
 export default function RescheduleSheet({
   sessionId,
+  date,
+  time,
   close,
 }: RescheduleSheetProps) {
   const [confirmed, setConfirmed] = useState(false);
-  const [selectedDate, setSelectedDate] = useState<FirstDay | null>(null);
+  const [selectedDate, setSelectedDate] = useState<FirstDay>(
+    convertToFirstDay(date, time),
+  );
 
   const { mutate } = useSessionMutations().changeMutation;
 
@@ -51,6 +59,24 @@ export default function RescheduleSheet({
 
     const paddedHour = String(hour).padStart(2, "0");
     return `${paddedHour}:${minuteStr}`;
+  }
+
+  function convertToFirstDay(date: Date, rawTime: string): FirstDay {
+    const year = date.getFullYear();
+    const month = `${date.getMonth() + 1}월`;
+
+    const dayOfWeek = format(date, "eee", { locale: ko });
+    const day = `${date.getDate()}일 (${dayOfWeek})`;
+
+    const [period, time] = rawTime.trim().split(" ");
+
+    return {
+      year,
+      month,
+      day,
+      period,
+      time,
+    };
   }
 
   return (
