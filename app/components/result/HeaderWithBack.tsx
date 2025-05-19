@@ -14,7 +14,7 @@ interface HeaderWithBackProps {
 
 export default function HeaderWithBack({
   children,
-  onBack,
+  onBack = () => history.back(),
   title,
   hasBack = false,
   mainClassName,
