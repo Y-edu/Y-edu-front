@@ -16,10 +16,9 @@ httpService.interceptors.response.use(
   // eslint-disable-next-line promise/prefer-await-to-callbacks
   (error: unknown) => {
     if (axios.isAxiosError(error)) {
-      return Promise.reject(new Error(`Axios Error: ${error.message}`));
-    }
-
-    if (error instanceof Error) {
+      if (!error.response) {
+        return Promise.reject(new Error("Network Error"));
+      }
       return Promise.reject(error);
     }
 
