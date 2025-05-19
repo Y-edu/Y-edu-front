@@ -20,10 +20,19 @@ interface SessionListProps {
 export default function SessionList({ classId, sessions }: SessionListProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const token = searchParams.get("token");
+  const showParam = searchParams.get("showCompleted");
+  const initialShow = showParam === "true";
   const items: SessionItem[] = useSessionList(sessions);
-  const [showCompleted, setShowCompleted] = useState(false);
+  const [showCompleted, setShowCompleted] = useState(initialShow);
   const filtered = items.filter((item) => item.complete === showCompleted);
+
+  const params = new URLSearchParams(searchParams.toString());
+
+  const changeFilter = (next: boolean) => {
+    params.set("showCompleted", String(next));
+    router.push(`${window.location.pathname}?${params.toString()}`);
+    setShowCompleted(next);
+  };
 
   return (
     <div className="min-h-screen space-y-3 bg-gray-50 p-4">
@@ -32,12 +41,12 @@ export default function SessionList({ classId, sessions }: SessionListProps) {
           <Chip
             chipText="미완료"
             isSelected={!showCompleted}
-            onClick={() => setShowCompleted(false)}
+            onClick={() => changeFilter(false)}
           />
           <Chip
             chipText="완료"
             isSelected={showCompleted}
-            onClick={() => setShowCompleted(true)}
+            onClick={() => changeFilter(true)}
           />
         </div>
         <Button
@@ -45,11 +54,10 @@ export default function SessionList({ classId, sessions }: SessionListProps) {
             <Image src={Calender} width={20} height={20} alt="calender" />
           }
           className="text-grey-700 w-fit cursor-pointer justify-normal gap-1 bg-transparent px-3 py-[6px] text-sm"
-          onClick={() =>
-            router.push(
-              `/teacher/session-change?token=${token}&classid=${classId}`,
-            )
-          }
+          onClick={() => {
+            params.set("classid", classId);
+            router.push(`/teacher/session-change?${params.toString()}`);
+          }}
         >
           전체 일정 변경
         </Button>
