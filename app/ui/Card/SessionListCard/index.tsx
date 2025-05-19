@@ -39,7 +39,7 @@ export default function SessionListCard({
   className = "",
 }: SessionListCardProps) {
   const router = useRouter();
-  const token = useSearchParams().get("token") ?? "";
+  const searchParams = useSearchParams();
   const { sheetType, openSheet, closeSheet, isSheetOpen } = useBottomSheet();
 
   const defaultOpen = statusLabel === "오늘" || showMoneyReminder;
@@ -48,22 +48,20 @@ export default function SessionListCard({
 
   const handleActionClick = useCallback(
     (value: string) => {
+      const params = new URLSearchParams(searchParams.toString());
+      params.set("sessionId", classSessionId.toString());
       switch (value) {
         case "complete":
-          router.push(
-            `/teacher/session-complete?token=${token}&sessionId=${classSessionId}`,
-          );
+          router.push(`/teacher/session-complete?${params.toString()}`);
           break;
         case "view_review":
-          router.push(
-            `/teacher/session-review?token=${token}&sessionId=${classSessionId}`,
-          );
+          router.push(`/teacher/session-review?${params.toString()}`);
           break;
         default:
           openSheet(value);
       }
     },
-    [router, token, classSessionId, openSheet],
+    [router, searchParams, classSessionId, openSheet],
   );
 
   return (
