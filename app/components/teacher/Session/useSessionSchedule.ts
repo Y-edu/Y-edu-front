@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 import { DayOfWeek } from "@/actions/get-teacher-detail";
 import { usePutSchedules } from "@/hooks/mutation/usePutSchedules";
@@ -84,6 +84,7 @@ export function useSessionSchedule({
   initialSchedules?: Schedule[];
 }) {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [selectedDays, setSelectedDays] = useState<DayOfWeek[]>([]);
   const [selectedDayForTimePicker, setSelectedDayForTimePicker] = useState("");
   const [schedules, setSchedules] = useState<Schedule[]>([]);
@@ -249,8 +250,11 @@ export function useSessionSchedule({
 
     mutate(payload, {
       onSuccess: () => {
-        if (token) router.push(`/teacher/session-schedule?token=${token}`);
-        else router.back();
+        if (token) {
+          const params = new URLSearchParams(searchParams.toString());
+          params.delete("sessionId");
+          router.push(`/teacher/session-schedule?${params.toString()}`);
+        } else router.back();
       },
     });
   };
