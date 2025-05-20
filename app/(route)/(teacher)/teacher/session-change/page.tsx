@@ -13,7 +13,7 @@ export default function SessionChangePage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
-  const classId = searchParams.get("classid");
+  const classId = searchParams.get("classId");
   const { data, isLoading } = useGetSchedules({ token: token ?? "" });
 
   const onClickBack = () => {

@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import Image from "next/image";
 
 import SessionListCard from "@/ui/Card/SessionListCard";
@@ -20,7 +20,8 @@ interface SessionListProps {
 export default function SessionList({ classId, sessions }: SessionListProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const showParam = searchParams.get("showCompleted");
+  const pathName = usePathname();
+  const showParam = searchParams.get("show-completed");
   const initialShow = showParam === "true";
   const items: SessionItem[] = useSessionList(sessions);
   const [showCompleted, setShowCompleted] = useState(initialShow);
@@ -29,8 +30,8 @@ export default function SessionList({ classId, sessions }: SessionListProps) {
   const params = new URLSearchParams(searchParams.toString());
 
   const changeFilter = (next: boolean) => {
-    params.set("showCompleted", String(next));
-    router.push(`${window.location.pathname}?${params.toString()}`);
+    params.set("show-completed", String(next));
+    router.push(`${pathName}?${params.toString()}`);
     setShowCompleted(next);
   };
 
@@ -55,7 +56,7 @@ export default function SessionList({ classId, sessions }: SessionListProps) {
           }
           className="text-grey-700 w-fit cursor-pointer justify-normal gap-1 bg-transparent px-3 py-[6px] text-sm"
           onClick={() => {
-            params.set("classid", classId);
+            params.set("classId", classId);
             router.push(`/teacher/session-change?${params.toString()}`);
           }}
         >

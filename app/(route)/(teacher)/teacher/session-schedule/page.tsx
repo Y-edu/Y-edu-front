@@ -31,7 +31,7 @@ export default function TeacherSessionScheduleListPage() {
   return (
     <ErrorBoundary fallback={<ErrorUI />}>
       <HeaderWithBack title="과외 일정" className="border-none">
-        <TabBar tabs={tabs} paramKey="tab" />
+        <TabBar tabs={tabs} paramKey="classId" />
       </HeaderWithBack>
     </ErrorBoundary>
   );
