@@ -56,7 +56,7 @@ export default function SessionList({ classId, sessions }: SessionListProps) {
           }
           className="text-grey-700 w-fit cursor-pointer justify-normal gap-1 bg-transparent px-3 py-[6px] text-sm"
           onClick={() => {
-            params.set("classid", classId);
+            params.set("classId", classId);
             router.push(`/teacher/session-change?${params.toString()}`);
           }}
         >
