@@ -39,7 +39,7 @@ export default function SessionListCard({
   className = "",
 }: SessionListCardProps) {
   const router = useRouter();
-  const token = useSearchParams().get("token") ?? "";
+  const searchParams = useSearchParams();
   const { sheetType, openSheet, closeSheet, isSheetOpen } = useBottomSheet();
 
   const defaultOpen = statusLabel === "오늘" || showMoneyReminder;
@@ -48,26 +48,35 @@ export default function SessionListCard({
 
   const handleActionClick = useCallback(
     (value: string) => {
+      const params = new URLSearchParams(searchParams.toString());
+      params.set("sessionId", classSessionId.toString());
       switch (value) {
         case "complete":
-          router.push(
-            `/teacher/session-complete?token=${token}&sessionId=${classSessionId}`,
-          );
+          router.push(`/teacher/session-complete?${params.toString()}`);
           break;
         case "view_review":
-          router.push(
-            `/teacher/session-review?token=${token}&sessionId=${classSessionId}`,
-          );
+          router.push(`/teacher/session-review?${params.toString()}`);
           break;
         default:
           openSheet(value);
       }
     },
-    [router, token, classSessionId, openSheet],
+    [router, searchParams, classSessionId, openSheet],
   );
 
   return (
-    <div className={cn("rounded-xl bg-white p-4 shadow", className)}>
+    <div
+      className={cn(
+        "rounded-[16px] bg-white p-4",
+        "shadow-[0px_4px_24px_0px_rgba(0,0,0,0.05)]",
+        className,
+        isToggle && "cursor-pointer",
+      )}
+      onClick={() => {
+        if (isToggle) setIsOpen((prev) => !prev);
+      }}
+      aria-hidden="true"
+    >
       <div
         className={cn(
           "flex items-center justify-between",
@@ -98,11 +107,12 @@ export default function SessionListCard({
             {time}
           </span>
         </div>
-        {isToggle && (
-          <button onClick={() => setIsOpen((prev) => !prev)} className="p-2">
-            <IconDown className={cn(isOpen && "rotate-180")} />
-          </button>
-        )}
+        <IconDown
+          className={cn({
+            hidden: !isToggle,
+            "rotate-180": isOpen,
+          })}
+        />
       </div>
       {showMoneyReminder && (
         <p className="mb-4 text-[14px] text-gray-500">
@@ -114,8 +124,13 @@ export default function SessionListCard({
           {actions.map((btn, idx) => (
             <Button
               key={idx}
-              onClick={() => handleActionClick(btn.value)}
+              onClick={(e) => {
+                e.stopPropagation();
+                btn.handleOnClick?.();
+                handleActionClick(btn.value);
+              }}
               className={cn(
+                { "mt-3": isToggle && isOpen },
                 "h-11 flex-1 whitespace-normal text-[16px] font-[700]",
                 "max-[355px]:text-sm",
                 btn.variant === "primary"

@@ -17,7 +17,9 @@ export default function SessionChangePage() {
   const { data, isLoading } = useGetSchedules({ token: token ?? "" });
 
   const onClickBack = () => {
-    router.push(`/teacher/session-schedule?token=${token}`);
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete("sessionId");
+    router.push(`/teacher/session-schedule?${params.toString()}`);
   };
 
   const convertToSchedules = (

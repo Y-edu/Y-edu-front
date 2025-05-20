@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 
 import cn from "@/utils/cn";
 
@@ -11,14 +12,30 @@ interface TabInterface {
 interface TabBarProps {
   tabs: Array<TabInterface>;
   scrollMode?: boolean;
+  paramKey?: string;
 }
 
-export default function TabBar({ tabs, scrollMode = false }: TabBarProps) {
-  const [selectedTab, setSelectedTab] = useState(tabs[0].trigger);
+export default function TabBar({
+  tabs,
+  scrollMode = false,
+  paramKey,
+}: TabBarProps) {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const initial = paramKey
+    ? (searchParams.get(paramKey) ?? tabs[0].trigger)
+    : tabs[0].trigger;
+  const [selectedTab, setSelectedTab] = useState(initial);
   const sectionRefs = useRef<Record<string, HTMLDivElement | null>>({}).current;
 
   const handleTabClick = (trigger: string) => {
     setSelectedTab(trigger);
+    if (paramKey) {
+      const params = new URLSearchParams(searchParams.toString());
+      params.set(paramKey, trigger);
+      router.push(`${window.location.pathname}?${params.toString()}`);
+      return;
+    }
     if (scrollMode && sectionRefs[trigger]) {
       sectionRefs[trigger].scrollIntoView({
         behavior: "smooth",

@@ -1,5 +1,5 @@
 "use client";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import {
@@ -20,6 +20,7 @@ interface CompleteSessionVariables {
 
 export function useSessionMutations() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const queryClient = useQueryClient();
   const toast = useGlobalSnackbar();
 
@@ -67,7 +68,9 @@ export function useSessionMutations() {
           queryKey: ["schedules", classSessionId],
         });
       }
-      router.push(`/teacher/session-schedule?token=${token ?? ""}`);
+      const params = new URLSearchParams(searchParams.toString());
+      params.delete("sessionId");
+      router.push(`/teacher/session-schedule?${params.toString()}`);
       toast.success(`${variables.date} 과외가 완료되었어요`);
     },
   });

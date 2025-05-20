@@ -56,7 +56,9 @@ export default function SessionCompletePage() {
       : "과외 완료";
 
   const onClickBack = () => {
-    router.push(`/teacher/session-schedule?token=${token}`);
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete("sessionId");
+    router.push(`/teacher/session-schedule?${params.toString()}`);
   };
 
   if (isLoading) {

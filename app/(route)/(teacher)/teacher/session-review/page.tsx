@@ -29,7 +29,9 @@ export default function SessionReviewPage() {
   }, [data, sessionId]);
 
   const onClickBack = () => {
-    router.push(`/teacher/session-schedule?token=${token}`);
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete("sessionId");
+    router.push(`/teacher/session-schedule?${params.toString()}`);
   };
 
   if (isLoading) {

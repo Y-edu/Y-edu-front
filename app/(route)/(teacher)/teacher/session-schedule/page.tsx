@@ -11,7 +11,8 @@ import { useGetSessions } from "@/hooks/query/useGetSessions";
 import TabBar from "@/ui/Bar/TabBar";
 
 export default function TeacherSessionScheduleListPage() {
-  const token = useSearchParams().get("token") ?? "";
+  const searchParams = useSearchParams();
+  const token = searchParams.get("token") ?? "";
   const { data, isLoading } = useGetSessions(token);
 
   if (isLoading) {
@@ -30,7 +31,7 @@ export default function TeacherSessionScheduleListPage() {
   return (
     <ErrorBoundary fallback={<ErrorUI />}>
       <HeaderWithBack title="과외 일정" className="border-none">
-        <TabBar tabs={tabs} />
+        <TabBar tabs={tabs} paramKey="tab" />
       </HeaderWithBack>
     </ErrorBoundary>
   );
