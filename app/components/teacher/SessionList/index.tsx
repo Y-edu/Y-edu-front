@@ -21,7 +21,7 @@ export default function SessionList({ classId, sessions }: SessionListProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const pathName = usePathname();
-  const showParam = searchParams.get("showCompleted");
+  const showParam = searchParams.get("show-completed");
   const initialShow = showParam === "true";
   const items: SessionItem[] = useSessionList(sessions);
   const [showCompleted, setShowCompleted] = useState(initialShow);
@@ -30,7 +30,7 @@ export default function SessionList({ classId, sessions }: SessionListProps) {
   const params = new URLSearchParams(searchParams.toString());
 
   const changeFilter = (next: boolean) => {
-    params.set("showCompleted", String(next));
+    params.set("show-completed", String(next));
     router.push(`${pathName}?${params.toString()}`);
     setShowCompleted(next);
   };
