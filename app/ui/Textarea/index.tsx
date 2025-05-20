@@ -16,6 +16,7 @@ export default function Textarea({
   value,
   onChange,
   errorMessage,
+  maxLength,
 }: TextareaProps) {
   return (
     <div className="flex w-full flex-col gap-[8px]">
@@ -23,6 +24,7 @@ export default function Textarea({
         placeholder={placeholder}
         value={value}
         onChange={(e) => onChange(e.target.value)}
+        {...(maxLength ? { maxLength } : {})}
         className={cn(
           "border-1 min-h-[108px] w-full resize-none rounded-[12px] border border-grey-200 p-[16px] text-[16px] outline-none placeholder:text-gray-400 focus:border-2 focus:border-primary",
           errorMessage && "border-2 border-warning focus:border-warning",

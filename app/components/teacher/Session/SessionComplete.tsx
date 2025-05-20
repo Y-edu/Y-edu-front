@@ -80,6 +80,12 @@ export default function SessionComplete({
           value={understanding}
           onChange={setUnderstanding}
           placeholder={`예) 'I go to bed at 9'처럼 일상 표현은 금방 따라왔지만, 의문문으로 바꾸는 건 어려워했어요.`}
+          maxLength={500}
+          errorMessage={
+            understanding.length > 500
+              ? "최대 500자까지 입력할 수 있습니다."
+              : ""
+          }
         />
       </DivWithLabel>
       <div className="fixed inset-x-0 bottom-0 flex justify-center bg-white p-4 shadow-lg">
