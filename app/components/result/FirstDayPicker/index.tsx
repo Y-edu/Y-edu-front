@@ -25,6 +25,10 @@ export default function FirstDayPicker({
     options,
   } = useFirstDayPicker(firstDay);
 
+  const isChanged =
+    !firstDay ||
+    JSON.stringify(firstDay) !== JSON.stringify(convertToFirstDayDTO());
+
   return (
     <div className="mx-auto w-full max-w-[350px] rounded-t-[20px] bg-white">
       <h2 className="mb-[24px] mt-[4px] text-[20px] font-bold">
@@ -62,7 +66,12 @@ export default function FirstDayPicker({
           onSelect={(val) => setSelected((prev) => ({ ...prev, minute: val }))}
         />
       </div>
-      <Button onClick={() => onSelect(convertToFirstDayDTO())}>선택</Button>
+      <Button
+        disabled={!isChanged}
+        onClick={() => onSelect(convertToFirstDayDTO())}
+      >
+        선택
+      </Button>
     </div>
   );
 }

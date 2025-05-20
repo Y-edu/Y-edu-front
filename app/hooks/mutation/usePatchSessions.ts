@@ -9,6 +9,7 @@ import {
   patchSessionRevertCancel,
 } from "@/actions/patch-sessions";
 import { useGlobalSnackbar } from "@/providers/GlobalSnackBar";
+import { getErrorMessage } from "@/utils/getErrorMessage";
 
 interface CompleteSessionVariables {
   token: string;
@@ -32,6 +33,9 @@ export function useSessionMutations() {
         predicate: (q) => q.queryKey[0] === "sessions",
       });
     },
+    onError: (error) => {
+      toast.warning(getErrorMessage(error));
+    },
   });
 
   const cancelMutation = useMutation({
@@ -42,6 +46,9 @@ export function useSessionMutations() {
         predicate: (q) => q.queryKey[0] === "sessions",
       });
     },
+    onError: (error) => {
+      toast.warning(getErrorMessage(error));
+    },
   });
 
   const revertMutation = useMutation({
@@ -51,6 +58,9 @@ export function useSessionMutations() {
       queryClient.invalidateQueries({
         predicate: (q) => q.queryKey[0] === "sessions",
       });
+    },
+    onError: (error) => {
+      toast.warning(getErrorMessage(error));
     },
   });
 
@@ -72,6 +82,9 @@ export function useSessionMutations() {
       params.delete("sessionId");
       router.push(`/teacher/session-schedule?${params.toString()}`);
       toast.success(`${variables.date} 과외가 완료되었어요`);
+    },
+    onError: (error) => {
+      toast.warning(getErrorMessage(error));
     },
   });
 

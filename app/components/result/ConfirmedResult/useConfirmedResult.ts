@@ -23,7 +23,7 @@ export interface Schedule {
 export interface FirstDay {
   year: number;
   month: string;
-  day: string;
+  day: string; // ex. 5일 (목)
   period: string;
   time: string;
 }
