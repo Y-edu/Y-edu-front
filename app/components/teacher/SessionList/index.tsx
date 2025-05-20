@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import Image from "next/image";
 
 import SessionListCard from "@/ui/Card/SessionListCard";
@@ -20,6 +20,7 @@ interface SessionListProps {
 export default function SessionList({ classId, sessions }: SessionListProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const pathName = usePathname();
   const showParam = searchParams.get("showCompleted");
   const initialShow = showParam === "true";
   const items: SessionItem[] = useSessionList(sessions);
@@ -30,7 +31,7 @@ export default function SessionList({ classId, sessions }: SessionListProps) {
 
   const changeFilter = (next: boolean) => {
     params.set("showCompleted", String(next));
-    router.push(`${window.location.pathname}?${params.toString()}`);
+    router.push(`${pathName}?${params.toString()}`);
     setShowCompleted(next);
   };
 
