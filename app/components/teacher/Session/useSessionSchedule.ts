@@ -139,6 +139,23 @@ export function useSessionSchedule({
         setSchedules((prevSchedules) =>
           prevSchedules.filter((s) => s.day !== day),
         );
+      } else if (!isTimeVariesByDay && commonSchedule) {
+        // 새로운 요일이 추가되고 공통 시간을 사용하는 경우
+        setSchedules((prevSchedules) => {
+          // 이미 해당 요일의 스케줄이 있다면 그대로 유지
+          if (prevSchedules.some((s) => s.day === day)) {
+            return prevSchedules;
+          }
+
+          return [
+            ...prevSchedules,
+            {
+              day,
+              start: commonSchedule.start,
+              classMinute: commonSchedule.classMinute,
+            },
+          ];
+        });
       }
 
       return updatedDays;
@@ -223,10 +240,92 @@ export function useSessionSchedule({
   );
 
   const isScheduleValid = useMemo(() => {
-    return isTimeVariesByDay
-      ? schedules.length === selectedDays.length
-      : !!commonSchedule?.start && !!commonSchedule?.classMinute;
-  }, [isTimeVariesByDay, schedules, selectedDays.length, commonSchedule]);
+    // 초기 스케줄이 없는 경우
+    if (!initialSchedules) {
+      return isTimeVariesByDay
+        ? schedules.length === selectedDays.length &&
+            schedules.every((s) => s.start && s.classMinute > 0)
+        : !!commonSchedule?.start && !!commonSchedule?.classMinute;
+    }
+
+    // 초기 스케줄이 있는 경우
+    if (isTimeVariesByDay) {
+      // 1. 선택된 요일이 있는지 확인
+      if (selectedDays.length === 0) {
+        return false;
+      }
+
+      // 2. 모든 선택된 요일에 대한 스케줄이 있는지 확인
+      const hasAllSchedules = selectedDays.every((day) =>
+        schedules.some((s) => s.day === day && s.start && s.classMinute > 0),
+      );
+
+      if (!hasAllSchedules) {
+        return false;
+      }
+
+      // 3. 초기 스케줄과 다른지 확인
+      const initialDays = initialSchedules.map((s) => s.day as DayOfWeek);
+      const hasDaysChanged =
+        selectedDays.length !== initialDays.length ||
+        selectedDays.some((day) => !initialDays.includes(day)) ||
+        initialDays.some((day) => !selectedDays.includes(day));
+
+      if (hasDaysChanged) {
+        return true;
+      }
+
+      // 4. 기존 요일의 시간이 변경되었는지 확인
+      const hasTimeChanged = schedules.some((schedule) => {
+        const initialSchedule = initialSchedules.find(
+          (initial) => initial.day === schedule.day,
+        );
+        return (
+          initialSchedule &&
+          (initialSchedule.start !== schedule.start ||
+            initialSchedule.classMinute !== schedule.classMinute)
+        );
+      });
+
+      return hasTimeChanged;
+    } else {
+      // 공통 수업시간인 경우
+      if (!commonSchedule?.start || !commonSchedule?.classMinute) {
+        return false;
+      }
+
+      // 1. 선택된 요일이 있는지 확인
+      if (selectedDays.length === 0) {
+        return false;
+      }
+
+      // 2. 초기 스케줄과 다른지 확인
+      const initialDays = initialSchedules.map((s) => s.day as DayOfWeek);
+      const hasDaysChanged =
+        selectedDays.length !== initialDays.length ||
+        selectedDays.some((day) => !initialDays.includes(day)) ||
+        initialDays.some((day) => !selectedDays.includes(day));
+
+      if (hasDaysChanged) {
+        return true;
+      }
+
+      // 3. 시간이 변경되었는지 확인
+      const hasTimeChanged = initialSchedules.some(
+        (initial) =>
+          initial.start !== commonSchedule.start ||
+          initial.classMinute !== commonSchedule.classMinute,
+      );
+
+      return hasTimeChanged;
+    }
+  }, [
+    isTimeVariesByDay,
+    schedules,
+    selectedDays,
+    commonSchedule,
+    initialSchedules,
+  ]);
 
   const handleSubmit = () => {
     if (!isScheduleValid) return;
