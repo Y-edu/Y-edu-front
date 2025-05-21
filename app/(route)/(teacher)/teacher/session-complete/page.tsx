@@ -36,10 +36,6 @@ export default function SessionCompletePage() {
 
   let cachedDate: string | undefined;
 
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
-
   if (sessionsCache && classSessionId) {
     for (const arr of Object.values(sessionsCache.schedules)) {
       const found = arr.find(
