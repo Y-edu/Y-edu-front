@@ -10,6 +10,7 @@ import SessionComplete from "@/components/teacher/Session/SessionComplete";
 import { useGetSessionByToken } from "@/hooks/query/useGetSessionByToken";
 import { formatDateShort } from "@/utils/getDayOfWeek";
 import { SessionResponse } from "@/actions/post-getSessions";
+import { useEffect } from "react";
 
 interface SessionsCache {
   schedules: Record<string, SessionResponse[]>;
@@ -21,7 +22,7 @@ export default function SessionCompletePage() {
   const token = searchParams.get("token");
   const classSessionId = searchParams.get("sessionId");
   const { data, isLoading } = useGetSchedules({ token: token ?? "" });
-  const target = data?.[0];
+  const target = data?.find((item) => item.send);
   const { data: sessionData } = useGetSessionByToken({ token: token ?? "" });
   const isEmpty =
     !target ||
@@ -34,6 +35,10 @@ export default function SessionCompletePage() {
   ]);
 
   let cachedDate: string | undefined;
+
+  useEffect(() => {
+    console.log(data);
+  }, [data]);
 
   if (sessionsCache && classSessionId) {
     for (const arr of Object.values(sessionsCache.schedules)) {
