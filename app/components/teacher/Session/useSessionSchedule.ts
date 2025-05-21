@@ -242,6 +242,7 @@ export function useSessionSchedule({
   const isScheduleValid = useMemo(() => {
     // 초기 스케줄이 없는 경우
     if (!initialSchedules) {
+      if (selectedDays.length === 0) return false;
       return isTimeVariesByDay
         ? schedules.length === selectedDays.length &&
             schedules.every((s) => s.start && s.classMinute > 0)
