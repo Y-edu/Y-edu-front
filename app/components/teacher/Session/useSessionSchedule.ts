@@ -94,7 +94,7 @@ export function useSessionSchedule({
     "day"
   > | null>(null);
 
-  const { mutate } = usePutSchedules();
+  const { mutate, isPending } = usePutSchedules();
 
   useEffect(() => {
     if (initialSchedules && initialSchedules.length > 0) {
@@ -372,5 +372,6 @@ export function useSessionSchedule({
     sortedSelectedDays,
     handleSubmit,
     isScheduleValid,
+    isPending,
   };
 }

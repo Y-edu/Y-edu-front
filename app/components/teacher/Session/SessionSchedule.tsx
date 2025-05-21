@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { CircularProgress } from "@mui/material";
 
 import DivWithLabel from "@/components/result/DivWithLabel";
 import TitleSection from "@/ui/TitleSection";
@@ -47,6 +48,7 @@ export default function SessionSchedule(props: SessionScheduleProps) {
     sortedSelectedDays,
     handleSubmit,
     isScheduleValid,
+    isPending,
   } = useSessionSchedule({ token, classMatchingId, initialSchedules });
   const [isTimePickerOpen, setIsTimePickerOpen] = useState(false);
 
@@ -54,6 +56,14 @@ export default function SessionSchedule(props: SessionScheduleProps) {
     setSelectedDayForTimePicker(day);
     setIsTimePickerOpen(true);
   };
+
+  if (isPending) {
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <CircularProgress />
+      </div>
+    );
+  }
 
   return (
     <div className={cn("flex flex-col gap-10 px-5", className)}>
