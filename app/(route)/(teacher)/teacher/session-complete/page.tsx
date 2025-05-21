@@ -10,7 +10,6 @@ import SessionComplete from "@/components/teacher/Session/SessionComplete";
 import { useGetSessionByToken } from "@/hooks/query/useGetSessionByToken";
 import { formatDateShort } from "@/utils/getDayOfWeek";
 import { SessionResponse } from "@/actions/post-getSessions";
-import { useEffect } from "react";
 
 interface SessionsCache {
   schedules: Record<string, SessionResponse[]>;
@@ -53,7 +52,7 @@ export default function SessionCompletePage() {
       ? formatDateShort(cachedDate)
       : "과외 완료"
     : sessionData
-      ? formatDateShort(sessionData)
+      ? formatDateShort(sessionData.sessionDate)
       : "과외 완료";
 
   const onClickBack = () => {
