@@ -1,8 +1,10 @@
 "use client";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect } from "react";
 import { useQueryClient } from "@tanstack/react-query";
+import { useRouter, useSearchParams } from "next/navigation";
 import { CircularProgress } from "@mui/material";
 
+import { useGlobalSnackbar } from "@/providers/GlobalSnackBar";
 import { useGetSchedules } from "@/hooks/query/useGetSchedules";
 import SessionSchedule from "@/components/teacher/Session/SessionSchedule";
 import HeaderWithBack from "@/components/result/HeaderWithBack";
@@ -16,6 +18,7 @@ interface SessionsCache {
 }
 
 export default function SessionCompletePage() {
+  const toast = useGlobalSnackbar();
   const router = useRouter();
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
@@ -32,6 +35,15 @@ export default function SessionCompletePage() {
     "sessions",
     token ?? "",
   ]);
+
+  useEffect(() => {
+    if (!sessionData?.isComplete) return;
+
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete("sessionId");
+    router.push(`/teacher/session-schedule?${params.toString()}`);
+    toast.success("이미 리뷰 작성을 완료한 수업입니다");
+  }, [sessionData, token, router, searchParams, toast]);
 
   let cachedDate: string | undefined;
 
