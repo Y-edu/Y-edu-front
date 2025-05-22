@@ -252,18 +252,14 @@ export function useSessionSchedule({
     // 초기 스케줄이 있는 경우
     if (isTimeVariesByDay) {
       // 1. 선택된 요일이 있는지 확인
-      if (selectedDays.length === 0) {
-        return false;
-      }
+      if (selectedDays.length === 0) return false;
 
       // 2. 모든 선택된 요일에 대한 스케줄이 있는지 확인
       const hasAllSchedules = selectedDays.every((day) =>
         schedules.some((s) => s.day === day && s.start && s.classMinute > 0),
       );
 
-      if (!hasAllSchedules) {
-        return false;
-      }
+      if (!hasAllSchedules) return false;
 
       // 3. 초기 스케줄과 다른지 확인
       const initialDays = initialSchedules.map((s) => s.day as DayOfWeek);
@@ -272,9 +268,7 @@ export function useSessionSchedule({
         selectedDays.some((day) => !initialDays.includes(day)) ||
         initialDays.some((day) => !selectedDays.includes(day));
 
-      if (hasDaysChanged) {
-        return true;
-      }
+      if (hasDaysChanged) return true;
 
       // 4. 기존 요일의 시간이 변경되었는지 확인
       const hasTimeChanged = schedules.some((schedule) => {
@@ -291,14 +285,10 @@ export function useSessionSchedule({
       return hasTimeChanged;
     } else {
       // 공통 수업시간인 경우
-      if (!commonSchedule?.start || !commonSchedule?.classMinute) {
-        return false;
-      }
+      if (!commonSchedule?.start || !commonSchedule?.classMinute) return false;
 
       // 1. 선택된 요일이 있는지 확인
-      if (selectedDays.length === 0) {
-        return false;
-      }
+      if (selectedDays.length === 0) return false;
 
       // 2. 초기 스케줄과 다른지 확인
       const initialDays = initialSchedules.map((s) => s.day as DayOfWeek);
@@ -307,9 +297,7 @@ export function useSessionSchedule({
         selectedDays.some((day) => !initialDays.includes(day)) ||
         initialDays.some((day) => !selectedDays.includes(day));
 
-      if (hasDaysChanged) {
-        return true;
-      }
+      if (hasDaysChanged) return true;
 
       // 3. 시간이 변경되었는지 확인
       const hasTimeChanged = initialSchedules.some(
