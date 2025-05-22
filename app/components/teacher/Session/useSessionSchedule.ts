@@ -239,39 +239,47 @@ export function useSessionSchedule({
     [selectedDays],
   );
 
-  const isScheduleValid = useMemo(() => {
-    // 초기 스케줄이 없는 경우
-    if (!initialSchedules) {
-      if (selectedDays.length === 0) return false;
-      return isTimeVariesByDay
-        ? schedules.length === selectedDays.length &&
-            schedules.every((s) => s.start && s.classMinute > 0)
-        : !!commonSchedule?.start && !!commonSchedule?.classMinute;
-    }
+  // 기본 일정 데이터 유효성 검사
+  const hasValidScheduleData = (
+    isTimeVariesByDay: boolean,
+    schedules: Schedule[],
+    selectedDays: DayOfWeek[],
+    commonSchedule: Omit<Schedule, "day"> | null,
+  ) => {
+    if (selectedDays.length === 0) return false;
 
-    // 초기 스케줄이 있는 경우
     if (isTimeVariesByDay) {
-      // 1. 선택된 요일이 있는지 확인
-      if (selectedDays.length === 0) return false;
-
-      // 2. 모든 선택된 요일에 대한 스케줄이 있는지 확인
-      const hasAllSchedules = selectedDays.every((day) =>
+      return selectedDays.every((day) =>
         schedules.some((s) => s.day === day && s.start && s.classMinute > 0),
       );
+    } else {
+      return !!commonSchedule?.start && !!commonSchedule?.classMinute;
+    }
+  };
 
-      if (!hasAllSchedules) return false;
+  // 선택된 요일 변경 여부 검사
+  const hasSelectedDaysChanged = (
+    selectedDays: DayOfWeek[],
+    initialSchedules: Schedule[],
+  ) => {
+    const initialDays = initialSchedules.map((s) => s.day as DayOfWeek);
 
-      // 3. 초기 스케줄과 다른지 확인
-      const initialDays = initialSchedules.map((s) => s.day as DayOfWeek);
-      const hasDaysChanged =
-        selectedDays.length !== initialDays.length ||
-        selectedDays.some((day) => !initialDays.includes(day)) ||
-        initialDays.some((day) => !selectedDays.includes(day));
+    return (
+      selectedDays.length !== initialDays.length ||
+      selectedDays.some((day) => !initialDays.includes(day)) ||
+      initialDays.some((day) => !selectedDays.includes(day))
+    );
+  };
 
-      if (hasDaysChanged) return true;
-
-      // 4. 기존 요일의 시간이 변경되었는지 확인
-      const hasTimeChanged = schedules.some((schedule) => {
+  // 수업 시간 변경 여부 검사
+  const hasScheduleTimesChanged = (
+    isTimeVariesByDay: boolean,
+    schedules: Schedule[],
+    commonSchedule: Omit<Schedule, "day"> | null,
+    initialSchedules: Schedule[],
+  ) => {
+    if (isTimeVariesByDay) {
+      return schedules.some((schedule) => {
         const initialSchedule = initialSchedules.find(
           (initial) => initial.day === schedule.day,
         );
@@ -281,33 +289,42 @@ export function useSessionSchedule({
             initialSchedule.classMinute !== schedule.classMinute)
         );
       });
-
-      return hasTimeChanged;
     } else {
-      // 공통 수업시간인 경우
-      if (!commonSchedule?.start || !commonSchedule?.classMinute) return false;
-
-      // 1. 선택된 요일이 있는지 확인
-      if (selectedDays.length === 0) return false;
-
-      // 2. 초기 스케줄과 다른지 확인
-      const initialDays = initialSchedules.map((s) => s.day as DayOfWeek);
-      const hasDaysChanged =
-        selectedDays.length !== initialDays.length ||
-        selectedDays.some((day) => !initialDays.includes(day)) ||
-        initialDays.some((day) => !selectedDays.includes(day));
-
-      if (hasDaysChanged) return true;
-
-      // 3. 시간이 변경되었는지 확인
-      const hasTimeChanged = initialSchedules.some(
-        (initial) =>
-          initial.start !== commonSchedule.start ||
-          initial.classMinute !== commonSchedule.classMinute,
+      return (
+        commonSchedule &&
+        initialSchedules.some(
+          (initial) =>
+            initial.start !== commonSchedule.start ||
+            initial.classMinute !== commonSchedule.classMinute,
+        )
       );
-
-      return hasTimeChanged;
     }
+  };
+
+  const isScheduleValid = useMemo(() => {
+    // 1. 기본 스케줄 데이터 유효성 검사
+    const hasValidData = hasValidScheduleData(
+      isTimeVariesByDay,
+      schedules,
+      selectedDays,
+      commonSchedule,
+    );
+
+    if (!hasValidData) return false;
+
+    // 2. 초기 스케줄이 없는 경우 (새로 생성하는 경우)
+    if (!initialSchedules || initialSchedules.length === 0) return true;
+
+    // 3. 초기 스케줄이 있는 경우 (수정하는 경우) - 변경사항이 있어야 유효
+    const daysChanged = hasSelectedDaysChanged(selectedDays, initialSchedules);
+    const timesChanged = hasScheduleTimesChanged(
+      isTimeVariesByDay,
+      schedules,
+      commonSchedule,
+      initialSchedules,
+    );
+
+    return daysChanged || timesChanged;
   }, [
     isTimeVariesByDay,
     schedules,
