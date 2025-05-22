@@ -1,7 +1,18 @@
 import { httpService } from "@/utils/httpService";
 
-export async function getSessionByToken({ token }: { token: string }) {
-  const res = await httpService.get<string>(`/token/sessions?token=${token}`);
+export interface SessionByTokenResponse {
+  sessionDate: string;
+  isComplete: boolean;
+}
+
+export async function getSessionByToken({
+  token,
+}: {
+  token: string;
+}): Promise<SessionByTokenResponse> {
+  const res = await httpService.get<SessionByTokenResponse>(
+    `/token/sessions?token=${token}`,
+  );
 
   return res.data;
 }

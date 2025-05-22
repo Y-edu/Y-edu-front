@@ -94,7 +94,7 @@ export function useSessionSchedule({
     "day"
   > | null>(null);
 
-  const { mutate } = usePutSchedules();
+  const { mutate, isPending } = usePutSchedules();
 
   useEffect(() => {
     if (initialSchedules && initialSchedules.length > 0) {
@@ -139,6 +139,23 @@ export function useSessionSchedule({
         setSchedules((prevSchedules) =>
           prevSchedules.filter((s) => s.day !== day),
         );
+      } else if (!isTimeVariesByDay && commonSchedule) {
+        // 새로운 요일이 추가되고 공통 시간을 사용하는 경우
+        setSchedules((prevSchedules) => {
+          // 이미 해당 요일의 스케줄이 있다면 그대로 유지
+          if (prevSchedules.some((s) => s.day === day)) {
+            return prevSchedules;
+          }
+
+          return [
+            ...prevSchedules,
+            {
+              day,
+              start: commonSchedule.start,
+              classMinute: commonSchedule.classMinute,
+            },
+          ];
+        });
       }
 
       return updatedDays;
@@ -222,11 +239,99 @@ export function useSessionSchedule({
     [selectedDays],
   );
 
+  // 기본 일정 데이터 유효성 검사
+  const hasValidScheduleData = (
+    isTimeVariesByDay: boolean,
+    schedules: Schedule[],
+    selectedDays: DayOfWeek[],
+    commonSchedule: Omit<Schedule, "day"> | null,
+  ) => {
+    if (selectedDays.length === 0) return false;
+
+    if (isTimeVariesByDay) {
+      return selectedDays.every((day) =>
+        schedules.some((s) => s.day === day && s.start && s.classMinute > 0),
+      );
+    } else {
+      return !!commonSchedule?.start && !!commonSchedule?.classMinute;
+    }
+  };
+
+  // 선택된 요일 변경 여부 검사
+  const hasSelectedDaysChanged = (
+    selectedDays: DayOfWeek[],
+    initialSchedules: Schedule[],
+  ) => {
+    const initialDays = initialSchedules.map((s) => s.day as DayOfWeek);
+
+    return (
+      selectedDays.length !== initialDays.length ||
+      selectedDays.some((day) => !initialDays.includes(day)) ||
+      initialDays.some((day) => !selectedDays.includes(day))
+    );
+  };
+
+  // 수업 시간 변경 여부 검사
+  const hasScheduleTimesChanged = (
+    isTimeVariesByDay: boolean,
+    schedules: Schedule[],
+    commonSchedule: Omit<Schedule, "day"> | null,
+    initialSchedules: Schedule[],
+  ) => {
+    if (isTimeVariesByDay) {
+      return schedules.some((schedule) => {
+        const initialSchedule = initialSchedules.find(
+          (initial) => initial.day === schedule.day,
+        );
+        return (
+          initialSchedule &&
+          (initialSchedule.start !== schedule.start ||
+            initialSchedule.classMinute !== schedule.classMinute)
+        );
+      });
+    } else {
+      return (
+        commonSchedule &&
+        initialSchedules.some(
+          (initial) =>
+            initial.start !== commonSchedule.start ||
+            initial.classMinute !== commonSchedule.classMinute,
+        )
+      );
+    }
+  };
+
   const isScheduleValid = useMemo(() => {
-    return isTimeVariesByDay
-      ? schedules.length === selectedDays.length
-      : !!commonSchedule?.start && !!commonSchedule?.classMinute;
-  }, [isTimeVariesByDay, schedules, selectedDays.length, commonSchedule]);
+    // 1. 기본 스케줄 데이터 유효성 검사
+    const hasValidData = hasValidScheduleData(
+      isTimeVariesByDay,
+      schedules,
+      selectedDays,
+      commonSchedule,
+    );
+
+    if (!hasValidData) return false;
+
+    // 2. 초기 스케줄이 없는 경우 (새로 생성하는 경우)
+    if (!initialSchedules || initialSchedules.length === 0) return true;
+
+    // 3. 초기 스케줄이 있는 경우 (수정하는 경우) - 변경사항이 있어야 유효
+    const daysChanged = hasSelectedDaysChanged(selectedDays, initialSchedules);
+    const timesChanged = hasScheduleTimesChanged(
+      isTimeVariesByDay,
+      schedules,
+      commonSchedule,
+      initialSchedules,
+    );
+
+    return daysChanged || timesChanged;
+  }, [
+    isTimeVariesByDay,
+    schedules,
+    selectedDays,
+    commonSchedule,
+    initialSchedules,
+  ]);
 
   const handleSubmit = () => {
     if (!isScheduleValid) return;
@@ -272,5 +377,6 @@ export function useSessionSchedule({
     sortedSelectedDays,
     handleSubmit,
     isScheduleValid,
+    isPending,
   };
 }
