@@ -2,6 +2,7 @@
 "use client";
 
 import { useRouter, useParams } from "next/navigation";
+import { CircularProgress } from "@mui/material";
 
 import { useTimeTable } from "@/components/teacher/TimeTable/useTimeTable";
 import TimeTable from "@/components/teacher/TimeTable";
@@ -39,6 +40,7 @@ export default function TeacherDetailChooseTime() {
     snackbarOpen,
     snackbarMessage,
     closeSnackbar,
+    isPending,
   } = useTimeTable(
     available,
     "",
@@ -77,11 +79,15 @@ export default function TeacherDetailChooseTime() {
       <div className="sticky bottom-0 mx-5 bg-white pb-[10px]">
         <div className="absolute top-[-20px] h-[20px] w-full bg-gradient-to-t from-white to-transparent" />
         <Button
-          disabled={!hasChanges}
+          disabled={!hasChanges || isPending}
           onClick={handleParentSubmit}
           className="h-[59px]"
         >
-          수업시간 확정하기
+          {isPending ? (
+            <CircularProgress size={24} color="inherit" />
+          ) : (
+            "수업시간 확정하기"
+          )}
         </Button>
       </div>
 

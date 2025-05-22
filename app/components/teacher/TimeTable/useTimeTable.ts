@@ -29,7 +29,7 @@ export function useTimeTable(
 
   const router = useRouter();
   const { mutate: patchTime } = useUpdateTeacherAvailable();
-  const { mutate: postMatching } = usePostMatchingTimetable();
+  const { mutate: postMatching, isPending } = usePostMatchingTimetable();
   const { mutate: patchTimeWithToken } = useUpdateTeacherAvailableWithToken();
 
   const times = getSplitHoursToStringFormat();
@@ -198,6 +198,7 @@ export function useTimeTable(
   ]);
 
   const handleParentSubmit = useCallback(() => {
+    if (isPending) return;
     if (mode !== "parent" || !classMatchingToken) return;
     postMatching(
       { classMatchingToken, selectedSessions },
@@ -211,7 +212,14 @@ export function useTimeTable(
         },
       },
     );
-  }, [mode, classMatchingToken, selectedSessions, postMatching, router]);
+  }, [
+    mode,
+    classMatchingToken,
+    selectedSessions,
+    postMatching,
+    router,
+    isPending,
+  ]);
 
   return {
     currentTime,
@@ -228,5 +236,6 @@ export function useTimeTable(
     handleTeacherSubmit,
     handleParentSubmit,
     closeSnackbar: () => setSnackbarOpen(false),
+    isPending,
   };
 }
