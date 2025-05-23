@@ -73,7 +73,6 @@ export default function SessionListCard({
         isToggle && "cursor-pointer",
       )}
       onClick={() => {
-        if (isSheetOpen) return;
         if (isToggle) setIsOpen((prev) => !prev);
       }}
       aria-hidden="true"
