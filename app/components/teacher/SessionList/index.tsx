@@ -36,7 +36,7 @@ export default function SessionList({ classId, sessions }: SessionListProps) {
   };
 
   return (
-    <div className="min-h-screen space-y-3 bg-gray-50 p-4">
+    <div className="min-h-screen space-y-3 bg-gray-50 px-5 py-4">
       <section className="mb-4 flex items-center justify-between">
         <div className="flex gap-2">
           <Chip
