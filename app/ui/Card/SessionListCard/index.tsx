@@ -119,7 +119,7 @@ export default function SessionListCard({
           보수를 받으려면 과외 완료를 꼭 눌러주세요
         </p>
       )}
-      {isOpen && (
+      {(defaultOpen || isOpen) && (
         <div className="flex gap-2">
           {actions.map((btn, idx) => (
             <Button
