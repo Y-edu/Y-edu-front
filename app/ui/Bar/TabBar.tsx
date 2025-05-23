@@ -13,12 +13,16 @@ interface TabBarProps {
   tabs: Array<TabInterface>;
   scrollMode?: boolean;
   paramKey?: string;
+  listClassName?: string;
+  buttonClassName?: string;
 }
 
 export default function TabBar({
   tabs,
   scrollMode = false,
   paramKey,
+  listClassName,
+  buttonClassName,
 }: TabBarProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -70,14 +74,20 @@ export default function TabBar({
 
   return (
     <div className="w-full">
-      <div className="sticky top-0 z-10 flex w-full border-b border-tabBarBorder bg-white px-4">
+      <div
+        className={cn(
+          "sticky top-0 z-10 flex w-full border-b border-tabBarBorder bg-white px-5",
+          listClassName,
+        )}
+      >
         {tabs.map((tab) => (
           <button
             key={tab.trigger}
             className={cn(
-              "flex-1 border-b-2 border-transparent py-[15px] text-center font-pretendard font-bold leading-[146%] tracking-[-0.02em] text-labelNeutral",
+              "flex-1 border-b-2 border-transparent py-[10px] text-center font-[500] leading-[146%] tracking-[-0.02em] text-grey-500",
               selectedTab === tab.trigger &&
-                "border-primaryNormal text-primaryNormal",
+                "border-primaryNormal font-bold text-primaryNormal",
+              buttonClassName,
             )}
             onClick={() => handleTabClick(tab.trigger)}
           >
