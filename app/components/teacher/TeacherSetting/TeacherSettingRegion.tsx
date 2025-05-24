@@ -2,19 +2,18 @@
 
 import { useEffect, useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
 import CircularProgress from "@mui/material/CircularProgress";
-import { Snackbar } from "@mui/material";
 
 import ErrorUI from "@/ui/ErrorUI";
-import BulletList from "@/ui/List/BulletList";
 import { Modal } from "@/ui";
 import { buttonLabels } from "@/constants/buttonLabels";
 import { useGetTeacherSettingInfo } from "@/hooks/query/useGetTeacherSettingInfo";
 import { usePatchTeacherSettingRegion } from "@/hooks/mutation/usePatchTeacherSettingRegion";
 import useUnsavedBackWarning from "@/hooks/custom/useUnsavedBackWarning";
-
-import BackArrow from "public/images/arrow-black.png";
+import HeaderWithBack from "@/components/result/HeaderWithBack";
+import Button from "@/ui/Button";
+import GlobalSnackbar from "@/ui/Snackbar";
+import TitleSection from "@/ui/TitleSection";
 
 const arraysEqual = (a: number[], b: number[]) =>
   a.length === b.length &&
@@ -71,7 +70,7 @@ export default function TeacherSettingRegion() {
       prev.includes(index) ? prev.filter((i) => i !== index) : [...prev, index],
     );
 
-  const buttons = useMemo(
+  const regions = useMemo(
     () =>
       buttonLabels.map((label, index) => {
         const isActive = activeButtons.includes(index);
@@ -126,69 +125,42 @@ export default function TeacherSettingRegion() {
     );
   };
 
-  if (!isQueryEnabled) {
-    return null;
-  }
-
-  if (isLoading) {
+  if (isQueryEnabled && isLoading) {
     return (
       <div className="flex min-h-screen items-center justify-center">
         <CircularProgress />
       </div>
     );
   }
-
-  if (isError || !data) {
-    return <ErrorUI />;
-  }
+  if (isQueryEnabled && (isError || !data)) return <ErrorUI />;
 
   return (
-    <div>
-      <div className="ml-3 flex flex-row items-center border-b border-primaryPale pb-5 pt-10">
-        <button onClick={handleBackClick} className="flex items-center">
-          <Image
-            src={BackArrow}
-            alt="뒤로가기"
-            className="mr-2 size-8 cursor-pointer"
-          />
-        </button>
-        <p className="font-pretendard text-xl font-bold text-labelStrong">
-          과외 가능 지역
-        </p>
-      </div>
-      <BulletList
-        items={[
-          "더 많은 지역을 선택할 수록 빠르게 매칭이 가능해요. ",
-          "‘강남구’, ‘서초구’ 지역이 과외 문의의 50%를 차지해요.",
-        ]}
-        className="mb-10 py-3 pl-[40px]"
-      />
+    <HeaderWithBack hasBack onBack={handleBackClick} title="과외 가능 지역">
+      <TitleSection className="m-5 mb-10 mt-8">
+        <TitleSection.Title className="whitespace-pre-line">
+          {`정말 수업이 가능한 지역을\n모두 선택해주세요`}
+        </TitleSection.Title>
+        <TitleSection.Description className="whitespace-pre-line">
+          선택한 지역에 맞는 학부모님과 매칭돼요
+        </TitleSection.Description>
+      </TitleSection>
       <div className="grid h-auto w-full grid-cols-3 grid-rows-11 gap-3 bg-white px-5 pb-[100px]">
-        {buttons}
+        {regions}
       </div>
-      <div className="fixed inset-x-0 bottom-0 mx-auto max-w-[375px] bg-white px-5 pb-4 pt-2">
-        <button
+      <div className="sticky bottom-0 mx-5 bg-white pb-[10px]">
+        <div className="absolute top-[-20px] h-[20px] w-full bg-gradient-to-t from-white to-transparent" />
+        <Button
           disabled={!hasChanges || patchLoading}
           onClick={onClickSave}
-          className={`h-[48px] w-full rounded-[12px] font-bold ${
-            hasChanges
-              ? "bg-primaryNormal text-white"
-              : "bg-gray-400 text-white"
-          }`}
+          className="h-[59px] w-full rounded-[12px] font-bold"
         >
-          <span>변경된 지역 저장</span>
-        </button>
+          변경된 지역 저장
+        </Button>
       </div>
-      <Snackbar
+      <GlobalSnackbar
         open={snackbarOpen}
-        autoHideDuration={1500}
-        onClose={() => setSnackbarOpen(false)}
         message="변경된 지역이 저장되었습니다."
-        anchorOrigin={{ vertical: "top", horizontal: "center" }}
-        sx={{
-          top: "81%",
-          mx: "20px",
-        }}
+        onClose={() => setSnackbarOpen(false)}
       />
       <Modal
         title="변경 사항이 저장되지 않았어요!"
@@ -199,6 +171,6 @@ export default function TeacherSettingRegion() {
         handleOnConfirm={handleModalConfirm}
         handleOnCancel={handleModalCancel}
       />
-    </div>
+    </HeaderWithBack>
   );
 }

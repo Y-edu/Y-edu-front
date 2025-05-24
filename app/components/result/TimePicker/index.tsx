@@ -37,7 +37,7 @@ export default function TimePicker({
   const { selected, handleChange, getSchedule } = useTimePicker(schedule);
 
   return (
-    <div className="mx-auto w-full max-w-[350px] rounded-t-[20px] bg-white p-[20px]">
+    <div className="mx-auto w-full max-w-[350px] rounded-t-[20px] bg-white">
       <h2 className="mb-[24px] mt-[4px] text-[20px] font-bold">수업 시간</h2>
       <div className="mb-[40px] flex items-center justify-center gap-[12px]">
         <ScrollPicker

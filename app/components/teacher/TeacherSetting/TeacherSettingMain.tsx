@@ -8,7 +8,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import SettingBox from "@/ui/Box/SettingBox";
 import { useGetTeacherSettingInfo } from "@/hooks/query/useGetTeacherSettingInfo";
 import { usePatchTeacherSettingAlarmTalk } from "@/hooks/mutation/usePatchTeacherSettingAlarmTalk";
-import { Modal } from "@/ui/Modal";
+import { Modal } from "@/ui/Modal/Modal";
 import ErrorUI from "@/ui/ErrorUI";
 
 export default function TeacherSettingMain() {

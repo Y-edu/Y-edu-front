@@ -9,18 +9,22 @@ interface HeaderWithBackProps {
   title: string;
   mainClassName?: string;
   children: React.ReactNode;
+  className?: string;
 }
 
 export default function HeaderWithBack({
   children,
-  onBack,
+  onBack = () => history.back(),
   title,
   hasBack = false,
   mainClassName,
+  className = "",
 }: HeaderWithBackProps) {
   return (
-    <div className="flex h-dvh flex-col">
-      <header className="relative flex h-[48px] items-center justify-center border-b border-grey-100 py-4">
+    <div className="flex h-dvh w-full flex-col">
+      <header
+        className={`relative flex h-[48px] items-center justify-center border-b border-grey-100 py-4 ${className}`}
+      >
         {hasBack && (
           <IconLeft
             className="absolute left-[8px] cursor-pointer"
