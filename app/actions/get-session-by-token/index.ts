@@ -3,6 +3,11 @@ import { httpService } from "@/utils/httpService";
 export interface SessionByTokenResponse {
   sessionDate: string;
   isComplete: boolean;
+  teacherId: number;
+  classTime: {
+    start: string;
+    classMinute: number;
+  };
 }
 
 export async function getSessionByToken({
