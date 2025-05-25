@@ -9,6 +9,7 @@ export interface SessionResponse {
   homeworkPercentage: number | null;
   classDate: string;
   classStart: string;
+  classMinute: number;
 }
 
 export interface SessionsResponse {
