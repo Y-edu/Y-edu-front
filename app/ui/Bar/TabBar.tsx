@@ -93,6 +93,7 @@ export default function TabBar({
             }}
             className={cn(
               "flex-1 border-b-2 border-transparent py-[10px] text-center font-[500] leading-[146%] tracking-[-0.02em] text-grey-500",
+              "scroll-ml-5",
               selectedTab === tab.trigger &&
                 "border-primaryNormal font-bold text-primaryNormal",
               buttonClassName,
