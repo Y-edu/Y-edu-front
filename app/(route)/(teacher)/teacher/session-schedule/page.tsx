@@ -35,7 +35,7 @@ export default function TeacherSessionScheduleListPage() {
           tabs={tabs}
           paramKey="classId"
           listClassName="overflow-x-auto whitespace-nowrap scrollbar-hide"
-          buttonClassName="flex-initial px-[10px]"
+          buttonClassName="flex-initial px-[10px] scroll-ml-5"
         />
       </HeaderWithBack>
     </ErrorBoundary>
