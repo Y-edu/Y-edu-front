@@ -1,6 +1,6 @@
 "use client";
-import { useEffect } from "react";
-import { useQueryClient } from "@tanstack/react-query";
+
+import { useEffect, useMemo } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { CircularProgress } from "@mui/material";
 
@@ -11,60 +11,56 @@ import HeaderWithBack from "@/components/result/HeaderWithBack";
 import SessionComplete from "@/components/teacher/Session/SessionComplete";
 import { useGetSessionByToken } from "@/hooks/query/useGetSessionByToken";
 import { formatDateShort } from "@/utils/getDayOfWeek";
-import { SessionResponse } from "@/actions/post-getSessions";
-
-interface SessionsCache {
-  schedules: Record<string, SessionResponse[]>;
-}
+import {
+  calculateSessionEndTime,
+  mixpanelIdentify,
+  mixpanelSetPeople,
+  mixpanelTrack,
+} from "@/utils/mixpanel";
+import { useGetSessions } from "@/hooks/query/useGetSessions";
 
 export default function SessionCompletePage() {
   const toast = useGlobalSnackbar();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const token = searchParams.get("token");
+  const token = searchParams.get("token") ?? "";
   const classSessionId = searchParams.get("sessionId");
-  const { data, isLoading } = useGetSchedules({ token: token ?? "" });
+
+  const { data: sessions } = useGetSessions(token);
+  const { data, isLoading } = useGetSchedules({ token });
   const target = data?.find((item) => item.send);
   const { data: sessionData } = useGetSessionByToken({ token: token ?? "" });
   const isEmpty =
     !target ||
     Object.values(target.schedules).every((arr) => (arr ?? []).length === 0);
 
-  const queryClient = useQueryClient();
-  const sessionsCache = queryClient.getQueryData<SessionsCache>([
-    "sessions",
-    token ?? "",
-  ]);
+  // sessions에서 classSessionId로 데이터 찾기
+  const sessionFromCache = classSessionId
+    ? Object.values(sessions?.schedules ?? {})
+        .flat()
+        .find((session) => session.classSessionId === Number(classSessionId))
+    : null;
 
-  useEffect(() => {
-    if (!sessionData?.isComplete) return;
+  const activeSessionData = useMemo(() => {
+    return sessionFromCache
+      ? {
+          isComplete: sessionFromCache.complete,
+          classTime: {
+            start: sessionFromCache.classStart,
+            // TODO: dto 수정 후 반영
+            classMinute: 50,
+          },
+          sessionDate: sessionFromCache.classDate,
+          // TODO: dto 수정 후 반영
+          teacherId: null,
+        }
+      : sessionData;
+  }, [sessionFromCache, sessionData]);
 
-    const params = new URLSearchParams(searchParams.toString());
-    params.delete("sessionId");
-    router.push(`/teacher/session-schedule?${params.toString()}`);
-    toast.success("이미 리뷰 작성을 완료한 수업입니다");
-  }, [sessionData, token, router, searchParams, toast]);
-
-  let cachedDate: string | undefined;
-
-  if (sessionsCache && classSessionId) {
-    for (const arr of Object.values(sessionsCache.schedules)) {
-      const found = arr.find(
-        (s) => s.classSessionId === Number(classSessionId),
-      );
-      if (found) {
-        cachedDate = found.classDate;
-        break;
-      }
-    }
-  }
-
-  const titleDate = classSessionId
-    ? cachedDate
-      ? formatDateShort(cachedDate)
-      : "과외 완료"
-    : sessionData
-      ? formatDateShort(sessionData.sessionDate)
+  const titleDate = sessionFromCache?.classDate
+    ? formatDateShort(sessionFromCache.classDate)
+    : activeSessionData?.sessionDate
+      ? formatDateShort(activeSessionData.sessionDate)
       : "과외 완료";
 
   const onClickBack = () => {
@@ -72,6 +68,38 @@ export default function SessionCompletePage() {
     params.delete("sessionId");
     router.push(`/teacher/session-schedule?${params.toString()}`);
   };
+
+  const endTime = useMemo(() => {
+    if (activeSessionData && !activeSessionData.isComplete) {
+      return calculateSessionEndTime(
+        activeSessionData.classTime.start,
+        activeSessionData.classTime.classMinute,
+      );
+    }
+    return "";
+  }, [activeSessionData]);
+
+  useEffect(() => {
+    if (!activeSessionData?.isComplete) return;
+
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete("sessionId");
+    router.push(`/teacher/session-schedule?${params.toString()}`);
+    toast.success("이미 리뷰 작성을 완료한 수업입니다");
+  }, [activeSessionData, token, router, searchParams, toast]);
+
+  useEffect(() => {
+    if (activeSessionData?.isComplete === false) {
+      mixpanelIdentify(String(activeSessionData?.teacherId));
+      mixpanelSetPeople({
+        role: "teacher",
+      });
+      mixpanelTrack("수업 리뷰 페이지 진입", {
+        teacherId: activeSessionData?.teacherId,
+        endTime,
+      });
+    }
+  }, [activeSessionData]);
 
   if (isLoading) {
     return (

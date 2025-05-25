@@ -26,6 +26,7 @@ export default function SessionComplete({
     null,
   );
   const [understanding, setUnderstanding] = useState("");
+
   const { completeMutation } = useSessionMutations();
   const isFormValid =
     homeworkPercentage !== null && understanding.trim().length > 0;
@@ -36,6 +37,7 @@ export default function SessionComplete({
     mixpanelTrack("수업 리뷰 전송", {
       homeworkPercentage,
       understanding: understanding.trim(),
+      submitTime: Date.now(),
     });
 
     completeMutation.mutate({
