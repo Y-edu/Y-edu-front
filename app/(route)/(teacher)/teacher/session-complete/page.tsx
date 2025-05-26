@@ -28,13 +28,14 @@ export default function SessionCompletePage() {
 
   const { data: sessions } = useGetSessions(token);
   const { data, isLoading } = useGetSchedules({ token });
+  const { data: sessionByToken } = useGetSessionByToken({ token: token ?? "" });
+
   const target = data?.find((item) => item.send);
-  const { data: sessionData } = useGetSessionByToken({ token: token ?? "" });
   const isEmpty =
     !target ||
     Object.values(target.schedules).every((arr) => (arr ?? []).length === 0);
 
-  // sessions에서 classSessionId로 데이터 찾기
+  // sessionId가 있을 경우 sessions에서 데이터 추출
   const sessionFromCache = classSessionId
     ? Object.values(sessions?.schedules ?? {})
         .flat()
@@ -47,15 +48,13 @@ export default function SessionCompletePage() {
           isComplete: sessionFromCache.complete,
           classTime: {
             start: sessionFromCache.classStart,
-            // TODO: dto 수정 후 반영
-            classMinute: 50,
+            classMinute: sessionFromCache.classMinute,
           },
           sessionDate: sessionFromCache.classDate,
-          // TODO: dto 수정 후 반영
-          teacherId: null,
+          teacherId: sessionByToken?.teacherId,
         }
-      : sessionData;
-  }, [sessionFromCache, sessionData]);
+      : sessionByToken;
+  }, [sessionFromCache, sessionByToken]);
 
   const titleDate = sessionFromCache?.classDate
     ? formatDateShort(sessionFromCache.classDate)
@@ -89,13 +88,16 @@ export default function SessionCompletePage() {
   }, [activeSessionData, token, router, searchParams, toast]);
 
   useEffect(() => {
-    if (activeSessionData?.isComplete === false) {
-      mixpanelIdentify(String(activeSessionData?.teacherId));
-      mixpanelSetPeople({
-        role: "teacher",
-      });
+    if (!activeSessionData) return;
+
+    mixpanelIdentify(String(activeSessionData.teacherId));
+    mixpanelSetPeople({
+      role: "teacher",
+    });
+
+    if (!activeSessionData.isComplete) {
       mixpanelTrack("수업 리뷰 페이지 진입", {
-        teacherId: activeSessionData?.teacherId,
+        teacherId: activeSessionData.teacherId,
         endTime,
       });
     }
