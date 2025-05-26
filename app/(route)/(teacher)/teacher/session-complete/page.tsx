@@ -79,11 +79,11 @@ export default function SessionCompletePage() {
   const goToSchedulePage = (classId?: string) => {
     const params = new URLSearchParams(searchParams.toString());
     params.delete("sessionId");
-    router.push(`/teacher/session-schedule?${params.toString()}`);
     if (classId)
       router.push(
         `/teacher/session-schedule?${params.toString()}&classId=${classId}`,
       );
+    else router.push(`/teacher/session-schedule?${params.toString()}`);
   };
 
   useEffect(() => {
