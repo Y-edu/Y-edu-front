@@ -43,33 +43,31 @@ export default function SessionCompletePage() {
     : null;
 
   const activeSessionData = useMemo(() => {
-    return sessionFromCache
-      ? {
-          isComplete: sessionFromCache.complete,
-          classTime: {
-            start: sessionFromCache.classStart,
-            classMinute: sessionFromCache.classMinute,
-          },
-          sessionDate: sessionFromCache.classDate,
-          teacherId: sessionByToken?.teacherId,
-        }
-      : sessionByToken;
+    if (sessionFromCache) {
+      return {
+        isComplete: sessionFromCache.complete,
+        classTime: {
+          start: sessionFromCache.classStart,
+          classMinute: sessionFromCache.classMinute,
+        },
+        sessionDate: sessionFromCache.classDate,
+        teacherId: sessionByToken?.teacherId,
+      };
+    }
+
+    if (sessionByToken?.sessionDate) {
+      return sessionByToken;
+    }
+
+    return null;
   }, [sessionFromCache, sessionByToken]);
 
-  const titleDate = sessionFromCache?.classDate
-    ? formatDateShort(sessionFromCache.classDate)
-    : activeSessionData?.sessionDate
-      ? formatDateShort(activeSessionData.sessionDate)
-      : "과외 완료";
-
-  const onClickBack = () => {
-    const params = new URLSearchParams(searchParams.toString());
-    params.delete("sessionId");
-    router.push(`/teacher/session-schedule?${params.toString()}`);
-  };
+  const titleDate = activeSessionData?.sessionDate
+    ? formatDateShort(activeSessionData.sessionDate)
+    : "과외 완료";
 
   const endTime = useMemo(() => {
-    if (activeSessionData && !activeSessionData.isComplete) {
+    if (activeSessionData?.classTime) {
       return calculateSessionEndTime(
         activeSessionData.classTime.start,
         activeSessionData.classTime.classMinute,
@@ -78,14 +76,27 @@ export default function SessionCompletePage() {
     return "";
   }, [activeSessionData]);
 
-  useEffect(() => {
-    if (!activeSessionData?.isComplete) return;
-
+  const goToSchedulePage = (classId?: string) => {
     const params = new URLSearchParams(searchParams.toString());
     params.delete("sessionId");
-    router.push(`/teacher/session-schedule?${params.toString()}`);
-    toast.success("이미 리뷰 작성을 완료한 수업입니다");
-  }, [activeSessionData, token, router, searchParams, toast]);
+    if (classId)
+      router.push(
+        `/teacher/session-schedule?${params.toString()}&classId=${classId}`,
+      );
+    else router.push(`/teacher/session-schedule?${params.toString()}`);
+  };
+
+  useEffect(() => {
+    if (isEmpty) return;
+
+    // 일정변경된 과외건인 경우
+    if (!activeSessionData) goToSchedulePage(target?.applicationFormId);
+
+    if (activeSessionData?.isComplete) {
+      goToSchedulePage(target?.applicationFormId);
+      toast.success("이미 리뷰 작성을 완료한 수업입니다");
+    }
+  }, [activeSessionData, searchParams, isEmpty]);
 
   useEffect(() => {
     if (!activeSessionData) return;
@@ -103,7 +114,7 @@ export default function SessionCompletePage() {
     }
   }, [activeSessionData]);
 
-  if (isLoading) {
+  if (isLoading || (!activeSessionData && !isEmpty)) {
     return (
       <div className="flex min-h-screen items-center justify-center">
         <CircularProgress />
@@ -133,7 +144,7 @@ export default function SessionCompletePage() {
           <HeaderWithBack
             title={titleDate}
             hasBack
-            onBack={onClickBack}
+            onBack={goToSchedulePage}
             mainClassName="pt-8 w-full px-5"
           >
             <SessionComplete
