@@ -15,8 +15,7 @@ export default function TeacherSessionScheduleListPage() {
   const token = searchParams.get("token") ?? "";
   const { data, isLoading } = useGetSessions(token);
 
-  const now = new Date();
-  const currentMonth = now.getMonth() + 1;
+  const currentMonth = new Date().getMonth() + 1;
 
   if (isLoading) {
     return (
