@@ -8,7 +8,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 
-import { ClassListResponse } from "@/actions/get-class-info";
+import { ClassListResponse, ClassStatus } from "@/actions/get-class-info";
 import { getClassColumns } from "@/ui/Columns/ClassColumns";
 import { Pagination } from "@/ui";
 
@@ -26,7 +26,18 @@ function ClassList({ pagination = false, classItems }: ClassListProps) {
     setTableData(classItems);
   }, [classItems]);
 
-  const columns = getClassColumns();
+  // 상태 변경 핸들러
+  const handleStatusChange = (rowIndex: number, newStatus: ClassStatus) => {
+    setTableData((prev) =>
+      prev.map((row, idx) =>
+        idx === rowIndex ? { ...row, status: newStatus } : row,
+      ),
+    );
+    // TODO: 여기서 API 호출도 가능
+    // await updateClassStatusAPI(rowId, newStatus)
+  };
+
+  const columns = getClassColumns(handleStatusChange);
   const table = useReactTable({
     data: tableData,
     columns,
@@ -41,7 +52,7 @@ function ClassList({ pagination = false, classItems }: ClassListProps) {
 
   return (
     <div
-      className={`my-2 overflow-hidden rounded-3xl border border-gray-300 bg-white shadow-lg ${
+      className={`my-2 rounded-3xl border border-gray-300 bg-white shadow-lg ${
         pagination ? "pb-4" : ""
       }`}
     >
