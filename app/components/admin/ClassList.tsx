@@ -41,7 +41,7 @@ function ClassList({ pagination = false, classItems }: ClassListProps) {
 
   return (
     <div
-      className={`my-2 overflow-hidden rounded-3xl border border-gray-300 bg-white shadow-lg${
+      className={`my-2 overflow-hidden rounded-3xl border border-gray-300 bg-white shadow-lg ${
         pagination ? "pb-4" : ""
       }`}
     >
