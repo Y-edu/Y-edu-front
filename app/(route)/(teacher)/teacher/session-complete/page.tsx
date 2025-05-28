@@ -151,6 +151,7 @@ export default function SessionCompletePage() {
               token={token ?? ""}
               classSessionId={classSessionId || ""}
               date={titleDate}
+              endTime={endTime}
             />
           </HeaderWithBack>
         </div>
