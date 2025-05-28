@@ -15,12 +15,14 @@ interface SessionCompleteProps {
   token: string;
   classSessionId: string;
   date: string;
+  endTime: string;
 }
 
 export default function SessionComplete({
   token,
   date,
   classSessionId,
+  endTime,
 }: SessionCompleteProps) {
   const [homeworkPercentage, setHomeworkPercentage] = useState<number | null>(
     null,
@@ -34,10 +36,18 @@ export default function SessionComplete({
   const handleComplete = () => {
     if (!isFormValid || homeworkPercentage === null) return;
 
+    const submitTime = new Date();
+    const classEndTime = new Date(endTime);
+
     mixpanelTrack("수업 리뷰 전송", {
       homeworkPercentage,
       understanding: understanding.trim(),
-      submitTime: Date.now(),
+      submitTime: submitTime.toISOString(),
+      endTime,
+      timeToSubmit: Math.floor(
+        (submitTime.getTime() - classEndTime.getTime()) / 1000 / 60,
+      ),
+      isSubmittedSameDay: submitTime.getDate() === classEndTime.getDate(),
     });
 
     completeMutation.mutate({
