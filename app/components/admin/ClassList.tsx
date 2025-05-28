@@ -12,36 +12,19 @@ import { ClassListResponse } from "@/actions/get-class-info";
 import { getClassColumns } from "@/ui/Columns/ClassColumns";
 import { Pagination } from "@/ui";
 
-function ClassList({ pagination = false }: { pagination?: boolean }) {
+export interface ClassListProps {
+  pagination?: boolean;
+  classItems: ClassListResponse[];
+}
+
+function ClassList({ pagination = false, classItems }: ClassListProps) {
   const router = useRouter();
   const [tableData, setTableData] = useState<ClassListResponse[]>([]);
 
   // 더미데이터 (기능 구현하실 때 지워주세요!)
   useEffect(() => {
-    setTableData([
-      {
-        nickName: "선생님",
-        applicationFormId: "강남구11a",
-        subject: "수학",
-        status: "수업중",
-        kakaoName: "학부모",
-      },
-      {
-        nickName: "선생님2",
-        applicationFormId: "강남구12b",
-        subject: "영어",
-        status: "중단",
-        kakaoName: "학부모2",
-      },
-      {
-        nickName: "선생님3",
-        applicationFormId: "강남구13b",
-        subject: "영어",
-        status: "임시중단",
-        kakaoName: "학부모3",
-      },
-    ]);
-  }, []);
+    setTableData(classItems);
+  }, [classItems]);
 
   const columns = getClassColumns();
   const table = useReactTable({
