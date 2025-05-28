@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import {
   flexRender,
   getCoreRowModel,
@@ -12,6 +13,7 @@ import { getClassColumns } from "@/ui/Columns/ClassColumns";
 import { Pagination } from "@/ui";
 
 function ClassList() {
+  const router = useRouter();
   const [tableData, setTableData] = useState<ClassListResponse[]>([]);
 
   // 더미데이터 (기능 구현하실 때 지워주세요!)
@@ -79,6 +81,11 @@ function ClassList() {
             <tr
               key={row.id}
               className="cursor-pointer border-b bg-white hover:bg-gray-100"
+              onClick={() => {
+                router.push(
+                  `/zuzuclubadmin/class-management/${row.original.applicationFormId}`,
+                );
+              }}
             >
               {row.getVisibleCells().map((cell) => (
                 <td key={cell.id} className="p-4 text-left text-sm">
