@@ -11,3 +11,10 @@ export interface ClassListResponse {
   status: ClassStatus;
   kakaoName: string | null;
 }
+
+export interface ClassAdditionalInfo {
+  startDate: string;
+  parentPhoneNumber: string;
+  teacherPhoneNumber: string;
+  classTime: string;
+}
