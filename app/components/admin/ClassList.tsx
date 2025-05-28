@@ -12,7 +12,7 @@ import { ClassListResponse } from "@/actions/get-class-info";
 import { getClassColumns } from "@/ui/Columns/ClassColumns";
 import { Pagination } from "@/ui";
 
-function ClassList() {
+function ClassList({ pagination = false }: { pagination?: boolean }) {
   const router = useRouter();
   const [tableData, setTableData] = useState<ClassListResponse[]>([]);
 
@@ -57,7 +57,11 @@ function ClassList() {
   });
 
   return (
-    <div className="overflow-hidden rounded-3xl border border-gray-300 bg-white pb-4 shadow-lg">
+    <div
+      className={`my-2 overflow-hidden rounded-3xl border border-gray-300 bg-white shadow-lg${
+        pagination ? "pb-4" : ""
+      }`}
+    >
       <table className="w-full table-auto border-collapse">
         <thead>
           {table.getHeaderGroups().map((headerGroup) => (
@@ -97,14 +101,16 @@ function ClassList() {
         </tbody>
       </table>
 
-      <Pagination
-        canPreviousPage={table.getCanPreviousPage()}
-        canNextPage={table.getCanNextPage()}
-        pageIndex={table.getState().pagination.pageIndex}
-        pageCount={table.getPageCount()}
-        onPrevious={() => table.previousPage()}
-        onNext={() => table.nextPage()}
-      />
+      {pagination && (
+        <Pagination
+          canPreviousPage={table.getCanPreviousPage()}
+          canNextPage={table.getCanNextPage()}
+          pageIndex={table.getState().pagination.pageIndex}
+          pageCount={table.getPageCount()}
+          onPrevious={() => table.previousPage()}
+          onNext={() => table.nextPage()}
+        />
+      )}
     </div>
   );
 }
