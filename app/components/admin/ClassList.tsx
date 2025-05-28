@@ -31,6 +31,13 @@ function ClassList() {
         status: "중단",
         kakaoName: "학부모2",
       },
+      {
+        nickName: "선생님3",
+        applicationFormId: "강남구13b",
+        subject: "영어",
+        status: "임시중단",
+        kakaoName: "학부모3",
+      },
     ]);
   }, []);
 
