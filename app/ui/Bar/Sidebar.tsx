@@ -21,7 +21,7 @@ export function Sidebar() {
   const isMatchingManagement =
     pathname.startsWith("/zuzuclubadmin") &&
     !pathname.startsWith("/zuzuclubadmin/teacher-management") &&
-    !pathname.startsWith("/zuzuclubadmin/settle-management");
+    !pathname.startsWith("/zuzuclubadmin/class-management");
 
   const handleLogout = () => {
     logout();
@@ -55,12 +55,12 @@ export function Sidebar() {
             선생님관리
           </Link>
           <Link
-            href="/zuzuclubadmin/settle-management"
+            href="/zuzuclubadmin/class-management"
             className={
-              activeSegment === "settle-management" ? activeLinkClassName : ""
+              activeSegment === "class-management" ? activeLinkClassName : ""
             }
           >
-            정산관리
+            수업관리
           </Link>
         </div>
       </div>
