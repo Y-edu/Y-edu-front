@@ -1,5 +1,5 @@
 import { createColumnHelper } from "@tanstack/react-table";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 
 import { ClassListResponse, ClassStatus } from "@/actions/get-class-info";
 
@@ -26,6 +26,22 @@ function StatusCell({
   const [isOpen, setIsOpen] = useState(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
+
+  // 외부 클릭 시 드롭다운 닫기
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleClick = (e: MouseEvent) => {
+      if (
+        dropdownRef.current?.contains(e.target as Node) ||
+        buttonRef.current?.contains(e.target as Node)
+      ) {
+        return;
+      }
+      setIsOpen(false);
+    };
+    window.addEventListener("mousedown", handleClick);
+    return () => window.removeEventListener("mousedown", handleClick);
+  }, [isOpen]);
 
   const handleStatusChange = (newStatus: ClassStatus) => {
     onStatusChange(rowIndex, newStatus);
