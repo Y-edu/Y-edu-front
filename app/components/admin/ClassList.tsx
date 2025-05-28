@@ -63,8 +63,17 @@ function ClassList({ pagination = false, classItems }: ClassListProps) {
               key={headerGroup.id}
               className="border-b bg-gray-100 text-primary"
             >
-              {headerGroup.headers.map((header) => (
-                <th key={header.id} className="p-4 text-left text-sm">
+              {headerGroup.headers.map((header, idx) => (
+                <th
+                  key={header.id}
+                  className={`p-4 text-left text-sm ${
+                    idx === 0 ? "rounded-tl-3xl" : ""
+                  } ${
+                    idx === headerGroup.headers.length - 1
+                      ? "rounded-tr-3xl"
+                      : ""
+                  }`}
+                >
                   {flexRender(
                     header.column.columnDef.header,
                     header.getContext(),
