@@ -13,11 +13,11 @@ export function getClassColumns() {
 
   return [
     columnHelper.accessor("applicationFormId", {
-      header: "신청서 ID",
+      header: "수업코드",
       cell: (props) => props.getValue(),
     }),
     columnHelper.accessor("nickName", {
-      header: "선생님",
+      header: "선생님 닉네임",
       cell: (props) => props.getValue(),
     }),
     columnHelper.accessor("subject", {
@@ -33,7 +33,7 @@ export function getClassColumns() {
       ),
     }),
     columnHelper.accessor("kakaoName", {
-      header: "학부모",
+      header: "카카오톡 이름",
       cell: (props) => props.getValue() || "-",
     }),
   ];
