@@ -152,6 +152,7 @@ export default function SessionCompletePage() {
               classSessionId={classSessionId || ""}
               date={titleDate}
               endTime={endTime}
+              classMinute={activeSessionData?.classTime.classMinute ?? 0}
             />
           </HeaderWithBack>
         </div>
