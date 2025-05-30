@@ -1,9 +1,13 @@
 import { createColumnHelper } from "@tanstack/react-table";
 import { useRef, useState, useEffect } from "react";
 
-import { ClassListResponse, ClassStatus } from "@/actions/get-class-info";
+import {
+  Class,
+  ClassStatus,
+  usePutClassStatus,
+} from "@/hooks/query/useGetClassList";
 
-const columnHelper = createColumnHelper<ClassListResponse>();
+const columnHelper = createColumnHelper<Class>();
 
 const statusOptions: ClassStatus[] = ["수업중", "중단", "임시중단"];
 
@@ -16,13 +20,17 @@ const statusColors = {
 // 과외 상태 칩
 function StatusCell({
   status,
+  matchingId,
   rowIndex,
   onStatusChange,
 }: {
   status: ClassStatus;
+  matchingId: number;
   rowIndex: number;
   onStatusChange: (rowIndex: number, newStatus: ClassStatus) => void;
 }) {
+  const { mutate: mutatePauseClass } = usePutClassStatus();
+
   const [isOpen, setIsOpen] = useState(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -43,8 +51,14 @@ function StatusCell({
     return () => window.removeEventListener("mousedown", handleClick);
   }, [isOpen]);
 
+  // TODO: 수업상태변경 api 수정 후 반영 필요
   const handleStatusChange = (newStatus: ClassStatus) => {
     onStatusChange(rowIndex, newStatus);
+    mutatePauseClass({
+      variables: {
+        matchingIds: [matchingId],
+      },
+    });
     setIsOpen(false);
   };
 
@@ -99,7 +113,7 @@ export function getClassColumns(
       header: "수업코드",
       cell: (props) => props.getValue(),
     }),
-    columnHelper.accessor("nickName", {
+    columnHelper.accessor("teacher.nickName", {
       header: "선생님 닉네임",
       cell: (props) => props.getValue(),
     }),
@@ -107,17 +121,18 @@ export function getClassColumns(
       header: "과목",
       cell: (props) => props.getValue(),
     }),
-    columnHelper.accessor("status", {
+    columnHelper.accessor("matchingStatus", {
       header: "과외 상태",
       cell: (props) => (
         <StatusCell
           status={props.getValue()}
           rowIndex={props.row.index}
           onStatusChange={onStatusChange}
+          matchingId={props.row.original.matchingId}
         />
       ),
     }),
-    columnHelper.accessor("kakaoName", {
+    columnHelper.accessor("parent.kakaoName", {
       header: "카카오톡 이름",
       cell: (props) => props.getValue() || "-",
     }),
