@@ -27,7 +27,7 @@ export default function Input({
           type="text"
           inputMode="numeric"
           value={value}
-          onChange={(e) => onChange(e.target.value.replace(/[^0-9]/g, ""))}
+          onChange={(e) => onChange(e.target.value)}
           placeholder={placeholder}
           className={cn(
             "w-full rounded-lg border p-4 pr-10 outline-none transition-colors placeholder:text-gray-400",
