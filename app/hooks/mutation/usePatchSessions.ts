@@ -14,6 +14,7 @@ import { getErrorMessage } from "@/utils/getErrorMessage";
 interface CompleteSessionVariables {
   token: string;
   classSessionId: string;
+  classMinute: number;
   homeworkPercentage: number;
   understanding: string;
   date: string;
