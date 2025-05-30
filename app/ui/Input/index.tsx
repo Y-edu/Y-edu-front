@@ -28,7 +28,7 @@ export default function Input({
   };
 
   const borderStyle = {
-    default: "border-2 border-gray-200 focus:border-primaryNormal",
+    default: "border border-gray-200 focus:border-primaryNormal",
     warning: "border-2 border-[#FF4848] focus:border-[#FF4848]",
     success: "border-2 border-green-500 focus:border-green-500",
   };
