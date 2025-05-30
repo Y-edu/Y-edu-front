@@ -29,7 +29,7 @@ export default function Input({
 
   const borderStyle = {
     default: "border border-gray-200 focus:border-primaryNormal",
-    warning: "border-2 border-[#FF4848] focus:border-[#FF4848]",
+    warning: "border-2 border-warning focus:border-warning",
     success: "border-2 border-green-500 focus:border-green-500",
   };
 
@@ -41,12 +41,12 @@ export default function Input({
         onChange={handleChange}
         placeholder={placeholder}
         className={cn(
-          "flex w-full items-start self-stretch rounded-lg p-4 pr-10 outline-none transition-colors placeholder:text-gray-400",
+          "flex w-full items-start self-stretch rounded-lg p-4 pr-10 outline-none transition-colors placeholder:text-grey-400",
           borderStyle[status],
         )}
       />
       {unit && (
-        <span className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-[16px] text-gray-900">
+        <span className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-[16px] text-grey-900">
           {unit}
         </span>
       )}

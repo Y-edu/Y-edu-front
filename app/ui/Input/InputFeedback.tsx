@@ -20,7 +20,7 @@ export default function InputFeedback({
   className = "",
 }: InputFeedbackProps) {
   const icon = FeedbackIconMap[type];
-  const colorClass = type === "warning" ? "text-[#FF4848]" : "text-green-600";
+  const colorClass = type === "warning" ? "text-warning" : "text-green-600";
 
   return (
     <div
