@@ -34,30 +34,24 @@ export default function SessionComplete({
   );
   const [understanding, setUnderstanding] = useState("");
   const [showClassMinuteInput, setShowClassMinuteInput] = useState(false);
-  const [customClassMinute, setCustomClassMinute] = useState("");
+  const [userClassMinute, setUserClassMinute] = useState("");
 
   const { completeMutation } = useSessionMutations();
 
+  const isInvalidMinute =
+    Number(userClassMinute) < 0 || Number(userClassMinute) > 200;
+
   const isCustomMinuteValid =
-    !showClassMinuteInput ||
-    (customClassMinute !== "" &&
-      Number(customClassMinute) > 0 &&
-      Number(customClassMinute) <= 200);
+    !showClassMinuteInput || (userClassMinute !== "" && !isInvalidMinute);
 
   const isFormValid =
     homeworkPercentage !== null &&
     understanding.trim().length > 0 &&
     isCustomMinuteValid;
 
-  const isInvalidMinute = Number(customClassMinute) > 200;
-
-  const onClickChip = (selected: "yes" | "no") => {
-    setShowClassMinuteInput(selected === "no");
-  };
-
   const handleCustomMinuteChange = (rawValue: string) => {
     const onlyDigits = rawValue.replace(/[^0-9]/g, "");
-    setCustomClassMinute(onlyDigits);
+    setUserClassMinute(onlyDigits);
   };
 
   const handleComplete = () => {
@@ -78,7 +72,7 @@ export default function SessionComplete({
     });
 
     const finalClassMinute = showClassMinuteInput
-      ? Number(customClassMinute)
+      ? Number(userClassMinute)
       : classMinute;
 
     completeMutation.mutate({
@@ -108,19 +102,19 @@ export default function SessionComplete({
             <Chip
               chipText="네"
               isSelected={!showClassMinuteInput}
-              onClick={() => onClickChip("yes")}
+              onClick={() => setShowClassMinuteInput(false)}
             />
             <Chip
               chipText="아니오"
               isSelected={showClassMinuteInput}
-              onClick={() => onClickChip("no")}
+              onClick={() => setShowClassMinuteInput(true)}
             />
           </div>
 
           {showClassMinuteInput && (
             <div>
               <Input
-                value={customClassMinute}
+                value={userClassMinute}
                 onChange={handleCustomMinuteChange}
                 placeholder="0"
                 unit="분"
