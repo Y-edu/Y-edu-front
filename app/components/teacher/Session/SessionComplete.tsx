@@ -10,12 +10,16 @@ import Textarea from "@/ui/Textarea";
 import TitleSection from "@/ui/TitleSection";
 import Button from "@/ui/Button";
 import { mixpanelTrack } from "@/utils/mixpanel";
+import Chip from "@/ui/Chip";
+import Input from "@/ui/Input";
+import InputFeedback from "@/ui/Input/InputFeedback";
 
 interface SessionCompleteProps {
   token: string;
   classSessionId: string;
   date: string;
   endTime: string;
+  classMinute: number;
 }
 
 export default function SessionComplete({
@@ -23,15 +27,38 @@ export default function SessionComplete({
   date,
   classSessionId,
   endTime,
+  classMinute,
 }: SessionCompleteProps) {
   const [homeworkPercentage, setHomeworkPercentage] = useState<number | null>(
     null,
   );
   const [understanding, setUnderstanding] = useState("");
+  const [showClassMinuteInput, setShowClassMinuteInput] = useState(false);
+  const [customClassMinute, setCustomClassMinute] = useState("");
 
   const { completeMutation } = useSessionMutations();
+
+  const isCustomMinuteValid =
+    !showClassMinuteInput ||
+    (customClassMinute !== "" &&
+      Number(customClassMinute) > 0 &&
+      Number(customClassMinute) <= 200);
+
   const isFormValid =
-    homeworkPercentage !== null && understanding.trim().length > 0;
+    homeworkPercentage !== null &&
+    understanding.trim().length > 0 &&
+    isCustomMinuteValid;
+
+  const isInvalidMinute = Number(customClassMinute) > 200;
+
+  const onClickChip = (selected: "yes" | "no") => {
+    setShowClassMinuteInput(selected === "no");
+  };
+
+  const handleCustomMinuteChange = (rawValue: string) => {
+    const onlyDigits = rawValue.replace(/[^0-9]/g, "");
+    setCustomClassMinute(onlyDigits);
+  };
 
   const handleComplete = () => {
     if (!isFormValid || homeworkPercentage === null) return;
@@ -50,9 +77,14 @@ export default function SessionComplete({
       isSubmittedSameDay: submitTime.getDate() === classEndTime.getDate(),
     });
 
+    const finalClassMinute = showClassMinuteInput
+      ? Number(customClassMinute)
+      : classMinute;
+
     completeMutation.mutate({
       token,
       classSessionId,
+      classMinute: finalClassMinute,
       homeworkPercentage,
       understanding: understanding.trim(),
       date,
@@ -68,6 +100,42 @@ export default function SessionComplete({
             작성하신 내용은 학부모님께 전달됩니다
           </TitleSection.Description>
         </TitleSection>
+        <DivWithLabel
+          label={`${classMinute}분 수업을 진행했나요?`}
+          className="w-full"
+        >
+          <div className="flex gap-2">
+            <Chip
+              chipText="네"
+              isSelected={!showClassMinuteInput}
+              onClick={() => onClickChip("yes")}
+            />
+            <Chip
+              chipText="아니오"
+              isSelected={showClassMinuteInput}
+              onClick={() => onClickChip("no")}
+            />
+          </div>
+
+          {showClassMinuteInput && (
+            <div>
+              <Input
+                value={customClassMinute}
+                onChange={handleCustomMinuteChange}
+                placeholder="0"
+                unit="분"
+                status={isInvalidMinute ? "warning" : "default"}
+              />
+
+              {isInvalidMinute && (
+                <InputFeedback
+                  type="warning"
+                  message="200 이하 숫자만, 소수점 없이 입력해주세요."
+                />
+              )}
+            </div>
+          )}
+        </DivWithLabel>
         <DivWithLabel label="아이가 숙제를 모두 완료했나요?" className="w-full">
           {HOMEWORK_PROGRESS_LIST.map((item) => (
             <div key={item.value} className="py-4">
