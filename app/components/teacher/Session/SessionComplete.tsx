@@ -12,7 +12,6 @@ import Button from "@/ui/Button";
 import { mixpanelTrack } from "@/utils/mixpanel";
 import Chip from "@/ui/Chip";
 import Input from "@/ui/Input";
-import InputFeedback from "@/ui/Input/InputFeedback";
 
 interface SessionCompleteProps {
   token: string;
@@ -112,22 +111,18 @@ export default function SessionComplete({
           </div>
 
           {showClassMinuteInput && (
-            <div>
-              <Input
-                value={userClassMinute}
-                onChange={handleCustomMinuteChange}
-                placeholder="0"
-                unit="분"
-                status={isInvalidMinute ? "warning" : "default"}
-              />
-
-              {isInvalidMinute && (
-                <InputFeedback
-                  type="warning"
-                  message="200 이하 숫자만, 소수점 없이 입력해주세요."
-                />
-              )}
-            </div>
+            <Input
+              value={userClassMinute}
+              onChange={handleCustomMinuteChange}
+              placeholder="0"
+              unit="분"
+              status={isInvalidMinute ? "warning" : "default"}
+              errorMessage={
+                isInvalidMinute
+                  ? "200 이하 숫자만, 소수점 없이 입력해주세요."
+                  : ""
+              }
+            />
           )}
         </DivWithLabel>
         <DivWithLabel label="아이가 숙제를 모두 완료했나요?" className="w-full">

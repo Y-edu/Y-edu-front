@@ -1,54 +1,52 @@
-import { ChangeEvent } from "react";
-
+import IconWarning from "@/icons/IconWarning";
 import cn from "@/utils/cn";
 
-type InputStatus = "default" | "warning" | "success";
+type InputStatus = "default" | "warning";
 
 interface InputProps {
   value: string;
-  placeholder?: string;
-  type?: string;
-  className?: string;
-  unit?: string;
-  status?: InputStatus;
   onChange: (value: string) => void;
+  placeholder?: string;
+  unit?: string;
+  errorMessage?: string;
+  status?: InputStatus;
 }
 
 export default function Input({
   value,
   onChange,
-  placeholder = "",
-  type = "text",
-  className = "",
+  placeholder,
   unit,
+  errorMessage,
   status = "default",
 }: InputProps) {
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    onChange(e.target.value);
-  };
-
-  const borderStyle = {
-    default: "border border-gray-200 focus:border-primaryNormal",
-    warning: "border-2 border-warning focus:border-warning",
-    success: "border-2 border-green-500 focus:border-green-500",
-  };
-
   return (
-    <div className={cn("relative w-full", className)}>
-      <input
-        type={type}
-        value={value}
-        onChange={handleChange}
-        placeholder={placeholder}
-        className={cn(
-          "flex w-full items-start self-stretch rounded-lg p-4 pr-10 outline-none transition-colors placeholder:text-grey-400",
-          borderStyle[status],
+    <div className="flex w-full flex-col gap-2">
+      <div className="relative w-full">
+        <input
+          type="text"
+          inputMode="numeric"
+          value={value}
+          onChange={(e) => onChange(e.target.value.replace(/[^0-9]/g, ""))}
+          placeholder={placeholder}
+          className={cn(
+            "w-full rounded-lg border p-4 pr-10 outline-none transition-colors placeholder:text-gray-400",
+            status === "warning"
+              ? "border-2 border-warning focus:border-warning"
+              : "border border-gray-200 focus:border-primary",
+          )}
+        />
+        {unit && (
+          <span className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-900">
+            {unit}
+          </span>
         )}
-      />
-      {unit && (
-        <span className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-[16px] text-grey-900">
-          {unit}
-        </span>
+      </div>
+      {errorMessage && (
+        <div className="flex items-center gap-1 text-sm text-warning">
+          <IconWarning />
+          <span>{errorMessage}</span>
+        </div>
       )}
     </div>
   );
