@@ -7,7 +7,7 @@ const columnHelper = createColumnHelper<ClassDetail>();
 export function getClassDetailColumns() {
   return [
     columnHelper.accessor("classManagement.firstDay", {
-      header: "수업시작일",
+      header: "첫 수업 날짜",
       cell: (props) => props.getValue(),
     }),
     columnHelper.accessor("parent.phoneNumber", {

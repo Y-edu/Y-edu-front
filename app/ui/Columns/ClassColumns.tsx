@@ -117,6 +117,10 @@ export function getClassColumns(
       header: "수업코드",
       cell: (props) => props.getValue(),
     }),
+    columnHelper.accessor("parent.kakaoName", {
+      header: "카카오톡 이름",
+      cell: (props) => props.getValue() || "-",
+    }),
     columnHelper.accessor("teacher.nickName", {
       header: "선생님 닉네임",
       cell: (props) => props.getValue(),
@@ -135,10 +139,6 @@ export function getClassColumns(
           matchingId={props.row.original.matchingId}
         />
       ),
-    }),
-    columnHelper.accessor("parent.kakaoName", {
-      header: "카카오톡 이름",
-      cell: (props) => props.getValue() || "-",
     }),
   ];
 }
