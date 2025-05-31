@@ -5,8 +5,11 @@ import {
   GET_CLASSLIST,
   PUT_CLASS_STATUS,
 } from "@/actions/graphql/class-management";
+import { useGlobalSnackbar } from "@/providers/GlobalSnackBar";
 
-export type ClassStatus = "수업중" | "중단" | "임시중단";
+export const CLASS_STATUS_OPTIONS = ["최종매칭", "중단", "일시중단"] as const;
+
+export type ClassStatus = (typeof CLASS_STATUS_OPTIONS)[number];
 
 interface Variables {
   matchingStatus?: string[];
@@ -70,7 +73,18 @@ export const useGetClassDetail = (variables: Variables) => {
 };
 
 export const usePutClassStatus = () => {
-  const [mutate, mutationResult] = useMutation(PUT_CLASS_STATUS);
+  const { refetch } = useGetClassList({
+    matchingStatus: ["최종매칭", "중단", "일시중단"],
+  });
+  const toast = useGlobalSnackbar();
+  const [mutate, mutationResult] = useMutation(PUT_CLASS_STATUS, {
+    onCompleted: () => {
+      refetch();
+    },
+    onError: () => {
+      toast.warning("다시 시도해주세요.");
+    },
+  });
 
   return { mutate, ...mutationResult };
 };

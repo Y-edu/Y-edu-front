@@ -16,7 +16,7 @@ export default function ClassManagementDetailPage({
   const { data } = useGetClassList(
     {
       matchingIds: [Number(matchingId)],
-      matchingStatus: ["최종매칭"],
+      matchingStatus: ["최종매칭", "일시중단", "중단"],
     },
     { skip: !matchingId },
   );

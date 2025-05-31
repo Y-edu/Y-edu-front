@@ -9,12 +9,16 @@ import {
 
 const columnHelper = createColumnHelper<Class>();
 
-const statusOptions: ClassStatus[] = ["수업중", "중단", "임시중단"];
+const statusDisplayMap: Record<ClassStatus, string> = {
+  최종매칭: "수업중",
+  중단: "중단",
+  일시중단: "일시중단",
+};
 
 const statusColors = {
-  수업중: "bg-green-100 text-green-800",
+  최종매칭: "bg-green-100 text-green-800",
   중단: "bg-red-100 text-red-800",
-  임시중단: "bg-yellow-100 text-yellow-800",
+  일시중단: "bg-yellow-100 text-yellow-800",
 } as const;
 
 // 과외 상태 칩
@@ -29,7 +33,7 @@ function StatusCell({
   rowIndex: number;
   onStatusChange: (rowIndex: number, newStatus: ClassStatus) => void;
 }) {
-  const { mutate: mutatePauseClass } = usePutClassStatus();
+  const { mutate: mutateClassStatus } = usePutClassStatus();
 
   const [isOpen, setIsOpen] = useState(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -51,12 +55,12 @@ function StatusCell({
     return () => window.removeEventListener("mousedown", handleClick);
   }, [isOpen]);
 
-  // TODO: 수업상태변경 api 수정 후 반영 필요
   const handleStatusChange = (newStatus: ClassStatus) => {
     onStatusChange(rowIndex, newStatus);
-    mutatePauseClass({
+    mutateClassStatus({
       variables: {
         matchingIds: [matchingId],
+        matchingStatus: newStatus,
       },
     });
     setIsOpen(false);
@@ -74,7 +78,7 @@ function StatusCell({
           statusColors[status]
         }`}
       >
-        {status}
+        {statusDisplayMap[status]}
       </button>
       {isOpen && (
         <div
@@ -85,7 +89,7 @@ function StatusCell({
             overflowY: "auto",
           }}
         >
-          {statusOptions.map((option) => (
+          {(Object.keys(statusDisplayMap) as ClassStatus[]).map((option) => (
             <button
               key={option}
               onClick={(e) => {
@@ -96,7 +100,7 @@ function StatusCell({
                 option === status ? "bg-gray-50" : ""
               }`}
             >
-              {option}
+              {statusDisplayMap[option]}
             </button>
           ))}
         </div>

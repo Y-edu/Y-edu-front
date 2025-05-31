@@ -49,7 +49,7 @@ export const GET_CLASS_DETAIL = gql`
 `;
 
 export const PUT_CLASS_STATUS = gql`
-  mutation pauseMatching($matchingIds: [Int]) {
-    pauseMatching(matchingIds: $matchingIds)
+  mutation updateMatching($matchingIds: [Int], $matchingStatus: String) {
+    updateMatching(matchingIds: $matchingIds, matchingStatus: $matchingStatus)
   }
 `;

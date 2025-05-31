@@ -7,7 +7,7 @@ import { Class, useGetClassList } from "@/hooks/query/useGetClassList";
 
 export default function ClassManagementHome() {
   const { data } = useGetClassList({
-    matchingStatus: ["최종매칭"],
+    matchingStatus: ["최종매칭", "중단", "일시중단"],
   });
   const [tableData, setTableData] = useState<Class[]>([]);
 

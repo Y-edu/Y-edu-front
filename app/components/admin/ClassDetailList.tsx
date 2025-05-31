@@ -15,10 +15,9 @@ import { ClassDetail, useGetClassDetail } from "@/hooks/query/useGetClassList";
 function ClassDetailList() {
   const { matchingId } = useParams();
 
-  // TODO: enum 정의 후 타입 추가
   const { data } = useGetClassDetail({
     matchingIds: [Number(matchingId)],
-    matchingStatus: ["최종매칭"],
+    matchingStatus: ["최종매칭", "일시중단", "중단"],
   });
 
   const [tableData, setTableData] = useState<ClassDetail[]>([]);
