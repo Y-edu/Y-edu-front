@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+
 import { useRouter } from "next/navigation";
 import {
   flexRender,
@@ -8,38 +8,35 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 
-import { ClassListResponse, ClassStatus } from "@/actions/get-class-info";
 import { getClassColumns } from "@/ui/Columns/ClassColumns";
 import { Pagination } from "@/ui";
+import { Class, ClassStatus } from "@/hooks/query/useGetClassList";
 
 export interface ClassListProps {
+  classItems?: Class[];
+  setClassItems: React.Dispatch<React.SetStateAction<Class[]>>;
   pagination?: boolean;
-  classItems: ClassListResponse[];
 }
 
-function ClassList({ pagination = false, classItems }: ClassListProps) {
+function ClassList({
+  classItems,
+  setClassItems,
+  pagination = false,
+}: ClassListProps) {
   const router = useRouter();
-  const [tableData, setTableData] = useState<ClassListResponse[]>([]);
-
-  // 더미데이터 (기능 구현하실 때 지워주세요!)
-  useEffect(() => {
-    setTableData(classItems);
-  }, [classItems]);
 
   // 상태 변경 핸들러
   const handleStatusChange = (rowIndex: number, newStatus: ClassStatus) => {
-    setTableData((prev) =>
+    setClassItems?.((prev: Class[]) =>
       prev.map((row, idx) =>
-        idx === rowIndex ? { ...row, status: newStatus } : row,
+        idx === rowIndex ? { ...row, matchingStatus: newStatus } : row,
       ),
     );
-    // TODO: 여기서 API 호출도 가능
-    // await updateClassStatusAPI(rowId, newStatus)
   };
 
   const columns = getClassColumns(handleStatusChange);
-  const table = useReactTable({
-    data: tableData,
+  const table = useReactTable<Class>({
+    data: classItems || [],
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
@@ -90,7 +87,7 @@ function ClassList({ pagination = false, classItems }: ClassListProps) {
               className="cursor-pointer border-b bg-white hover:bg-gray-100"
               onClick={() => {
                 router.push(
-                  `/zuzuclubadmin/class-management/${row.original.applicationFormId}`,
+                  `/zuzuclubadmin/class-management/${row.original.matchingId}`,
                 );
               }}
             >

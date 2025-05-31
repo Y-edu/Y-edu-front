@@ -1,28 +1,40 @@
 import { createColumnHelper } from "@tanstack/react-table";
 import { useRef, useState, useEffect } from "react";
 
-import { ClassListResponse, ClassStatus } from "@/actions/get-class-info";
+import {
+  Class,
+  ClassStatus,
+  usePutClassStatus,
+} from "@/hooks/query/useGetClassList";
 
-const columnHelper = createColumnHelper<ClassListResponse>();
+const columnHelper = createColumnHelper<Class>();
 
-const statusOptions: ClassStatus[] = ["수업중", "중단", "임시중단"];
+const statusDisplayMap: Record<ClassStatus, string> = {
+  최종매칭: "수업중",
+  중단: "중단",
+  일시중단: "일시중단",
+};
 
 const statusColors = {
-  수업중: "bg-green-100 text-green-800",
+  최종매칭: "bg-green-100 text-green-800",
   중단: "bg-red-100 text-red-800",
-  임시중단: "bg-yellow-100 text-yellow-800",
+  일시중단: "bg-yellow-100 text-yellow-800",
 } as const;
 
 // 과외 상태 칩
 function StatusCell({
   status,
+  matchingId,
   rowIndex,
   onStatusChange,
 }: {
   status: ClassStatus;
+  matchingId: number;
   rowIndex: number;
   onStatusChange: (rowIndex: number, newStatus: ClassStatus) => void;
 }) {
+  const { mutate: mutateClassStatus } = usePutClassStatus();
+
   const [isOpen, setIsOpen] = useState(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -45,6 +57,12 @@ function StatusCell({
 
   const handleStatusChange = (newStatus: ClassStatus) => {
     onStatusChange(rowIndex, newStatus);
+    mutateClassStatus({
+      variables: {
+        matchingIds: [matchingId],
+        matchingStatus: newStatus,
+      },
+    });
     setIsOpen(false);
   };
 
@@ -60,7 +78,7 @@ function StatusCell({
           statusColors[status]
         }`}
       >
-        {status}
+        {statusDisplayMap[status]}
       </button>
       {isOpen && (
         <div
@@ -71,7 +89,7 @@ function StatusCell({
             overflowY: "auto",
           }}
         >
-          {statusOptions.map((option) => (
+          {(Object.keys(statusDisplayMap) as ClassStatus[]).map((option) => (
             <button
               key={option}
               onClick={(e) => {
@@ -82,7 +100,7 @@ function StatusCell({
                 option === status ? "bg-gray-50" : ""
               }`}
             >
-              {option}
+              {statusDisplayMap[option]}
             </button>
           ))}
         </div>
@@ -99,7 +117,11 @@ export function getClassColumns(
       header: "수업코드",
       cell: (props) => props.getValue(),
     }),
-    columnHelper.accessor("nickName", {
+    columnHelper.accessor("parent.kakaoName", {
+      header: "카카오톡 이름",
+      cell: (props) => props.getValue() || "-",
+    }),
+    columnHelper.accessor("teacher.nickName", {
       header: "선생님 닉네임",
       cell: (props) => props.getValue(),
     }),
@@ -107,19 +129,16 @@ export function getClassColumns(
       header: "과목",
       cell: (props) => props.getValue(),
     }),
-    columnHelper.accessor("status", {
+    columnHelper.accessor("matchingStatus", {
       header: "과외 상태",
       cell: (props) => (
         <StatusCell
           status={props.getValue()}
           rowIndex={props.row.index}
           onStatusChange={onStatusChange}
+          matchingId={props.row.original.matchingId}
         />
       ),
-    }),
-    columnHelper.accessor("kakaoName", {
-      header: "카카오톡 이름",
-      cell: (props) => props.getValue() || "-",
     }),
   ];
 }

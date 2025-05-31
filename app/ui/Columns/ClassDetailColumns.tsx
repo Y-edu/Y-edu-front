@@ -1,26 +1,41 @@
 import { createColumnHelper } from "@tanstack/react-table";
 
-import { ClassAdditionalInfo } from "@/actions/get-class-info";
+import { ClassDetail } from "@/hooks/query/useGetClassList";
 
-const columnHelper = createColumnHelper<ClassAdditionalInfo>();
+const columnHelper = createColumnHelper<ClassDetail>();
 
 export function getClassDetailColumns() {
   return [
-    columnHelper.accessor("startDate", {
-      header: "수업시작일",
+    columnHelper.accessor("classManagement.firstDay", {
+      header: "첫 수업 날짜",
       cell: (props) => props.getValue(),
     }),
-    columnHelper.accessor("parentPhoneNumber", {
+    columnHelper.accessor("parent.phoneNumber", {
       header: "학부모 전화번호",
       cell: (props) => props.getValue(),
     }),
-    columnHelper.accessor("teacherPhoneNumber", {
+    columnHelper.accessor("teacher.phoneNumber", {
       header: "선생님 전화번호",
       cell: (props) => props.getValue(),
     }),
-    columnHelper.accessor("classTime", {
+    columnHelper.display({
+      id: "schedule",
       header: "수업시간",
-      cell: (props) => props.getValue(),
+      cell: (props) => {
+        const scheduleList = props.row.original.classManagement.schedule;
+
+        if (!scheduleList?.length) return "X";
+
+        return (
+          <div className="flex flex-col gap-1">
+            {scheduleList.map((item) => (
+              <span key={item.classScheduleId}>
+                {item.day} {item.start} ({item.classMinute}분)
+              </span>
+            ))}
+          </div>
+        );
+      },
     }),
     columnHelper.display({
       id: "changeTeacher",

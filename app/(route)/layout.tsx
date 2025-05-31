@@ -4,6 +4,7 @@ import "./globals.css";
 import { GoogleAnalytics, GoogleTagManager } from "@next/third-parties/google";
 
 import { GlobalSnackbarProvider } from "@/providers/GlobalSnackBar";
+import ApolloClientProvider from "@/providers/ApolloClient";
 
 import { QueryProvider } from "app/providers";
 import IntegrateMSW from "app/providers/MSWProvider";
@@ -32,7 +33,9 @@ export default function RootLayout({
           <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID || ""} />
           <GoogleTagManager gtmId={process.env.NEXT_PUBLIC_GTM_ID || ""} />
           <QueryProvider>
-            <GlobalSnackbarProvider>{children}</GlobalSnackbarProvider>
+            <ApolloClientProvider>
+              <GlobalSnackbarProvider>{children}</GlobalSnackbarProvider>
+            </ApolloClientProvider>
           </QueryProvider>
         </body>
       </html>

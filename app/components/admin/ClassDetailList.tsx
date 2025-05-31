@@ -1,4 +1,5 @@
 "use client";
+
 import { useEffect, useState } from "react";
 import {
   flexRender,
@@ -6,24 +7,24 @@ import {
   getPaginationRowModel,
   useReactTable,
 } from "@tanstack/react-table";
+import { useParams } from "next/navigation";
 
-import { ClassAdditionalInfo } from "@/actions/get-class-info";
 import { getClassDetailColumns } from "@/ui/Columns/ClassDetailColumns";
+import { ClassDetail, useGetClassDetail } from "@/hooks/query/useGetClassList";
 
 function ClassDetailList() {
-  const [tableData, setTableData] = useState<ClassAdditionalInfo[]>([]);
+  const { matchingId } = useParams();
 
-  // 더미데이터 (기능 구현하실 때 지워주세요!)
+  const { data } = useGetClassDetail({
+    matchingIds: [Number(matchingId)],
+    matchingStatus: ["최종매칭", "일시중단", "중단"],
+  });
+
+  const [tableData, setTableData] = useState<ClassDetail[]>([]);
+
   useEffect(() => {
-    setTableData([
-      {
-        startDate: "2025-01-01",
-        parentPhoneNumber: "010-1234-5678",
-        teacherPhoneNumber: "010-1234-5678",
-        classTime: "10:00-12:00",
-      },
-    ]);
-  }, []);
+    setTableData(data?.applicationFormByMatchingId ?? []);
+  }, [data]);
 
   const columns = getClassDetailColumns();
   const table = useReactTable({
