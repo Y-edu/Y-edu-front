@@ -144,7 +144,7 @@ export default function SessionCompletePage() {
           <HeaderWithBack
             title={titleDate}
             hasBack
-            onBack={goToSchedulePage}
+            onBack={() => goToSchedulePage(target?.applicationFormId)}
             mainClassName="pt-8 w-full px-5"
           >
             <SessionComplete
