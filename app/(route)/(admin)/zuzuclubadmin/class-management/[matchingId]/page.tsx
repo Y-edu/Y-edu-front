@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 
-import ClassDetailList from "@/components/admin/ClassDetailList";
 import ClassList from "@/components/admin/ClassList";
 import { Class, useGetClassList } from "@/hooks/query/useGetClassList";
 
@@ -31,11 +30,18 @@ export default function ClassManagementDetailPage({
 
   return (
     <div>
-      <h1 className="flex h-[100px] w-full items-center bg-white pl-16 text-[22px] font-bold text-gray-700">
-        {tableData[0]?.applicationFormId || "수업 상세 정보"}
-      </h1>
+      <header className="flex h-[100px] w-full items-center justify-between bg-white px-16 text-[22px] font-bold text-gray-700">
+        <h1>{tableData[0]?.applicationFormId || "수업 상세 정보"}</h1>
+        <button
+          onClick={() => {
+            // TODO: 선생님 교체 로직
+          }}
+          className="rounded-md bg-primary px-4 py-2 text-sm text-white hover:bg-primary/90"
+        >
+          선생님 교체하기
+        </button>
+      </header>
       <ClassList classItems={tableData} setClassItems={setTableData} />
-      <ClassDetailList />
     </div>
   );
 }
