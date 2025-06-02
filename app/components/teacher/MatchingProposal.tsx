@@ -38,6 +38,8 @@ export function MatchingProposal({ token }: { token: string }) {
     | "매칭"
     | "최종매칭"
     | "과외결렬"
+    | "일시중단"
+    | "중단"
   >(data.matchStatus);
   const { mutate: postTutoringReject } = usePostTutoringRefuse();
 
@@ -154,9 +156,16 @@ export function MatchingProposal({ token }: { token: string }) {
         </>
       )}
 
-      {["거절", "수락", "전송", "매칭", "최종매칭", "과외결렬"].includes(
-        finalStatus,
-      ) && (
+      {[
+        "거절",
+        "수락",
+        "전송",
+        "매칭",
+        "최종매칭",
+        "과외결렬",
+        "일시중단",
+        "중단",
+      ].includes(finalStatus) && (
         <div className="mb-6 flex w-full justify-center">
           <button className="h-[58px] w-[89%] cursor-not-allowed rounded-xl bg-statusInactive text-lg font-bold text-labelAssistive">
             {finalStatus === "거절"

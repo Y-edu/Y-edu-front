@@ -39,14 +39,16 @@ export const AlimTableProvider = ({
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
 
   const statusOrder = {
-    최종매칭: 0,
-    매칭: 1,
-    입금단계: 2,
-    전송: 3,
-    수락: 4,
-    대기: 5,
-    거절: 6,
-    과외결렬: 7,
+    일시중단: 0,
+    중단: 1,
+    최종매칭: 2,
+    매칭: 3,
+    입금단계: 4,
+    전송: 5,
+    수락: 6,
+    대기: 7,
+    거절: 8,
+    과외결렬: 9,
   };
 
   const alimData = useMemo<

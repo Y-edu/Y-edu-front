@@ -69,6 +69,10 @@ export const AlimTHeaderColumn = [
           return <span className="text-[#7C3AED]">최종매칭*</span>;
         case "과외결렬":
           return <span className="text-[#6B7280]">과외결렬</span>;
+        case "일시중단":
+          return <span className="text-yellow-500">일시중단</span>;
+        case "중단":
+          return <span className="text-red-500">중단</span>;
       }
     },
     enableSorting: true,

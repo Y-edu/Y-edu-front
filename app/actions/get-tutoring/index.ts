@@ -33,6 +33,8 @@ const tutoringResponse = z.object({
     z.literal("매칭"),
     z.literal("최종매칭"),
     z.literal("과외결렬"),
+    z.literal("일시중단"),
+    z.literal("중단"),
   ]),
 });
 
