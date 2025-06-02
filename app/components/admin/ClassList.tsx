@@ -81,7 +81,7 @@ function ClassList({
           ))}
         </thead>
         <tbody>
-          {table.getRowModel().rows.map((row) => (
+          {table.getRowModel().rows.map((row, rowIndex) => (
             <tr
               key={row.id}
               className="cursor-pointer border-b bg-white hover:bg-gray-100"
@@ -91,8 +91,20 @@ function ClassList({
                 );
               }}
             >
-              {row.getVisibleCells().map((cell) => (
-                <td key={cell.id} className="p-4 text-left text-sm">
+              {/* 테이블 bottom 라운드 처리 */}
+              {row.getVisibleCells().map((cell, cellIndex) => (
+                <td
+                  key={cell.id}
+                  className={`p-4 text-left text-sm ${
+                    rowIndex === table.getRowModel().rows.length - 1
+                      ? cellIndex === 0
+                        ? "rounded-bl-3xl"
+                        : cellIndex === row.getVisibleCells().length - 1
+                          ? "rounded-br-3xl"
+                          : ""
+                      : ""
+                  }`}
+                >
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </td>
               ))}
