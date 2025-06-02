@@ -1,5 +1,6 @@
 "use client";
 import { useRef } from "react";
+import { useApolloClient } from "@apollo/client";
 
 import { useGetMatchingInfo } from "app/hooks/query";
 import { usePatchMatchingDisplayName } from "app/hooks/mutation/usePatchMatchingDisplayname";
@@ -12,6 +13,7 @@ export function Header({ matchingId }: HeaderProps) {
   const { data: matchingDetailInfo } = useGetMatchingInfo(matchingId);
   const matchingDisplayNameRef = useRef<HTMLInputElement>(null);
   const { mutate } = usePatchMatchingDisplayName();
+  const client = useApolloClient();
 
   return (
     <header className="flex min-h-[80px] items-center gap-4 border-b-2 border-[#E6EFF5] pl-4 font-bold text-headColor">
@@ -37,6 +39,9 @@ export function Header({ matchingId }: HeaderProps) {
                 alert("저장 중 오류가 발생했습니다. 다시 시도해 주세요.");
               },
               onSuccess: () => {
+                client.refetchQueries({
+                  include: ["GetFinalMatchedApplicationForms"],
+                });
                 alert("성공적으로 저장되었습니다.");
               },
             },
