@@ -113,20 +113,28 @@ export function getClassColumns(
   onStatusChange: (rowIndex: number, newStatus: ClassStatus) => void,
 ) {
   return [
+    columnHelper.accessor("parent.kakaoName", {
+      header: "카톡 이름",
+      cell: (props) => props.getValue() || "-",
+    }),
     columnHelper.accessor("applicationFormId", {
       header: "수업코드",
       cell: (props) => props.getValue(),
     }),
-    columnHelper.accessor("parent.kakaoName", {
-      header: "카카오톡 이름",
-      cell: (props) => props.getValue() || "-",
+    columnHelper.accessor("subject", {
+      header: "과목",
+      cell: (props) => props.getValue(),
     }),
     columnHelper.accessor("teacher.nickName", {
       header: "선생님 닉네임",
       cell: (props) => props.getValue(),
     }),
-    columnHelper.accessor("subject", {
-      header: "과목",
+    columnHelper.accessor("parent.phoneNumber", {
+      header: "학부모 전화번호",
+      cell: (props) => props.getValue(),
+    }),
+    columnHelper.accessor("teacher.phoneNumber", {
+      header: "선생님 전화번호",
       cell: (props) => props.getValue(),
     }),
     columnHelper.accessor("matchingStatus", {

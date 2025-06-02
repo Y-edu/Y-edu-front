@@ -9,15 +9,25 @@ export const GET_CLASSLIST = gql`
       matchingStatus: $matchingStatus
       matchingIds: $matchingIds
     ) {
+      classManagement {
+        schedule {
+          classScheduleId
+          day
+          start
+          classMinute
+        }
+      }
       applicationFormId
       matchingId
       subject
       matchingStatus
       parent {
         kakaoName
+        phoneNumber
       }
       teacher {
         nickName
+        phoneNumber
       }
     }
   }

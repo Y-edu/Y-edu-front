@@ -22,9 +22,11 @@ export interface Class {
   matchingId: number;
   parent: {
     kakaoName: string;
+    phoneNumber: string;
   };
   teacher: {
     nickName: string;
+    phoneNumber: string;
   };
 }
 
