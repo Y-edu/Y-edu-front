@@ -117,6 +117,22 @@ export function getClassColumns(
       header: "카톡 이름",
       cell: (props) => props.getValue() || "-",
     }),
+    columnHelper.display({
+      id: "schedule",
+      header: "수업시수",
+      cell: (props) => {
+        const scheduleList = props.row.original.classManagement.schedule;
+
+        if (!scheduleList?.length) return "-";
+
+        return (
+          <div className="flex flex-col gap-1">
+            주 {scheduleList.length}회{" "}
+            {scheduleList.reduce((acc, item) => acc + item.classMinute, 0)}분
+          </div>
+        );
+      },
+    }),
     columnHelper.accessor("applicationFormId", {
       header: "수업코드",
       cell: (props) => props.getValue(),
