@@ -30,7 +30,6 @@ export const GET_CLASS_DETAIL = gql`
       matchingStatus: $matchingStatus
     ) {
       classManagement {
-        firstDay
         schedule {
           classScheduleId
           day
