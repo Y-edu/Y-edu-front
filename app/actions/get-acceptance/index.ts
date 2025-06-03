@@ -2,6 +2,7 @@ import { z } from "zod";
 import { AxiosError } from "axios";
 
 import { httpService } from "@/utils/httpService";
+import { MATCHING_STATUS } from "@/constants/matching";
 
 const acceptanceSchema = z.object({
   accept: z.number(),
@@ -9,15 +10,17 @@ const acceptanceSchema = z.object({
   time: z.number(),
   alarmTalkResponses: z.array(
     z.object({
-      status: z.union([
-        z.literal("거절"),
-        z.literal("대기"),
-        z.literal("수락"),
-        z.literal("전송"),
-        z.literal("입금단계"),
-        z.literal("매칭"),
-        z.literal("최종매칭"),
-        z.literal("과외결렬"),
+      status: z.enum([
+        MATCHING_STATUS.REJECT,
+        MATCHING_STATUS.WAITING,
+        MATCHING_STATUS.ACCEPT,
+        MATCHING_STATUS.SENT,
+        MATCHING_STATUS.PAYMENT,
+        MATCHING_STATUS.MATCHING,
+        MATCHING_STATUS.FINAL_MATCH,
+        MATCHING_STATUS.TUTORING_END,
+        MATCHING_STATUS.TEMPORARY_STOP,
+        MATCHING_STATUS.STOP,
       ]),
       nickName: z.string(),
       accept: z.number(),

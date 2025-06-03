@@ -17,6 +17,7 @@ import type { Table } from "@tanstack/react-table";
 import { AlimTHeaderColumn } from "@/components/admin/AlimColumn";
 import { useGetAcceptance } from "@/hooks/query";
 import { AcceptanceSchema } from "@/actions/get-acceptance";
+import { MATCHING_STATUS_ORDER } from "@/constants/matching";
 
 interface AlimTableContextType {
   matchingId: string;
@@ -38,17 +39,6 @@ export const AlimTableProvider = ({
 
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
 
-  const statusOrder = {
-    최종매칭: 0,
-    매칭: 1,
-    입금단계: 2,
-    전송: 3,
-    수락: 4,
-    대기: 5,
-    거절: 6,
-    과외결렬: 7,
-  };
-
   const alimData = useMemo<
     (AcceptanceSchema["alarmTalkResponses"][0] & {
       receiveAcceptance: string;
@@ -67,7 +57,10 @@ export const AlimTableProvider = ({
   const alimTable = useReactTable({
     columns: AlimTHeaderColumn,
     data: alimData.sort((a, b) => {
-      return (statusOrder[a.status] || 0) - (statusOrder[b.status] || 0);
+      return (
+        (MATCHING_STATUS_ORDER[a.status] || 0) -
+        (MATCHING_STATUS_ORDER[b.status] || 0)
+      );
     }),
     getCoreRowModel: getCoreRowModel(),
     onRowSelectionChange: setRowSelection,

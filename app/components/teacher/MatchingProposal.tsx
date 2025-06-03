@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 
 import formatDayTimes from "@/utils/formatDayTimes";
 import BulletList from "@/ui/List/BulletList";
+import { MATCHING_STATUS, type MatchingStatus } from "@/constants/matching";
 
 import { MatchingModal } from "./MatchingModal";
 import { MatchingInfo } from "./MatchingInfo";
@@ -29,16 +30,9 @@ export function MatchingProposal({ token }: { token: string }) {
   const [matchingStatus, setMatchingStatus] = useState<"REJECT" | "ACCEPT">(
     "REJECT",
   );
-  const [finalStatus, setFinalStatus] = useState<
-    | "거절"
-    | "대기"
-    | "전송"
-    | "수락"
-    | "입금단계"
-    | "매칭"
-    | "최종매칭"
-    | "과외결렬"
-  >(data.matchStatus);
+  const [finalStatus, setFinalStatus] = useState<MatchingStatus>(
+    data.matchStatus,
+  );
   const { mutate: postTutoringReject } = usePostTutoringRefuse();
 
   if (error) throw error;
@@ -154,12 +148,21 @@ export function MatchingProposal({ token }: { token: string }) {
         </>
       )}
 
-      {["거절", "수락", "전송", "매칭", "최종매칭", "과외결렬"].includes(
-        finalStatus,
-      ) && (
+      {(
+        [
+          MATCHING_STATUS.REJECT,
+          MATCHING_STATUS.ACCEPT,
+          MATCHING_STATUS.SENT,
+          MATCHING_STATUS.MATCHING,
+          MATCHING_STATUS.FINAL_MATCH,
+          MATCHING_STATUS.TUTORING_END,
+          MATCHING_STATUS.TEMPORARY_STOP,
+          MATCHING_STATUS.STOP,
+        ] as MatchingStatus[]
+      ).includes(finalStatus) && (
         <div className="mb-6 flex w-full justify-center">
           <button className="h-[58px] w-[89%] cursor-not-allowed rounded-xl bg-statusInactive text-lg font-bold text-labelAssistive">
-            {finalStatus === "거절"
+            {finalStatus === MATCHING_STATUS.REJECT
               ? "이미 넘긴 수업입니다."
               : "이미 수락한 수업입니다."}
           </button>
@@ -181,7 +184,7 @@ export function MatchingProposal({ token }: { token: string }) {
             {
               onSuccess: () => {
                 setMatchingStatus("ACCEPT");
-                setFinalStatus("거절");
+                setFinalStatus(MATCHING_STATUS.REJECT);
                 setRejectSuccessMessage({
                   title: "이번 과외는 넘길게요!",
                   content:

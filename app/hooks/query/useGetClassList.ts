@@ -20,11 +20,19 @@ export interface Class {
   subject: string;
   matchingStatus: ClassStatus;
   matchingId: number;
+  classManagement: {
+    schedule: {
+      day: string;
+      classMinute: number;
+    }[];
+  };
   parent: {
     kakaoName: string;
+    phoneNumber: string;
   };
   teacher: {
     nickName: string;
+    phoneNumber: string;
   };
 }
 

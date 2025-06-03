@@ -11,6 +11,7 @@ import {
 import { getClassColumns } from "@/ui/Columns/ClassColumns";
 import { Pagination } from "@/ui";
 import { Class, ClassStatus } from "@/hooks/query/useGetClassList";
+import cn from "@/utils/cn";
 
 export interface ClassListProps {
   classItems?: Class[];
@@ -81,7 +82,7 @@ function ClassList({
           ))}
         </thead>
         <tbody>
-          {table.getRowModel().rows.map((row) => (
+          {table.getRowModel().rows.map((row, rowIndex) => (
             <tr
               key={row.id}
               className="cursor-pointer border-b bg-white hover:bg-gray-100"
@@ -91,8 +92,19 @@ function ClassList({
                 );
               }}
             >
-              {row.getVisibleCells().map((cell) => (
-                <td key={cell.id} className="p-4 text-left text-sm">
+              {/* 테이블 bottom 라운드 처리 */}
+              {row.getVisibleCells().map((cell, cellIndex) => (
+                <td
+                  key={cell.id}
+                  className={cn(
+                    "p-4 text-left text-sm",
+                    rowIndex === table.getRowModel().rows.length - 1 && {
+                      "rounded-bl-3xl": cellIndex === 0,
+                      "rounded-br-3xl":
+                        cellIndex === row.getVisibleCells().length - 1,
+                    },
+                  )}
+                >
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </td>
               ))}

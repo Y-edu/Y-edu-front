@@ -113,20 +113,44 @@ export function getClassColumns(
   onStatusChange: (rowIndex: number, newStatus: ClassStatus) => void,
 ) {
   return [
+    columnHelper.accessor("parent.kakaoName", {
+      header: "카톡 이름",
+      cell: (props) => props.getValue() || "-",
+    }),
+    columnHelper.display({
+      id: "schedule",
+      header: "수업시수",
+      cell: (props) => {
+        const scheduleList = props.row.original.classManagement.schedule;
+
+        if (!scheduleList?.length) return "-";
+
+        return (
+          <div className="flex flex-col gap-1">
+            주 {scheduleList.length}회{" "}
+            {scheduleList.reduce((acc, item) => acc + item.classMinute, 0)}분
+          </div>
+        );
+      },
+    }),
     columnHelper.accessor("applicationFormId", {
       header: "수업코드",
       cell: (props) => props.getValue(),
     }),
-    columnHelper.accessor("parent.kakaoName", {
-      header: "카카오톡 이름",
-      cell: (props) => props.getValue() || "-",
+    columnHelper.accessor("subject", {
+      header: "과목",
+      cell: (props) => props.getValue(),
     }),
     columnHelper.accessor("teacher.nickName", {
       header: "선생님 닉네임",
       cell: (props) => props.getValue(),
     }),
-    columnHelper.accessor("subject", {
-      header: "과목",
+    columnHelper.accessor("parent.phoneNumber", {
+      header: "학부모 전화번호",
+      cell: (props) => props.getValue(),
+    }),
+    columnHelper.accessor("teacher.phoneNumber", {
+      header: "선생님 전화번호",
       cell: (props) => props.getValue(),
     }),
     columnHelper.accessor("matchingStatus", {
