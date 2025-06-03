@@ -86,7 +86,7 @@ export default function SessionSchedule(props: SessionScheduleProps) {
           </div>
         </DivWithLabel>
       </div>
-      <div className="flex flex-col gap-[12px]">
+      <div className="flex flex-col gap-[12px] pb-28">
         {isTimeVariesByDay ? (
           sortedSelectedDays.map((day) => {
             const matched = schedules.find((s) => s.day === day) || null;
