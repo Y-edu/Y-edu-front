@@ -39,9 +39,9 @@ export const AlimTableProvider = ({
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
 
   const statusOrder = {
-    일시중단: 0,
-    중단: 1,
-    최종매칭: 2,
+    최종매칭: 0,
+    일시중단: 1,
+    중단: 2,
     매칭: 3,
     입금단계: 4,
     전송: 5,
