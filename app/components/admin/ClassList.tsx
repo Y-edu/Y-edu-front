@@ -11,6 +11,7 @@ import {
 import { getClassColumns } from "@/ui/Columns/ClassColumns";
 import { Pagination } from "@/ui";
 import { Class, ClassStatus } from "@/hooks/query/useGetClassList";
+import cn from "@/utils/cn";
 
 export interface ClassListProps {
   classItems?: Class[];
@@ -95,15 +96,14 @@ function ClassList({
               {row.getVisibleCells().map((cell, cellIndex) => (
                 <td
                   key={cell.id}
-                  className={`p-4 text-left text-sm ${
-                    rowIndex === table.getRowModel().rows.length - 1
-                      ? cellIndex === 0
-                        ? "rounded-bl-3xl"
-                        : cellIndex === row.getVisibleCells().length - 1
-                          ? "rounded-br-3xl"
-                          : ""
-                      : ""
-                  }`}
+                  className={cn(
+                    "p-4 text-left text-sm",
+                    rowIndex === table.getRowModel().rows.length - 1 && {
+                      "rounded-bl-3xl": cellIndex === 0,
+                      "rounded-br-3xl":
+                        cellIndex === row.getVisibleCells().length - 1,
+                    },
+                  )}
                 >
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </td>
