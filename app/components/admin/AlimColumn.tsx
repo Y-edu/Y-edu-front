@@ -6,6 +6,7 @@ import { createColumnHelper } from "@tanstack/react-table";
 import type { Table, Row } from "@tanstack/react-table";
 
 import { AcceptanceSchema } from "@/actions/get-acceptance";
+import { MATCHING_STATUS } from "@/constants/matching";
 
 import MatchCell from "./AlimMatchCell";
 
@@ -53,25 +54,25 @@ export const AlimTHeaderColumn = [
     cell: ({ row }) => {
       const rowStatus = row.original.status;
       switch (rowStatus) {
-        case "수락":
+        case MATCHING_STATUS.ACCEPT:
           return <span className="text-primary">수락</span>;
-        case "전송":
+        case MATCHING_STATUS.SENT:
           return <span className="text-[#1DAD5D]">전송</span>;
-        case "대기":
+        case MATCHING_STATUS.WAITING:
           return <span className="text-[#C6AA39]">대기</span>;
-        case "거절":
+        case MATCHING_STATUS.REJECT:
           return <span className="text-[#C00D0D]">거절</span>;
-        case "입금단계":
+        case MATCHING_STATUS.PAYMENT:
           return <span className="text-[#ce83eb]">입금단계</span>;
-        case "매칭":
+        case MATCHING_STATUS.MATCHING:
           return <span className="text-[#2563EB]">매칭*</span>;
-        case "최종매칭":
+        case MATCHING_STATUS.FINAL_MATCH:
           return <span className="text-[#7C3AED]">최종매칭*</span>;
-        case "과외결렬":
+        case MATCHING_STATUS.TUTORING_END:
           return <span className="text-[#6B7280]">과외결렬</span>;
-        case "일시중단":
+        case MATCHING_STATUS.TEMPORARY_STOP:
           return <span className="text-yellow-500">일시중단</span>;
-        case "중단":
+        case MATCHING_STATUS.STOP:
           return <span className="text-red-500">중단</span>;
       }
     },

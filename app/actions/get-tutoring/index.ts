@@ -1,6 +1,8 @@
 import { z } from "zod";
 import { AxiosError } from "axios";
 
+import { MATCHING_STATUS } from "@/constants/matching";
+
 import { httpService } from "app/utils/httpService";
 
 const dayTimeSchema = z.object({
@@ -24,17 +26,17 @@ const tutoringResponse = z.object({
   favoriteStyle: z.string(),
   parentDayTimes: z.array(dayTimeSchema),
   teacherDayTimes: z.array(dayTimeSchema),
-  matchStatus: z.union([
-    z.literal("거절"),
-    z.literal("대기"),
-    z.literal("수락"),
-    z.literal("전송"),
-    z.literal("입금단계"),
-    z.literal("매칭"),
-    z.literal("최종매칭"),
-    z.literal("과외결렬"),
-    z.literal("일시중단"),
-    z.literal("중단"),
+  matchStatus: z.enum([
+    MATCHING_STATUS.REJECT,
+    MATCHING_STATUS.WAITING,
+    MATCHING_STATUS.ACCEPT,
+    MATCHING_STATUS.SENT,
+    MATCHING_STATUS.PAYMENT,
+    MATCHING_STATUS.MATCHING,
+    MATCHING_STATUS.FINAL_MATCH,
+    MATCHING_STATUS.TUTORING_END,
+    MATCHING_STATUS.TEMPORARY_STOP,
+    MATCHING_STATUS.STOP,
   ]),
 });
 
