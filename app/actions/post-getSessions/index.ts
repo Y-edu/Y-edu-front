@@ -12,8 +12,37 @@ export interface SessionResponse {
   classMinute: number;
 }
 
+export interface SortInfo {
+  empty: boolean;
+  sorted: boolean;
+  unsorted: boolean;
+}
+
+export interface Pageable {
+  pageNumber: number;
+  pageSize: number;
+  sort: SortInfo;
+  offset: number;
+  paged: boolean;
+  unpaged: boolean;
+}
+
+export interface SchedulePageInfo {
+  content: SessionResponse[];
+  pageable: Pageable;
+  totalElements: number;
+  totalPages: number;
+  last: boolean;
+  size: number;
+  number: number;
+  sort: SortInfo;
+  numberOfElements: number;
+  first: boolean;
+  empty: boolean;
+}
+
 export interface SessionsResponse {
-  schedules: Record<string, SessionResponse[]>;
+  schedules: Record<string, SchedulePageInfo>;
 }
 
 export const getSessions = async (token: string): Promise<SessionsResponse> => {
