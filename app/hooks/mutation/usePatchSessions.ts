@@ -68,7 +68,7 @@ export function useSessionMutations() {
   const completeMutation = useMutation({
     mutationFn: patchSessionComplete,
     onSuccess: async (_data, variables: CompleteSessionVariables) => {
-      const { token, classSessionId } = variables;
+      const { token, classSessionId, date } = variables;
       if (token) {
         await queryClient.invalidateQueries({
           queryKey: ["schedules", token],
@@ -81,8 +81,13 @@ export function useSessionMutations() {
       }
       const params = new URLSearchParams(searchParams.toString());
       params.delete("sessionId");
+      const classId = searchParams.get("classId");
+      if (classId) {
+        params.set("classId", classId);
+      }
+      params.set("show-completed", "true");
       router.push(`/teacher/session-schedule?${params.toString()}`);
-      toast.success(`${variables.date} 과외가 완료되었어요`);
+      toast.success(`${date} 과외가 완료되었어요`);
     },
     onError: (error) => {
       toast.warning(getErrorMessage(error));
