@@ -15,7 +15,7 @@ interface CompleteSessionVariables {
   token: string;
   classSessionId: string;
   classMinute: number;
-  homeworkPercentage: number;
+  homework: string;
   understanding: string;
   date: string;
 }

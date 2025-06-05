@@ -6,7 +6,7 @@ export interface SessionResponse {
   cancelReason: string | null;
   complete: boolean;
   understanding: string | null;
-  homeworkPercentage: number | null;
+  homework: string | null;
   classDate: string;
   classStart: string;
   classMinute: number;
