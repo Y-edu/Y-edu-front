@@ -135,7 +135,7 @@ export default function SessionListCard({
                   ? "bg-primary text-white"
                   : btn.variant === "secondary"
                     ? "bg-primaryTint text-primary"
-                    : "border border-gray-300 bg-white text-gray-600",
+                    : "mt-3 border border-gray-300 bg-white text-gray-600",
               )}
             >
               {btn.label}
