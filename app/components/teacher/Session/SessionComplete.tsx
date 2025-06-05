@@ -121,9 +121,7 @@ export default function SessionComplete({
               unit="분"
               status={isInvalidMinute ? "warning" : "default"}
               errorMessage={
-                isInvalidMinute
-                  ? "200 이하 숫자만, 소수점 없이 입력해주세요."
-                  : ""
+                isInvalidMinute ? "200 이하 숫자만 입력해주세요." : ""
               }
             />
           )}
@@ -150,7 +148,7 @@ export default function SessionComplete({
         </DivWithLabel>
       </div>
       <DivWithLabel
-        label="아이의 이해도"
+        label="아이의 수업 이해도와 참여도를 알려주세요"
         labelClassName="text-[20px]"
         className="mb-40 mt-5"
       >
