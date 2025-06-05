@@ -42,7 +42,8 @@ export default function SessionListCard({
   const searchParams = useSearchParams();
   const { sheetType, openSheet, closeSheet, isSheetOpen } = useBottomSheet();
 
-  const defaultOpen = showMoneyReminder;
+  const defaultOpen =
+    showMoneyReminder || actions.some((btn) => btn.value === "view_review");
   const [isOpen, setIsOpen] = useState(defaultOpen);
   const isToggle = !defaultOpen;
 
