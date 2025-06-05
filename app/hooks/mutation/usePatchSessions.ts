@@ -10,6 +10,7 @@ import {
 } from "@/actions/patch-sessions";
 import { useGlobalSnackbar } from "@/providers/GlobalSnackBar";
 import { getErrorMessage } from "@/utils/getErrorMessage";
+import { getSchedules } from "@/actions/get-schedules";
 
 interface CompleteSessionVariables {
   token: string;
@@ -81,12 +82,25 @@ export function useSessionMutations() {
       }
       const params = new URLSearchParams(searchParams.toString());
       params.delete("sessionId");
-      const classId = searchParams.get("classId");
+
+      let classId = searchParams.get("classId");
+      if (!classId && token) {
+        try {
+          const schedules = await getSchedules({ token });
+          const active = schedules.find((item) => item.send);
+          if (active?.applicationFormId) {
+            classId = active.applicationFormId;
+          }
+        } catch {
+          // 실패해도 무시
+        }
+      }
       if (classId) {
         params.set("classId", classId);
       }
       params.set("show-completed", "true");
       router.push(`/teacher/session-schedule?${params.toString()}`);
+
       toast.success(`${date} 과외가 완료되었어요`);
     },
     onError: (error) => {
