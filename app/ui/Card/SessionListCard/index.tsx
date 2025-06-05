@@ -42,7 +42,7 @@ export default function SessionListCard({
   const searchParams = useSearchParams();
   const { sheetType, openSheet, closeSheet, isSheetOpen } = useBottomSheet();
 
-  const defaultOpen = statusLabel === "오늘" || showMoneyReminder;
+  const defaultOpen = showMoneyReminder;
   const [isOpen, setIsOpen] = useState(defaultOpen);
   const isToggle = !defaultOpen;
 
@@ -87,24 +87,21 @@ export default function SessionListCard({
           {statusLabel && (
             <span
               className={cn(
-                "mr-2 font-semibold",
-                statusLabel === "오늘"
-                  ? "text-[16px] text-primary"
-                  : statusLabel === "휴강"
-                    ? "text-[16px] text-red-500"
-                    : "text-[14px] text-gray-500",
+                "mr-2 text-[16px] font-semibold",
+                statusLabel === "오늘" && "text-primary",
+                statusLabel === "휴강" && "text-red-500",
               )}
             >
               {statusLabel}
             </span>
           )}
           <span className="text-[16px] font-[600] text-gray-900">
-            {date.toLocaleDateString("ko-KR", {
-              month: "long",
-              day: "numeric",
-              weekday: "short",
-            })}{" "}
-            {time}
+            {`${date.getMonth() + 1}.${date.getDate()} ${date.toLocaleDateString(
+              "ko-KR",
+              {
+                weekday: "long",
+              },
+            )} ${time}`}
           </span>
         </div>
         <IconDown
@@ -131,7 +128,7 @@ export default function SessionListCard({
               }}
               className={cn(
                 { "mt-3": isToggle && isOpen },
-                "h-11 flex-1 whitespace-normal text-[16px] font-[700]",
+                "h-11 flex-1 whitespace-normal px-0 text-[16px] font-[700]",
                 "max-[355px]:text-sm",
                 btn.variant === "primary"
                   ? "bg-primary text-white"
