@@ -10,12 +10,13 @@ import {
 } from "@/actions/patch-sessions";
 import { useGlobalSnackbar } from "@/providers/GlobalSnackBar";
 import { getErrorMessage } from "@/utils/getErrorMessage";
+import { getSchedules } from "@/actions/get-schedules";
 
 interface CompleteSessionVariables {
   token: string;
   classSessionId: string;
   classMinute: number;
-  homeworkPercentage: number;
+  homework: string;
   understanding: string;
   date: string;
 }
@@ -68,7 +69,7 @@ export function useSessionMutations() {
   const completeMutation = useMutation({
     mutationFn: patchSessionComplete,
     onSuccess: async (_data, variables: CompleteSessionVariables) => {
-      const { token, classSessionId } = variables;
+      const { token, classSessionId, date } = variables;
       if (token) {
         await queryClient.invalidateQueries({
           queryKey: ["schedules", token],
@@ -81,8 +82,26 @@ export function useSessionMutations() {
       }
       const params = new URLSearchParams(searchParams.toString());
       params.delete("sessionId");
+
+      let classId = searchParams.get("classId");
+      if (!classId && token) {
+        try {
+          const schedules = await getSchedules({ token });
+          const active = schedules.find((item) => item.send);
+          if (active?.applicationFormId) {
+            classId = active.applicationFormId;
+          }
+        } catch {
+          // 실패해도 무시
+        }
+      }
+      if (classId) {
+        params.set("classId", classId);
+      }
+      params.set("show-completed", "true");
       router.push(`/teacher/session-schedule?${params.toString()}`);
-      toast.success(`${variables.date} 과외가 완료되었어요`);
+
+      toast.success(`${date} 과외가 완료되었어요`);
     },
     onError: (error) => {
       toast.warning(getErrorMessage(error));

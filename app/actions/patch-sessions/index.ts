@@ -36,26 +36,26 @@ export function patchSessionComplete({
   classSessionId,
   classMinute,
   understanding,
-  homeworkPercentage,
+  homework,
 }: {
   token?: string;
   classSessionId?: string;
   classMinute: number;
   understanding: string;
-  homeworkPercentage: number;
+  homework: string;
 }) {
   if (classSessionId) {
     return httpService.patch(`/sessions/${classSessionId}/complete`, {
       classSessionId,
       classMinute,
       understanding,
-      homeworkPercentage,
+      homework,
     });
   }
   return httpService.patch("/token/sessions/complete", {
     token,
     classMinute,
     understanding,
-    homeworkPercentage,
+    homework,
   });
 }

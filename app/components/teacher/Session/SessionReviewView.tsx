@@ -5,16 +5,16 @@ import { HOMEWORK_PROGRESS_LIST } from "@/constants/session/homework";
 import Radio from "@/ui/Radio";
 
 interface SessionReviewViewProps {
-  homeworkPercentage: number;
+  homework: string;
   understanding: string;
 }
 
 export default function SessionReviewView({
-  homeworkPercentage,
+  homework,
   understanding,
 }: SessionReviewViewProps) {
   const selectedItem = HOMEWORK_PROGRESS_LIST.find(
-    (item) => item.value === homeworkPercentage,
+    (item) => item.label === homework,
   );
 
   return (
@@ -25,13 +25,7 @@ export default function SessionReviewView({
       >
         {selectedItem && (
           <div className="py-4">
-            <Radio
-              label={selectedItem.label}
-              selected
-              {...(selectedItem.value !== 0 && {
-                subLabel: `${selectedItem.value}%`,
-              })}
-            />
+            <Radio label={selectedItem.label} selected />
           </div>
         )}
       </DivWithLabel>

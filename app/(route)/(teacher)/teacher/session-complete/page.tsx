@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
 import { useEffect, useMemo } from "react";
@@ -37,9 +38,10 @@ export default function SessionCompletePage() {
 
   // sessionId가 있을 경우 sessions에서 데이터 추출
   const sessionFromCache = classSessionId
-    ? Object.values(sessions?.schedules ?? {})
-        .flat()
-        .find((session) => session.classSessionId === Number(classSessionId))
+    ? (Object.values(sessions?.schedules ?? {})
+        .flatMap((schedulePage) => schedulePage.content)
+        .find((session) => session.classSessionId === Number(classSessionId)) ??
+      null)
     : null;
 
   const activeSessionData = useMemo(() => {
@@ -79,10 +81,7 @@ export default function SessionCompletePage() {
   const goToSchedulePage = (classId?: string) => {
     const params = new URLSearchParams(searchParams.toString());
     params.delete("sessionId");
-    if (classId)
-      router.push(
-        `/teacher/session-schedule?${params.toString()}&classId=${classId}`,
-      );
+    if (classId) router.push(`/teacher/session-schedule?${params.toString()}`);
     else router.push(`/teacher/session-schedule?${params.toString()}`);
   };
 

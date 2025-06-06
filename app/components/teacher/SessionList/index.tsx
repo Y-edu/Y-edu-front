@@ -60,7 +60,7 @@ export default function SessionList({ classId, sessions }: SessionListProps) {
             router.push(`/teacher/session-change?${params.toString()}`);
           }}
         >
-          전체 일정 변경
+          정규 일정 변경
         </Button>
       </section>
       {filtered.length === 0 ? (

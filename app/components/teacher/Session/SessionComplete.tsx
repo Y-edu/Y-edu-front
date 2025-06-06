@@ -28,9 +28,7 @@ export default function SessionComplete({
   endTime,
   classMinute,
 }: SessionCompleteProps) {
-  const [homeworkPercentage, setHomeworkPercentage] = useState<number | null>(
-    null,
-  );
+  const [homework, setHomework] = useState<string | null>(null);
   const [understanding, setUnderstanding] = useState("");
   const [showClassMinuteInput, setShowClassMinuteInput] = useState(false);
   const [userClassMinute, setUserClassMinute] = useState("");
@@ -44,9 +42,7 @@ export default function SessionComplete({
     !showClassMinuteInput || (userClassMinute !== "" && !isInvalidMinute);
 
   const isFormValid =
-    homeworkPercentage !== null &&
-    understanding.trim().length > 0 &&
-    isCustomMinuteValid;
+    homework !== null && understanding.trim().length > 0 && isCustomMinuteValid;
 
   const handleCustomMinuteChange = (rawValue: string) => {
     const onlyDigits = rawValue.replace(/[^0-9]/g, "");
@@ -54,13 +50,13 @@ export default function SessionComplete({
   };
 
   const handleComplete = () => {
-    if (!isFormValid || homeworkPercentage === null) return;
+    if (!isFormValid || homework === null) return;
 
     const submitTime = new Date();
     const classEndTime = new Date(endTime);
 
     mixpanelTrack("수업 리뷰 전송", {
-      homeworkPercentage,
+      homework,
       understanding: understanding.trim(),
       submitTime: submitTime.toISOString(),
       endTime,
@@ -78,7 +74,7 @@ export default function SessionComplete({
       token,
       classSessionId,
       classMinute: finalClassMinute,
-      homeworkPercentage,
+      homework,
       understanding: understanding.trim(),
       date,
     });
@@ -121,9 +117,7 @@ export default function SessionComplete({
               unit="분"
               status={isInvalidMinute ? "warning" : "default"}
               errorMessage={
-                isInvalidMinute
-                  ? "200 이하 숫자만, 소수점 없이 입력해주세요."
-                  : ""
+                isInvalidMinute ? "200 이하 숫자만 입력해주세요." : ""
               }
             />
           )}
@@ -134,23 +128,20 @@ export default function SessionComplete({
           className="w-full"
         >
           {HOMEWORK_PROGRESS_LIST.map((item) => (
-            <div key={item.value} className="py-4">
+            <div key={item.label} className="py-4">
               <Radio
                 label={item.label}
-                selected={homeworkPercentage === item.value}
+                selected={homework === item.label}
                 onClick={() => {
-                  setHomeworkPercentage(item.value);
+                  setHomework(item.label);
                 }}
-                {...(item.value !== 0 && {
-                  subLabel: `${item.value}%`,
-                })}
               />
             </div>
           ))}
         </DivWithLabel>
       </div>
       <DivWithLabel
-        label="아이의 이해도"
+        label="아이의 수업 이해도와 참여도를 알려주세요"
         labelClassName="text-[20px]"
         className="mb-40 mt-5"
       >
