@@ -66,7 +66,7 @@ export default function SessionList({ classId, sessions }: SessionListProps) {
       {filtered.length === 0 ? (
         <div className="text-center text-gray-500">조회된 일정이 없습니다.</div>
       ) : (
-        filtered.map((session) => (
+        filtered.map((session, idx) => (
           <SessionListCard
             classSessionId={session.id}
             key={session.id}
@@ -75,6 +75,7 @@ export default function SessionList({ classId, sessions }: SessionListProps) {
             statusLabel={session.statusLabel}
             actions={session.actions}
             showMoneyReminder={session.showMoneyReminder}
+            initialOpen={idx < 3}
           />
         ))
       )}
