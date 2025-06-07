@@ -7,9 +7,10 @@ export function useGetSessions(
   page: number = 0,
   size: number = 3,
   isComplete: boolean = false,
+  classId?: string,
 ) {
   return useQuery({
-    queryKey: ["sessions", token, page, size, isComplete],
+    queryKey: ["sessions", token, page, size, isComplete, classId],
     queryFn: async () => {
       const res = await getSessions(token, page, size, isComplete);
       return res;
