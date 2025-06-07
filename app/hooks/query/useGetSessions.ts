@@ -2,11 +2,16 @@ import { useQuery } from "@tanstack/react-query";
 
 import { getSessions } from "@/actions/post-getSessions";
 
-export function useGetSessions(token: string) {
+export function useGetSessions(
+  token: string,
+  page: number = 0,
+  size: number = 3,
+  isComplete: boolean = false,
+) {
   return useQuery({
-    queryKey: ["sessions", token],
+    queryKey: ["sessions", token, page, size, isComplete],
     queryFn: async () => {
-      const res = await getSessions(token);
+      const res = await getSessions(token, page, size, isComplete);
       return res;
     },
     staleTime: 0,
