@@ -50,6 +50,7 @@ export default function SessionList({ classId }: SessionListProps) {
   const params = new URLSearchParams(searchParams.toString());
 
   const changeFilter = (next: boolean) => {
+    if (next === isComplete) return;
     params.set("is-complete", String(next));
     router.push(`${pathName}?${params.toString()}`);
     setIsComplete(next);
@@ -123,7 +124,7 @@ export default function SessionList({ classId }: SessionListProps) {
           정규 일정 변경
         </Button>
       </section>
-      {items.length === 0 ? (
+      {isInitialLoading || isFetching ? null : items.length === 0 ? (
         <div className="text-center text-gray-500">조회된 일정이 없습니다.</div>
       ) : (
         items.map((session, idx) => (

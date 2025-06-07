@@ -27,7 +27,7 @@ export default function TeacherSessionScheduleListPage() {
 
   const tabs = Object.keys(data!.schedules).map((classId) => ({
     trigger: classId,
-    content: <SessionList classId={classId} />,
+    content: <SessionList key={classId} classId={classId} />,
   }));
 
   return (
