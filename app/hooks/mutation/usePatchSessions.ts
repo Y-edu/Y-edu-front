@@ -98,7 +98,7 @@ export function useSessionMutations() {
       if (classId) {
         params.set("classId", classId);
       }
-      params.set("show-completed", "true");
+      params.set("is-complete", "true");
       router.push(`/teacher/session-schedule?${params.toString()}`);
 
       toast.success(`${date} 과외가 완료되었어요`);
