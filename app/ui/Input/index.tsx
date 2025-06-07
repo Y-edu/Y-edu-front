@@ -10,6 +10,7 @@ interface InputProps {
   unit?: string;
   errorMessage?: string;
   status?: InputStatus;
+  onBlur?: React.FocusEventHandler<HTMLInputElement>;
 }
 
 export default function Input({
@@ -19,6 +20,7 @@ export default function Input({
   unit,
   errorMessage,
   status = "default",
+  onBlur,
 }: InputProps) {
   return (
     <div className="flex w-full flex-col gap-2">
@@ -29,6 +31,7 @@ export default function Input({
           value={value}
           onChange={(e) => onChange(e.target.value)}
           placeholder={placeholder}
+          onBlur={onBlur}
           className={cn(
             "w-full rounded-lg border p-4 pr-10 outline-none transition-colors placeholder:text-gray-400",
             status === "warning"

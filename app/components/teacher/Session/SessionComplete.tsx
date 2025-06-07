@@ -119,6 +119,9 @@ export default function SessionComplete({
               errorMessage={
                 isInvalidMinute ? "200 이하 숫자만 입력해주세요." : ""
               }
+              onBlur={() => {
+                document.querySelector<HTMLElement>('[role="radio"]')?.focus();
+              }}
             />
           )}
         </DivWithLabel>

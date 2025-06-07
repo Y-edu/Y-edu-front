@@ -27,6 +27,7 @@ export interface SessionListCardProps {
   actions: ActionButton[];
   showMoneyReminder?: boolean;
   className?: string;
+  initialOpen?: boolean;
 }
 
 export default function SessionListCard({
@@ -37,13 +38,16 @@ export default function SessionListCard({
   actions,
   showMoneyReminder,
   className = "",
+  initialOpen = false,
 }: SessionListCardProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { sheetType, openSheet, closeSheet, isSheetOpen } = useBottomSheet();
 
   const defaultOpen =
-    showMoneyReminder || actions.some((btn) => btn.value === "view_review");
+    initialOpen ||
+    showMoneyReminder ||
+    actions.some((btn) => btn.value === "view_review");
   const [isOpen, setIsOpen] = useState(defaultOpen);
   const isToggle = !defaultOpen;
 
@@ -113,7 +117,7 @@ export default function SessionListCard({
         />
       </div>
       {showMoneyReminder && (
-        <p className="mb-4 text-[14px] text-gray-500">
+        <p className="text-[14px] text-gray-500">
           보수를 받으려면 과외 완료를 꼭 눌러주세요
         </p>
       )}
@@ -128,7 +132,7 @@ export default function SessionListCard({
                 handleActionClick(btn.value);
               }}
               className={cn(
-                { "mt-3": isToggle && isOpen },
+                { "mt-3": isOpen },
                 "h-11 flex-1 whitespace-normal px-0 text-[16px] font-[700]",
                 "max-[355px]:text-sm",
                 btn.variant === "primary"
