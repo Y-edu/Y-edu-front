@@ -25,14 +25,10 @@ export default function TeacherSessionScheduleListPage() {
     );
   }
 
-  const tabs = Object.entries(data!.schedules).map(
-    ([classId, schedulePage]) => ({
-      trigger: classId,
-      content: (
-        <SessionList classId={classId} sessions={schedulePage.content} />
-      ),
-    }),
-  );
+  const tabs = Object.keys(data!.schedules).map((classId) => ({
+    trigger: classId,
+    content: <SessionList classId={classId} />,
+  }));
 
   return (
     <ErrorBoundary fallback={<ErrorUI />}>
