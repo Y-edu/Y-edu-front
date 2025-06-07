@@ -13,7 +13,7 @@ import TabBar from "@/ui/Bar/TabBar";
 export default function TeacherSessionScheduleListPage() {
   const searchParams = useSearchParams();
   const token = searchParams.get("token") ?? "";
-  const { data, isLoading } = useGetSessions(token);
+  const { data, isLoading } = useGetSessions(token, 0, 3);
 
   const currentMonth = new Date().getMonth() + 1;
 

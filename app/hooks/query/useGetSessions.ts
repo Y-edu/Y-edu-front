@@ -4,8 +4,8 @@ import { getSessions } from "@/actions/post-getSessions";
 
 export function useGetSessions(
   token: string,
-  page: number = 0,
-  size: number = 3,
+  page: number,
+  size: number,
   isComplete: boolean = false,
   classId?: string,
 ) {

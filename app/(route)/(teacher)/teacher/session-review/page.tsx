@@ -17,8 +17,10 @@ export default function SessionReviewPage() {
   const token = searchParams.get("token") ?? "";
   const sessionIdStr = searchParams.get("sessionId") ?? "";
   const sessionId = Number(sessionIdStr);
+  const classId = searchParams.get("classId")!;
+  const isComplete = searchParams.get("is-complete") === "true";
 
-  const { data, isLoading } = useGetSessions(token);
+  const { data, isLoading } = useGetSessions(token, 0, 20, isComplete, classId);
 
   const targetSession = useMemo(() => {
     if (!data) return undefined;
