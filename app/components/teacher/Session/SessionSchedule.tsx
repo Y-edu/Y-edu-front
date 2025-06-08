@@ -51,6 +51,8 @@ export default function SessionSchedule(props: SessionScheduleProps) {
     isPending,
   } = useSessionSchedule({ token, classMatchingId, initialSchedules });
   const [isTimePickerOpen, setIsTimePickerOpen] = useState(false);
+  const [isChangeStartDateSheetOpen, setIsChangeStartDateSheetOpen] =
+    useState(false);
 
   const handleOpenTimePicker = (day: string) => {
     setSelectedDayForTimePicker(day);
@@ -66,7 +68,7 @@ export default function SessionSchedule(props: SessionScheduleProps) {
   }
 
   return (
-    <div className={cn("flex flex-col gap-10 px-5", className)}>
+    <div className={cn("flex flex-col gap-[40px] px-5", className)}>
       <TitleSection>
         <TitleSection.Title className="whitespace-pre">
           {title}
@@ -86,7 +88,7 @@ export default function SessionSchedule(props: SessionScheduleProps) {
           </div>
         </DivWithLabel>
       </div>
-      <div className="flex flex-col gap-[12px] pb-28">
+      <div className="flex flex-col gap-[12px]">
         {isTimeVariesByDay ? (
           sortedSelectedDays.map((day) => {
             const matched = schedules.find((s) => s.day === day) || null;
@@ -126,24 +128,52 @@ export default function SessionSchedule(props: SessionScheduleProps) {
           label="요일마다 수업 시간이 달라요"
           isChecked={isTimeVariesByDay}
           onChange={() => setIsTimeVariesByDay((prev) => !prev)}
-          className="mt-[4px]"
+          className="h-[40px]"
         />
+      </div>
+      <DivWithLabel label="바뀐 일정을 언제부터 적용할까요?">
+        <SelectButton
+          text={
+            commonSchedule &&
+            `${commonSchedule.period} ${commonSchedule.time} ${commonSchedule.classMinute}분 진행`
+          }
+          isActive={isTimePickerOpen && selectedDayForTimePicker === ""}
+          onClick={() => handleOpenTimePicker("")}
+        />
+      </DivWithLabel>
 
-        {/* 나중에 toast alert 추가하기 */}
-        <div className="fixed inset-x-0 bottom-0 flex justify-center bg-white p-4 shadow-lg">
-          <Button
-            className="w-[335px]"
-            disabled={!isScheduleValid}
-            onClick={handleSubmit}
-          >
-            완료하기
-          </Button>
-        </div>
+      {/* 나중에 toast alert 추가하기 */}
+      <div className="fixed inset-x-0 bottom-0 flex justify-center bg-white p-4 shadow-lg">
+        <Button
+          className="w-[335px]"
+          disabled={!isScheduleValid}
+          onClick={handleSubmit}
+        >
+          완료하기
+        </Button>
       </div>
 
       <BottomSheet
         isOpen={isTimePickerOpen}
         onClose={() => setIsTimePickerOpen(false)}
+      >
+        <TimePicker
+          day={selectedDayForTimePicker}
+          schedule={
+            isTimeVariesByDay
+              ? schedules.find((s) => s.day === selectedDayForTimePicker)
+              : commonSchedule
+          }
+          onSelect={(selected: DisplaySchedule) => {
+            updateSchedule(selected);
+            setIsTimePickerOpen(false);
+          }}
+        />
+      </BottomSheet>
+
+      <BottomSheet
+        isOpen={isChangeStartDateSheetOpen}
+        onClose={() => setIsChangeStartDateSheetOpen(false)}
       >
         <TimePicker
           day={selectedDayForTimePicker}
