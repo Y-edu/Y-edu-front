@@ -326,13 +326,14 @@ export function useSessionSchedule({
       initialSchedules,
     );
 
-    return daysChanged || timesChanged || startDate;
+    return (daysChanged || timesChanged) && startDate;
   }, [
     isTimeVariesByDay,
     schedules,
     selectedDays,
     commonSchedule,
     initialSchedules,
+    startDate,
   ]);
 
   const handleSubmit = () => {
