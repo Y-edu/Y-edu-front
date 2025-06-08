@@ -10,6 +10,7 @@ export interface SchedulesRequestProps {
   token?: string;
   classMatchingId?: number;
   schedules: ScheduleDTO[];
+  changeStartDate: string | undefined;
 }
 
 export interface SessionDTO {
@@ -28,11 +29,7 @@ export interface SchedulesResponse {
 }
 
 export async function putSchedules(props: SchedulesRequestProps) {
-  const { token, classMatchingId, schedules } = props;
-
   await httpService.put<SchedulesResponse>("/schedules", {
-    token,
-    classMatchingId,
-    schedules,
+    ...props,
   });
 }

@@ -9,5 +9,6 @@ export function useGetSchedules({ token }: { token: string }) {
     staleTime: 1000 * 60 * 60,
     gcTime: 1000 * 60 * 60 * 24,
     throwOnError: true,
+    enabled: !!token,
   });
 }

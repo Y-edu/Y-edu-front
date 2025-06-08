@@ -1,4 +1,5 @@
 "use client";
+
 import { useState } from "react";
 import { CircularProgress } from "@mui/material";
 
@@ -18,6 +19,7 @@ import {
   DisplaySchedule,
   Schedule,
 } from "./useSessionSchedule";
+import StartDatePicker from "./StartDatePicker";
 
 export interface SessionScheduleProps {
   title: string;
@@ -25,16 +27,39 @@ export interface SessionScheduleProps {
   classMatchingId?: number;
   className?: string;
   initialSchedules?: Schedule[];
+  startDateOptions?: string[];
 }
 
 export default function SessionSchedule(props: SessionScheduleProps) {
   const {
     title,
     className = "",
-    token,
+    token = "",
     classMatchingId,
     initialSchedules = [],
+    startDateOptions,
   } = props;
+
+  const [isTimePickerOpen, setIsTimePickerOpen] = useState(false);
+  const [isChangeStartDateSheetOpen, setIsChangeStartDateSheetOpen] =
+    useState(false);
+
+  const [startDate, setStartDate] = useState<string>("");
+
+  const formatDateToDisplay = (dateStr: string) => {
+    if (!dateStr) return "";
+
+    const date = new Date(dateStr);
+    if (isNaN(date.getTime())) return "";
+
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    const dayOfWeekKor = ["일", "월", "화", "수", "목", "금", "토"];
+    const weekday = dayOfWeekKor[date.getDay()];
+
+    return `${month}월 ${day}일 (${weekday})`;
+  };
+
   const {
     selectedDays,
     toggleDay,
@@ -49,14 +74,21 @@ export default function SessionSchedule(props: SessionScheduleProps) {
     handleSubmit,
     isScheduleValid,
     isPending,
-  } = useSessionSchedule({ token, classMatchingId, initialSchedules });
-  const [isTimePickerOpen, setIsTimePickerOpen] = useState(false);
-  const [isChangeStartDateSheetOpen, setIsChangeStartDateSheetOpen] =
-    useState(false);
+  } = useSessionSchedule({
+    token,
+    classMatchingId,
+    initialSchedules,
+    startDate,
+  });
 
   const handleOpenTimePicker = (day: string) => {
     setSelectedDayForTimePicker(day);
     setIsTimePickerOpen(true);
+  };
+
+  const handleSelectStartDate = (date: string) => {
+    setStartDate(date);
+    setIsChangeStartDateSheetOpen(false);
   };
 
   if (isPending) {
@@ -131,16 +163,15 @@ export default function SessionSchedule(props: SessionScheduleProps) {
           className="h-[40px]"
         />
       </div>
-      <DivWithLabel label="바뀐 일정을 언제부터 적용할까요?">
-        <SelectButton
-          text={
-            commonSchedule &&
-            `${commonSchedule.period} ${commonSchedule.time} ${commonSchedule.classMinute}분 진행`
-          }
-          isActive={isTimePickerOpen && selectedDayForTimePicker === ""}
-          onClick={() => handleOpenTimePicker("")}
-        />
-      </DivWithLabel>
+      {initialSchedules.length !== 0 && (
+        <DivWithLabel label="바뀐 일정을 언제부터 적용할까요?">
+          <SelectButton
+            text={startDate ? formatDateToDisplay(startDate) : "선택해주세요"}
+            isActive={isTimePickerOpen && selectedDayForTimePicker === ""}
+            onClick={() => setIsChangeStartDateSheetOpen(true)}
+          />
+        </DivWithLabel>
+      )}
 
       {/* 나중에 toast alert 추가하기 */}
       <div className="fixed inset-x-0 bottom-0 flex justify-center bg-white p-4 shadow-lg">
@@ -171,23 +202,17 @@ export default function SessionSchedule(props: SessionScheduleProps) {
         />
       </BottomSheet>
 
-      <BottomSheet
-        isOpen={isChangeStartDateSheetOpen}
-        onClose={() => setIsChangeStartDateSheetOpen(false)}
-      >
-        <TimePicker
-          day={selectedDayForTimePicker}
-          schedule={
-            isTimeVariesByDay
-              ? schedules.find((s) => s.day === selectedDayForTimePicker)
-              : commonSchedule
-          }
-          onSelect={(selected: DisplaySchedule) => {
-            updateSchedule(selected);
-            setIsTimePickerOpen(false);
-          }}
-        />
-      </BottomSheet>
+      {startDateOptions && (
+        <BottomSheet
+          isOpen={isChangeStartDateSheetOpen}
+          onClose={() => setIsChangeStartDateSheetOpen(false)}
+        >
+          <StartDatePicker
+            onSelect={(selected: string) => handleSelectStartDate(selected)}
+            options={startDateOptions}
+          />
+        </BottomSheet>
+      )}
     </div>
   );
 }

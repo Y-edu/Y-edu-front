@@ -1,76 +1,104 @@
 import { useMemo, useState } from "react";
-import { addMonths, format, getDaysInMonth } from "date-fns";
-import { ko } from "date-fns/locale";
 
-const today = new Date();
+interface UseStartDatePickerReturn {
+  options: {
+    year: string[];
+    month: string[];
+    day: string[];
+  };
+  selected: {
+    year: string;
+    month: string;
+    day: string;
+  };
+  displaySelected: {
+    year: string;
+    month: string;
+    day: string;
+  };
+  handleChangeMonth: (month: string) => void;
+  setSelected: React.Dispatch<
+    React.SetStateAction<{
+      year: string;
+      month: string;
+      day: string;
+    }>
+  >;
+}
 
-const generateMonthOptions = () =>
-  Array.from({ length: 3 }, (_, i) => format(addMonths(today, i), "M월"));
+const dayOfWeekKor = ["일", "월", "화", "수", "목", "금", "토"];
 
-const getDaysArray = (year: number, month: number): string[] => {
-  const daysInMonth = getDaysInMonth(new Date(year, month));
-  return Array.from({ length: daysInMonth }, (_, i) => {
-    const currentDate = new Date(year, month, i + 1);
-    const dayOfWeek = format(currentDate, "eee", { locale: ko });
-    return `${i + 1}일 (${dayOfWeek})`;
-  });
-};
-
-type OptionKey = "month" | "day" | "period" | "hour" | "minute";
-
-export const useStartDatePicker = (date?: string) => {
-  const MONTHS = useMemo(() => generateMonthOptions(), []);
-
-  const getInitialSelected = () => {
-    const {
-      year = today.getFullYear(),
-      month = `${today.getMonth() + 1}월`,
-      day = `1일 (${today.getDay()})`,
-    } = date ?? {};
+export const useStartDatePicker = (
+  startDateOptions: string[],
+): UseStartDatePickerReturn => {
+  const [selected, setSelected] = useState(() => {
+    const fallback =
+      startDateOptions[0] ?? new Date().toISOString().slice(0, 10);
+    const date = new Date(fallback);
 
     return {
-      year,
-      month,
-      day,
+      year: String(date.getFullYear()),
+      month: String(date.getMonth() + 1).padStart(2, "0"),
+      day: String(date.getDate()).padStart(2, "0"),
     };
+  });
+
+  const dateMap = useMemo(() => {
+    const result: Record<string, Set<string>> = {};
+    startDateOptions.forEach((dateStr) => {
+      const date = new Date(dateStr);
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const day = String(date.getDate()).padStart(2, "0");
+      if (!result[month]) result[month] = new Set();
+      result[month].add(day);
+    });
+    return result;
+  }, [startDateOptions]);
+
+  const options = useMemo(() => {
+    const monthList = Object.keys(dateMap)
+      .sort()
+      .map((month) => `${parseInt(month)}월`);
+
+    const dayList = Array.from(dateMap[selected.month] || [])
+      .sort()
+      .map((day) => {
+        const fullDate = `${selected.year}-${selected.month}-${day}`;
+        const weekday = dayOfWeekKor[new Date(fullDate).getDay()];
+        return `${parseInt(day)}일 (${weekday})`;
+      });
+
+    return {
+      year: [],
+      month: monthList,
+      day: dayList,
+    };
+  }, [dateMap, selected.month]);
+
+  const handleChangeMonth = (displayMonth: string) => {
+    const month = displayMonth.replace("월", "").padStart(2, "0");
+    setSelected((prev) => {
+      const newDayList = Array.from(dateMap[month] || []).sort();
+      const defaultDay = newDayList[0] || "01";
+      return { ...prev, month, day: defaultDay };
+    });
   };
 
-  const [selected, setSelected] = useState(getInitialSelected);
-
-  const handleChangeMonth = (val: string) => {
-    const monthIndex = MONTHS.findIndex((m) => m === val);
-    const newDate = addMonths(today, monthIndex);
-
-    setSelected((prev) => ({
-      ...prev,
-      year: newDate.getFullYear(),
-      month: val,
-    }));
+  const displaySelected = {
+    year: selected.year,
+    month: `${parseInt(selected.month)}월`,
+    day: (() => {
+      const fullDate = `${selected.year}-${selected.month}-${selected.day}`;
+      const weekday = dayOfWeekKor[new Date(fullDate).getDay()];
+      return `${parseInt(selected.day)}일 (${weekday})`;
+    })(),
   };
-
-  const handleChange = (key: OptionKey, value: string) => {
-    setSelected((prev) => ({
-      ...prev,
-      [key]: value,
-    }));
-  };
-
-  const selectedMonthIndex = MONTHS.findIndex((m) => m === selected.month);
-  const selectedDate = addMonths(today, selectedMonthIndex);
-
-  const dayOptions = useMemo(
-    () => getDaysArray(selectedDate.getFullYear(), selectedDate.getMonth()),
-    [selectedDate],
-  );
 
   return {
+    options,
     selected,
-    setSelected,
+    displaySelected,
     handleChangeMonth,
-    handleChange,
-    options: {
-      month: MONTHS,
-      day: dayOptions,
-    },
+    setSelected,
   };
 };

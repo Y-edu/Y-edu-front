@@ -2,47 +2,49 @@
 
 import Button from "@/ui/Button";
 import ScrollPicker from "@/ui/ScrollPicker";
-import { FirstDay } from "@/components/result/ConfirmedResult/useConfirmedResult";
 
 import { useStartDatePicker } from "./useStartDatePicker";
 
-interface FirstDayPickerProps {
-  title?: string;
-  firstDay: FirstDay | null;
-  onSelect: (value: FirstDay) => void;
+interface StartDatePickerProps {
+  options: string[];
+  onSelect: (value: string) => void;
 }
 
 export default function StartDatePicker({
-  title,
-  firstDay,
+  options: startDateOptions,
   onSelect,
-}: FirstDayPickerProps) {
-  const { selected, setSelected, handleChangeMonth, options } =
-    useStartDatePicker(firstDay);
+}: StartDatePickerProps) {
+  const { options, selected, displaySelected, handleChangeMonth, setSelected } =
+    useStartDatePicker(startDateOptions);
+
+  const handleConfirm = () => {
+    const selectedDate = `${selected.year}-${selected.month.padStart(2, "0")}-${selected.day.padStart(2, "0")}`;
+    onSelect(selectedDate);
+  };
 
   return (
     <div className="mx-auto w-full max-w-[350px] rounded-t-[20px] bg-white">
       <h2 className="mb-[24px] mt-[4px] text-[20px] font-bold">
-        {title || "수업 시작일"}
+        바뀐 일정을 언제부터 적용할까요?
       </h2>
-      <div className="mb-[40px] flex items-center justify-center gap-[10px]">
-        <ScrollPicker
-          options={options.month}
-          selected={selected.month}
-          onSelect={handleChangeMonth}
-        />
-        <ScrollPicker
-          options={options.day}
-          selected={selected.day}
-          onSelect={(val) => setSelected((prev) => ({ ...prev, day: val }))}
-        />
+      <div className="mb-[40px] flex items-center justify-center">
+        <div className="flex w-[140px] items-center justify-center gap-[10px]">
+          <ScrollPicker
+            options={options.month}
+            selected={displaySelected.month}
+            onSelect={handleChangeMonth}
+          />
+          <ScrollPicker
+            options={options.day}
+            selected={displaySelected.day}
+            onSelect={(val) => {
+              const onlyDay = val.replace(/일.*/, "").padStart(2, "0");
+              setSelected((prev) => ({ ...prev, day: onlyDay }));
+            }}
+          />
+        </div>
       </div>
-      <Button
-        disabled={!isChanged}
-        onClick={() => onSelect(convertToFirstDayDTO())}
-      >
-        선택
-      </Button>
+      <Button onClick={handleConfirm}>선택</Button>
     </div>
   );
 }

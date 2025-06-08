@@ -11,6 +11,7 @@ export interface ScheduleItem {
   classMatchingId: number;
   send: boolean;
   schedules: Partial<Record<DayOfWeek, ClassTimeDTO[]>>;
+  changeStartDates: string[];
 }
 
 export type SchedulesResponse = ScheduleItem[];
