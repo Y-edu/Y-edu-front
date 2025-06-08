@@ -13,7 +13,7 @@ import TabBar from "@/ui/Bar/TabBar";
 export default function TeacherSessionScheduleListPage() {
   const searchParams = useSearchParams();
   const token = searchParams.get("token") ?? "";
-  const { data, isLoading } = useGetSessions(token);
+  const { data, isLoading } = useGetSessions(token, 0, 3);
 
   const currentMonth = new Date().getMonth() + 1;
 
@@ -25,14 +25,10 @@ export default function TeacherSessionScheduleListPage() {
     );
   }
 
-  const tabs = Object.entries(data!.schedules).map(
-    ([classId, schedulePage]) => ({
-      trigger: classId,
-      content: (
-        <SessionList classId={classId} sessions={schedulePage.content} />
-      ),
-    }),
-  );
+  const tabs = Object.keys(data!.schedules).map((classId) => ({
+    trigger: classId,
+    content: <SessionList key={classId} classId={classId} />,
+  }));
 
   return (
     <ErrorBoundary fallback={<ErrorUI />}>

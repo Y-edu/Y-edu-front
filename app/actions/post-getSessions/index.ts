@@ -45,10 +45,20 @@ export interface SessionsResponse {
   schedules: Record<string, SchedulePageInfo>;
 }
 
-export const getSessions = async (token: string): Promise<SessionsResponse> => {
-  const { data } = await httpService.post<SessionsResponse>(
-    `/sessions?token=${token}`,
-    {},
-  );
+export const getSessions = async (
+  token: string,
+  page: number,
+  size: number,
+  isComplete?: boolean,
+): Promise<SessionsResponse> => {
+  const { data } = await httpService.post<SessionsResponse>("/sessions", null, {
+    params: {
+      token,
+      page,
+      size,
+      ...(isComplete !== undefined && { isComplete }),
+    },
+  });
+
   return data;
 };
