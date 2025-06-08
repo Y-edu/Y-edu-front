@@ -43,7 +43,9 @@ export default function SessionList({ classId }: SessionListProps) {
   useEffect(() => {
     if (!data) return;
     const newContent = data.schedules[classId]?.content ?? [];
-    setSessions((prev) => (page === 0 ? newContent : [...prev, ...newContent]));
+    setSessions((prev) => {
+      return page === 0 ? newContent : [...prev, ...newContent];
+    });
   }, [data, classId, page]);
 
   const items: SessionItem[] = useSessionList(sessions);
@@ -87,6 +89,7 @@ export default function SessionList({ classId }: SessionListProps) {
 
   const isInitialLoading =
     page === 0 && sessions.length === 0 && (isLoading || isFetching);
+  const hasMore = !!data?.schedules[classId] && !data.schedules[classId].last;
 
   if (isInitialLoading) {
     return (
@@ -124,7 +127,7 @@ export default function SessionList({ classId }: SessionListProps) {
           정규 일정 변경
         </Button>
       </section>
-      {isInitialLoading || isFetching ? null : items.length === 0 ? (
+      {isInitialLoading ? null : items.length === 0 ? (
         <div className="text-center text-gray-500">조회된 일정이 없습니다.</div>
       ) : (
         items.map((session, idx) => (
@@ -140,7 +143,7 @@ export default function SessionList({ classId }: SessionListProps) {
           />
         ))
       )}
-      {!infiniteScroll && !data?.schedules[classId]?.last && (
+      {!isInitialLoading && items.length > 0 && !infiniteScroll && hasMore && (
         <div className="flex justify-center">
           <Button
             className="cursor-default bg-transparent py-3 text-[14px] font-semibold text-gray-700"
