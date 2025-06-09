@@ -81,11 +81,6 @@ export function useSessionList(data: SessionResponse[]): SessionItem[] {
       };
     });
 
-    return mapped.sort((a, b) => {
-      if (a.complete && b.complete) {
-        return b.date.getTime() - a.date.getTime();
-      }
-      return 0;
-    });
+    return mapped;
   }, [data]);
 }
