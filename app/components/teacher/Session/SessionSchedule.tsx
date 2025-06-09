@@ -100,7 +100,7 @@ export default function SessionSchedule(props: SessionScheduleProps) {
   }
 
   return (
-    <div className={cn("flex flex-col gap-[40px] px-5", className)}>
+    <div className={cn("flex flex-col gap-[40px] px-5 pb-[24px]", className)}>
       <TitleSection>
         <TitleSection.Title className="whitespace-pre">
           {title}
