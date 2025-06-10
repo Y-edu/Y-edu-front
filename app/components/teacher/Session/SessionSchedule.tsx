@@ -176,7 +176,7 @@ export default function SessionSchedule(props: SessionScheduleProps) {
       {/* 나중에 toast alert 추가하기 */}
       <div className="fixed inset-x-0 bottom-0 flex justify-center bg-white p-4 shadow-lg">
         <Button
-          className="w-[335px]"
+          className="w-[375px]"
           disabled={!isScheduleValid}
           onClick={handleSubmit}
         >

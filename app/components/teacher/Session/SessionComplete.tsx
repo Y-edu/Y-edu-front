@@ -162,7 +162,7 @@ export default function SessionComplete({
       </DivWithLabel>
       <div className="fixed inset-x-0 bottom-0 flex justify-center bg-white p-4 shadow-lg">
         <Button
-          className="w-[335px]"
+          className="w-[375px]"
           disabled={!isFormValid || completeMutation.isPending}
           onClick={handleComplete}
         >

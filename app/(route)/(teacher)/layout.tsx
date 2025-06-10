@@ -10,7 +10,7 @@ export default function TeacherLayout({
       <Head>
         <meta name="viewport" content="width=device-width" />
       </Head>
-      <div className="mx-auto max-w-[375px]">{children}</div>
+      <div className="mx-auto max-w-[420px]">{children}</div>
     </>
   );
 }
