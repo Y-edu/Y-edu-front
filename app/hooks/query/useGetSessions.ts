@@ -16,7 +16,9 @@ export function useGetSessions(
       return res;
     },
     staleTime: 0,
-    gcTime: 1000 * 60 * 30,
+    gcTime: 0,
+    refetchOnMount: "always",
+    refetchOnWindowFocus: true,
     throwOnError: true,
   });
 }
