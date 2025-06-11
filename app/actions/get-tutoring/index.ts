@@ -23,7 +23,7 @@ const tutoringResponse = z.object({
   district: z.string(),
   dong: z.string(),
   goals: z.array(z.string()),
-  favoriteStyle: z.string(),
+  favoriteStyle: z.string().nullable(),
   parentDayTimes: z.array(dayTimeSchema),
   teacherDayTimes: z.array(dayTimeSchema),
   matchStatus: z.enum([
