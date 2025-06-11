@@ -15,10 +15,6 @@ export function useGetSessions(
       const res = await getSessions(token, page, size, isComplete);
       return res;
     },
-    staleTime: 0,
-    gcTime: 0,
-    refetchOnMount: "always",
-    refetchOnWindowFocus: true,
     throwOnError: true,
   });
 }

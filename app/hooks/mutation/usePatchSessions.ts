@@ -31,12 +31,12 @@ export function useSessionMutations() {
     mutationFn: patchSessionChange,
     onSuccess: () => {
       toast.success("과외날짜가 변경되었어요.");
-      queryClient.invalidateQueries({
-        predicate: (q) => q.queryKey[0] === "sessions",
-      });
     },
     onError: (error) => {
       toast.warning(getErrorMessage(error));
+    },
+    meta: {
+      invalidates: [["sessions"]],
     },
   });
 
@@ -44,12 +44,12 @@ export function useSessionMutations() {
     mutationFn: patchSessionCancel,
     onSuccess: () => {
       toast.success("휴강 처리 됐어요");
-      queryClient.invalidateQueries({
-        predicate: (q) => q.queryKey[0] === "sessions",
-      });
     },
     onError: (error) => {
       toast.warning(getErrorMessage(error));
+    },
+    meta: {
+      invalidates: [["sessions"]],
     },
   });
 
@@ -57,12 +57,12 @@ export function useSessionMutations() {
     mutationFn: patchSessionRevertCancel,
     onSuccess: () => {
       toast.success("휴강이 취소됐어요");
-      queryClient.invalidateQueries({
-        predicate: (q) => q.queryKey[0] === "sessions",
-      });
     },
     onError: (error) => {
       toast.warning(getErrorMessage(error));
+    },
+    meta: {
+      invalidates: [["sessions"]],
     },
   });
 
