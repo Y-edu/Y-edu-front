@@ -87,9 +87,7 @@ export default function SessionCompletePage() {
   useEffect(() => {
     if (isEmpty) return;
 
-    // 일정변경된 과외건인 경우
-    if (!activeSessionData) goToSchedulePage(target?.applicationFormId);
-
+    // 이미 리뷰를 작성한 수업이면 일정 페이지로 이동
     if (activeSessionData?.isComplete) {
       goToSchedulePage(target?.applicationFormId);
       toast.success("이미 리뷰 작성을 완료한 수업입니다");
@@ -112,7 +110,7 @@ export default function SessionCompletePage() {
     }
   }, [activeSessionData]);
 
-  if (isLoading || (!activeSessionData && !isEmpty)) {
+  if (isLoading) {
     return (
       <div className="flex min-h-screen items-center justify-center">
         <CircularProgress />
