@@ -15,7 +15,7 @@ const parentsRequestSchema = z.object({
   online: z.string(),
   wantTime: z.string().nullable(),
   goals: z.array(z.string()),
-  teacherStyle: z.string(),
+  teacherStyle: z.string().nullable(),
   referral: z.string(),
   scheduledClasses: z
     .array(
