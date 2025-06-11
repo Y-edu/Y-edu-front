@@ -61,12 +61,11 @@ export default function SessionChangePage() {
         <div className="flex flex-col items-center">
           <HeaderWithBack
             title={classId || "과외 일정"}
-            mainClassName="pt-8"
+            mainClassName="pt-8 overflow-auto"
             hasBack
             onBack={onClickBack}
           >
             <SessionSchedule
-              className="mb-24"
               title={`학부모와 협의 후\n일정을 업데이트해 주세요`}
               token={classId ? undefined : (token ?? undefined)}
               classMatchingId={target?.classMatchingId}
