@@ -48,6 +48,7 @@ export function useSessionList(data: SessionResponse[]): SessionItem[] {
       classDay.setHours(0, 0, 0, 0);
       const isToday = classDay.getTime() === today.getTime();
       const isTodayOrPast = classDay.getTime() <= today.getTime();
+      const isFuture = classDay.getTime() > today.getTime();
       const showMoneyReminder = isTodayOrPast && !complete && !cancel;
 
       let statusLabel = "";
@@ -64,6 +65,9 @@ export function useSessionList(data: SessionResponse[]): SessionItem[] {
         case isToday:
           statusLabel = "오늘";
           actions = [BTN_CANCEL, BTN_RESCHEDULE, BTN_COMPLETE];
+          break;
+        case isFuture:
+          actions = [BTN_CANCEL, BTN_RESCHEDULE];
           break;
         default:
           actions = [BTN_CANCEL, BTN_RESCHEDULE, BTN_COMPLETE];

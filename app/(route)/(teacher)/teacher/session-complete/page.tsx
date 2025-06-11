@@ -32,9 +32,6 @@ export default function SessionCompletePage() {
   const { data: sessionByToken } = useGetSessionByToken({ token: token ?? "" });
 
   const target = data?.find((item) => item.send);
-  const isEmpty =
-    !target ||
-    Object.values(target.schedules).every((arr) => (arr ?? []).length === 0);
 
   // sessionId가 있을 경우 sessions에서 데이터 추출
   const sessionFromCache = classSessionId
@@ -63,6 +60,8 @@ export default function SessionCompletePage() {
 
     return null;
   }, [sessionFromCache, sessionByToken]);
+
+  const isEmpty = !activeSessionData;
 
   const titleDate = activeSessionData?.sessionDate
     ? formatDateShort(activeSessionData.sessionDate)
