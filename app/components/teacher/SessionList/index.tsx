@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { CircularProgress } from "@mui/material";
 import Image from "next/image";
@@ -28,15 +28,13 @@ export default function SessionList({ classId }: SessionListProps) {
   const showParam = searchParams.get("is-complete");
   const initialShow = showParam === "true";
   const [isComplete, setIsComplete] = useState(initialShow);
-  const [page, setPage] = useState(0);
   const [sessions, setSessions] = useState<SessionResponse[]>([]);
-  const [infiniteScroll, setInfiniteScroll] = useState(false);
-  const bottomRef = useRef<HTMLDivElement | null>(null);
+  const [isExpanded, setIsExpanded] = useState(false);
 
   const { data, isLoading, isFetching } = useGetSessions(
     token,
-    page,
-    3,
+    0,
+    50,
     isComplete,
     classId,
   );
@@ -44,11 +42,8 @@ export default function SessionList({ classId }: SessionListProps) {
   useEffect(() => {
     if (!data) return;
     const newContent = data.schedules[classId]?.content ?? [];
-    setSessions((prev) => {
-      if (page === 0) return [...newContent];
-      return [...prev, ...newContent];
-    });
-  }, [data, classId, page]);
+    setSessions(newContent);
+  }, [data, classId]);
 
   const items: SessionItem[] = useSessionList(sessions);
 
@@ -59,40 +54,11 @@ export default function SessionList({ classId }: SessionListProps) {
     params.set("is-complete", String(next));
     router.push(`${pathName}?${params.toString()}`);
     setIsComplete(next);
-    setPage(0);
     setSessions([]);
   };
 
-  useEffect(() => {
-    setPage(0);
-    setInfiniteScroll(false);
-  }, [classId, isComplete]);
-
-  useEffect(() => {
-    if (!infiniteScroll) return;
-    if (!bottomRef.current) return;
-
-    const io = new IntersectionObserver(
-      (entries) => {
-        const target = entries[0];
-        if (
-          target.isIntersecting &&
-          !isFetching &&
-          !data?.schedules[classId]?.last
-        ) {
-          setPage((prev) => prev + 1);
-        }
-      },
-      { threshold: 0.1 },
-    );
-
-    io.observe(bottomRef.current);
-    return () => io.disconnect();
-  }, [infiniteScroll, isFetching, data, classId]);
-
-  const isInitialLoading =
-    page === 0 && sessions.length === 0 && (isLoading || isFetching);
-  const hasMore = !!data?.schedules[classId] && !data.schedules[classId].last;
+  const isInitialLoading = sessions.length === 0 && (isLoading || isFetching);
+  const hasMore = items.length > 3 && !isExpanded;
 
   if (isInitialLoading) {
     return (
@@ -130,10 +96,11 @@ export default function SessionList({ classId }: SessionListProps) {
           정규 일정 변경
         </Button>
       </section>
-      {isInitialLoading ? null : items.length === 0 ? (
+
+      {items.length === 0 ? (
         <div className="text-center text-gray-500">조회된 일정이 없습니다.</div>
       ) : (
-        items.map((session, idx) => (
+        (isExpanded ? items : items.slice(0, 3)).map((session, idx) => (
           <SessionListCard
             classSessionId={session.id}
             key={session.id}
@@ -146,15 +113,12 @@ export default function SessionList({ classId }: SessionListProps) {
           />
         ))
       )}
-      {!isInitialLoading && items.length > 0 && !infiniteScroll && hasMore && (
+
+      {hasMore && (
         <div className="flex justify-center">
           <Button
             className="cursor-default bg-transparent py-3 text-[14px] font-semibold text-gray-700"
-            disabled={isFetching || data?.schedules[classId]?.last}
-            onClick={() => {
-              setInfiniteScroll(true);
-              setPage((prev) => prev + 1);
-            }}
+            onClick={() => setIsExpanded(true)}
           >
             <span className="flex cursor-pointer items-center">
               더보기
@@ -163,8 +127,6 @@ export default function SessionList({ classId }: SessionListProps) {
           </Button>
         </div>
       )}
-
-      {infiniteScroll && <div ref={bottomRef} className="h-10" />}
     </div>
   );
 }
