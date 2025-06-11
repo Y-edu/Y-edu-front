@@ -120,7 +120,7 @@ function ParentsRequest({ applicationFormId }: { applicationFormId: string }) {
           </div>
           <TitleDesc
             title={PARENTS_REQUEST_TITLE.teacherCondition}
-            desc={data ? data.teacherStyle : "선생님 조건"}
+            desc={data?.teacherStyle ?? "선생님 조건"}
             maxWidth="full"
             direction="vertical"
           />
