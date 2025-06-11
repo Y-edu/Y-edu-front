@@ -45,11 +45,13 @@ export default function SessionList({ classId }: SessionListProps) {
     if (!data) return;
     const newContent = data.schedules[classId]?.content ?? [];
     setSessions((prev) => {
-      return page === 0 ? newContent : [...prev, ...newContent];
+      if (page === 0) return [...newContent];
+      return [...prev, ...newContent];
     });
   }, [data, classId, page]);
 
   const items: SessionItem[] = useSessionList(sessions);
+
   const params = new URLSearchParams(searchParams.toString());
 
   const changeFilter = (next: boolean) => {
