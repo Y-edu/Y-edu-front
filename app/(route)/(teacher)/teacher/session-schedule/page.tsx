@@ -15,8 +15,6 @@ export default function TeacherSessionScheduleListPage() {
   const token = searchParams.get("token") ?? "";
   const { data, isLoading } = useGetSessions(token, 0, 3);
 
-  const currentMonth = new Date().getMonth() + 1;
-
   if (isLoading) {
     return (
       <div className="flex min-h-screen items-center justify-center">
@@ -32,10 +30,7 @@ export default function TeacherSessionScheduleListPage() {
 
   return (
     <ErrorBoundary fallback={<ErrorUI />}>
-      <HeaderWithBack
-        title={`${currentMonth}월 과외 일정`}
-        className="border-none"
-      >
+      <HeaderWithBack title="과외 일정" className="border-none">
         <TabBar
           tabs={tabs}
           paramKey="classId"
