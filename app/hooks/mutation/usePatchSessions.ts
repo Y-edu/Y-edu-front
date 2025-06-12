@@ -98,6 +98,9 @@ export function useSessionMutations() {
       if (classId) {
         params.set("classId", classId);
       }
+
+      queryClient.invalidateQueries({ queryKey: ["sessions"] });
+
       params.set("is-complete", "true");
       router.push(`/teacher/session-schedule?${params.toString()}`);
 
