@@ -1,14 +1,15 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 
 import { putSchedules } from "@/actions/put-schedules";
+import { useGlobalSnackbar } from "@/providers/GlobalSnackBar";
 
 export function usePutSchedules() {
-  const queryClient = useQueryClient();
+  const toast = useGlobalSnackbar();
 
   return useMutation({
     mutationFn: putSchedules,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["schedules"] });
+      toast.success("정규 일정이 변경되었어요.");
     },
     onError: (error: unknown) => {
       if (error instanceof Error) {
@@ -16,6 +17,9 @@ export function usePutSchedules() {
       } else {
         alert("오류가 발생했어요.");
       }
+    },
+    meta: {
+      invalidates: [["schedules"], ["sessions"]],
     },
   });
 }
