@@ -43,7 +43,7 @@ export default function BottomSheet({
         role="dialog"
         aria-modal="true"
         className={cn(
-          "fixed bottom-0 z-20 w-full max-w-[375px] -translate-x-1/2 animate-slide-up rounded-t-[20px] bg-white p-[20px] transition-transform duration-300",
+          "fixed bottom-0 z-20 w-full max-w-[420px] -translate-x-1/2 animate-slide-up rounded-t-[20px] bg-white p-[20px] transition-transform duration-300",
         )}
         onClick={(e) => e.stopPropagation()}
         onKeyDown={(e) => {
