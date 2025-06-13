@@ -10,6 +10,16 @@ import { useSessionMutations } from "@/hooks/mutation/usePatchSessions";
 import { useGetSessions } from "@/hooks/query/useGetSessions";
 import { useGlobalSnackbar } from "@/providers/GlobalSnackBar";
 
+interface Schedule {
+  classSessionId: number;
+  classDate: string;
+  classStart: string;
+}
+
+interface Region {
+  content: Schedule[];
+}
+
 interface RescheduleSheetProps {
   sessionId: number;
   date: Date;
@@ -26,7 +36,29 @@ export default function RescheduleSheet({
   const toast = useGlobalSnackbar();
   const searchParams = useSearchParams();
   const token = searchParams.get("token") as string;
-  const { data: allSessions } = useGetSessions(token, 0, 50);
+
+  // 완료/미완료 세션 데이터 가져오기
+  const { data: incompleteSessions } = useGetSessions(token, 0, 50, false);
+  const { data: completeSessions } = useGetSessions(token, 0, 50, true);
+
+  // 합쳐서 allSessions로 만듦
+  const allSessions = {
+    schedules: Object.keys(incompleteSessions?.schedules || {}).reduce(
+      (acc, key) => {
+        const incompleteContent =
+          incompleteSessions?.schedules[key]?.content || [];
+        const completeContent = completeSessions?.schedules[key]?.content || [];
+
+        acc[key] = {
+          ...incompleteSessions?.schedules[key],
+          content: [...incompleteContent, ...completeContent],
+        };
+
+        return acc;
+      },
+      {} as Record<string, Region>,
+    ),
+  };
 
   const [confirmed, setConfirmed] = useState(false);
   const [selectedDate, setSelectedDate] = useState<FirstDay>(
