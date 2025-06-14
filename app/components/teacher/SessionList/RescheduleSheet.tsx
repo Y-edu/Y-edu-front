@@ -89,12 +89,9 @@ export default function RescheduleSheet({
               return false;
             }
 
-            // 날짜 & 시간 똑같은지 비교
+            // 날짜 똑같은지 비교
             const isSameDate = schedule.classDate === formattedDate;
-            const isSameTime =
-              schedule.classStart.trim() === formattedTime.trim();
-
-            return isSameDate && isSameTime;
+            return isSameDate;
           });
         })
       : false;
