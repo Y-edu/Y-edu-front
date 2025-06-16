@@ -25,7 +25,7 @@ export function useSessionList(data: SessionResponse[]): SessionItem[] {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
-    return data.map((session) => {
+    const mapped: SessionItem[] = data.map((session) => {
       const {
         classSessionId: id,
         cancel,
@@ -43,53 +43,35 @@ export function useSessionList(data: SessionResponse[]): SessionItem[] {
       const minutes = dateObj.getMinutes().toString().padStart(2, "0");
       const time = `${period} ${hour12}:${minutes}`;
 
-      // diffDays 계산
+      // 오늘·과거 알림용 플래그
       const classDay = new Date(dateObj);
       classDay.setHours(0, 0, 0, 0);
-      const diffDays = Math.round(
-        (classDay.getTime() - today.getTime()) / (1000 * 60 * 60 * 24),
-      );
-
-      // 오늘·과거 알림용 플래그
-      const isTodayOrPast = diffDays <= 0;
+      const isToday = classDay.getTime() === today.getTime();
+      const isTodayOrPast = classDay.getTime() <= today.getTime();
+      const isFuture = classDay.getTime() > today.getTime();
       const showMoneyReminder = isTodayOrPast && !complete && !cancel;
 
       let statusLabel = "";
       let actions: ActionButton[] = [];
 
       switch (true) {
-        // 1) 휴강
         case cancel:
           statusLabel = "휴강";
           actions = [BTN_CANCEL_RESTORE];
           break;
-
-        // 2) 완료된 수업
         case complete:
-          statusLabel = "";
           actions = [BTN_VIEW_REVIEW];
           break;
-
-        // 3) 오늘
-        case diffDays === 0:
+        case isToday:
           statusLabel = "오늘";
           actions = [BTN_CANCEL, BTN_RESCHEDULE, BTN_COMPLETE];
           break;
-
-        // 4) 미래 일정
-        case diffDays > 0:
-          if (diffDays <= 7) {
-            statusLabel = `${diffDays}일 전`;
-          } else {
-            statusLabel = "";
-          }
+        case isFuture:
           actions = [BTN_CANCEL, BTN_RESCHEDULE];
           break;
-
-        // 5) 과거(미완료)
         default:
-          statusLabel = "";
           actions = [BTN_CANCEL, BTN_RESCHEDULE, BTN_COMPLETE];
+          break;
       }
 
       return {
@@ -102,5 +84,7 @@ export function useSessionList(data: SessionResponse[]): SessionItem[] {
         complete,
       };
     });
+
+    return mapped;
   }, [data]);
 }

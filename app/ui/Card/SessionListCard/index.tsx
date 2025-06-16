@@ -27,6 +27,7 @@ export interface SessionListCardProps {
   actions: ActionButton[];
   showMoneyReminder?: boolean;
   className?: string;
+  initialOpen?: boolean;
 }
 
 export default function SessionListCard({
@@ -37,12 +38,16 @@ export default function SessionListCard({
   actions,
   showMoneyReminder,
   className = "",
+  initialOpen = false,
 }: SessionListCardProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { sheetType, openSheet, closeSheet, isSheetOpen } = useBottomSheet();
 
-  const defaultOpen = statusLabel === "오늘" || showMoneyReminder;
+  const defaultOpen =
+    initialOpen ||
+    showMoneyReminder ||
+    actions.some((btn) => btn.value === "view_review");
   const [isOpen, setIsOpen] = useState(defaultOpen);
   const isToggle = !defaultOpen;
 
@@ -87,24 +92,21 @@ export default function SessionListCard({
           {statusLabel && (
             <span
               className={cn(
-                "mr-2 font-semibold",
-                statusLabel === "오늘"
-                  ? "text-[16px] text-primary"
-                  : statusLabel === "휴강"
-                    ? "text-[16px] text-red-500"
-                    : "text-[14px] text-gray-500",
+                "mr-2 text-[16px] font-semibold",
+                statusLabel === "오늘" && "text-primary",
+                statusLabel === "휴강" && "text-red-500",
               )}
             >
               {statusLabel}
             </span>
           )}
           <span className="text-[16px] font-[600] text-gray-900">
-            {date.toLocaleDateString("ko-KR", {
-              month: "long",
-              day: "numeric",
-              weekday: "short",
-            })}{" "}
-            {time}
+            {`${date.getMonth() + 1}.${date.getDate()} ${date.toLocaleDateString(
+              "ko-KR",
+              {
+                weekday: "long",
+              },
+            )} ${time}`}
           </span>
         </div>
         <IconDown
@@ -115,7 +117,7 @@ export default function SessionListCard({
         />
       </div>
       {showMoneyReminder && (
-        <p className="mb-4 text-[14px] text-gray-500">
+        <p className="text-[14px] text-gray-500">
           보수를 받으려면 과외 완료를 꼭 눌러주세요
         </p>
       )}
@@ -130,14 +132,14 @@ export default function SessionListCard({
                 handleActionClick(btn.value);
               }}
               className={cn(
-                { "mt-3": isToggle && isOpen },
-                "h-11 flex-1 whitespace-normal text-[16px] font-[700]",
+                { "mt-3": isOpen },
+                "h-11 flex-1 whitespace-normal px-0 text-[16px] font-[700]",
                 "max-[355px]:text-sm",
                 btn.variant === "primary"
                   ? "bg-primary text-white"
                   : btn.variant === "secondary"
                     ? "bg-primaryTint text-primary"
-                    : "border border-gray-300 bg-white text-gray-600",
+                    : "mt-3 border border-gray-300 bg-white text-gray-600",
               )}
             >
               {btn.label}

@@ -17,15 +17,16 @@ export default function SessionReviewPage() {
   const token = searchParams.get("token") ?? "";
   const sessionIdStr = searchParams.get("sessionId") ?? "";
   const sessionId = Number(sessionIdStr);
+  const classId = searchParams.get("classId")!;
+  const isComplete = searchParams.get("is-complete") === "true";
 
-  const { data, isLoading } = useGetSessions(token);
+  const { data, isLoading } = useGetSessions(token, 0, 20, isComplete, classId);
 
   const targetSession = useMemo(() => {
-    return data
-      ? Object.values(data.schedules)
-          .flat()
-          .find((s) => s.classSessionId === sessionId)
-      : undefined;
+    if (!data) return undefined;
+    return Object.values(data.schedules)
+      .flatMap((schedulePage) => schedulePage.content)
+      .find((s) => s.classSessionId === sessionId);
   }, [data, sessionId]);
 
   const onClickBack = () => {
@@ -52,7 +53,7 @@ export default function SessionReviewPage() {
           mainClassName="pt-8 w-full px-5"
         >
           <SessionReviewView
-            homeworkPercentage={targetSession!.homeworkPercentage ?? 0}
+            homework={targetSession!.homework ?? "내용이 없습니다."}
             understanding={targetSession!.understanding ?? "내용이 없습니다."}
           />
         </HeaderWithBack>

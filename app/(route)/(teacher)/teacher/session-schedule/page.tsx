@@ -13,7 +13,7 @@ import TabBar from "@/ui/Bar/TabBar";
 export default function TeacherSessionScheduleListPage() {
   const searchParams = useSearchParams();
   const token = searchParams.get("token") ?? "";
-  const { data, isLoading } = useGetSessions(token);
+  const { data, isLoading } = useGetSessions(token, 0, 3);
 
   if (isLoading) {
     return (
@@ -23,9 +23,9 @@ export default function TeacherSessionScheduleListPage() {
     );
   }
 
-  const tabs = Object.entries(data!.schedules).map(([classId, sessions]) => ({
+  const tabs = Object.keys(data!.schedules).map((classId) => ({
     trigger: classId,
-    content: <SessionList classId={classId} sessions={sessions} />,
+    content: <SessionList key={classId} classId={classId} />,
   }));
 
   return (
@@ -35,7 +35,7 @@ export default function TeacherSessionScheduleListPage() {
           tabs={tabs}
           paramKey="classId"
           listClassName="overflow-x-auto whitespace-nowrap scrollbar-hide"
-          buttonClassName="flex-initial px-[10px]"
+          buttonClassName="flex-initial px-[10px] scroll-ml-5"
         />
       </HeaderWithBack>
     </ErrorBoundary>

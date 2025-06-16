@@ -78,10 +78,12 @@ export function useSessionSchedule({
   token,
   classMatchingId,
   initialSchedules,
+  startDate,
 }: {
   token?: string;
   classMatchingId?: number;
   initialSchedules?: Schedule[];
+  startDate?: string;
 }) {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -324,13 +326,14 @@ export function useSessionSchedule({
       initialSchedules,
     );
 
-    return daysChanged || timesChanged;
+    return (daysChanged || timesChanged) && startDate;
   }, [
     isTimeVariesByDay,
     schedules,
     selectedDays,
     commonSchedule,
     initialSchedules,
+    startDate,
   ]);
 
   const handleSubmit = () => {
@@ -344,7 +347,10 @@ export function useSessionSchedule({
           classMinute: commonSchedule!.classMinute,
         }));
 
-    const payload: SchedulesRequestProps = { schedules: sendSchedules };
+    const payload: SchedulesRequestProps = {
+      schedules: sendSchedules,
+      changeStartDate: startDate,
+    };
 
     if (classMatchingId) payload.classMatchingId = classMatchingId;
     else if (token) payload.token = token;

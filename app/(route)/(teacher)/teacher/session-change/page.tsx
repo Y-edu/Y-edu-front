@@ -1,4 +1,5 @@
 "use client";
+
 import { useRouter, useSearchParams } from "next/navigation";
 import { CircularProgress } from "@mui/material";
 
@@ -12,9 +13,9 @@ import { ClassTimeDTO } from "@/actions/get-schedules";
 export default function SessionChangePage() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const token = searchParams.get("token");
+  const token = searchParams.get("token") as string;
   const classId = searchParams.get("classId");
-  const { data, isLoading } = useGetSchedules({ token: token ?? "" });
+  const { data, isLoading } = useGetSchedules({ token });
 
   const onClickBack = () => {
     const params = new URLSearchParams(searchParams.toString());
@@ -60,15 +61,15 @@ export default function SessionChangePage() {
         <div className="flex flex-col items-center">
           <HeaderWithBack
             title={classId || "과외 일정"}
-            mainClassName="pt-8"
+            mainClassName="pt-8 overflow-auto"
             hasBack
             onBack={onClickBack}
           >
             <SessionSchedule
-              className="mb-24"
               title={`학부모와 협의 후\n일정을 업데이트해 주세요`}
               token={classId ? undefined : (token ?? undefined)}
               classMatchingId={target?.classMatchingId}
+              startDateOptions={target?.changeStartDates}
               initialSchedules={schedules}
             />
           </HeaderWithBack>

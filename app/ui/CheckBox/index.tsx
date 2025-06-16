@@ -32,7 +32,7 @@ export default function Checkbox({
         <label
           htmlFor={id}
           className={cn(
-            "flex h-[24px] w-[24px] cursor-pointer items-center justify-center rounded-md border-[1px] border-grey-400 bg-white",
+            "flex h-[24px] w-[24px] cursor-pointer items-center justify-center rounded-md border-[2px] border-grey-300 bg-white",
             isChecked && "border-none",
           )}
         >

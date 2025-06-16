@@ -1,11 +1,24 @@
 import { useState } from "react";
 import { format } from "date-fns";
 import { ko } from "date-fns/locale";
+import { useSearchParams } from "next/navigation";
 
 import FirstDayPicker from "@/components/result/FirstDayPicker";
 import { FirstDay } from "@/components/result/ConfirmedResult/useConfirmedResult";
 import Button from "@/ui/Button";
 import { useSessionMutations } from "@/hooks/mutation/usePatchSessions";
+import { useGetSessions } from "@/hooks/query/useGetSessions";
+import { useGlobalSnackbar } from "@/providers/GlobalSnackBar";
+
+interface Schedule {
+  classSessionId: number;
+  classDate: string;
+  classStart: string;
+}
+
+interface Region {
+  content: Schedule[];
+}
 
 interface RescheduleSheetProps {
   sessionId: number;
@@ -13,12 +26,40 @@ interface RescheduleSheetProps {
   time: string; // ex. 오전 5:00
   close: () => void;
 }
+
 export default function RescheduleSheet({
   sessionId,
   date,
   time,
   close,
 }: RescheduleSheetProps) {
+  const toast = useGlobalSnackbar();
+  const searchParams = useSearchParams();
+  const token = searchParams.get("token") as string;
+
+  // 완료/미완료 세션 데이터 가져오기
+  const { data: incompleteSessions } = useGetSessions(token, 0, 50, false);
+  const { data: completeSessions } = useGetSessions(token, 0, 50, true);
+
+  // 합쳐서 allSessions로 만듦
+  const allSessions = {
+    schedules: Object.keys(incompleteSessions?.schedules || {}).reduce(
+      (acc, key) => {
+        const incompleteContent =
+          incompleteSessions?.schedules[key]?.content || [];
+        const completeContent = completeSessions?.schedules[key]?.content || [];
+
+        acc[key] = {
+          ...incompleteSessions?.schedules[key],
+          content: [...incompleteContent, ...completeContent],
+        };
+
+        return acc;
+      },
+      {} as Record<string, Region>,
+    ),
+  };
+
   const [confirmed, setConfirmed] = useState(false);
   const [selectedDate, setSelectedDate] = useState<FirstDay>(
     convertToFirstDay(date, time),
@@ -27,7 +68,6 @@ export default function RescheduleSheet({
   const { mutate } = useSessionMutations().changeMutation;
 
   const handleChangeDate = (date: FirstDay) => {
-    setSelectedDate(date);
     const cleanMonth = date.month
       .replace(/\s*\(.*\)$/, "")
       .replace("월", "")
@@ -38,10 +78,36 @@ export default function RescheduleSheet({
       .replace("일", "")
       .padStart(2, "0");
 
+    const formattedDate = `${date.year}-${cleanMonth}-${cleanDay}`;
+    const formattedTime = to24HourTime(date.period, date.time);
+
+    const isUnavailable = allSessions?.schedules
+      ? Object.values(allSessions.schedules).some((region) => {
+          return region.content.some((schedule) => {
+            // 현재 수정 중인 세션 제외
+            if (schedule.classSessionId === sessionId) {
+              return false;
+            }
+
+            // 날짜 똑같은지 비교
+            const isSameDate = schedule.classDate === formattedDate;
+            return isSameDate;
+          });
+        })
+      : false;
+
+    // 유효한 날짜가 아닐 때
+    if (isUnavailable) {
+      close();
+      toast.warning("이미 있는 일정이에요");
+      return;
+    }
+
+    setSelectedDate(date);
     mutate({
       sessionId,
-      sessionDate: `${date.year}-${cleanMonth}-${cleanDay}`,
-      start: to24HourTime(date.period, date.time),
+      sessionDate: formattedDate,
+      start: formattedTime,
     });
 
     close();
@@ -58,7 +124,7 @@ export default function RescheduleSheet({
     }
 
     const paddedHour = String(hour).padStart(2, "0");
-    return `${paddedHour}:${minuteStr}`;
+    return `${paddedHour}:${minuteStr}:00`;
   }
 
   function convertToFirstDay(date: Date, rawTime: string): FirstDay {
