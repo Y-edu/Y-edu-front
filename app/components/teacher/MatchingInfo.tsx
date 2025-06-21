@@ -1,7 +1,7 @@
 import { TutoringResponse } from "app/actions/get-tutoring";
 
 export function MatchingInfo(
-  props: Omit<TutoringResponse, "parentDayTimes" | "teacherDayTimes">,
+  props: Omit<TutoringResponse, "wantedTime" | "teacherDayTimes">,
 ) {
   const activeLocation =
     props.online === "비대면"
