@@ -3,8 +3,6 @@
 import { ReactNode, useState } from "react";
 import { useRouter } from "next/navigation";
 
-import formatDayTimes from "@/utils/formatDayTimes";
-import BulletList from "@/ui/List/BulletList";
 import { MATCHING_STATUS, type MatchingStatus } from "@/constants/matching";
 
 import { MatchingModal } from "./MatchingModal";
@@ -118,7 +116,7 @@ export function MatchingProposal({ token }: { token: string }) {
           </div>
         }
       >
-        <BulletList items={formatDayTimes(data.parentDayTimes)} />
+        <p>{data.wantedTime}</p>
       </ProfileInfoBox>
       {finalStatus === "대기" && (
         <>
