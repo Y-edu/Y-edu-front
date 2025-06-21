@@ -24,7 +24,7 @@ const tutoringResponse = z.object({
   dong: z.string(),
   goals: z.array(z.string()),
   favoriteStyle: z.string().nullable(),
-  parentDayTimes: z.array(dayTimeSchema),
+  wantedTime: z.string(),
   teacherDayTimes: z.array(dayTimeSchema),
   matchStatus: z.enum([
     MATCHING_STATUS.REJECT,
