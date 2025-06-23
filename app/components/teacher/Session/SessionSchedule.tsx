@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { CircularProgress } from "@mui/material";
 
 import DivWithLabel from "@/components/result/DivWithLabel";
 import TitleSection from "@/ui/TitleSection";
@@ -12,6 +11,7 @@ import SelectButton from "@/components/result/SelectButton";
 import BottomSheet from "@/ui/BottomSheet";
 import Button from "@/ui/Button";
 import cn from "@/utils/cn";
+import LoadingUI from "@/ui/LoadingUI";
 
 import {
   DAYS,
@@ -92,11 +92,7 @@ export default function SessionSchedule(props: SessionScheduleProps) {
   };
 
   if (isPending) {
-    return (
-      <div className="flex min-h-screen items-center justify-center">
-        <CircularProgress />
-      </div>
-    );
+    return <LoadingUI />;
   }
 
   return (

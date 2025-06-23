@@ -2,13 +2,13 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { CircularProgress } from "@mui/material";
 
 import ErrorUI from "@/ui/ErrorUI";
 import { TeacherSettingTime } from "@/components/teacher/TeacherSetting/TeacherSettingTime";
 import { usePostTutoringAccept } from "@/hooks/mutation/usePostTutoringAccept";
 import { useUpdateTeacherAvailableWithToken } from "@/hooks/mutation/usePutAvailableTeacherTime";
 import { useGetTutoring } from "@/hooks/query/useGetTutoringDetail";
+import LoadingUI from "@/ui/LoadingUI";
 
 interface Props {
   params: { token: string };
@@ -30,11 +30,7 @@ export default function TeacherClassMatchingSelectTimePage({ params }: Props) {
   }, [data, router, matchingToken]);
 
   if (isLoading) {
-    return (
-      <div className="flex min-h-screen items-center justify-center">
-        <CircularProgress />
-      </div>
-    );
+    return <LoadingUI />;
   }
   if (isError || !data) {
     return <ErrorUI />;
@@ -72,11 +68,7 @@ export default function TeacherClassMatchingSelectTimePage({ params }: Props) {
   };
 
   if (isSubmitting) {
-    return (
-      <div className="flex min-h-screen items-center justify-center">
-        <CircularProgress />
-      </div>
-    );
+    return <LoadingUI />;
   }
 
   return (

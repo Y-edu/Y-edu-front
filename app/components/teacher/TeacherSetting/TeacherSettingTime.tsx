@@ -3,7 +3,6 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { CircularProgress } from "@mui/material";
 
 import ErrorUI from "@/ui/ErrorUI";
 import { Modal } from "@/ui";
@@ -15,6 +14,7 @@ import { useTimeTable } from "@/components/teacher/TimeTable/useTimeTable";
 import TimeTable from "@/components/teacher/TimeTable/index";
 import TitleSection from "@/ui/TitleSection";
 import HeaderWithBack from "@/components/result/HeaderWithBack";
+import LoadingUI from "@/ui/LoadingUI";
 
 interface TeacherSettingTimeProps {
   headerTitle?: React.ReactNode;
@@ -127,12 +127,7 @@ export function TeacherSettingTime({
     }
   };
 
-  if (isQueryEnabled && isLoading)
-    return (
-      <div className="flex min-h-screen items-center justify-center">
-        <CircularProgress />
-      </div>
-    );
+  if (isQueryEnabled && isLoading) return <LoadingUI />;
   if (isQueryEnabled && (isError || !data)) return <ErrorUI />;
 
   return (

@@ -3,7 +3,6 @@
 
 import { useEffect, useMemo } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { CircularProgress } from "@mui/material";
 
 import { useGlobalSnackbar } from "@/providers/GlobalSnackBar";
 import { useGetSchedules } from "@/hooks/query/useGetSchedules";
@@ -19,6 +18,7 @@ import {
   mixpanelTrack,
 } from "@/utils/mixpanel";
 import { useGetSessions } from "@/hooks/query/useGetSessions";
+import LoadingUI from "@/ui/LoadingUI";
 
 export default function SessionCompletePage() {
   const toast = useGlobalSnackbar();
@@ -111,11 +111,7 @@ export default function SessionCompletePage() {
   }, [activeSessionData]);
 
   if (isLoading) {
-    return (
-      <div className="flex min-h-screen items-center justify-center">
-        <CircularProgress />
-      </div>
-    );
+    return <LoadingUI />;
   }
 
   return (
