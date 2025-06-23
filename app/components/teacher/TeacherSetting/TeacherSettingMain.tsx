@@ -3,13 +3,13 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import CircularProgress from "@mui/material/CircularProgress";
 
 import SettingBox from "@/ui/Box/SettingBox";
 import { useGetTeacherSettingInfo } from "@/hooks/query/useGetTeacherSettingInfo";
 import { usePatchTeacherSettingAlarmTalk } from "@/hooks/mutation/usePatchTeacherSettingAlarmTalk";
 import { Modal } from "@/ui/Modal/Modal";
 import ErrorUI from "@/ui/ErrorUI";
+import LoadingUI from "@/ui/LoadingUI";
 
 export default function TeacherSettingMain() {
   const router = useRouter();
@@ -56,11 +56,7 @@ export default function TeacherSettingMain() {
   }
 
   if (isLoading) {
-    return (
-      <div className="flex min-h-screen items-center justify-center">
-        <CircularProgress />
-      </div>
-    );
+    return <LoadingUI />;
   }
 
   if (isError || !data) {
