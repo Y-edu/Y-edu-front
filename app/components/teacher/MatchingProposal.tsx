@@ -89,7 +89,7 @@ export function MatchingProposal({ token }: { token: string }) {
           ))}
         </div>
       </ProfileInfoBox>
-      <div className="order-2 h-[10px] w-[375px] flex-none self-stretch bg-[#F5F5F5]" />
+      <div className="order-2 h-[10px] flex-none self-stretch bg-[#F5F5F5]" />
       <ProfileInfoBox
         title={
           <p>
@@ -101,30 +101,32 @@ export function MatchingProposal({ token }: { token: string }) {
       >
         {data.favoriteStyle}
       </ProfileInfoBox>
-      <div className="order-2 h-[10px] w-[375px] flex-none self-stretch bg-[#F5F5F5]" />
       {data.wantedTime && (
-        <ProfileInfoBox
-          title={
-            <div className="flex flex-col gap-1">
-              <p>
-                학부모님이
-                <span className="text-primaryNormal"> 선호하는 시간</span>
-                이에요.
-              </p>
-              <p className="text-[15px] font-medium leading-[152%] text-labelAssistive">
-                학부모님과 협의하여 시간을 조율할 수 있어요.
-              </p>
-            </div>
-          }
-        >
-          <p>{data.wantedTime}</p>
-        </ProfileInfoBox>
+        <>
+          <div className="order-2 h-[10px] flex-none self-stretch bg-[#F5F5F5]" />
+          <ProfileInfoBox
+            title={
+              <div className="flex flex-col gap-1">
+                <p>
+                  학부모님이
+                  <span className="text-primaryNormal"> 선호하는 시간</span>
+                  이에요.
+                </p>
+                <p className="text-[15px] font-medium leading-[152%] text-labelAssistive">
+                  학부모님과 협의하여 시간을 조율할 수 있어요.
+                </p>
+              </div>
+            }
+          >
+            <p>{data.wantedTime}</p>
+          </ProfileInfoBox>
+        </>
       )}
       {finalStatus === "대기" && (
         <>
           <div className="flex justify-center gap-[15px] align-middle">
             <button
-              className="order-0 flex h-[58px] w-[160px] flex-none flex-row items-center justify-center gap-[6px] self-stretch rounded-[8px] bg-primaryTint p-[16px] font-bold text-primaryNormal"
+              className="order-0 ml-5 h-[58px] w-full min-w-[135px] rounded-[8px] bg-primaryTint p-[16px] font-bold text-primaryNormal"
               onClick={() => {
                 setMatchingStatus("REJECT");
                 openModal();
@@ -133,7 +135,7 @@ export function MatchingProposal({ token }: { token: string }) {
               이번건 넘길게요
             </button>
             <button
-              className="order-0 flex h-[58px] w-[160px] flex-none flex-row items-center justify-center gap-[6px] self-stretch rounded-[8px] bg-primaryNormal p-[16px] px-[36px] font-bold text-white"
+              className="order-0 mr-5 h-[58px] w-full min-w-[135px] rounded-[8px] bg-primaryNormal p-[16px] font-bold text-white"
               onClick={() => {
                 router.push(`/teacher/notify/${token}/select-time`);
               }}
