@@ -1,7 +1,6 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import { CircularProgress } from "@mui/material";
 
 import { useGetSchedules } from "@/hooks/query/useGetSchedules";
 import SessionSchedule from "@/components/teacher/Session/SessionSchedule";
@@ -9,6 +8,7 @@ import HeaderWithBack from "@/components/result/HeaderWithBack";
 import { Schedule } from "@/components/teacher/Session/useSessionSchedule";
 import { DayOfWeek } from "@/actions/get-teacher-detail";
 import { ClassTimeDTO } from "@/actions/get-schedules";
+import LoadingUI from "@/ui/LoadingUI";
 
 export default function SessionChangePage() {
   const router = useRouter();
@@ -48,11 +48,7 @@ export default function SessionChangePage() {
   const schedules = convertToSchedules(target?.schedules);
 
   if (isLoading) {
-    return (
-      <div className="flex min-h-screen items-center justify-center">
-        <CircularProgress />
-      </div>
-    );
+    return <LoadingUI />;
   }
 
   return (

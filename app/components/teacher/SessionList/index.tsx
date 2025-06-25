@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
-import { CircularProgress } from "@mui/material";
 import Image from "next/image";
 
 import { useGetSessions } from "@/hooks/query/useGetSessions";
@@ -11,6 +10,7 @@ import SessionListCard from "@/ui/Card/SessionListCard";
 import Chip from "@/ui/Chip";
 import Button from "@/ui/Button";
 import IconDown from "@/icons/IconDown";
+import LoadingUI from "@/ui/LoadingUI";
 
 import { useSessionList, SessionItem } from "./useSessionList";
 
@@ -61,11 +61,7 @@ export default function SessionList({ classId }: SessionListProps) {
   const hasMore = items.length > 3 && !isExpanded;
 
   if (isInitialLoading) {
-    return (
-      <div className="flex items-center justify-center py-10">
-        <CircularProgress />
-      </div>
-    );
+    return <LoadingUI className="min-h-0 py-10" />;
   }
 
   return (

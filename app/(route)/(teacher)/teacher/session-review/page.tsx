@@ -2,7 +2,6 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 import { ErrorBoundary } from "react-error-boundary";
-import { CircularProgress } from "@mui/material";
 import { useMemo } from "react";
 
 import ErrorUI from "@/ui/ErrorUI";
@@ -10,6 +9,7 @@ import HeaderWithBack from "@/components/result/HeaderWithBack";
 import SessionReviewView from "@/components/teacher/Session/SessionReviewView";
 import { useGetSessions } from "@/hooks/query/useGetSessions";
 import { formatDateShort } from "@/utils/getDayOfWeek";
+import LoadingUI from "@/ui/LoadingUI";
 
 export default function SessionReviewPage() {
   const router = useRouter();
@@ -36,11 +36,7 @@ export default function SessionReviewPage() {
   };
 
   if (isLoading) {
-    return (
-      <div className="flex min-h-screen items-center justify-center">
-        <CircularProgress />
-      </div>
-    );
+    return <LoadingUI />;
   }
 
   return (

@@ -2,13 +2,13 @@
 
 import { useSearchParams } from "next/navigation";
 import { ErrorBoundary } from "react-error-boundary";
-import { CircularProgress } from "@mui/material";
 
 import ErrorUI from "@/ui/ErrorUI";
 import HeaderWithBack from "@/components/result/HeaderWithBack";
 import SessionList from "@/components/teacher/SessionList";
 import { useGetSessions } from "@/hooks/query/useGetSessions";
 import TabBar from "@/ui/Bar/TabBar";
+import LoadingUI from "@/ui/LoadingUI";
 
 export default function TeacherSessionScheduleListPage() {
   const searchParams = useSearchParams();
@@ -16,11 +16,7 @@ export default function TeacherSessionScheduleListPage() {
   const { data, isLoading } = useGetSessions(token, 0, 3);
 
   if (isLoading) {
-    return (
-      <div className="flex min-h-screen items-center justify-center">
-        <CircularProgress />
-      </div>
-    );
+    return <LoadingUI />;
   }
 
   const tabs = Object.keys(data!.schedules).map((classId) => ({

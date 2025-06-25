@@ -2,11 +2,11 @@
 
 import { useEffect, useState, ReactNode } from "react";
 import { useRouter } from "next/navigation";
-import CircularProgress from "@mui/material/CircularProgress";
 
 import type { TeacherSettingInfoResponse } from "@/actions/get-teacher-setting-info";
 import { useGetTeacherSettingInfo } from "@/hooks/query/useGetTeacherSettingInfo";
 import ErrorUI from "@/ui/ErrorUI";
+import LoadingUI from "@/ui/LoadingUI";
 
 interface TeacherSettingProviderProps {
   children: (
@@ -49,11 +49,7 @@ export default function TeacherSettingProvider({
   );
 
   if (!isQueryEnabled || isLoading) {
-    return (
-      <div className="flex min-h-screen items-center justify-center">
-        <CircularProgress />
-      </div>
-    );
+    return <LoadingUI />;
   }
 
   if (isError || !data) {

@@ -2,7 +2,6 @@
 
 import { useEffect, useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
-import CircularProgress from "@mui/material/CircularProgress";
 
 import ErrorUI from "@/ui/ErrorUI";
 import { Modal } from "@/ui";
@@ -14,6 +13,7 @@ import HeaderWithBack from "@/components/result/HeaderWithBack";
 import Button from "@/ui/Button";
 import GlobalSnackbar from "@/ui/Snackbar";
 import TitleSection from "@/ui/TitleSection";
+import LoadingUI from "@/ui/LoadingUI";
 
 const arraysEqual = (a: number[], b: number[]) =>
   a.length === b.length &&
@@ -126,11 +126,7 @@ export default function TeacherSettingRegion() {
   };
 
   if (isQueryEnabled && isLoading) {
-    return (
-      <div className="flex min-h-screen items-center justify-center">
-        <CircularProgress />
-      </div>
-    );
+    return <LoadingUI />;
   }
   if (isQueryEnabled && (isError || !data)) return <ErrorUI />;
 
