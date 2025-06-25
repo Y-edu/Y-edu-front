@@ -2,6 +2,6 @@
 
 import ErrorUI from "@/ui/ErrorUI";
 
-export default function Error() {
+export default function ErrorPage() {
   return <ErrorUI />;
 }
