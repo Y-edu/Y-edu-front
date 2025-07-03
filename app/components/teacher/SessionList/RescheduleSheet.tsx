@@ -10,7 +10,7 @@ import { useGlobalSnackbar } from "@/providers/GlobalSnackBar";
 import {
   convertToFirstDay,
   formatFirstDayToDateString,
-} from "@/utils/formatFirtDay";
+} from "@/utils/formatFirstDay";
 
 interface Schedule {
   classSessionId: number;

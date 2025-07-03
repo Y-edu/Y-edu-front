@@ -13,7 +13,7 @@ import { useTextareaWithMaxLength } from "@/ui/Textarea/useMaxLengthValidator";
 import {
   formatFirstDayToDateString,
   to24HourTime,
-} from "@/utils/formatFirtDay";
+} from "@/utils/formatFirstDay";
 
 export const DAYS = ["월", "화", "수", "목", "금", "토", "일"];
 
