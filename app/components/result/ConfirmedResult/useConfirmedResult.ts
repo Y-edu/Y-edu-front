@@ -10,6 +10,10 @@ import {
 } from "@/actions/put-schedule";
 import { usePutSchedule } from "@/hooks/mutation/usePutSchedule";
 import { useTextareaWithMaxLength } from "@/ui/Textarea/useMaxLengthValidator";
+import {
+  formatFirstDayToDateString,
+  to24HourTime,
+} from "@/utils/formatFirtDay";
 
 export const DAYS = ["월", "화", "수", "목", "금", "토", "일"];
 
@@ -107,17 +111,7 @@ export function useConfirmedResult() {
 
   const to24HourFormat = (period: string, timeWithSuffix: string): string => {
     const time = timeWithSuffix.replace("부터", "").trim();
-    const [hourStr, minuteStr] = time.split(":");
-    let hour = parseInt(hourStr, 10);
-    const minute = minuteStr.padStart(2, "0");
-
-    if (period === "오전") {
-      if (hour === 12) hour = 0;
-    } else if (period === "오후") {
-      if (hour !== 12) hour += 12;
-    }
-
-    return `${hour.toString().padStart(2, "0")}:${minute}`;
+    return to24HourTime(period, time);
   };
 
   const handleSubmit = () => {
@@ -138,19 +132,12 @@ export function useConfirmedResult() {
           classMinute: commonSchedule!.classMinute,
         }));
 
-    const cleanMonth = firstDay.month
-      .replace(/\s*\(.*\)$/, "")
-      .replace("월", "")
-      .padStart(2, "0");
-
-    const cleanDay = firstDay.day
-      .replace(/\s*\(.*\)$/, "")
-      .replace("일", "")
-      .padStart(2, "0");
+    const { formattedDate, formattedTime } =
+      formatFirstDayToDateString(firstDay);
 
     const firstDayDTO: FirstDayDTO = {
-      date: `${firstDay.year}-${cleanMonth}-${cleanDay}`,
-      start: to24HourFormat(firstDay.period, firstDay.time),
+      date: formattedDate,
+      start: formattedTime,
     };
 
     const payload: ScheduleRequest = {
