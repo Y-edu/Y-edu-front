@@ -1,3 +1,5 @@
+import { FirstDayDTO } from "@/actions/put-schedule";
+
 import { httpService } from "app/utils/httpService";
 
 export interface ClassSchedule {
@@ -6,18 +8,13 @@ export interface ClassSchedule {
   classMinute: number;
 }
 
-export interface FirstDay {
-  date: string;
-  start: string;
-}
-
 export interface MatchingScheduleResponse {
   exist: boolean;
   classMatchingId: string | null;
   classScheduleManagementId: string | null;
   textBook: string | null;
   schedules: ClassSchedule[] | null;
-  firstDay: FirstDay | null;
+  firstDay: FirstDayDTO | null;
 }
 
 export const getMatchingSchedule = async (params: {
