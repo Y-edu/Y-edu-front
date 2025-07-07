@@ -99,7 +99,8 @@ export function useSessionMutations() {
         params.set("classId", classId);
       }
 
-      queryClient.invalidateQueries({ queryKey: ["sessions"] });
+      await queryClient.invalidateQueries({ queryKey: ["sessions"] });
+      await queryClient.refetchQueries({ queryKey: ["sessions"] });
 
       params.set("is-complete", "true");
       router.push(`/teacher/session-schedule?${params.toString()}`);
