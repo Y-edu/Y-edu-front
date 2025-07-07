@@ -25,7 +25,7 @@ export default function SessionReviewPage() {
   const targetSession = useMemo(() => {
     if (!data) return undefined;
     return Object.values(data.schedules)
-      .flatMap((schedulePage) => schedulePage.content)
+      .flatMap((schedulePage) => schedulePage.schedules.content)
       .find((s) => s.classSessionId === sessionId);
   }, [data, sessionId]);
 
