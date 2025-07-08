@@ -17,7 +17,9 @@ interface Schedule {
 }
 
 interface Region {
-  content: Schedule[];
+  schedules: {
+    content: Schedule[];
+  };
 }
 
 interface RescheduleSheetProps {
@@ -52,7 +54,9 @@ export default function RescheduleSheet({
 
         acc[key] = {
           ...incompleteSessions?.schedules[key],
-          content: [...incompleteContent, ...completeContent],
+          schedules: {
+            content: [...incompleteContent, ...completeContent],
+          },
         };
 
         return acc;
@@ -84,7 +88,7 @@ export default function RescheduleSheet({
 
     const isUnavailable = allSessions?.schedules
       ? Object.values(allSessions.schedules).some((region) => {
-          return region.content.some((schedule) => {
+          return region.schedules.content.some((schedule) => {
             // 현재 수정 중인 세션 제외
             if (schedule.classSessionId === sessionId) {
               return false;
