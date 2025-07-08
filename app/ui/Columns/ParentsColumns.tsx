@@ -11,6 +11,10 @@ export function getParentColumns(
   onToggleStatus: (applicationFormId: string) => void,
 ) {
   return [
+    columnHelper.accessor("applicationFormId", {
+      header: "수업코드",
+      cell: (props) => props.getValue() || "-",
+    }),
     columnHelper.accessor("kakaoName", {
       header: "카톡 이름",
       cell: (props) => props.getValue() || "-",
@@ -19,6 +23,10 @@ export function getParentColumns(
       id: "classStatus",
       header: "수업 시수",
       cell: (props) => props.getValue(),
+    }),
+    columnHelper.accessor("pay", {
+      header: "월 수업료",
+      cell: (info) => formatMonthlyFee(info.getValue()),
     }),
     columnHelper.accessor("scheduledClasses", {
       header: "확정 수업 정보",
@@ -39,19 +47,23 @@ export function getParentColumns(
         );
       },
     }),
-    columnHelper.accessor("pay", {
-      header: "월 수업료",
-      cell: (info) => formatMonthlyFee(info.getValue()),
-    }),
     columnHelper.accessor("wantedSubject", {
-      header: "원하는 과목",
-    }),
-    columnHelper.accessor("source", {
-      header: "유입경로",
+      header: "과목",
     }),
     columnHelper.accessor("createdAt", {
       header: "신청일",
-      cell: (props) => new Date(props.getValue()).toLocaleString(),
+      cell: (props) => {
+        const date = new Date(props.getValue());
+        return date.toLocaleString("ko-KR", {
+          year: undefined,
+          month: "numeric",
+          day: "numeric",
+          hour: "numeric",
+          minute: "numeric",
+          second: undefined,
+          hour12: true,
+        });
+      },
     }),
     // 수락 상태: accept/total
     columnHelper.accessor((row) => `${row.accept}/${row.total}`, {

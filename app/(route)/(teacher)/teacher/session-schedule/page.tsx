@@ -18,8 +18,12 @@ export default function TeacherSessionScheduleListPage() {
   if (isLoading) {
     return <LoadingUI />;
   }
+  const schedules = data?.schedules ?? {};
+  const classIds = Object.keys(schedules);
+  const defaultClassId =
+    classIds.find((id) => schedules[id].send === true) ?? classIds[0];
 
-  const tabs = Object.keys(data!.schedules).map((classId) => ({
+  const tabs = classIds.map((classId) => ({
     trigger: classId,
     content: <SessionList key={classId} classId={classId} />,
   }));
@@ -30,6 +34,7 @@ export default function TeacherSessionScheduleListPage() {
         <TabBar
           tabs={tabs}
           paramKey="classId"
+          initialTab={defaultClassId}
           listClassName="overflow-x-auto whitespace-nowrap scrollbar-hide"
           buttonClassName="flex-initial px-[10px] scroll-ml-5"
         />

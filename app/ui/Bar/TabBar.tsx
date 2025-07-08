@@ -15,6 +15,7 @@ interface TabBarProps {
   paramKey?: string;
   listClassName?: string;
   buttonClassName?: string;
+  initialTab?: string;
 }
 
 export default function TabBar({
@@ -23,12 +24,14 @@ export default function TabBar({
   paramKey,
   listClassName = "",
   buttonClassName = "",
+  initialTab = "",
 }: TabBarProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const initial = paramKey
-    ? (searchParams.get(paramKey) ?? tabs[0].trigger)
-    : tabs[0].trigger;
+  const initial =
+    paramKey && searchParams.get(paramKey)
+      ? searchParams.get(paramKey)!
+      : (initialTab ?? tabs[0].trigger);
   const [selectedTab, setSelectedTab] = useState(initial);
   const sectionRefs = useRef<Record<string, HTMLDivElement | null>>({}).current;
   const buttonRefs = useRef<Array<HTMLButtonElement | null>>([]);
