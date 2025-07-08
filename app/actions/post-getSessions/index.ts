@@ -41,13 +41,13 @@ export interface SchedulePageInfo {
   empty: boolean;
 }
 
-export interface ScheduleWithSend {
+export interface SessionScheduleInfo {
   schedules: SchedulePageInfo;
   send: boolean;
 }
 
 export interface SessionsResponse {
-  schedules: Record<string, ScheduleWithSend>;
+  schedules: Record<string, SessionScheduleInfo>;
 }
 
 export const getSessions = async (
