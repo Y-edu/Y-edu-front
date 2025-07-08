@@ -99,7 +99,6 @@ export function useSessionMutations() {
         params.set("classId", classId);
       }
 
-      await queryClient.invalidateQueries({ queryKey: ["sessions"] });
       await queryClient.refetchQueries({ queryKey: ["sessions"] });
 
       params.set("is-complete", "true");
