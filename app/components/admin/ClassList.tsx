@@ -43,7 +43,7 @@ function ClassList({
     getPaginationRowModel: getPaginationRowModel(),
     initialState: {
       pagination: {
-        pageSize: 15,
+        pageSize: 100,
       },
     },
   });

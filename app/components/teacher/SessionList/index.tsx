@@ -41,7 +41,7 @@ export default function SessionList({ classId }: SessionListProps) {
 
   useEffect(() => {
     if (!data) return;
-    const newContent = data.schedules[classId]?.content ?? [];
+    const newContent = data.schedules[classId]?.schedules?.content ?? [];
     setSessions(newContent);
   }, [data, classId]);
 

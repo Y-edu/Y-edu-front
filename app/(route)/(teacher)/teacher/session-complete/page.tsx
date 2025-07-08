@@ -36,7 +36,7 @@ export default function SessionCompletePage() {
   // sessionId가 있을 경우 sessions에서 데이터 추출
   const sessionFromCache = classSessionId
     ? (Object.values(sessions?.schedules ?? {})
-        .flatMap((schedulePage) => schedulePage.content)
+        .flatMap((schedulePage) => schedulePage.schedules.content)
         .find((session) => session.classSessionId === Number(classSessionId)) ??
       null)
     : null;
