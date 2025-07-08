@@ -46,8 +46,9 @@ export default function RescheduleSheet({
     schedules: Object.keys(incompleteSessions?.schedules || {}).reduce(
       (acc, key) => {
         const incompleteContent =
-          incompleteSessions?.schedules[key]?.content || [];
-        const completeContent = completeSessions?.schedules[key]?.content || [];
+          incompleteSessions?.schedules[key]?.schedules.content || [];
+        const completeContent =
+          completeSessions?.schedules[key]?.schedules.content || [];
 
         acc[key] = {
           ...incompleteSessions?.schedules[key],
