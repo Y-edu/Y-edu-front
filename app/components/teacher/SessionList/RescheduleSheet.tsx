@@ -65,6 +65,12 @@ export default function RescheduleSheet({
     ),
   };
 
+  const currentClassKey = Object.keys(allSessions.schedules).find((key) =>
+    allSessions.schedules[key].schedules.content.some(
+      (s) => s.classSessionId === sessionId,
+    ),
+  );
+
   const [confirmed, setConfirmed] = useState(false);
   const [selectedDate, setSelectedDate] = useState<FirstDay>(
     convertToFirstDay(date, time),
@@ -86,19 +92,12 @@ export default function RescheduleSheet({
     const formattedDate = `${date.year}-${cleanMonth}-${cleanDay}`;
     const formattedTime = to24HourTime(date.period, date.time);
 
-    const isUnavailable = allSessions?.schedules
-      ? Object.values(allSessions.schedules).some((region) => {
-          return region.schedules.content.some((schedule) => {
-            // 현재 수정 중인 세션 제외
-            if (schedule.classSessionId === sessionId) {
-              return false;
-            }
-
-            // 날짜 똑같은지 비교
-            const isSameDate = schedule.classDate === formattedDate;
-            return isSameDate;
-          });
-        })
+    const isUnavailable = currentClassKey
+      ? allSessions.schedules[currentClassKey].schedules.content.some(
+          (schedule) =>
+            schedule.classSessionId !== sessionId &&
+            schedule.classDate === formattedDate,
+        )
       : false;
 
     // 유효한 날짜가 아닐 때
