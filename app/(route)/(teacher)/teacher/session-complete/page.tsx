@@ -27,7 +27,7 @@ export default function SessionCompletePage() {
   const token = searchParams.get("token") ?? "";
   const classSessionId = searchParams.get("sessionId");
 
-  const { data: sessions } = useGetSessions(token, 0, 3);
+  const { data: sessions } = useGetSessions(token, 0, 30);
   const { data, isLoading } = useGetSchedules({ token });
   const { data: sessionByToken } = useGetSessionByToken({ token: token ?? "" });
 
