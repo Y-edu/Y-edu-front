@@ -33,6 +33,15 @@ export default function ScrollPicker({
     }, 80);
   };
 
+  const scrollToIndex = (index: number) => {
+    const el = ref.current;
+    if (!el) return;
+    el.scrollTo({
+      top: index * ITEM_HEIGHT,
+      behavior: "smooth",
+    });
+  };
+
   useEffect(() => {
     const index = options.findIndex((opt) => opt === selected);
     if (ref.current) {
@@ -50,16 +59,17 @@ export default function ScrollPicker({
         className="h-full snap-y snap-mandatory overflow-y-scroll scroll-smooth scrollbar-hide"
       >
         <div className="flex flex-col items-center py-[56px]">
-          {options.map((opt) => (
-            <div
+          {options.map((opt, i) => (
+            <button
               key={opt}
+              onClick={() => scrollToIndex(i)}
               className={cn(
                 "flex h-[56px] w-full snap-center items-center justify-center whitespace-nowrap px-[12px] text-[16px] font-medium text-[#C9CBCF] transition-all",
                 selected === opt && "text-grey-900",
               )}
             >
               {opt}
-            </div>
+            </button>
           ))}
         </div>
       </div>
