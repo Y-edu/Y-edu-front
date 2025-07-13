@@ -1,18 +1,13 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import {
-  flexRender,
-  getCoreRowModel,
-  getPaginationRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
+import { ColumnDef } from "@tanstack/react-table";
 
-import { Pagination } from "@/ui/Pagination";
 import { useGetParentsList } from "@/hooks/query/useGetParentsList";
 import { ParentsListResponse } from "@/actions/get-parents-list/index";
 import { getParentColumns } from "@/ui/Columns/ParentsColumns";
 import { usePutParentStatusToggle } from "@/hooks/mutation/usePutParentStatusToggle";
+import AdminTable from "@/ui/Table/AdminTable";
 
 function ParentsListComponent() {
   const { data, isLoading, error } = useGetParentsList();
@@ -43,87 +38,22 @@ function ParentsListComponent() {
     });
 
   const columns = getParentColumns(tableData, setTableData, onToggleStatus);
-  const table = useReactTable({
-    data: tableData,
-    columns,
-    getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    initialState: {
-      pagination: {
-        pageSize: 15,
-      },
-    },
-  });
+
+  const handleRowClick = (row: ParentsListResponse) => {
+    window.location.href = `/zuzuclubadmin/${row.applicationFormId}`;
+  };
 
   return (
-    <div>
-      {isLoading ? (
-        <p>로딩중...</p>
-      ) : error ? (
-        <p>
-          에러 발생:{" "}
-          {error instanceof Error ? error.message : "알 수 없는 에러"}
-        </p>
-      ) : (
-        <>
-          <div className="overflow-hidden rounded-3xl border border-gray-300 bg-white shadow-lg">
-            <table className="w-full table-auto border-collapse">
-              <thead>
-                {table.getHeaderGroups().map((hg) => (
-                  <tr key={hg.id} className="border-b bg-gray-100 text-primary">
-                    {hg.headers.map((header) => (
-                      <th
-                        key={header.id}
-                        className="px-4 py-2 text-left text-sm font-semibold"
-                      >
-                        {flexRender(
-                          header.column.columnDef.header,
-                          header.getContext(),
-                        )}
-                      </th>
-                    ))}
-                  </tr>
-                ))}
-              </thead>
-              <tbody>
-                {table.getRowModel().rows.map((row) => (
-                  <tr
-                    key={row.id}
-                    className="cursor-pointer border-b bg-white hover:bg-gray-100"
-                    onClick={(e) => {
-                      const target = e.target as HTMLElement;
-                      if (target.closest('[role="switch"]')) return;
-                      window.location.href = `/zuzuclubadmin/${row.original.applicationFormId}`;
-                    }}
-                  >
-                    {row.getVisibleCells().map((cell) => (
-                      <td
-                        key={cell.id}
-                        className={`${cell.column.id === "status" ? "p-0" : "p-4"} text-left text-sm`}
-                      >
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext(),
-                        )}
-                      </td>
-                    ))}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-
-          <Pagination
-            canPreviousPage={table.getCanPreviousPage()}
-            canNextPage={table.getCanNextPage()}
-            pageIndex={table.getState().pagination.pageIndex}
-            pageCount={table.getPageCount()}
-            onPrevious={() => table.previousPage()}
-            onNext={() => table.nextPage()}
-          />
-        </>
-      )}
-    </div>
+    <AdminTable<ParentsListResponse>
+      data={tableData}
+      isLoading={isLoading}
+      error={error}
+      columns={columns as ColumnDef<ParentsListResponse>[]}
+      pagination
+      pageSize={15}
+      onRowClick={handleRowClick}
+      emptyMessage="검색결과가 없습니다."
+    />
   );
 }
 
