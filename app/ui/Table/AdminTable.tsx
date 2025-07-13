@@ -43,7 +43,7 @@ export default function AdminTable<TData>({
   onRowSelectionChange,
   onRowClick,
   getRowId,
-  emptyMessage = "로딩중...",
+  emptyMessage = "결과가 없습니다.",
   className = "",
 }: AdminTableProps<TData>) {
   const [tableData, setTableData] = useState<TData[]>(data);

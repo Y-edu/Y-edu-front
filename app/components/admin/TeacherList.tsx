@@ -89,7 +89,7 @@ function TeacherList({
         onRowSelectionChange={setSelectedTeachers}
         onRowClick={handleRowClick}
         getRowId={(row) => String(row.teacherId)}
-        emptyMessage="로딩중..."
+        emptyMessage="결과가 없습니다."
       />
 
       {modalType && (

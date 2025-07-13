@@ -42,6 +42,7 @@ function ClassList({
       data={classItems || []}
       columns={columns as ColumnDef<Class>[]}
       pagination={pagination}
+      emptyMessage=""
       pageSize={100}
       onRowClick={handleRowClick}
       className={pagination ? "pb-4" : ""}
