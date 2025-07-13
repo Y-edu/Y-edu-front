@@ -52,7 +52,7 @@ function ParentsListComponent() {
       pagination
       pageSize={15}
       onRowClick={handleRowClick}
-      emptyMessage="검색결과가 없습니다."
+      emptyMessage="로딩중..."
     />
   );
 }
