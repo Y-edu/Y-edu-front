@@ -21,6 +21,35 @@ const statusColors = {
   일시중단: "bg-yellow-100 text-yellow-800",
 } as const;
 
+const dayMap: Record<string, string> = {
+  MON: "월",
+  TUE: "화",
+  WED: "수",
+  THU: "목",
+  FRI: "금",
+  SAT: "토",
+  SUN: "일",
+};
+
+function DayTimeCell({
+  scheduleList,
+}: {
+  scheduleList: Class["classManagement"]["schedule"];
+}) {
+  if (!scheduleList?.length) return "-";
+
+  return (
+    <div>
+      {scheduleList.map((item, index) => (
+        <div key={item.classScheduleId}>
+          {dayMap[item.day] || item.day} {item.start}
+          {index < scheduleList.length - 1 && ", "}
+        </div>
+      ))}
+    </div>
+  );
+}
+
 // 과외 상태 칩
 function StatusCell({
   status,
@@ -132,6 +161,15 @@ export function getClassColumns(
           </div>
         );
       },
+    }),
+    columnHelper.display({
+      id: "dayTime",
+      header: "정규일정",
+      cell: (props) => (
+        <DayTimeCell
+          scheduleList={props.row.original.classManagement.schedule}
+        />
+      ),
     }),
     columnHelper.accessor("applicationFormId", {
       header: "수업코드",
