@@ -11,7 +11,9 @@ export const GET_CLASSLIST = gql`
     ) {
       classManagement {
         schedule {
+          classScheduleId
           day
+          start
           classMinute
         }
       }

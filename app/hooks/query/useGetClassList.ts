@@ -22,7 +22,9 @@ export interface Class {
   matchingId: number;
   classManagement: {
     schedule: {
+      classScheduleId: number;
       day: string;
+      start: string;
       classMinute: number;
     }[];
   };
