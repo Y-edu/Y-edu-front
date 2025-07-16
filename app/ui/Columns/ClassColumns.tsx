@@ -142,6 +142,10 @@ export function getClassColumns(
   onStatusChange: (rowIndex: number, newStatus: ClassStatus) => void,
 ) {
   return [
+    columnHelper.accessor("applicationFormId", {
+      header: "수업코드",
+      cell: (props) => props.getValue(),
+    }),
     columnHelper.accessor("parent.kakaoName", {
       header: "카톡 이름",
       cell: (props) => props.getValue() || "-",
@@ -170,10 +174,6 @@ export function getClassColumns(
           scheduleList={props.row.original.classManagement.schedule}
         />
       ),
-    }),
-    columnHelper.accessor("applicationFormId", {
-      header: "수업코드",
-      cell: (props) => props.getValue(),
     }),
     columnHelper.accessor("subject", {
       header: "과목",
