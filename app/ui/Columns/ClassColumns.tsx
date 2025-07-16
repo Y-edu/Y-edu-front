@@ -40,10 +40,9 @@ function DayTimeCell({
 
   return (
     <div>
-      {scheduleList.map((item, index) => (
+      {scheduleList.map((item) => (
         <div key={item.classScheduleId}>
           {dayMap[item.day] || item.day} {item.start}
-          {index < scheduleList.length - 1 && ", "}
         </div>
       ))}
     </div>
