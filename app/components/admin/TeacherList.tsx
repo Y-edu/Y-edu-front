@@ -92,7 +92,6 @@ function TeacherList({
           onClick: handleRowClick,
           getId: (row) => String(row.teacherId),
         }}
-        emptyMessage="결과가 없습니다."
       />
 
       {modalType && (

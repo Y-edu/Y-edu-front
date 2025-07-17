@@ -51,7 +51,6 @@ function ParentsListComponent() {
       columns={columns as ColumnDef<ParentsListResponse>[]}
       pagination={{ enabled: true, pageSize: 15 }}
       rowInteraction={{ onClick: handleRowClick }}
-      emptyMessage="결과가 없습니다."
     />
   );
 }

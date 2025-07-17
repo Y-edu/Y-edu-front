@@ -36,7 +36,6 @@ export interface AdminTableProps<TData> {
   columns: ColumnDef<TData>[];
   isLoading?: boolean;
   error?: Error | null;
-  emptyMessage?: string;
   className?: string;
   pagination?: PaginationOptions;
   selection?: SelectionOptions;
@@ -48,7 +47,6 @@ export default function AdminTable<TData>({
   columns,
   isLoading = false,
   error = null,
-  emptyMessage = "결과가 없습니다.",
   className = "",
   pagination = { enabled: true, pageSize: 30 },
   selection = { enabled: false, selectedRows: {} },
@@ -140,7 +138,7 @@ export default function AdminTable<TData>({
                 colSpan={table.getHeaderGroups()[0]?.headers.length || 1}
                 className="p-4 text-center text-sm"
               >
-                {emptyMessage}
+                결과가 없습니다.
               </td>
             </tr>
           ) : (
