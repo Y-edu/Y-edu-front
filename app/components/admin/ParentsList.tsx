@@ -49,9 +49,8 @@ function ParentsListComponent() {
       isLoading={isLoading}
       error={error}
       columns={columns as ColumnDef<ParentsListResponse>[]}
-      pagination
-      pageSize={15}
-      onRowClick={handleRowClick}
+      pagination={{ enabled: true, pageSize: 15 }}
+      rowInteraction={{ onClick: handleRowClick }}
       emptyMessage="결과가 없습니다."
     />
   );

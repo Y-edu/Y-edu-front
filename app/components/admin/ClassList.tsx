@@ -41,10 +41,9 @@ function ClassList({
     <AdminTable<Class>
       data={classItems || []}
       columns={columns as ColumnDef<Class>[]}
-      pagination={pagination}
+      pagination={{ enabled: pagination, pageSize: 100 }}
       emptyMessage=""
-      pageSize={100}
-      onRowClick={handleRowClick}
+      rowInteraction={{ onClick: handleRowClick }}
       className={pagination ? "pb-4" : ""}
     />
   );

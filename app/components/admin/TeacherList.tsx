@@ -82,13 +82,16 @@ function TeacherList({
             : null
         }
         columns={columns as ColumnDef<FilteringTeacher>[]}
-        pagination
-        pageSize={30}
-        enableRowSelection
-        selectedRows={selectedTeacherRowList}
-        onRowSelectionChange={setSelectedTeachers}
-        onRowClick={handleRowClick}
-        getRowId={(row) => String(row.teacherId)}
+        pagination={{ enabled: true, pageSize: 30 }}
+        selection={{
+          enabled: true,
+          selectedRows: selectedTeacherRowList,
+          onChange: setSelectedTeachers,
+        }}
+        rowInteraction={{
+          onClick: handleRowClick,
+          getId: (row) => String(row.teacherId),
+        }}
         emptyMessage="결과가 없습니다."
       />
 

@@ -14,37 +14,45 @@ import {
 import { Pagination } from "@/ui/Pagination";
 import cn from "@/utils/cn";
 
-// 제네릭 타입 정의
+// 타입 정의
+interface PaginationOptions {
+  enabled?: boolean;
+  pageSize?: number;
+}
+
+interface SelectionOptions {
+  enabled?: boolean;
+  selectedRows?: RowSelectionState;
+  onChange?: OnChangeFn<RowSelectionState>;
+}
+
+interface RowInteraction<TData> {
+  onClick?: (row: TData) => void;
+  getId?: (row: TData) => string;
+}
+
 export interface AdminTableProps<TData> {
   data: TData[];
+  columns: ColumnDef<TData>[];
   isLoading?: boolean;
   error?: Error | null;
-  columns: ColumnDef<TData>[];
-  pagination?: boolean;
-  pageSize?: number;
-  enableRowSelection?: boolean;
-  selectedRows?: RowSelectionState;
-  onRowSelectionChange?: OnChangeFn<RowSelectionState>;
-  onRowClick?: (row: TData) => void;
-  getRowId?: (row: TData) => string;
   emptyMessage?: string;
   className?: string;
+  pagination?: PaginationOptions;
+  selection?: SelectionOptions;
+  rowInteraction?: RowInteraction<TData>;
 }
 
 export default function AdminTable<TData>({
   data,
+  columns,
   isLoading = false,
   error = null,
-  columns,
-  pagination = true,
-  pageSize = 30,
-  enableRowSelection = false,
-  selectedRows = {},
-  onRowSelectionChange,
-  onRowClick,
-  getRowId,
   emptyMessage = "결과가 없습니다.",
   className = "",
+  pagination = { enabled: true, pageSize: 30 },
+  selection = { enabled: false, selectedRows: {} },
+  rowInteraction = {},
 }: AdminTableProps<TData>) {
   const [tableData, setTableData] = useState<TData[]>(data);
 
@@ -57,23 +65,23 @@ export default function AdminTable<TData>({
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-    getRowId,
-    state: enableRowSelection
+    getRowId: rowInteraction.getId,
+    state: selection.enabled
       ? {
-          rowSelection: selectedRows,
+          rowSelection: selection.selectedRows || {},
         }
       : undefined,
-    onRowSelectionChange: enableRowSelection ? onRowSelectionChange : undefined,
+    onRowSelectionChange: selection.enabled ? selection.onChange : undefined,
     initialState: {
       pagination: {
-        pageSize,
+        pageSize: pagination.pageSize || 30,
       },
     },
   });
 
   const handleRowClick = (row: TData) => {
-    if (onRowClick) {
-      onRowClick(row);
+    if (rowInteraction.onClick) {
+      rowInteraction.onClick(row);
     }
   };
 
@@ -110,13 +118,11 @@ export default function AdminTable<TData>({
               {headerGroup.headers.map((header, idx) => (
                 <th
                   key={header.id}
-                  className={`p-4 text-left text-sm font-semibold ${
-                    idx === 0 ? "rounded-tl-3xl" : ""
-                  } ${
-                    idx === headerGroup.headers.length - 1
-                      ? "rounded-tr-3xl"
-                      : ""
-                  }`}
+                  className={cn(
+                    "p-4 text-left text-sm font-semibold",
+                    idx === 0 && "rounded-tl-3xl",
+                    idx === headerGroup.headers.length - 1 && "rounded-tr-3xl",
+                  )}
                 >
                   {flexRender(
                     header.column.columnDef.header,
@@ -152,7 +158,7 @@ export default function AdminTable<TData>({
                     return;
                   }
 
-                  if (enableRowSelection) {
+                  if (selection.enabled) {
                     row.getToggleSelectedHandler()(e);
                   } else {
                     handleRowClick(row.original);
@@ -182,7 +188,7 @@ export default function AdminTable<TData>({
         </tbody>
       </table>
 
-      {pagination && (
+      {pagination.enabled && (
         <div className="pb-4">
           <Pagination
             canPreviousPage={table.getCanPreviousPage()}
