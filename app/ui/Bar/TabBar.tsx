@@ -24,14 +24,14 @@ export default function TabBar({
   paramKey,
   listClassName = "",
   buttonClassName = "",
-  initialTab = "",
+  initialTab,
 }: TabBarProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const initial =
     paramKey && searchParams.get(paramKey)
       ? searchParams.get(paramKey)!
-      : (initialTab ?? tabs[0].trigger);
+      : initialTab || tabs[0].trigger;
   const [selectedTab, setSelectedTab] = useState(initial);
   const sectionRefs = useRef<Record<string, HTMLDivElement | null>>({}).current;
   const buttonRefs = useRef<Array<HTMLButtonElement | null>>([]);
