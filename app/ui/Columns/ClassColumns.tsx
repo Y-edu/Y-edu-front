@@ -1,11 +1,8 @@
 import { createColumnHelper } from "@tanstack/react-table";
 import { useRef, useState, useEffect } from "react";
 
-import {
-  Class,
-  ClassStatus,
-  usePutClassStatus,
-} from "@/hooks/query/useGetClassList";
+import { Class, usePutClassStatus } from "@/hooks/query/useGetClassList";
+import { ClassStatus } from "@/constants/matching";
 
 const columnHelper = createColumnHelper<Class>();
 
