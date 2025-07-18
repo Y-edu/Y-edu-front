@@ -10,6 +10,8 @@ export interface SessionResponse {
   classDate: string;
   classStart: string;
   classMinute: number;
+  currentRound: number;
+  maxRound: number;
 }
 
 export interface SortInfo {
@@ -48,6 +50,7 @@ export interface SessionScheduleInfo {
 
 export interface SessionsResponse {
   schedules: Record<string, SessionScheduleInfo>;
+  matchingStatuses: Record<string, string>;
 }
 
 export const getSessions = async (
