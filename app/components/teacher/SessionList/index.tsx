@@ -38,6 +38,7 @@ export default function SessionList({ classId }: SessionListProps) {
     isComplete,
     classId,
   );
+  const { data: completedData } = useGetSessions(token, 0, 50, true, classId);
 
   useEffect(() => {
     if (!data) return;
@@ -46,8 +47,16 @@ export default function SessionList({ classId }: SessionListProps) {
   }, [data, classId]);
 
   const items: SessionItem[] = useSessionList(sessions);
-
   const params = new URLSearchParams(searchParams.toString());
+
+  const isPaused = data?.matchingStatuses?.[classId] === "일시중단";
+
+  const allRounds =
+    completedData?.schedules[classId]?.schedules?.content
+      ?.map((s) => s.currentRound)
+      .filter((r): r is number => typeof r === "number") ?? [];
+
+  const lastCurrentRound = allRounds.length > 0 ? Math.max(...allRounds) : null;
 
   const changeFilter = (next: boolean) => {
     if (next === isComplete) return;
@@ -93,24 +102,38 @@ export default function SessionList({ classId }: SessionListProps) {
         </Button>
       </section>
 
-      {items.length === 0 ? (
+      {items.length === 0 && (!isPaused || isComplete) ? (
         <div className="text-center text-gray-500">조회된 일정이 없습니다.</div>
       ) : (
-        (isExpanded ? items : items.slice(0, 3)).map((session, idx) => (
-          <SessionListCard
-            classSessionId={session.id}
-            key={session.id}
-            date={session.date}
-            time={session.time}
-            statusLabel={session.statusLabel}
-            actions={session.actions}
-            showMoneyReminder={session.showMoneyReminder}
-            initialOpen={idx < 3}
-          />
-        ))
+        <>
+          {(isExpanded ? items : items.slice(0, 3)).map((session, idx) => (
+            <SessionListCard
+              classSessionId={session.id}
+              key={session.id}
+              date={session.date}
+              time={session.time}
+              statusLabel={session.statusLabel}
+              actions={session.actions}
+              showMoneyReminder={session.showMoneyReminder}
+              initialOpen={idx < 3}
+              currentRound={session.currentRound}
+              maxRound={session.maxRound}
+            />
+          ))}
+
+          {!isComplete && isPaused && (
+            <div className="flex justify-center p-5 text-center text-sm leading-[21px] text-grey-400">
+              {lastCurrentRound !== null
+                ? `${lastCurrentRound + 1}회차부터 수업이 일시정지됐어요.`
+                : `수업이 일시정지됐어요.`}
+              <br />
+              수업 재개는 Y-Edu에 문의해 주세요.
+            </div>
+          )}
+        </>
       )}
 
-      {hasMore && (
+      {hasMore && !isPaused && (
         <div className="flex justify-center">
           <Button
             className="cursor-default bg-transparent py-3 text-[14px] font-semibold text-gray-700"
