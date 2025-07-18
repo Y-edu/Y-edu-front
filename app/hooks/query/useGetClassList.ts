@@ -6,10 +6,7 @@ import {
   PUT_CLASS_STATUS,
 } from "@/actions/graphql/class-management";
 import { useGlobalSnackbar } from "@/providers/GlobalSnackBar";
-
-export const CLASS_STATUS_OPTIONS = ["최종매칭", "중단", "일시중단"] as const;
-
-export type ClassStatus = (typeof CLASS_STATUS_OPTIONS)[number];
+import { CLASS_STATUS_OPTIONS, ClassStatus } from "@/constants/matching";
 
 interface Variables {
   matchingStatus?: string[];
@@ -84,7 +81,7 @@ export const useGetClassDetail = (variables: Variables) => {
 
 export const usePutClassStatus = () => {
   const { refetch } = useGetClassList({
-    matchingStatus: ["최종매칭", "중단", "일시중단"],
+    matchingStatus: [...CLASS_STATUS_OPTIONS],
   });
   const toast = useGlobalSnackbar();
   const [mutate, mutationResult] = useMutation(PUT_CLASS_STATUS, {
