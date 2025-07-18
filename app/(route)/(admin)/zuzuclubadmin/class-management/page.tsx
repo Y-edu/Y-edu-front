@@ -4,10 +4,11 @@ import { useEffect, useState } from "react";
 
 import ClassList from "@/components/admin/ClassList";
 import { Class, useGetClassList } from "@/hooks/query/useGetClassList";
+import { CLASS_STATUS_OPTIONS } from "@/constants/matching";
 
 export default function ClassManagementHome() {
   const { data } = useGetClassList({
-    matchingStatus: ["최종매칭", "중단", "일시중단"],
+    matchingStatus: [...CLASS_STATUS_OPTIONS],
   });
   const [tableData, setTableData] = useState<Class[]>([]);
 

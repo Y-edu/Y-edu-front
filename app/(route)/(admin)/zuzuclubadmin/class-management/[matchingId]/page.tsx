@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import ClassList from "@/components/admin/ClassList";
 import { Class, useGetClassList } from "@/hooks/query/useGetClassList";
 import { Header } from "@/ui";
+import { CLASS_STATUS_OPTIONS } from "@/constants/matching";
 
 export default function ClassManagementDetailPage({
   params,
@@ -16,7 +17,7 @@ export default function ClassManagementDetailPage({
   const { data } = useGetClassList(
     {
       matchingIds: [Number(matchingId)],
-      matchingStatus: ["최종매칭", "일시중단", "중단"],
+      matchingStatus: [...CLASS_STATUS_OPTIONS],
     },
     { skip: !matchingId },
   );

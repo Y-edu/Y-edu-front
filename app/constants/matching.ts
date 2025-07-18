@@ -11,6 +11,8 @@ export const MATCHING_STATUS = {
   TUTORING_END: "과외결렬",
 } as const;
 
+export const CLASS_STATUS_OPTIONS = ["최종매칭", "일시중단", "중단"] as const;
+
 export const MATCHING_STATUS_ORDER = {
   [MATCHING_STATUS.FINAL_MATCH]: 0,
   [MATCHING_STATUS.TEMPORARY_STOP]: 1,
@@ -26,3 +28,5 @@ export const MATCHING_STATUS_ORDER = {
 
 export type MatchingStatus =
   (typeof MATCHING_STATUS)[keyof typeof MATCHING_STATUS];
+
+export type ClassStatus = (typeof CLASS_STATUS_OPTIONS)[number];

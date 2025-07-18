@@ -6,6 +6,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { getClassColumns } from "@/ui/Columns/ClassColumns";
 import { Class } from "@/hooks/query/useGetClassList";
 import AdminTable from "@/ui/Table/AdminTable";
+import { ClassStatus } from "@/constants/matching";
 
 export interface ClassListProps {
   classItems?: Class[];
@@ -20,10 +21,7 @@ function ClassList({
 }: ClassListProps) {
   const router = useRouter();
 
-  const handleStatusChange = (
-    rowIndex: number,
-    newStatus: "최종매칭" | "중단" | "일시중단",
-  ) => {
+  const handleStatusChange = (rowIndex: number, newStatus: ClassStatus) => {
     setClassItems?.((prev: Class[]) =>
       prev.map((row, idx) =>
         idx === rowIndex ? { ...row, matchingStatus: newStatus } : row,
