@@ -22,27 +22,30 @@ export default function ClassManagementHome() {
     }
   }, [data]);
 
+  const refineText = (text: string | null | undefined) => {
+    if (!text) return "";
+    return text.replace(/\s+/g, "").toLowerCase();
+  };
+
   const handleSearch = (term: string) => {
     if (!term.trim()) {
       setFilteredData(allData);
       return;
     }
 
+    const searchRefined = refineText(term);
+
     const filtered = allData.filter((item) => {
-      // 공백 제거 및 소문자화
-      const refineText = (text: string | null | undefined) => {
-        if (!text) return "";
-        return text.replace(/\s+/g, "").toLowerCase();
-      };
+      const targetFields = [
+        item.subject,
+        item.parent?.kakaoName,
+        item.teacher?.nickName,
+        String(item.matchingId),
+        item.applicationFormId,
+      ];
 
-      const searchRefined = refineText(term);
-
-      return (
-        refineText(item.subject).includes(searchRefined) ||
-        refineText(item.parent?.kakaoName).includes(searchRefined) ||
-        refineText(item.teacher?.nickName).includes(searchRefined) ||
-        refineText(String(item.matchingId)).includes(searchRefined) ||
-        refineText(item.applicationFormId).includes(searchRefined)
+      return targetFields.some((field) =>
+        refineText(field).includes(searchRefined),
       );
     });
 
