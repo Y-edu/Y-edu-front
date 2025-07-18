@@ -88,18 +88,20 @@ export default function SessionList({ classId }: SessionListProps) {
             onClick={() => changeFilter(true)}
           />
         </div>
-        <Button
-          leftIcon={
-            <Image src={Calender} width={20} height={20} alt="calender" />
-          }
-          className="text-grey-700 w-fit cursor-pointer justify-normal gap-1 bg-transparent px-3 py-[6px] text-sm"
-          onClick={() => {
-            params.set("classId", classId);
-            router.push(`/teacher/session-change?${params.toString()}`);
-          }}
-        >
-          정규 일정 변경
-        </Button>
+        {!isPaused && (
+          <Button
+            leftIcon={
+              <Image src={Calender} width={20} height={20} alt="calender" />
+            }
+            className="text-grey-700 w-fit cursor-pointer justify-normal gap-1 bg-transparent px-3 py-[6px] text-sm"
+            onClick={() => {
+              params.set("classId", classId);
+              router.push(`/teacher/session-change?${params.toString()}`);
+            }}
+          >
+            정규 일정 변경
+          </Button>
+        )}
       </section>
 
       {items.length === 0 && (!isPaused || isComplete) ? (
