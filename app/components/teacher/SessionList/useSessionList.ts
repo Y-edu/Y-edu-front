@@ -18,6 +18,8 @@ export interface SessionItem {
   actions: ActionButton[];
   showMoneyReminder: boolean;
   complete: boolean;
+  currentRound?: number;
+  maxRound?: number;
 }
 
 export function useSessionList(data: SessionResponse[]): SessionItem[] {
@@ -32,6 +34,8 @@ export function useSessionList(data: SessionResponse[]): SessionItem[] {
         complete,
         classDate,
         classStart,
+        currentRound,
+        maxRound,
       } = session;
 
       // Date 객체 생성 및 시간 포맷
@@ -82,6 +86,8 @@ export function useSessionList(data: SessionResponse[]): SessionItem[] {
         actions,
         showMoneyReminder,
         complete,
+        currentRound,
+        maxRound,
       };
     });
 

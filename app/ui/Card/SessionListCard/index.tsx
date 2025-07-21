@@ -11,6 +11,7 @@ import { useBottomSheet } from "@/components/teacher/SessionList/useBottomSheet"
 import RescheduleSheet from "@/components/teacher/SessionList/RescheduleSheet";
 import CancelSheet from "@/components/teacher/SessionList/CancelSheet";
 import RevertSheet from "@/components/teacher/SessionList/RevertSheet";
+import Badge from "@/ui/Badge";
 
 export interface ActionButton {
   label: string;
@@ -28,6 +29,8 @@ export interface SessionListCardProps {
   showMoneyReminder?: boolean;
   className?: string;
   initialOpen?: boolean;
+  currentRound?: number;
+  maxRound?: number;
 }
 
 export default function SessionListCard({
@@ -39,6 +42,8 @@ export default function SessionListCard({
   showMoneyReminder,
   className = "",
   initialOpen = false,
+  currentRound,
+  maxRound,
 }: SessionListCardProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -109,12 +114,20 @@ export default function SessionListCard({
             )} ${time}`}
           </span>
         </div>
-        <IconDown
-          className={cn({
-            hidden: !isToggle,
-            "rotate-180": isOpen,
-          })}
-        />
+        <div className="flex items-center">
+          <Badge className={cn(isToggle && "mr-2")}>
+            {maxRound ?? "-"}회 중{" "}
+            <strong className="ml-1 font-semibold">
+              {currentRound ?? "-"}회
+            </strong>
+          </Badge>
+          <IconDown
+            className={cn({
+              hidden: !isToggle,
+              "rotate-180": isOpen,
+            })}
+          />
+        </div>
       </div>
       {showMoneyReminder && (
         <p className="text-[14px] text-gray-500">
