@@ -36,6 +36,7 @@ export interface SessionListCardProps {
   maxRound?: number;
 }
 
+// TODO: 당일휴강된 카드는 UI 달라야 됨 (취소 안됨)
 export default function SessionListCard({
   classSessionId,
   date,
