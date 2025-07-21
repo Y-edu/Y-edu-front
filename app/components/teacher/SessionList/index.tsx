@@ -125,9 +125,7 @@ export default function SessionList({ classId }: SessionListProps) {
 
           {!isComplete && isPaused && (
             <div className="flex justify-center p-5 text-center text-sm leading-[21px] text-grey-400">
-              {lastCurrentRound !== null
-                ? `${lastCurrentRound + 1}회차부터 수업이 일시정지됐어요.`
-                : `수업이 일시정지됐어요.`}
+              {`${lastCurrentRound}회차까지 완료 후 수업이 일시정지됐어요.`}
               <br />
               수업 재개는 Y-Edu에 문의해 주세요.
             </div>
