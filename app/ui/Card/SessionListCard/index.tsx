@@ -36,7 +36,6 @@ export interface SessionListCardProps {
   maxRound?: number;
 }
 
-// TODO: 당일휴강된 카드는 UI 달라야 됨 (취소 안됨)
 export default function SessionListCard({
   classSessionId,
   date,
@@ -106,41 +105,52 @@ export default function SessionListCard({
           isOpen ? "mb-1" : "mb-0",
         )}
       >
-        <div className="flex items-center">
-          {statusLabel && (
-            <span
-              className={cn(
-                "mr-2 text-[16px] font-semibold",
-                statusLabel === "오늘" && "text-primary",
-                statusLabel === "휴강" && "text-red-500",
-              )}
-            >
+        <div className="flex flex-col">
+          <div className="flex items-center">
+            {/* "휴강" 또는 "오늘"만 날짜 왼쪽에 */}
+            {(statusLabel === "휴강" || statusLabel === "오늘") && (
+              <span
+                className={cn(
+                  "mr-2 text-[16px] font-semibold",
+                  statusLabel === "오늘" && "text-primary",
+                  statusLabel === "휴강" && "text-red-500",
+                )}
+              >
+                {statusLabel}
+              </span>
+            )}
+            <span className="text-[16px] font-[600] text-gray-900">
+              {`${date.getMonth() + 1}.${date.getDate()} ${date.toLocaleDateString(
+                "ko-KR",
+                { weekday: "long" },
+              )} ${time}`}
+            </span>
+          </div>
+          {/* "선생님 당일휴강" 또는 "학부모 당일휴강"만 날짜 아래에 빨간색으로 */}
+          {(statusLabel === "선생님 당일휴강" ||
+            statusLabel === "학부모 당일휴강") && (
+            <span className="mt-1 text-[15px] font-semibold text-red-500">
               {statusLabel}
             </span>
           )}
-          <span className="text-[16px] font-[600] text-gray-900">
-            {`${date.getMonth() + 1}.${date.getDate()} ${date.toLocaleDateString(
-              "ko-KR",
-              {
-                weekday: "long",
-              },
-            )} ${time}`}
-          </span>
         </div>
-        <div className="flex items-center">
-          <Badge className={cn(isToggle && "mr-2")}>
-            {maxRound ?? "-"}회 중{" "}
-            <strong className="ml-1 font-semibold">
-              {currentRound ?? "-"}회
-            </strong>
-          </Badge>
-          <IconDown
-            className={cn({
-              hidden: !isToggle,
-              "rotate-180": isOpen,
-            })}
-          />
-        </div>
+        {statusLabel !== "선생님 당일휴강" &&
+          statusLabel !== "학부모 당일휴강" && (
+            <div className="flex items-center">
+              <Badge className={cn(isToggle && "mr-2")}>
+                {maxRound ?? "-"}회 중{" "}
+                <strong className="ml-1 font-semibold">
+                  {currentRound ?? "-"}회
+                </strong>
+              </Badge>
+              <IconDown
+                className={cn({
+                  hidden: !isToggle,
+                  "rotate-180": isOpen,
+                })}
+              />
+            </div>
+          )}
       </div>
       {showMoneyReminder && (
         <p className="text-[14px] text-gray-500">
