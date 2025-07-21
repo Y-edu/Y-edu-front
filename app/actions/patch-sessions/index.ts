@@ -1,5 +1,8 @@
 import { httpService } from "@/utils/httpService";
 
+// 휴강 사유 union 타입
+export type CancelReason = "TEACHER" | "PARENT" | "TOGETHER";
+
 export function patchSessionChange({
   sessionId,
   sessionDate,

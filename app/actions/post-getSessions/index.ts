@@ -1,9 +1,12 @@
+import { CancelReason } from "../patch-sessions";
+
 import { httpService } from "app/utils/httpService";
 
 export interface SessionResponse {
   classSessionId: number;
   cancel: boolean;
-  cancelReason: string | null;
+  isTodayCancel: boolean;
+  cancelReason: CancelReason | null;
   complete: boolean;
   understanding: string | null;
   homework: string | null;
