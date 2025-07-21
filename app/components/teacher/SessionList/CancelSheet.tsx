@@ -3,8 +3,9 @@ import { useState } from "react";
 import Button from "@/ui/Button";
 import Radio from "@/ui/Radio";
 import { useSessionMutations } from "@/hooks/mutation/usePatchSessions";
+import { CANCEL_TEXT } from "@/constants/session/cancel";
 
-export default function NotSameDayCancelSheet({
+export function NotSameDayCancelSheet({
   sessionId,
   close,
 }: {
@@ -74,10 +75,23 @@ export function SameDayCancelSheet({
 
   const { mutate } = useSessionMutations().cancelMutation;
 
-  const REASONS = {
-    TEACHER: "선생님 요청",
-    PARENT: "학부모 요청",
-  } as const;
+  const CANCEL_REASONS = [
+    {
+      value: "TOGETHER",
+      label: CANCEL_TEXT.NOT_SAME_DAY_CANCEL,
+      description: "",
+    },
+    {
+      value: "PARENT",
+      label: CANCEL_TEXT.SAME_DAY_CANCEL_BY_PARENTS_LONG,
+      description: CANCEL_TEXT.SAME_DAY_CANCEL_BY_PARENTS_DESC,
+    },
+    {
+      value: "TEACHER",
+      label: CANCEL_TEXT.SAME_DAY_CANCEL_BY_TEACHER_LONG,
+      description: CANCEL_TEXT.SAME_DAY_CANCEL_BY_TEACHER_DESC,
+    },
+  ] as const;
 
   const handleSubmit = () => {
     mutate({ sessionId, reason: selected });
@@ -101,13 +115,17 @@ export function SameDayCancelSheet({
             휴강 사유를 선택해주세요.
           </h2>
           <div className="mb-[40px] flex flex-col gap-[32px]">
-            {Object.values(REASONS).map((reason) => (
-              <Radio
-                key={reason}
-                label={reason}
-                selected={selected === reason}
-                onClick={() => setSelected(reason)}
-              />
+            {CANCEL_REASONS.map(({ value, label, description }) => (
+              <div key={value}>
+                <Radio
+                  label={label}
+                  selected={selected === value}
+                  onClick={() => setSelected(value)}
+                />
+                {description && (
+                  <p className="text-sm text-primary">{description}</p>
+                )}
+              </div>
             ))}
           </div>
 

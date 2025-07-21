@@ -9,7 +9,10 @@ import cn from "@/utils/cn";
 import BottomSheet from "@/ui/BottomSheet";
 import { useBottomSheet } from "@/components/teacher/SessionList/useBottomSheet";
 import RescheduleSheet from "@/components/teacher/SessionList/RescheduleSheet";
-import CancelSheet from "@/components/teacher/SessionList/CancelSheet";
+import {
+  NotSameDayCancelSheet,
+  SameDayCancelSheet,
+} from "@/components/teacher/SessionList/CancelSheet";
 import RevertSheet from "@/components/teacher/SessionList/RevertSheet";
 import Badge from "@/ui/Badge";
 
@@ -48,6 +51,15 @@ export default function SessionListCard({
   const router = useRouter();
   const searchParams = useSearchParams();
   const { sheetType, openSheet, closeSheet, isSheetOpen } = useBottomSheet();
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const sessionDate = new Date(date);
+  sessionDate.setHours(0, 0, 0, 0);
+
+  // 오늘 포함 이전 날짜인지 확인하는 변수
+  const isTodayOrPast = sessionDate <= today;
 
   const defaultOpen =
     initialOpen ||
@@ -170,9 +182,15 @@ export default function SessionListCard({
             close={closeSheet}
           />
         )}
-        {sheetType === "cancel" && (
-          <CancelSheet sessionId={classSessionId} close={closeSheet} />
-        )}
+        {sheetType === "cancel" &&
+          (isTodayOrPast ? (
+            <SameDayCancelSheet sessionId={classSessionId} close={closeSheet} />
+          ) : (
+            <NotSameDayCancelSheet
+              sessionId={classSessionId}
+              close={closeSheet}
+            />
+          ))}
         {sheetType === "cancel_restore" && (
           <RevertSheet sessionId={classSessionId} close={closeSheet} />
         )}
