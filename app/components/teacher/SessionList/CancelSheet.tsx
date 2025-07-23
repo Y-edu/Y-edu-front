@@ -4,6 +4,7 @@ import Button from "@/ui/Button";
 import Radio from "@/ui/Radio";
 import { useSessionMutations } from "@/hooks/mutation/usePatchSessions";
 import { CANCEL_TEXT } from "@/constants/session/cancel";
+import { CancelReason } from "@/actions/patch-sessions";
 
 export function NotSameDayCancelSheet({
   sessionId,
@@ -64,16 +65,14 @@ export function NotSameDayCancelSheet({
 }
 
 export function SameDayCancelSheet({
-  sessionId,
   close,
+  onRequestCancel,
 }: {
-  sessionId: number;
   close: () => void;
+  onRequestCancel: (reason: CancelReason) => void;
 }) {
   const [confirmed, setConfirmed] = useState(false);
-  const [selected, setSelected] = useState("");
-
-  const { mutate } = useSessionMutations().cancelMutation;
+  const [selected, setSelected] = useState<CancelReason | null>(null);
 
   const CANCEL_REASONS = [
     {
@@ -93,9 +92,9 @@ export function SameDayCancelSheet({
     },
   ] as const;
 
-  // TODO: 완료하기 누르면 당일휴강은 취소할 수 없다는 alert 모달
   const handleSubmit = () => {
-    mutate({ sessionId, reason: selected });
+    if (!selected) return;
+    onRequestCancel(selected);
     close();
   };
 

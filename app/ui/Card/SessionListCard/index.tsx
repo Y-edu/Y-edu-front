@@ -15,6 +15,11 @@ import {
 } from "@/components/teacher/SessionList/CancelSheet";
 import RevertSheet from "@/components/teacher/SessionList/RevertSheet";
 import Badge from "@/ui/Badge";
+import { CancelReason } from "@/actions/patch-sessions";
+import { useModal } from "@/hooks/custom";
+import { useSessionMutations } from "@/hooks/mutation/usePatchSessions";
+import { Modal } from "@/ui/Modal/Modal";
+import { CANCEL_TEXT } from "@/constants/session/cancel";
 
 export interface ActionButton {
   label: string;
@@ -51,6 +56,9 @@ export default function SessionListCard({
   const router = useRouter();
   const searchParams = useSearchParams();
   const { sheetType, openSheet, closeSheet, isSheetOpen } = useBottomSheet();
+  const [cancelReason, setCancelReason] = useState<CancelReason | null>(null);
+  const { isModalOpen, openModal, closeModal } = useModal();
+  const { mutate } = useSessionMutations().cancelMutation;
 
   const today = new Date();
   today.setHours(0, 0, 0, 0);
@@ -67,6 +75,18 @@ export default function SessionListCard({
     actions.some((btn) => btn.value === "view_review");
   const [isOpen, setIsOpen] = useState(defaultOpen);
   const isToggle = !defaultOpen;
+
+  const cancelSameDaySession = () => {
+    if (!cancelReason) return;
+    mutate({ sessionId: classSessionId, reason: cancelReason });
+    closeModal();
+  };
+
+  const handleSameDayCancel = (reason: CancelReason) => {
+    setCancelReason(reason);
+    closeSheet();
+    openModal();
+  };
 
   const handleActionClick = useCallback(
     (value: string) => {
@@ -107,7 +127,6 @@ export default function SessionListCard({
       >
         <div className="flex flex-col">
           <div className="flex items-center">
-            {/* "휴강" 또는 "오늘"만 날짜 왼쪽에 */}
             {(statusLabel === "휴강" || statusLabel === "오늘") && (
               <span
                 className={cn(
@@ -126,7 +145,6 @@ export default function SessionListCard({
               )} ${time}`}
             </span>
           </div>
-          {/* "선생님 당일휴강" 또는 "학부모 당일휴강"만 날짜 아래에 빨간색으로 */}
           {(statusLabel === "선생님 당일휴강" ||
             statusLabel === "학부모 당일휴강") && (
             <span className="mt-1 text-[15px] font-semibold text-red-500">
@@ -195,7 +213,10 @@ export default function SessionListCard({
         )}
         {sheetType === "cancel" &&
           (isTodayOrPast ? (
-            <SameDayCancelSheet sessionId={classSessionId} close={closeSheet} />
+            <SameDayCancelSheet
+              close={closeSheet}
+              onRequestCancel={handleSameDayCancel}
+            />
           ) : (
             <NotSameDayCancelSheet
               sessionId={classSessionId}
@@ -206,6 +227,14 @@ export default function SessionListCard({
           <RevertSheet sessionId={classSessionId} close={closeSheet} />
         )}
       </BottomSheet>
+      <Modal
+        isOpen={isModalOpen}
+        title={CANCEL_TEXT.SAME_DAY_CANCEL_ALERT}
+        handleOnConfirm={cancelSameDaySession}
+        handleOnCancel={closeModal}
+        confirmText="진행할게요"
+        cancelText="아니요"
+      />
     </div>
   );
 }
