@@ -24,7 +24,7 @@ export function NotSameDayCancelSheet({
   ] as const;
 
   const handleSubmit = () => {
-    mutate({ sessionId, reason: selected });
+    mutate({ sessionId, reason: selected, isTodayCancel: false });
     close();
   };
 
@@ -79,16 +79,19 @@ export function SameDayCancelSheet({
       value: "TOGETHER",
       label: CANCEL_TEXT.NOT_SAME_DAY_CANCEL,
       description: "",
+      isTodayCancel: false,
     },
     {
       value: "PARENT",
       label: CANCEL_TEXT.SAME_DAY_CANCEL_BY_PARENTS_LONG,
       description: CANCEL_TEXT.SAME_DAY_CANCEL_BY_PARENTS_DESC,
+      isTodayCancel: true,
     },
     {
       value: "TEACHER",
       label: CANCEL_TEXT.SAME_DAY_CANCEL_BY_TEACHER_LONG,
       description: CANCEL_TEXT.SAME_DAY_CANCEL_BY_TEACHER_DESC,
+      isTodayCancel: true,
     },
   ] as const;
 

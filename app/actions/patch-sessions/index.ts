@@ -21,13 +21,16 @@ export function patchSessionChange({
 export function patchSessionCancel({
   sessionId,
   reason,
+  isTodayCancel = false,
 }: {
   sessionId: number;
   reason: string;
+  isTodayCancel?: boolean;
 }) {
-  return httpService.patch(
-    `/sessions/${sessionId}/cancel?cancelReason=${reason}`,
-  );
+  return httpService.patch(`/sessions/${sessionId}/cancel`, {
+    cancelReason: reason,
+    isTodayCancel,
+  });
 }
 
 export function patchSessionRevertCancel({ sessionId }: { sessionId: number }) {

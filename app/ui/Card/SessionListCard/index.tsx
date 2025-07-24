@@ -78,7 +78,11 @@ export default function SessionListCard({
 
   const cancelSameDaySession = () => {
     if (!cancelReason) return;
-    mutate({ sessionId: classSessionId, reason: cancelReason });
+    mutate({
+      sessionId: classSessionId,
+      reason: cancelReason,
+      isTodayCancel: cancelReason !== "TOGETHER",
+    });
     closeModal();
   };
 
