@@ -89,7 +89,13 @@ export default function SessionListCard({
   const handleSameDayCancel = (reason: CancelReason) => {
     setCancelReason(reason);
     closeSheet();
-    openModal();
+    if (reason === "PARENT" || reason === "TEACHER") openModal();
+    if (reason === "TOGETHER")
+      mutate({
+        sessionId: classSessionId,
+        reason,
+        isTodayCancel: false,
+      });
   };
 
   const handleActionClick = useCallback(
