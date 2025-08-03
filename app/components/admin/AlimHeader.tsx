@@ -86,6 +86,11 @@ export function AlimHeader({ matchingId }: AlimHeaderProps) {
       return;
     }
 
+    if (selectedRows.length > 1) {
+      alert("선생님을 1명만 선택해주세요.");
+      return;
+    }
+
     if (!targetTeacher) {
       alert("선택된 선생님이 없습니다.");
       return;
