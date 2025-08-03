@@ -74,7 +74,12 @@ export const AlimTableProvider = ({
 
   return (
     <AlimTableContext.Provider
-      value={{ matchingId, alimTable, rowSelection, setRowSelection }}
+      value={{
+        matchingId,
+        alimTable,
+        rowSelection,
+        setRowSelection,
+      }}
     >
       {children}
     </AlimTableContext.Provider>
