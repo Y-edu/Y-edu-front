@@ -116,6 +116,7 @@ export function AlimHeader({ matchingId }: AlimHeaderProps) {
       window.open(
         `${window.location.origin}/teacher/recommend/${adminMatchingRecommend}`,
         "_blank",
+        "noopener,noreferrer",
       );
     }
     closeRecommendModal();
