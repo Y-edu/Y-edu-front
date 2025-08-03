@@ -69,7 +69,7 @@ export default function ConfirmedResult() {
               return (
                 <DivWithLabel
                   key={day}
-                  label="수업 시간"
+                  label="회당 수업 시간"
                   subLabel={`(${day}요일)`}
                 >
                   <SelectButton
@@ -86,7 +86,14 @@ export default function ConfirmedResult() {
               );
             })
           ) : (
-            <DivWithLabel label="수업 시간">
+            <DivWithLabel
+              label={
+                <>
+                  회당 수업 시간{" "}
+                  <span className="font-normal text-primary">1회 기준</span>
+                </>
+              }
+            >
               <SelectButton
                 text={
                   commonSchedule &&

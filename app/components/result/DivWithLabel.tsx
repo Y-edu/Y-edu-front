@@ -1,7 +1,7 @@
 import cn from "@/utils/cn";
 
 interface DivWithLabelProps {
-  label: string;
+  label: React.ReactNode;
   subLabel?: string;
   children: React.ReactNode;
   className?: string;
