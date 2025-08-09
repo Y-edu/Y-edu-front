@@ -96,9 +96,9 @@ export function AlimHeader({ matchingId }: AlimHeaderProps) {
       return;
     }
 
-    // 매칭을 '수락'한 선생님한테만 '이 선생님과 할래요' 가능
-    if (targetTeacher.status !== "수락") {
-      alert("해당 선생님은 매칭을 수락하지 않았습니다.");
+    // 매칭 상태가 '전송'인 선생님한테만 '이 선생님과 할래요' 가능
+    if (targetTeacher.status !== "전송") {
+      alert("학부모에게 전송된 선생님이 아닙니다.");
       return;
     }
 
@@ -144,7 +144,9 @@ export function AlimHeader({ matchingId }: AlimHeaderProps) {
           <button
             onClick={handleTeacherRecommend}
             className="mr-4 rounded bg-orange-400 px-3 py-[6px] font-normal text-white hover:bg-orange-500 disabled:cursor-not-allowed disabled:bg-gray-300"
-            disabled={selectedRows.length === 0}
+            disabled={
+              !(selectedRows.length === 1 && targetTeacher?.status === "전송")
+            }
           >
             이 선생님과 할래요
           </button>
