@@ -7,7 +7,7 @@ export default function ParentsSessionActionsChangePage() {
   return (
     <div className="flex w-full flex-col items-center">
       <HeaderWithBack
-        title="Y-edu"
+        title="Y-Edu"
         hasBack
         onBack={() => window.history.back()}
         mainClassName="pt-8 w-full px-5"
