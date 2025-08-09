@@ -12,5 +12,6 @@ export function useGetSessionsMonth(params: SessionsMonthParams) {
       const res = await getSessionsMonth(params);
       return res;
     },
+    enabled: !!params.token || !!params.classMatchingId,
   });
 }
