@@ -1,6 +1,6 @@
 "use client";
 
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
 
 import { useGetParentsSessionsByPhone } from "@/hooks/query/useGetParentsSessionsByPhoneNumber";
@@ -20,6 +20,7 @@ const SESSION_ACTION_OPTIONS = [
 ];
 
 export default function SessionActionsMain() {
+  const router = useRouter();
   const params = useParams();
   const phoneNumber = params?.phoneNumber as string;
 
@@ -34,12 +35,18 @@ export default function SessionActionsMain() {
   const isButtonDisabled = !selectedAction || !selectedTeacherId;
 
   const handleNext = () => {
-    if (!selectedAction) return;
+    if (!selectedAction || !selectedTeacherId) return;
 
-    console.log("선택된 액션:", selectedAction);
-    if (selectedAction === "선생님 교체") {
-      console.log("선택된 선생님 applicationFormId:", selectedTeacherId);
-    }
+    // 선택한 액션에 따라 경로 분기
+    const actionPath = selectedAction === "일시정지" ? "pause" : "change";
+
+    const sp = new URLSearchParams({
+      appKey: selectedTeacherId,
+    });
+
+    router.push(
+      `/parents/session-actions/${phoneNumber}/${actionPath}?${sp.toString()}`,
+    );
   };
 
   return (
