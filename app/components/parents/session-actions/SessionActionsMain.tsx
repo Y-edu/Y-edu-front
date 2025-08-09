@@ -99,7 +99,7 @@ export default function SessionActionsMain() {
             </div>
           </>
         )}
-        <p className="mt-6 text-[16px] font-medium leading-[24px] text-grey-500">
+        <p className="mt-6 pb-20 text-[16px] font-medium leading-[24px] text-grey-500">
           수업을 완전히 중단하고 싶으신 경우, Y-Edu 카카오톡으로 매칭 매니저에게
           문의해 주세요.
         </p>
