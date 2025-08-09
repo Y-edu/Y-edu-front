@@ -4,7 +4,6 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 import { getParentsSessionsByPhoneNumber } from "@/actions/get-parents-sessions";
-import DivWithLabel from "@/components/result/DivWithLabel";
 import TitleSection from "@/ui/TitleSection";
 import Input from "@/ui/Input";
 import Button from "@/ui/Button";
@@ -41,24 +40,18 @@ export default function SessionActionsLogin() {
             입력해 주세요
           </TitleSection.Title>
         </TitleSection>
-        <DivWithLabel
-          label="수업을 진행했나요?"
-          labelClassName="text-[20px]"
-          className="w-full"
-        >
-          <Input
-            value={phoneNumber}
-            onChange={setPhoneNumber}
-            placeholder="전화번호를 입력해주세요"
-            errorMessage={
-              isSubmitted && !phoneNumber ? "전화번호를 입력해주세요." : ""
-            }
-            status={isSubmitted && !phoneNumber ? "warning" : "default"}
-            onBlur={() => {
-              document.querySelector<HTMLElement>('[role="radio"]')?.focus();
-            }}
-          />
-        </DivWithLabel>
+        <Input
+          value={phoneNumber}
+          onChange={setPhoneNumber}
+          placeholder="전화번호를 입력해주세요"
+          errorMessage={
+            isSubmitted && !phoneNumber ? "전화번호를 입력해주세요." : ""
+          }
+          status={isSubmitted && !phoneNumber ? "warning" : "default"}
+          onBlur={() => {
+            document.querySelector<HTMLElement>('[role="radio"]')?.focus();
+          }}
+        />
         <div className="fixed inset-x-0 bottom-0 flex justify-center bg-white p-4 shadow-lg">
           <Button
             className="w-[375px]"
