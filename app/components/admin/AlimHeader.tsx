@@ -98,7 +98,7 @@ export function AlimHeader({ matchingId }: AlimHeaderProps) {
 
     // 매칭 상태가 '전송'인 선생님한테만 '이 선생님과 할래요' 가능
     if (targetTeacher.status !== "전송") {
-      alert("학부모한테 전송된 선생님이 아닙니다.s");
+      alert("학부모한테 전송된 선생님이 아닙니다.");
       return;
     }
 
