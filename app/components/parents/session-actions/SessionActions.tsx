@@ -1,22 +1,34 @@
 "use client";
 
-import { useParams, useSearchParams, useRouter } from "next/navigation";
+import {
+  usePathname,
+  useParams,
+  useSearchParams,
+  useRouter,
+} from "next/navigation";
 import { useMemo, useState } from "react";
 
 import { useGetParentsSessionsByPhone } from "@/hooks/query/useGetParentsSessionsByPhoneNumber";
+import { usePostParentsSessionActions } from "@/hooks/mutation/usePostParentsSessionActions";
+import type { SessionActionsType } from "@/actions/post-parents-session-actions";
 import TitleSection from "@/ui/TitleSection";
 import Button from "@/ui/Button";
 import ParentSessionListCard from "@/ui/Card/ParentSessionListCard";
 
 export default function SessionActions() {
   const router = useRouter();
+  const pathname = usePathname();
   const { phoneNumber } = useParams<{ phoneNumber: string }>();
   const searchParams = useSearchParams();
-
-  const action = searchParams.get("action");
   const appKey = searchParams.get("appKey");
 
+  const segments = pathname.split("/").filter(Boolean);
+  const actionStr = segments.at(-1) === "change" ? "change" : "pause";
+  const actionType: SessionActionsType =
+    actionStr === "pause" ? "PAUSE" : "CHANGE_TEACHER";
+
   const { data } = useGetParentsSessionsByPhone(phoneNumber);
+  const mutation = usePostParentsSessionActions();
 
   const targetClass = useMemo(() => {
     if (!data || !appKey) return null;
@@ -29,20 +41,26 @@ export default function SessionActions() {
   const [selectedSessionId, setSelectedSessionId] = useState<number | null>(
     null,
   );
-
   const isButtonDisabled = !selectedSessionId;
 
   const handleSubmit = () => {
-    if (!selectedSessionId) return;
+    if (!selectedSessionId || !targetClass) return;
 
-    const sp = new URLSearchParams({
-      action: action ?? "",
-      appKey: appKey ?? "",
-      sessionId: String(selectedSessionId),
-    });
+    mutation.mutate(
+      { phoneNumber, sessionId: selectedSessionId, type: actionType },
+      {
+        onSuccess: () => {
+          const sp = new URLSearchParams({
+            action: actionStr,
+            applicationFormId: targetClass.applicationFormId,
+            teacherNickname: targetClass.teacherNickname,
+          });
 
-    router.push(
-      `/parents/session-actions/${phoneNumber}/review?${sp.toString()}`,
+          router.push(
+            `/parents/session-actions/${phoneNumber}/submit?${sp.toString()}`,
+          );
+        },
+      },
     );
   };
 
