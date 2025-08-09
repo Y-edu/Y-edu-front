@@ -2,7 +2,7 @@ import Image from "next/image";
 
 import { RESULT_IMG_MAP } from "@/constants/result/resultImg";
 
-export type ImgKind = "letter";
+export type ImgKind = "letter" | "document";
 
 function ResultImage({ kind }: { kind: ImgKind }) {
   return (
