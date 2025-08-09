@@ -98,7 +98,7 @@ export function AlimHeader({ matchingId }: AlimHeaderProps) {
 
     // 매칭 상태가 '전송'인 선생님한테만 '이 선생님과 할래요' 가능
     if (targetTeacher.status !== "전송") {
-      alert("학부모한테 전송된 선생님이 아닙니다.");
+      alert("학부모에게 전송된 선생님이 아닙니다.");
       return;
     }
 
@@ -144,7 +144,9 @@ export function AlimHeader({ matchingId }: AlimHeaderProps) {
           <button
             onClick={handleTeacherRecommend}
             className="mr-4 rounded bg-orange-400 px-3 py-[6px] font-normal text-white hover:bg-orange-500 disabled:cursor-not-allowed disabled:bg-gray-300"
-            disabled={selectedRows.length === 0}
+            disabled={
+              !(selectedRows.length === 1 && targetTeacher?.status === "전송")
+            }
           >
             이 선생님과 할래요
           </button>
