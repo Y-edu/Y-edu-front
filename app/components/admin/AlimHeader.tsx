@@ -96,9 +96,9 @@ export function AlimHeader({ matchingId }: AlimHeaderProps) {
       return;
     }
 
-    // 매칭을 '수락'한 선생님한테만 '이 선생님과 할래요' 가능
-    if (targetTeacher.status !== "수락") {
-      alert("해당 선생님은 매칭을 수락하지 않았습니다.");
+    // 매칭 상태가 '전송'인 선생님한테만 '이 선생님과 할래요' 가능
+    if (targetTeacher.status !== "전송") {
+      alert("학부모한테 전송된 선생님이 아닙니다.s");
       return;
     }
 
