@@ -51,6 +51,7 @@ export default function SessionReviewPage() {
           <SessionReviewView
             homework={targetSession!.homework ?? "내용이 없습니다."}
             understanding={targetSession!.understanding ?? "내용이 없습니다."}
+            classMinute={targetSession!.classMinute ?? 0}
           />
         </HeaderWithBack>
       </ErrorBoundary>
