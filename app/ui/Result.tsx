@@ -16,7 +16,11 @@ function ResultImage({ kind }: { kind: ImgKind }) {
 }
 
 function ResultTitle({ children }: { children: React.ReactNode }) {
-  return <h1 className="mt-6 text-2xl font-bold text-gray-900">{children}</h1>;
+  return (
+    <h1 className="mt-6 whitespace-pre text-2xl font-bold text-gray-900">
+      {children}
+    </h1>
+  );
 }
 
 function ResultDescription({ children }: { children: React.ReactNode }) {
