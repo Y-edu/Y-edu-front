@@ -4,6 +4,7 @@
 "use client";
 
 import { useQueryClient } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
 
 import type { AcceptanceSchema } from "@/actions/get-acceptance";
 import { useGetAcceptance } from "@/hooks/query";
@@ -28,6 +29,8 @@ export function AlimHeader({ matchingId }: AlimHeaderProps) {
   } = useModal(); // "이 선생님과 할래요" 모달
   const { mutate: postMatchingAcceptance } = usePostMatchingAcceptance();
   const { alimTable, rowSelection } = useAlimTableContext();
+  const [isRecommendButtonDisabled, setIsRecommendButtonDisabled] =
+    useState(true);
 
   const queryClient = useQueryClient();
 
@@ -54,6 +57,14 @@ export function AlimHeader({ matchingId }: AlimHeaderProps) {
   const { data: adminMatchingRecommend } = useGetAdminMatchingRecommend(
     targetTeacher?.classMatchingId || null,
   );
+
+  useEffect(() => {
+    if (selectedRows.length === 1 && targetTeacher?.status === "전송") {
+      setIsRecommendButtonDisabled(false);
+    } else {
+      setIsRecommendButtonDisabled(true);
+    }
+  }, [adminMatchingRecommend, selectedRows, targetTeacher]);
 
   const acceptanceQueryMutate = () => {
     const existAcceptanceQueryData = queryClient.getQueryData<AcceptanceSchema>(
@@ -144,9 +155,7 @@ export function AlimHeader({ matchingId }: AlimHeaderProps) {
           <button
             onClick={handleTeacherRecommend}
             className="mr-4 rounded bg-orange-400 px-3 py-[6px] font-normal text-white hover:bg-orange-500 disabled:cursor-not-allowed disabled:bg-gray-300"
-            disabled={
-              !(selectedRows.length === 1 && targetTeacher?.status === "전송")
-            }
+            disabled={isRecommendButtonDisabled}
           >
             이 선생님과 할래요
           </button>
