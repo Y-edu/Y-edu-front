@@ -72,7 +72,9 @@ export default function SessionActions() {
             언제까지 수업을 진행할까요?
           </TitleSection.Title>
           <TitleSection.Description className="text-[16px]">
-            일시정지 전, 마지막 수업을 선택해주세요
+            {actionStr === "pause"
+              ? "일시정지 전, 마지막 수업을 선택해주세요"
+              : "교체 전, 마지막 수업을 선택해주세요"}
           </TitleSection.Description>
         </TitleSection>
 
