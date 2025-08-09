@@ -19,14 +19,13 @@ export default function SessionActionSubmit() {
   const { title, description } =
     action === "pause"
       ? {
-          title: `${applicationFormId} ${teacherNickname} 수업이<br />일시정지 되었어요`,
-          description:
-            "수업을 다시 재개하고 싶다면<br />Y-edu에 문의해 주세요.",
+          title: `${applicationFormId} ${teacherNickname} 수업이\n일시정지 되었어요`,
+          description: "수업을 다시 재개하고 싶다면\nY-edu에 문의해 주세요.",
         }
       : {
-          title: `${applicationFormId} 수업의 선생님<br />교체 신청이 접수되었어요`,
+          title: `${applicationFormId} 수업의 선생님\n교체 신청이 접수되었어요`,
           description:
-            "<span class=\"text-primary\">신규 선생님 매칭</span>을 위해<br />아래 '매칭 신청서' 작성을 꼭 부탁드려요",
+            "신규 선생님 매칭을 위해\n아래 '매칭 신청서' 작성을 꼭 부탁드려요",
         };
 
   const handleMove = () => {
@@ -38,12 +37,8 @@ export default function SessionActionSubmit() {
       <div className="flex min-h-screen flex-col items-center justify-center pb-[88px] text-center">
         <Result>
           <Result.Image kind="document" />
-          <Result.Title>
-            <span dangerouslySetInnerHTML={{ __html: title }} />
-          </Result.Title>
-          <Result.Description>
-            <span dangerouslySetInnerHTML={{ __html: description }} />
-          </Result.Description>
+          <Result.Title>{title}</Result.Title>
+          <Result.Description>{description}</Result.Description>
         </Result>
       </div>
 
