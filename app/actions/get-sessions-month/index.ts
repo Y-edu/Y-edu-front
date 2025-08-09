@@ -22,20 +22,15 @@ export interface SessionsMonthResponse {
 export async function getSessionsMonth(params: SessionsMonthParams) {
   const { monthCount } = params;
 
-  // 공통 쿼리 파라미터
-  let query = `monthCount=${monthCount}`;
-
-  if ("token" in params) {
-    query += `&token=${params.token}`;
-  }
-
-  if ("classMatchingId" in params) {
-    query += `&classMatchingId=${params.classMatchingId}`;
-  }
-
-  const res = await httpService.get<SessionsMonthResponse>(
-    `/sessions/month?${query}`,
-  );
+  const res = await httpService.get<SessionsMonthResponse>("/sessions/month", {
+    params: {
+      monthCount,
+      ...(params.token && { token: params.token }),
+      ...(params.classMatchingId && {
+        classMatchingId: params.classMatchingId,
+      }),
+    },
+  });
 
   return res.data;
 }
