@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { RowSelectionState } from "@tanstack/react-table";
 
 import ClassList from "@/components/admin/ClassList";
 import { SearchBar } from "@/ui";
@@ -14,6 +15,7 @@ export default function ClassManagementHome() {
 
   const [allData, setAllData] = useState<Class[]>([]);
   const [filteredData, setFilteredData] = useState<Class[]>([]);
+  const [selectedClasses, setSelectedClasses] = useState<RowSelectionState>({});
 
   useEffect(() => {
     if (data?.applicationFormByMatchingId) {
@@ -62,6 +64,8 @@ export default function ClassManagementHome() {
         <ClassList
           classItems={filteredData}
           setClassItems={setFilteredData}
+          selectedClassRowList={selectedClasses}
+          setSelectedClasses={setSelectedClasses} // 이 prop이 있으면 체크박스 모드
           pagination
         />
       </div>

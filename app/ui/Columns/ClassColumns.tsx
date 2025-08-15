@@ -138,6 +138,34 @@ export function getClassColumns(
   onStatusChange: (rowIndex: number, newStatus: ClassStatus) => void,
 ) {
   return [
+    columnHelper.display({
+      id: "select",
+      header: ({ table }) => (
+        <input
+          id="class-header-checkbox"
+          type="checkbox"
+          className="size-4"
+          checked={table.getIsAllPageRowsSelected()}
+          onChange={(e) => {
+            e.stopPropagation();
+            table.getToggleAllPageRowsSelectedHandler()(e);
+          }}
+        />
+      ),
+      cell: ({ row }) => (
+        <input
+          id={`cell-checkbox-${row.id}`}
+          className="size-4"
+          type="checkbox"
+          checked={row.getIsSelected()}
+          disabled={!row.getCanSelect()}
+          onChange={(e) => {
+            e.stopPropagation(); // 중요: 이벤트 전파를 막아서 행 클릭이 발생하지 않도록 함
+            row.getToggleSelectedHandler()(e);
+          }}
+        />
+      ),
+    }),
     columnHelper.accessor("applicationFormId", {
       header: "수업코드",
       cell: (props) => props.getValue(),
