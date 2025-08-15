@@ -39,6 +39,7 @@ export interface SessionListCardProps {
   initialOpen?: boolean;
   currentRound?: number;
   maxRound?: number;
+  cancel?: boolean;
 }
 
 export default function SessionListCard({
@@ -52,6 +53,7 @@ export default function SessionListCard({
   initialOpen = false,
   currentRound,
   maxRound,
+  cancel = false,
 }: SessionListCardProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -116,6 +118,27 @@ export default function SessionListCard({
     [router, searchParams, classSessionId, openSheet],
   );
 
+  // Badge 표시 조건을 명확하게 분리
+  const shouldShowBadge = (() => {
+    // 당일휴강 상태면 Badge 안 보임
+    if (
+      statusLabel === "선생님 당일휴강" ||
+      statusLabel === "학부모 당일휴강"
+    ) {
+      return false;
+    }
+
+    // cancel이 true이고 currentRound가 0이면 Badge 안 보임
+    if (cancel && currentRound === 0) {
+      return false;
+    }
+
+    // currentRound와 maxRound가 유효한 값이어야 Badge 보임
+    return (
+      currentRound !== undefined && maxRound !== undefined && currentRound >= 0
+    );
+  })();
+
   return (
     <div
       className={cn(
@@ -162,30 +185,25 @@ export default function SessionListCard({
             </span>
           )}
         </div>
-        {statusLabel !== "선생님 당일휴강" &&
-          statusLabel !== "학부모 당일휴강" && (
-            <div className="flex items-center">
-              {currentRound !== undefined &&
-                maxRound !== undefined &&
-                currentRound > 0 && (
-                  <Badge className={cn(isToggle && "mr-2")}>
-                    {maxRound ?? "-"}회 중{" "}
-                    <strong className="ml-1 font-semibold">
-                      {currentRound ?? "-"}회
-                    </strong>
-                  </Badge>
-                )}
-              {currentRound !== undefined && currentRound === 0 && (
-                <Badge>무료보강</Badge>
-              )}
-              <IconDown
-                className={cn({
-                  hidden: !isToggle,
-                  "rotate-180": isOpen,
-                })}
-              />
-            </div>
-          )}
+        {shouldShowBadge && currentRound !== undefined && (
+          <div className="flex items-center">
+            {currentRound > 0 && (
+              <Badge className={cn(isToggle && "mr-2")}>
+                {maxRound ?? "-"}회 중{" "}
+                <strong className="ml-1 font-semibold">
+                  {currentRound ?? "-"}회
+                </strong>
+              </Badge>
+            )}
+            {currentRound === 0 && <Badge>무료보강</Badge>}
+            <IconDown
+              className={cn({
+                hidden: !isToggle,
+                "rotate-180": isOpen,
+              })}
+            />
+          </div>
+        )}
       </div>
       {showMoneyReminder && (
         <p className="text-[14px] text-gray-500">

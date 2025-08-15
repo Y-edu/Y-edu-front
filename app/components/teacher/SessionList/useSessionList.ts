@@ -23,6 +23,7 @@ export interface SessionItem {
   maxRound?: number;
   isTodayCancel?: boolean;
   cancelReason?: CancelReason;
+  cancel?: boolean;
 }
 
 export function useSessionList(data: SessionResponse[]): SessionItem[] {
@@ -103,6 +104,7 @@ export function useSessionList(data: SessionResponse[]): SessionItem[] {
         complete,
         currentRound,
         maxRound,
+        cancel,
       };
     });
 

@@ -120,6 +120,7 @@ export default function SessionList({ classId }: SessionListProps) {
               initialOpen={idx < 3}
               currentRound={session.currentRound}
               maxRound={session.maxRound}
+              cancel={session.cancel}
             />
           ))}
 
