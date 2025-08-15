@@ -165,12 +165,19 @@ export default function SessionListCard({
         {statusLabel !== "선생님 당일휴강" &&
           statusLabel !== "학부모 당일휴강" && (
             <div className="flex items-center">
-              <Badge className={cn(isToggle && "mr-2")}>
-                {maxRound ?? "-"}회 중{" "}
-                <strong className="ml-1 font-semibold">
-                  {currentRound ?? "-"}회
-                </strong>
-              </Badge>
+              {currentRound !== undefined &&
+                maxRound !== undefined &&
+                currentRound > 0 && (
+                  <Badge className={cn(isToggle && "mr-2")}>
+                    {maxRound ?? "-"}회 중{" "}
+                    <strong className="ml-1 font-semibold">
+                      {currentRound ?? "-"}회
+                    </strong>
+                  </Badge>
+                )}
+              {currentRound !== undefined && currentRound === 0 && (
+                <Badge>무료보강</Badge>
+              )}
               <IconDown
                 className={cn({
                   hidden: !isToggle,
