@@ -1,4 +1,4 @@
-import { createColumnHelper } from "@tanstack/react-table";
+import { createColumnHelper, RowSelectionState } from "@tanstack/react-table";
 import { useRef, useState, useEffect } from "react";
 
 import { Class, usePutClassStatus } from "@/hooks/query/useGetClassList";
@@ -136,35 +136,74 @@ function StatusCell({
 
 export function getClassColumns(
   onStatusChange: (rowIndex: number, newStatus: ClassStatus) => void,
+  selectedRows?: RowSelectionState,
+  setSelectedRows?: (
+    updater: (prev: RowSelectionState) => RowSelectionState,
+  ) => void,
 ) {
   return [
     columnHelper.display({
       id: "select",
-      header: ({ table }) => (
-        <input
-          id="class-header-checkbox"
-          type="checkbox"
-          className="size-4"
-          checked={table.getIsAllPageRowsSelected()}
-          onChange={(e) => {
-            e.stopPropagation();
-            table.getToggleAllPageRowsSelectedHandler()(e);
-          }}
-        />
-      ),
-      cell: ({ row }) => (
-        <input
-          id={`cell-checkbox-${row.id}`}
-          className="size-4"
-          type="checkbox"
-          checked={row.getIsSelected()}
-          disabled={!row.getCanSelect()}
-          onChange={(e) => {
-            e.stopPropagation(); // 중요: 이벤트 전파를 막아서 행 클릭이 발생하지 않도록 함
-            row.getToggleSelectedHandler()(e);
-          }}
-        />
-      ),
+      header: ({ table }) => {
+        if (!setSelectedRows || !selectedRows) return null;
+
+        const allRowIds = table
+          .getRowModel()
+          .rows.map((row) => String(row.original.matchingId));
+        const isAllSelected =
+          allRowIds.length > 0 && allRowIds.every((id) => selectedRows[id]);
+
+        return (
+          <input
+            id="class-header-checkbox"
+            type="checkbox"
+            className="size-4"
+            checked={isAllSelected}
+            onChange={(e) => {
+              e.stopPropagation();
+              e.preventDefault();
+              if (isAllSelected) {
+                // 모두 선택 해제
+                setSelectedRows((prev) => {
+                  const newState = { ...prev };
+                  allRowIds.forEach((id) => delete newState[id]);
+                  return newState;
+                });
+              } else {
+                // 모두 선택
+                setSelectedRows((prev) => {
+                  const newState = { ...prev };
+                  allRowIds.forEach((id) => (newState[id] = true));
+                  return newState;
+                });
+              }
+            }}
+          />
+        );
+      },
+      cell: ({ row }) => {
+        if (!setSelectedRows || !selectedRows) return null;
+
+        const rowId = String(row.original.matchingId);
+        const isSelected = !!selectedRows[rowId];
+
+        return (
+          <input
+            id={`cell-checkbox-${row.id}`}
+            className="size-4"
+            type="checkbox"
+            checked={isSelected}
+            onChange={(e) => {
+              e.stopPropagation();
+              e.preventDefault();
+              setSelectedRows((prev) => ({
+                ...prev,
+                [rowId]: !prev[rowId],
+              }));
+            }}
+          />
+        );
+      },
     }),
     columnHelper.accessor("applicationFormId", {
       header: "수업코드",

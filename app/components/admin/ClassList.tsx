@@ -34,21 +34,15 @@ function ClassList({
     );
   };
 
-  const columns = getClassColumns(handleStatusChange);
+  const columns = getClassColumns(
+    handleStatusChange,
+    selectedClassRowList,
+    setSelectedClasses,
+  );
 
-  // 행 클릭 핸들러 - 체크박스가 있을 때는 체크박스 토글, 없을 때는 상세페이지 이동
+  // 행 클릭 핸들러 - 항상 상세페이지로 이동 (체크박스는 별도 처리)
   const handleRowClick = (row: Class) => {
-    if (setSelectedClasses) {
-      // 체크박스 선택 모드일 때 - 행 클릭 시 체크박스 토글
-      const classId = String(row.matchingId);
-      setSelectedClasses((prev) => ({
-        ...prev,
-        [classId]: !prev[classId],
-      }));
-    } else {
-      // 일반 모드일 때 - 상세페이지로 이동
-      router.push(`/zuzuclubadmin/class-management/${row.matchingId}`);
-    }
+    router.push(`/zuzuclubadmin/class-management/${row.matchingId}`);
   };
 
   return (
@@ -57,9 +51,9 @@ function ClassList({
       columns={columns as ColumnDef<Class>[]}
       pagination={{ enabled: pagination, pageSize: 100 }}
       selection={{
-        enabled: !!setSelectedClasses,
-        selectedRows: selectedClassRowList || {},
-        onChange: setSelectedClasses || (() => {}),
+        enabled: false,
+        selectedRows: {},
+        onChange: () => {},
       }}
       rowInteraction={{
         onClick: handleRowClick,

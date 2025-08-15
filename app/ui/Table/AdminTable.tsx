@@ -148,10 +148,13 @@ export default function AdminTable<TData>({
                 className="cursor-pointer border-b bg-white hover:bg-gray-100"
                 onClick={(e) => {
                   const target = e.target as HTMLElement;
+                  // 체크박스나 버튼, 이미지 클릭 시 행 클릭 이벤트 차단
                   if (
                     target.tagName.toLowerCase() === "img" ||
                     target.tagName.toLowerCase() === "button" ||
-                    target.closest("button")
+                    target.tagName.toLowerCase() === "input" ||
+                    target.closest("button") ||
+                    target.closest("input")
                   ) {
                     return;
                   }
