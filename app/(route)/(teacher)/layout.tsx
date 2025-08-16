@@ -1,16 +1,10 @@
-import Head from "next/head";
+import type { ReactNode } from "react";
 
-export default function TeacherLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  return (
-    <>
-      <Head>
-        <meta name="viewport" content="width=device-width" />
-      </Head>
-      <div className="mx-auto max-w-[420px]">{children}</div>
-    </>
-  );
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+};
+
+export default function TeacherLayout({ children }: { children: ReactNode }) {
+  return <div className="mx-auto max-w-[420px]">{children}</div>;
 }
