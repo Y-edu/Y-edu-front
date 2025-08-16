@@ -47,10 +47,10 @@ export default function SessionActions() {
   const [selectedSessionId, setSelectedSessionId] = useState<number | null>(
     null,
   );
-  const isButtonDisabled = !selectedSessionId;
+  const isButtonDisabled = !selectedSessionId || mutation.isPending;
 
   const handleSubmit = () => {
-    if (!selectedSessionId || !targetClass) return;
+    if (!selectedSessionId || !targetClass || mutation.isPending) return;
 
     mutation.mutate(
       { phoneNumber, sessionId: selectedSessionId, type: actionType },
@@ -121,7 +121,7 @@ export default function SessionActions() {
             disabled={isButtonDisabled}
             onClick={handleSubmit}
           >
-            완료하기
+            {mutation.isPending ? "잠시만 기다려주세요." : "완료하기"}
           </Button>
         </div>
       </div>
