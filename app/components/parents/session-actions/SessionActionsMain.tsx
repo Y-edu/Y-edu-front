@@ -17,7 +17,7 @@ const SESSION_ACTION_OPTIONS = [
     label: "선생님 교체",
     subLabel: "다른 선생님과 수업하고 싶어요",
   },
-];
+] as const;
 
 export default function SessionActionsMain() {
   const router = useRouter();
