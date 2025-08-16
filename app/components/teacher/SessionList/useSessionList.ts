@@ -9,6 +9,8 @@ import {
   BTN_RESCHEDULE,
   BTN_VIEW_REVIEW,
 } from "@/ui/Card/SessionListCard/ActionButtons";
+import { CancelReason } from "@/actions/patch-sessions";
+import { CANCEL_TEXT } from "@/constants/session/cancel";
 
 export interface SessionItem {
   id: number;
@@ -20,6 +22,9 @@ export interface SessionItem {
   complete: boolean;
   currentRound?: number;
   maxRound?: number;
+  isTodayCancel?: boolean;
+  cancelReason?: CancelReason;
+  cancel?: boolean;
 }
 
 export function useSessionList(data: SessionResponse[]): SessionItem[] {
@@ -36,6 +41,8 @@ export function useSessionList(data: SessionResponse[]): SessionItem[] {
         classStart,
         currentRound,
         maxRound,
+        isTodayCancel,
+        cancelReason,
       } = session;
 
       // Date 객체 생성 및 시간 포맷
@@ -59,12 +66,22 @@ export function useSessionList(data: SessionResponse[]): SessionItem[] {
       let actions: ActionButton[] = [];
 
       switch (true) {
+        case isTodayCancel && cancelReason === "TEACHER":
+          statusLabel = CANCEL_TEXT.SAME_DAY_CANCEL_BY_TEACHER_SHORT;
+          break;
+        case isTodayCancel && cancelReason === "PARENT":
+          statusLabel = CANCEL_TEXT.SAME_DAY_CANCEL_BY_PARENTS_SHORT;
+          break;
         case cancel:
           statusLabel = "휴강";
           actions = [BTN_CANCEL_RESTORE];
           break;
         case complete:
           actions = [BTN_VIEW_REVIEW];
+          break;
+        case isTodayCancel && cancelReason === "TOGETHER":
+          statusLabel = "당일 휴강";
+          actions = [BTN_CANCEL_RESTORE];
           break;
         case isToday:
           statusLabel = "오늘";
@@ -88,6 +105,7 @@ export function useSessionList(data: SessionResponse[]): SessionItem[] {
         complete,
         currentRound,
         maxRound,
+        cancel,
       };
     });
 

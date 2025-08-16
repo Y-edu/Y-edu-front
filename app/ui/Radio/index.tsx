@@ -3,7 +3,7 @@
 import IconRoundCheck from "@/icons/IconRoundCheck";
 
 interface CustomRadioProps {
-  label: string;
+  label: React.ReactNode;
   subLabel?: string;
   selected: boolean;
   onClick?: () => void;
@@ -23,7 +23,7 @@ export default function Radio({
       role="radio"
       aria-checked={selected}
     >
-      <div className="flex items-center gap-[8px]">
+      <div className="flex items-center gap-2">
         <IconRoundCheck isFill={selected} />
         <span className="text-gray-700">{label}</span>
       </div>

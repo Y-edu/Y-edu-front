@@ -1,5 +1,8 @@
 import { httpService } from "@/utils/httpService";
 
+// 휴강 사유 union 타입
+export type CancelReason = "TEACHER" | "PARENT" | "TOGETHER";
+
 export function patchSessionChange({
   sessionId,
   sessionDate,
@@ -18,13 +21,16 @@ export function patchSessionChange({
 export function patchSessionCancel({
   sessionId,
   reason,
+  isTodayCancel = false,
 }: {
   sessionId: number;
-  reason: string;
+  reason: CancelReason;
+  isTodayCancel?: boolean;
 }) {
-  return httpService.patch(
-    `/sessions/${sessionId}/cancel?cancelReason=${reason}`,
-  );
+  return httpService.patch(`/sessions/${sessionId}/cancel`, {
+    cancelReason: reason,
+    isTodayCancel,
+  });
 }
 
 export function patchSessionRevertCancel({ sessionId }: { sessionId: number }) {

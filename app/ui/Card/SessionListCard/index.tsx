@@ -9,9 +9,17 @@ import cn from "@/utils/cn";
 import BottomSheet from "@/ui/BottomSheet";
 import { useBottomSheet } from "@/components/teacher/SessionList/useBottomSheet";
 import RescheduleSheet from "@/components/teacher/SessionList/RescheduleSheet";
-import CancelSheet from "@/components/teacher/SessionList/CancelSheet";
+import {
+  NotSameDayCancelSheet,
+  SameDayCancelSheet,
+} from "@/components/teacher/SessionList/CancelSheet";
 import RevertSheet from "@/components/teacher/SessionList/RevertSheet";
 import Badge from "@/ui/Badge";
+import { CancelReason } from "@/actions/patch-sessions";
+import { useModal } from "@/hooks/custom";
+import { useSessionMutations } from "@/hooks/mutation/usePatchSessions";
+import { Modal } from "@/ui/Modal/Modal";
+import { CANCEL_TEXT } from "@/constants/session/cancel";
 
 export interface ActionButton {
   label: string;
@@ -31,6 +39,7 @@ export interface SessionListCardProps {
   initialOpen?: boolean;
   currentRound?: number;
   maxRound?: number;
+  cancel?: boolean;
 }
 
 export default function SessionListCard({
@@ -44,10 +53,23 @@ export default function SessionListCard({
   initialOpen = false,
   currentRound,
   maxRound,
+  cancel = false,
 }: SessionListCardProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { sheetType, openSheet, closeSheet, isSheetOpen } = useBottomSheet();
+  const [cancelReason, setCancelReason] = useState<CancelReason | null>(null);
+  const { isModalOpen, openModal, closeModal } = useModal();
+  const { mutate } = useSessionMutations().cancelMutation;
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const sessionDate = new Date(date);
+  sessionDate.setHours(0, 0, 0, 0);
+
+  // 오늘 포함 이전 날짜인지 확인하는 변수
+  const isTodayOrPast = sessionDate <= today;
 
   const defaultOpen =
     initialOpen ||
@@ -55,6 +77,28 @@ export default function SessionListCard({
     actions.some((btn) => btn.value === "view_review");
   const [isOpen, setIsOpen] = useState(defaultOpen);
   const isToggle = !defaultOpen;
+
+  const cancelSameDaySession = () => {
+    if (!cancelReason) return;
+    mutate({
+      sessionId: classSessionId,
+      reason: cancelReason,
+      isTodayCancel: cancelReason !== "TOGETHER",
+    });
+    closeModal();
+  };
+
+  const handleSameDayCancel = (reason: CancelReason) => {
+    setCancelReason(reason);
+    closeSheet();
+    if (reason === "PARENT" || reason === "TEACHER") openModal();
+    if (reason === "TOGETHER")
+      mutate({
+        sessionId: classSessionId,
+        reason,
+        isTodayCancel: false,
+      });
+  };
 
   const handleActionClick = useCallback(
     (value: string) => {
@@ -73,6 +117,27 @@ export default function SessionListCard({
     },
     [router, searchParams, classSessionId, openSheet],
   );
+
+  // Badge 표시 조건을 명확하게 분리
+  const shouldShowBadge = (() => {
+    // 당일휴강 상태면 Badge 안 보임
+    if (
+      statusLabel === "선생님 당일휴강" ||
+      statusLabel === "학부모 당일휴강"
+    ) {
+      return false;
+    }
+
+    // cancel이 true이고 currentRound가 0이면 Badge 안 보임
+    if (cancel && currentRound === 0) {
+      return false;
+    }
+
+    // currentRound와 maxRound가 유효한 값이어야 Badge 보임
+    return (
+      currentRound !== undefined && maxRound !== undefined && currentRound >= 0
+    );
+  })();
 
   return (
     <div
@@ -93,41 +158,52 @@ export default function SessionListCard({
           isOpen ? "mb-1" : "mb-0",
         )}
       >
-        <div className="flex items-center">
-          {statusLabel && (
-            <span
-              className={cn(
-                "mr-2 text-[16px] font-semibold",
-                statusLabel === "오늘" && "text-primary",
-                statusLabel === "휴강" && "text-red-500",
-              )}
-            >
+        <div className="flex flex-col">
+          <div className="flex items-center">
+            {(statusLabel === "휴강" || statusLabel === "오늘") && (
+              <span
+                className={cn(
+                  "mr-2 text-[16px] font-semibold",
+                  statusLabel === "오늘" && "text-primary",
+                  statusLabel === "휴강" && "text-red-500",
+                )}
+              >
+                {statusLabel}
+              </span>
+            )}
+            <span className="text-[16px] font-[600] text-gray-900">
+              {`${date.getMonth() + 1}.${date.getDate()} ${date.toLocaleDateString(
+                "ko-KR",
+                { weekday: "long" },
+              )} ${time}`}
+            </span>
+          </div>
+          {(statusLabel === "선생님 당일휴강" ||
+            statusLabel === "학부모 당일휴강") && (
+            <span className="mt-1 text-[15px] font-semibold text-red-500">
               {statusLabel}
             </span>
           )}
-          <span className="text-[16px] font-[600] text-gray-900">
-            {`${date.getMonth() + 1}.${date.getDate()} ${date.toLocaleDateString(
-              "ko-KR",
-              {
-                weekday: "long",
-              },
-            )} ${time}`}
-          </span>
         </div>
-        <div className="flex items-center">
-          <Badge className={cn(isToggle && "mr-2")}>
-            {maxRound ?? "-"}회 중{" "}
-            <strong className="ml-1 font-semibold">
-              {currentRound ?? "-"}회
-            </strong>
-          </Badge>
-          <IconDown
-            className={cn({
-              hidden: !isToggle,
-              "rotate-180": isOpen,
-            })}
-          />
-        </div>
+        {shouldShowBadge && currentRound !== undefined && (
+          <div className="flex items-center">
+            {currentRound > 0 && (
+              <Badge className={cn(isToggle && "mr-2")}>
+                {maxRound ?? "-"}회 중{" "}
+                <strong className="ml-1 font-semibold">
+                  {currentRound ?? "-"}회
+                </strong>
+              </Badge>
+            )}
+            {currentRound === 0 && <Badge>무료보강</Badge>}
+            <IconDown
+              className={cn({
+                hidden: !isToggle,
+                "rotate-180": isOpen,
+              })}
+            />
+          </div>
+        )}
       </div>
       {showMoneyReminder && (
         <p className="text-[14px] text-gray-500">
@@ -170,13 +246,30 @@ export default function SessionListCard({
             close={closeSheet}
           />
         )}
-        {sheetType === "cancel" && (
-          <CancelSheet sessionId={classSessionId} close={closeSheet} />
-        )}
+        {sheetType === "cancel" &&
+          (isTodayOrPast ? (
+            <SameDayCancelSheet
+              close={closeSheet}
+              onRequestCancel={handleSameDayCancel}
+            />
+          ) : (
+            <NotSameDayCancelSheet
+              sessionId={classSessionId}
+              close={closeSheet}
+            />
+          ))}
         {sheetType === "cancel_restore" && (
           <RevertSheet sessionId={classSessionId} close={closeSheet} />
         )}
       </BottomSheet>
+      <Modal
+        isOpen={isModalOpen}
+        title={CANCEL_TEXT.SAME_DAY_CANCEL_ALERT}
+        handleOnConfirm={cancelSameDaySession}
+        handleOnCancel={closeModal}
+        confirmText="진행할게요"
+        cancelText="아니요"
+      />
     </div>
   );
 }
