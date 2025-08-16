@@ -24,7 +24,7 @@ export function patchSessionCancel({
   isTodayCancel = false,
 }: {
   sessionId: number;
-  reason: string;
+  reason: CancelReason;
   isTodayCancel?: boolean;
 }) {
   return httpService.patch(`/sessions/${sessionId}/cancel`, {

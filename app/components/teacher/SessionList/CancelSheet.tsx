@@ -14,7 +14,7 @@ export function NotSameDayCancelSheet({
   close: () => void;
 }) {
   const [confirmed, setConfirmed] = useState(false);
-  const [selected, setSelected] = useState("");
+  const [selected, setSelected] = useState<CancelReason>("TOGETHER");
 
   const { mutate } = useSessionMutations().cancelMutation;
 
@@ -72,31 +72,27 @@ export function SameDayCancelSheet({
   onRequestCancel: (reason: CancelReason) => void;
 }) {
   const [confirmed, setConfirmed] = useState(false);
-  const [selected, setSelected] = useState<CancelReason | null>(null);
+  const [selected, setSelected] = useState<CancelReason>("TOGETHER");
 
   const CANCEL_REASONS = [
     {
       value: "TOGETHER",
       label: CANCEL_TEXT.NOT_SAME_DAY_CANCEL,
       description: "",
-      isTodayCancel: false,
     },
     {
       value: "PARENT",
       label: CANCEL_TEXT.SAME_DAY_CANCEL_BY_PARENTS_LONG,
       description: CANCEL_TEXT.SAME_DAY_CANCEL_BY_PARENTS_DESC,
-      isTodayCancel: true,
     },
     {
       value: "TEACHER",
       label: CANCEL_TEXT.SAME_DAY_CANCEL_BY_TEACHER_LONG,
       description: CANCEL_TEXT.SAME_DAY_CANCEL_BY_TEACHER_DESC,
-      isTodayCancel: true,
     },
   ] as const;
 
   const handleSubmit = () => {
-    if (!selected) return;
     onRequestCancel(selected);
     close();
   };
