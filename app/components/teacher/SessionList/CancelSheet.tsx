@@ -19,8 +19,8 @@ export function NotSameDayCancelSheet({
   const { mutate } = useSessionMutations().cancelMutation;
 
   const CANCEL_REASON = [
-    { value: "PARENT", label: "학부모 요청" },
-    { value: "TEACHER", label: "선생님 요청" },
+    { value: "PARENT", label: CANCEL_TEXT.SAME_DAY_CANCEL_BY_PARENTS_REQUEST },
+    { value: "TEACHER", label: CANCEL_TEXT.SAME_DAY_CANCEL_BY_TEACHER_REQUEST },
   ] as const;
 
   const handleSubmit = () => {

@@ -2,6 +2,8 @@ export const CANCEL_TEXT = {
   SELECT_CANCEL_REASON: "휴강 사유를 선택해주세요",
   SAME_DAY_CANCEL_BY_TEACHER_SHORT: "선생님 당일휴강",
   SAME_DAY_CANCEL_BY_PARENTS_SHORT: "학부모 당일휴강",
+  SAME_DAY_CANCEL_BY_TEACHER_REQUEST: "선생님 요청",
+  SAME_DAY_CANCEL_BY_PARENTS_REQUEST: "학부모 요청",
   SAME_DAY_CANCEL_BY_TEACHER_LONG: "선생님 요청에 의한 당일 휴강",
   SAME_DAY_CANCEL_BY_PARENTS_LONG: "학부모 요청에 의한 당일 휴강",
   SAME_DAY_CANCEL_BY_TEACHER_DESC: "별도의 무료 보강 수업을 제공해야 해요",

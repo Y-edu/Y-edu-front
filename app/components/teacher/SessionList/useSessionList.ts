@@ -10,6 +10,7 @@ import {
   BTN_VIEW_REVIEW,
 } from "@/ui/Card/SessionListCard/ActionButtons";
 import { CancelReason } from "@/actions/patch-sessions";
+import { CANCEL_TEXT } from "@/constants/session/cancel";
 
 export interface SessionItem {
   id: number;
@@ -66,10 +67,10 @@ export function useSessionList(data: SessionResponse[]): SessionItem[] {
 
       switch (true) {
         case isTodayCancel && cancelReason === "TEACHER":
-          statusLabel = "선생님 당일휴강";
+          statusLabel = CANCEL_TEXT.SAME_DAY_CANCEL_BY_TEACHER_SHORT;
           break;
         case isTodayCancel && cancelReason === "PARENT":
-          statusLabel = "학부모 당일휴강";
+          statusLabel = CANCEL_TEXT.SAME_DAY_CANCEL_BY_PARENTS_SHORT;
           break;
         case cancel:
           statusLabel = "휴강";
