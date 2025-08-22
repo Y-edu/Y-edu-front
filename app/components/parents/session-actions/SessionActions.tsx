@@ -32,16 +32,7 @@ export default function SessionActions() {
 
   const targetClass = useMemo(() => {
     if (!data || !appKey) return null;
-
-    // appKey를 "applicationFormId_index"로 분리
-    const [appId, rawIndex] = appKey.split("__");
-    const idx = Number(rawIndex ?? -1);
-
-    // applicationFormId가 같은 항목만 필터링
-    const candidates = data.filter((item) => item.applicationFormId === appId);
-
-    // 같은 applicationFormId만 필터링 후 index번째 항목 선택
-    return idx >= 0 ? candidates[idx] : (candidates[0] ?? null);
+    return data.find((item) => item.applicationFormId === appKey) ?? null;
   }, [data, appKey]);
 
   const [selectedSessionId, setSelectedSessionId] = useState<number | null>(
