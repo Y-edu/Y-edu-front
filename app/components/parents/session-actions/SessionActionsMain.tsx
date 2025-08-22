@@ -82,9 +82,9 @@ export default function SessionActionsMain() {
               </TitleSection.Title>
             </TitleSection>
             <div>
-              {data?.map(({ applicationFormId, teacherNickname }, index) => {
+              {data?.map(({ applicationFormId, teacherNickname }) => {
                 // 수업코드가 같을 경우 대비
-                const uniqueKey = `${applicationFormId}__${index}`;
+                const uniqueKey = applicationFormId;
                 return (
                   <div key={uniqueKey} className="py-4">
                     <Radio
