@@ -6,7 +6,7 @@ import {
   useSearchParams,
   useRouter,
 } from "next/navigation";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 
 import { useGetParentsSessionsByPhone } from "@/hooks/query/useGetParentsSessionsByPhoneNumber";
 import { usePostParentsSessionActions } from "@/hooks/mutation/usePostParentsSessionActions";
@@ -39,6 +39,19 @@ export default function SessionActions() {
     null,
   );
   const isButtonDisabled = !selectedSessionId || mutation.isPending;
+
+  // 이미 신청된 회차가 있으면 기본 선택 유지
+  useEffect(() => {
+    if (!targetClass) return;
+    const preSelected = targetClass.sessions.find(
+      (s) => s.isSubmit?.[actionType] === true,
+    );
+    if (preSelected) {
+      setSelectedSessionId(preSelected.sessionId);
+    } else {
+      setSelectedSessionId(null);
+    }
+  }, [targetClass, actionType]);
 
   const handleSubmit = () => {
     if (!selectedSessionId || !targetClass || mutation.isPending) return;
