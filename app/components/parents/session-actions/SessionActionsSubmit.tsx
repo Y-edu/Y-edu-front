@@ -29,7 +29,7 @@ export default function SessionActionSubmit() {
         };
 
   const handleMove = () => {
-    window.location.href = "https://www.naver.com";
+    window.location.href = "https://tally.so/r/mRN4al";
   };
 
   return (
