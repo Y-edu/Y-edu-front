@@ -6,3 +6,4 @@ export * from "./TitleDesc";
 export * from "./Header";
 export * from "./Modal/Modal";
 export * from "./Pagination";
+export { default as Select } from "./Select";
