@@ -1,7 +1,8 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { ColumnDef } from "@tanstack/react-table";
+import { ColumnDef, RowSelectionState } from "@tanstack/react-table";
+import { Dispatch, SetStateAction } from "react";
 
 import { getClassColumns } from "@/ui/Columns/ClassColumns";
 import { Class } from "@/hooks/query/useGetClassList";
@@ -12,12 +13,16 @@ export interface ClassListProps {
   classItems?: Class[];
   setClassItems: React.Dispatch<React.SetStateAction<Class[]>>;
   pagination?: boolean;
+  selectedClassRowList?: RowSelectionState;
+  setSelectedClasses?: Dispatch<SetStateAction<RowSelectionState>>;
 }
 
 function ClassList({
   classItems,
   setClassItems,
   pagination = false,
+  selectedClassRowList,
+  setSelectedClasses,
 }: ClassListProps) {
   const router = useRouter();
 
@@ -29,8 +34,13 @@ function ClassList({
     );
   };
 
-  const columns = getClassColumns(handleStatusChange);
+  const columns = getClassColumns(
+    handleStatusChange,
+    selectedClassRowList,
+    setSelectedClasses,
+  );
 
+  // 행 클릭 핸들러 - 항상 상세페이지로 이동 (체크박스는 별도 처리)
   const handleRowClick = (row: Class) => {
     router.push(`/zuzuclubadmin/class-management/${row.matchingId}`);
   };
@@ -40,7 +50,15 @@ function ClassList({
       data={classItems || []}
       columns={columns as ColumnDef<Class>[]}
       pagination={{ enabled: pagination, pageSize: 100 }}
-      rowInteraction={{ onClick: handleRowClick }}
+      selection={{
+        enabled: false,
+        selectedRows: {},
+        onChange: () => {},
+      }}
+      rowInteraction={{
+        onClick: handleRowClick,
+        getId: (row) => String(row.matchingId),
+      }}
       className={pagination ? "pb-4" : ""}
     />
   );
