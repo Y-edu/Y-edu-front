@@ -140,7 +140,7 @@ export default function SessionList({ classId }: SessionListProps) {
             className="cursor-default bg-transparent py-3 text-[14px] font-semibold text-gray-700"
             onClick={() => setIsExpanded(true)}
           >
-            <span className="flex cursor-pointer items-center">
+            <span className="flex cursor-pointer items-center text-base">
               더보기
               <IconDown className="ml-1 size-5" IconColor="#374151" />
             </span>
