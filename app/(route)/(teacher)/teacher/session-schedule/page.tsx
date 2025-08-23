@@ -19,9 +19,11 @@ export default function TeacherSessionScheduleListPage() {
 
   const { data, isLoading } = useGetSessions(token, 0, 3);
   const { data: sessionsMonthData } = useGetSessionsMonth(
-    classId
-      ? { classMatchingId: Number(classId), monthCount: 2 }
-      : { token, monthCount: 2 },
+    token
+      ? { token, monthCount: 2 }
+      : classId
+        ? { classMatchingId: classId, monthCount: 2 }
+        : { token: "", monthCount: 2 },
   );
 
   if (isLoading) {
