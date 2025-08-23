@@ -189,13 +189,14 @@ export default function SessionListCard({
           <div className="flex items-center">
             {currentRound > 0 && (
               <Badge className={cn(isToggle && "mr-2")}>
-                {maxRound ?? "-"}회 중{" "}
-                <strong className="ml-1 font-semibold">
-                  {currentRound ?? "-"}회
+                <strong className="font-semibold">
+                  {currentRound ?? "-"}회차
                 </strong>
               </Badge>
             )}
-            {currentRound === 0 && <Badge>무료보강</Badge>}
+            {currentRound === 0 && (
+              <Badge className="font-semibold text-primary">무료보강</Badge>
+            )}
             <IconDown
               className={cn({
                 hidden: !isToggle,
