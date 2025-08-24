@@ -1,7 +1,14 @@
+import type { ReactNode } from "react";
+
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+};
+
 export default function TeacherSettingLayout({
   children,
 }: {
-  children: React.ReactNode;
+  children: ReactNode;
 }) {
-  return <div className="mx-auto max-w-[375px]">{children}</div>;
+  return <div className="mx-auto max-w-[420px]">{children}</div>;
 }
