@@ -25,6 +25,7 @@ export interface SessionItem {
   isTodayCancel?: boolean;
   cancelReason?: CancelReason;
   cancel?: boolean;
+  classMinute: number;
 }
 
 export function useSessionList(data: SessionResponse[]): SessionItem[] {
@@ -43,6 +44,7 @@ export function useSessionList(data: SessionResponse[]): SessionItem[] {
         maxRound,
         isTodayCancel,
         cancelReason,
+        classMinute,
       } = session;
 
       // Date 객체 생성 및 시간 포맷
@@ -106,6 +108,7 @@ export function useSessionList(data: SessionResponse[]): SessionItem[] {
         currentRound,
         maxRound,
         cancel,
+        classMinute,
       };
     });
 

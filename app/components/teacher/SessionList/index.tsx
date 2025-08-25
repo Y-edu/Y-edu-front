@@ -7,7 +7,7 @@ import Image from "next/image";
 import { useGetSessions } from "@/hooks/query/useGetSessions";
 import { SessionResponse } from "@/actions/post-getSessions";
 import SessionListCard from "@/ui/Card/SessionListCard";
-import Chip from "@/ui/Chip";
+import Select from "@/ui/Select";
 import Button from "@/ui/Button";
 import IconDown from "@/icons/IconDown";
 import LoadingUI from "@/ui/LoadingUI";
@@ -66,6 +66,18 @@ export default function SessionList({ classId }: SessionListProps) {
     setSessions([]);
   };
 
+  const handleFilterChange = (value: string) => {
+    const next = value === "completed";
+    changeFilter(next);
+  };
+
+  const filterOptions = [
+    { value: "scheduled", label: "예정된 수업" },
+    { value: "completed", label: "완료된 수업" },
+  ];
+
+  const currentFilterValue = isComplete ? "completed" : "scheduled";
+
   const isInitialLoading = sessions.length === 0 && (isLoading || isFetching);
   const hasMore = items.length > 3 && !isExpanded;
 
@@ -77,15 +89,11 @@ export default function SessionList({ classId }: SessionListProps) {
     <div className="min-h-screen space-y-3 bg-gray-50 px-5 py-4">
       <section className="mb-4 flex items-center justify-between">
         <div className="flex gap-2">
-          <Chip
-            chipText="미완료"
-            isSelected={!isComplete}
-            onClick={() => changeFilter(false)}
-          />
-          <Chip
-            chipText="완료"
-            isSelected={isComplete}
-            onClick={() => changeFilter(true)}
+          <Select
+            options={filterOptions}
+            value={currentFilterValue}
+            onChange={handleFilterChange}
+            className="w-32"
           />
         </div>
         {!isPaused && (
@@ -114,6 +122,7 @@ export default function SessionList({ classId }: SessionListProps) {
               key={session.id}
               date={session.date}
               time={session.time}
+              classMinute={session.classMinute}
               statusLabel={session.statusLabel}
               actions={session.actions}
               showMoneyReminder={session.showMoneyReminder}
@@ -140,7 +149,7 @@ export default function SessionList({ classId }: SessionListProps) {
             className="cursor-default bg-transparent py-3 text-[14px] font-semibold text-gray-700"
             onClick={() => setIsExpanded(true)}
           >
-            <span className="flex cursor-pointer items-center">
+            <span className="flex cursor-pointer items-center text-base">
               더보기
               <IconDown className="ml-1 size-5" IconColor="#374151" />
             </span>

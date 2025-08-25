@@ -101,6 +101,9 @@ export function useSessionMutations() {
 
       await queryClient.refetchQueries({ queryKey: ["sessions"] });
 
+      // sessions-month 쿼리도 무효화
+      await queryClient.invalidateQueries({ queryKey: ["sessions-month"] });
+
       params.set("is-complete", "true");
       router.push(`/teacher/session-schedule?${params.toString()}`);
 

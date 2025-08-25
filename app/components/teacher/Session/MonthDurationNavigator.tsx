@@ -67,7 +67,7 @@ export default function MonthDurationNavigator(
           height={20}
         />
       </button>
-      <div className="flex min-w-36 gap-2 text-[#475569]">
+      <div className="flex min-w-36 items-center justify-center gap-2 text-[#475569]">
         <p className="font-semibold">{currentMonth}월 수업진행</p>
         <p className="font-bold">{currentDuration}분</p>
       </div>

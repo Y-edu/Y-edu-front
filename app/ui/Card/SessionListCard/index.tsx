@@ -32,6 +32,7 @@ export interface SessionListCardProps {
   classSessionId: number;
   date: Date;
   time: string;
+  classMinute: number;
   statusLabel: string;
   actions: ActionButton[];
   showMoneyReminder?: boolean;
@@ -46,6 +47,7 @@ export default function SessionListCard({
   classSessionId,
   date,
   time,
+  classMinute,
   statusLabel,
   actions,
   showMoneyReminder,
@@ -172,11 +174,12 @@ export default function SessionListCard({
               </span>
             )}
             <span className="text-[16px] font-[600] text-gray-900">
-              {`${date.getMonth() + 1}.${date.getDate()} ${date.toLocaleDateString(
+              {`${date.getMonth() + 1}.${date.getDate()} (${date.toLocaleDateString(
                 "ko-KR",
-                { weekday: "long" },
-              )} ${time}`}
+                { weekday: "short" },
+              )}) ${time}`}
             </span>
+            <span className="ml-[6px] text-gray-500">{`${classMinute}분 수업`}</span>
           </div>
           {(statusLabel === "선생님 당일휴강" ||
             statusLabel === "학부모 당일휴강") && (
@@ -189,13 +192,14 @@ export default function SessionListCard({
           <div className="flex items-center">
             {currentRound > 0 && (
               <Badge className={cn(isToggle && "mr-2")}>
-                {maxRound ?? "-"}회 중{" "}
-                <strong className="ml-1 font-semibold">
-                  {currentRound ?? "-"}회
+                <strong className="font-semibold">
+                  {currentRound ?? "-"}회차
                 </strong>
               </Badge>
             )}
-            {currentRound === 0 && <Badge>무료보강</Badge>}
+            {currentRound === 0 && (
+              <Badge className="font-semibold text-primary">무료보강</Badge>
+            )}
             <IconDown
               className={cn({
                 hidden: !isToggle,
