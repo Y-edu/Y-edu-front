@@ -179,7 +179,9 @@ export default function SessionListCard({
                 { weekday: "short" },
               )}) ${time}`}
             </span>
-            <span className="ml-[6px] text-gray-500">{`${classMinute}분 수업`}</span>
+            {classMinute && classMinute > 0 && (
+              <span className="ml-[6px] text-gray-500">{`${classMinute}분 수업`}</span>
+            )}
           </div>
           {(statusLabel === "선생님 당일휴강" ||
             statusLabel === "학부모 당일휴강") && (
