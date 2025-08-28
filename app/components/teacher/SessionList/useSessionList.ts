@@ -62,12 +62,16 @@ export function useSessionList(data: SessionResponse[]): SessionItem[] {
       const isToday = classDay.getTime() === today.getTime();
       const isTodayOrPast = classDay.getTime() <= today.getTime();
       const isFuture = classDay.getTime() > today.getTime();
+      const isFreeSupplement = !cancel && currentRound === 0 && !complete;
       const showMoneyReminder = isTodayOrPast && !complete && !cancel;
 
       let statusLabel = "";
       let actions: ActionButton[] = [];
 
       switch (true) {
+        case isFreeSupplement:
+          actions = [BTN_RESCHEDULE, BTN_COMPLETE];
+          break;
         case isTodayCancel && cancelReason === "TEACHER":
           statusLabel = CANCEL_TEXT.SAME_DAY_CANCEL_BY_TEACHER_SHORT;
           break;
