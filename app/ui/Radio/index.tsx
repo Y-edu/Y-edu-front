@@ -27,7 +27,15 @@ export default function Radio({
         <IconRoundCheck isFill={selected} />
         <span className="text-gray-700">{label}</span>
       </div>
-      {subLabel && <span className="font-bold text-gray-700">{subLabel}</span>}
+      {subLabel && (
+        <span
+          className={`font-bold ${
+            selected ? "text-gray-600" : "text-gray-400"
+          }`}
+        >
+          {subLabel}
+        </span>
+      )}
     </button>
   );
 }
