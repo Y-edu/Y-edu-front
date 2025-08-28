@@ -123,10 +123,7 @@ export default function SessionListCard({
   // Badge 표시 조건을 명확하게 분리
   const shouldShowBadge = (() => {
     // 당일휴강 상태면 Badge 안 보임
-    if (
-      statusLabel === "선생님 당일휴강" ||
-      statusLabel === "학부모 당일휴강"
-    ) {
+    if (statusLabel === "선생님 당일휴강") {
       return false;
     }
 
