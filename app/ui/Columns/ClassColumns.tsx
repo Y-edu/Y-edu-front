@@ -18,34 +18,6 @@ const statusColors = {
   일시중단: "bg-yellow-100 text-yellow-800",
 } as const;
 
-const dayMap: Record<string, string> = {
-  MON: "월",
-  TUE: "화",
-  WED: "수",
-  THU: "목",
-  FRI: "금",
-  SAT: "토",
-  SUN: "일",
-};
-
-function DayTimeCell({
-  scheduleList,
-}: {
-  scheduleList: Class["classManagement"]["schedule"];
-}) {
-  if (!scheduleList?.length) return "-";
-
-  return (
-    <div>
-      {scheduleList.map((item) => (
-        <div key={item.classScheduleId}>
-          {dayMap[item.day] || item.day} {item.start}
-        </div>
-      ))}
-    </div>
-  );
-}
-
 // 과외 상태 칩
 function StatusCell({
   status,
@@ -205,8 +177,17 @@ export function getClassColumns(
         );
       },
     }),
-    columnHelper.accessor("applicationFormId", {
+    columnHelper.display({
+      id: "applicationSubject",
       header: "수업코드",
+      cell: (props) => {
+        const subject = props.row.original.subject;
+        const applicationFormId = props.row.original.applicationFormId;
+        return `[${subject}] ${applicationFormId}`;
+      },
+    }),
+    columnHelper.accessor("teacher.nickName", {
+      header: "선생님 닉네임",
       cell: (props) => props.getValue(),
     }),
     columnHelper.accessor("parent.kakaoName", {
@@ -228,23 +209,6 @@ export function getClassColumns(
           </div>
         );
       },
-    }),
-    columnHelper.display({
-      id: "dayTime",
-      header: "정규일정",
-      cell: (props) => (
-        <DayTimeCell
-          scheduleList={props.row.original.classManagement.schedule}
-        />
-      ),
-    }),
-    columnHelper.accessor("subject", {
-      header: "과목",
-      cell: (props) => props.getValue(),
-    }),
-    columnHelper.accessor("teacher.nickName", {
-      header: "선생님 닉네임",
-      cell: (props) => props.getValue(),
     }),
     columnHelper.accessor("parent.phoneNumber", {
       header: "학부모 전화번호",
