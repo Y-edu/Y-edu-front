@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { ColumnDef, RowSelectionState } from "@tanstack/react-table";
+import { ColumnDef } from "@tanstack/react-table";
 import { Dispatch, SetStateAction } from "react";
 
 import { getClassColumns } from "@/ui/Columns/ClassColumns";
@@ -13,16 +13,16 @@ export interface ClassListProps {
   classItems?: Class[];
   setClassItems: React.Dispatch<React.SetStateAction<Class[]>>;
   pagination?: boolean;
-  selectedClassRowList?: RowSelectionState;
-  setSelectedClasses?: Dispatch<SetStateAction<RowSelectionState>>;
+  selectedMatchingIds?: number[];
+  setSelectedMatchingIds?: Dispatch<SetStateAction<number[]>>;
 }
 
 function ClassList({
   classItems,
   setClassItems,
   pagination = false,
-  selectedClassRowList,
-  setSelectedClasses,
+  selectedMatchingIds,
+  setSelectedMatchingIds,
 }: ClassListProps) {
   const router = useRouter();
 
@@ -36,8 +36,8 @@ function ClassList({
 
   const columns = getClassColumns(
     handleStatusChange,
-    selectedClassRowList,
-    setSelectedClasses,
+    selectedMatchingIds,
+    setSelectedMatchingIds,
   );
 
   // 행 클릭 핸들러 - 항상 상세페이지로 이동 (체크박스는 별도 처리)

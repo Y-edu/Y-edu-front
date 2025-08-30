@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { RowSelectionState } from "@tanstack/react-table";
 
 import ClassList from "@/components/admin/ClassList";
 import { SearchBar } from "@/ui";
@@ -9,13 +8,13 @@ import { Class, useGetClassList } from "@/hooks/query/useGetClassList";
 import { CLASS_STATUS_OPTIONS } from "@/constants/matching";
 
 export default function ClassManagementHome() {
-  const { data } = useGetClassList({
+  const { data, refetch } = useGetClassList({
     matchingStatus: [...CLASS_STATUS_OPTIONS],
   });
 
   const [allData, setAllData] = useState<Class[]>([]);
   const [filteredData, setFilteredData] = useState<Class[]>([]);
-  const [selectedClasses, setSelectedClasses] = useState<RowSelectionState>({});
+  const [selectedMatchingIds, setSelectedMatchingIds] = useState<number[]>([]);
 
   useEffect(() => {
     if (data?.applicationFormByMatchingId) {
@@ -60,12 +59,15 @@ export default function ClassManagementHome() {
         <SearchBar
           onSearch={handleSearch}
           placeholder="수업코드, 카톡 이름, 과목, 선생님 닉네임으로 검색하세요"
+          selectedMatchingIds={selectedMatchingIds}
+          classItems={filteredData}
+          onPaymentSuccess={() => refetch()}
         />
         <ClassList
           classItems={filteredData}
           setClassItems={setFilteredData}
-          selectedClassRowList={selectedClasses}
-          setSelectedClasses={setSelectedClasses} // 이 prop이 있으면 체크박스 모드
+          selectedMatchingIds={selectedMatchingIds}
+          setSelectedMatchingIds={setSelectedMatchingIds} // 이 prop이 있으면 체크박스 모드
           pagination
         />
       </div>

@@ -1,4 +1,4 @@
-import { createColumnHelper, RowSelectionState } from "@tanstack/react-table";
+import { createColumnHelper } from "@tanstack/react-table";
 import { useRef, useState, useEffect } from "react";
 
 import { Class, usePutClassStatus } from "@/hooks/query/useGetClassList";
@@ -108,22 +108,21 @@ function StatusCell({
 
 export function getClassColumns(
   onStatusChange: (rowIndex: number, newStatus: ClassStatus) => void,
-  selectedRows?: RowSelectionState,
-  setSelectedRows?: (
-    updater: (prev: RowSelectionState) => RowSelectionState,
-  ) => void,
+  selectedMatchingIds?: number[],
+  setSelectedMatchingIds?: (updater: (prev: number[]) => number[]) => void,
 ) {
   return [
     columnHelper.display({
       id: "select",
       header: ({ table }) => {
-        if (!setSelectedRows || !selectedRows) return null;
+        if (!setSelectedMatchingIds || !selectedMatchingIds) return null;
 
-        const allRowIds = table
+        const allMatchingIds = table
           .getRowModel()
-          .rows.map((row) => String(row.original.matchingId));
+          .rows.map((row) => row.original.matchingId);
         const isAllSelected =
-          allRowIds.length > 0 && allRowIds.every((id) => selectedRows[id]);
+          allMatchingIds.length > 0 &&
+          allMatchingIds.every((id) => selectedMatchingIds.includes(id));
 
         return (
           <input
@@ -136,17 +135,16 @@ export function getClassColumns(
               e.preventDefault();
               if (isAllSelected) {
                 // 모두 선택 해제
-                setSelectedRows((prev) => {
-                  const newState = { ...prev };
-                  allRowIds.forEach((id) => delete newState[id]);
-                  return newState;
-                });
+                setSelectedMatchingIds((prev) =>
+                  prev.filter((id) => !allMatchingIds.includes(id)),
+                );
               } else {
                 // 모두 선택
-                setSelectedRows((prev) => {
-                  const newState = { ...prev };
-                  allRowIds.forEach((id) => (newState[id] = true));
-                  return newState;
+                setSelectedMatchingIds((prev) => {
+                  const newIds = allMatchingIds.filter(
+                    (id) => !prev.includes(id),
+                  );
+                  return [...prev, ...newIds];
                 });
               }
             }}
@@ -154,10 +152,10 @@ export function getClassColumns(
         );
       },
       cell: ({ row }) => {
-        if (!setSelectedRows || !selectedRows) return null;
+        if (!setSelectedMatchingIds || !selectedMatchingIds) return null;
 
-        const rowId = String(row.original.matchingId);
-        const isSelected = !!selectedRows[rowId];
+        const matchingId = row.original.matchingId;
+        const isSelected = selectedMatchingIds.includes(matchingId);
 
         return (
           <input
@@ -168,10 +166,13 @@ export function getClassColumns(
             onChange={(e) => {
               e.stopPropagation();
               e.preventDefault();
-              setSelectedRows((prev) => ({
-                ...prev,
-                [rowId]: !prev[rowId],
-              }));
+              setSelectedMatchingIds((prev) => {
+                if (isSelected) {
+                  return prev.filter((id) => id !== matchingId);
+                } else {
+                  return [...prev, matchingId];
+                }
+              });
             }}
           />
         );
@@ -209,6 +210,18 @@ export function getClassColumns(
           </div>
         );
       },
+    }),
+    columnHelper.display({
+      id: "progressRound",
+      header: "진행 회차",
+      cell: (props) => {
+        const { payPendingSessionCount, maxRound } = props.row.original;
+        return `${payPendingSessionCount} / ${maxRound}`;
+      },
+    }),
+    columnHelper.accessor("totalClassTime", {
+      header: "선생님 진행 분",
+      cell: (props) => `${props.getValue()}분`,
     }),
     columnHelper.accessor("parent.phoneNumber", {
       header: "학부모 전화번호",

@@ -10,6 +10,9 @@ async function startClientMSW() {
     const worker = await import("../../__mocks__/browser");
     await worker.worker.start({
       onUnhandledRequest: "bypass",
+      serviceWorker: {
+        url: "/mockServiceWorker.js",
+      },
     });
   }
 }

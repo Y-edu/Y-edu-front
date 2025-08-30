@@ -17,6 +17,9 @@ export interface Class {
   subject: string;
   matchingStatus: ClassStatus;
   matchingId: number;
+  payPendingSessionCount: number;
+  maxRound: number;
+  totalClassTime: number;
   classManagement: {
     schedule: {
       classScheduleId: number;
