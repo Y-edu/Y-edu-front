@@ -2,9 +2,7 @@ import { HttpResponse, http } from "msw";
 
 export const paymentHandlers = [
   // 결제 요청 API
-  http.post("*/payments/request/class-matching-ids", async ({ request }) => {
-    const body = await request.json();
-
+  http.post("*/payments/request/class-matching-ids", () => {
     // 성공 응답 시뮬레이션
     return HttpResponse.json(
       {
