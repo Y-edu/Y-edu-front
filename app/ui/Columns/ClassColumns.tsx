@@ -1,4 +1,4 @@
-import { createColumnHelper, RowSelectionState } from "@tanstack/react-table";
+import { createColumnHelper } from "@tanstack/react-table";
 import { useRef, useState, useEffect } from "react";
 
 import { Class, usePutClassStatus } from "@/hooks/query/useGetClassList";
@@ -108,22 +108,23 @@ function StatusCell({
 
 export function getClassColumns(
   onStatusChange: (rowIndex: number, newStatus: ClassStatus) => void,
-  selectedRows?: RowSelectionState,
-  setSelectedRows?: (
-    updater: (prev: RowSelectionState) => RowSelectionState,
-  ) => void,
+  selectedClassCodes?: string[],
+  setSelectedClassCodes?: (updater: (prev: string[]) => string[]) => void,
 ) {
   return [
     columnHelper.display({
       id: "select",
       header: ({ table }) => {
-        if (!setSelectedRows || !selectedRows) return null;
+        if (!setSelectedClassCodes || !selectedClassCodes) return null;
 
-        const allRowIds = table
-          .getRowModel()
-          .rows.map((row) => String(row.original.matchingId));
+        const allClassCodes = table.getRowModel().rows.map((row) => {
+          const subject = row.original.subject;
+          const applicationFormId = row.original.applicationFormId;
+          return `[${subject}] ${applicationFormId}`;
+        });
         const isAllSelected =
-          allRowIds.length > 0 && allRowIds.every((id) => selectedRows[id]);
+          allClassCodes.length > 0 &&
+          allClassCodes.every((code) => selectedClassCodes.includes(code));
 
         return (
           <input
@@ -136,17 +137,16 @@ export function getClassColumns(
               e.preventDefault();
               if (isAllSelected) {
                 // 모두 선택 해제
-                setSelectedRows((prev) => {
-                  const newState = { ...prev };
-                  allRowIds.forEach((id) => delete newState[id]);
-                  return newState;
-                });
+                setSelectedClassCodes((prev) =>
+                  prev.filter((code) => !allClassCodes.includes(code)),
+                );
               } else {
                 // 모두 선택
-                setSelectedRows((prev) => {
-                  const newState = { ...prev };
-                  allRowIds.forEach((id) => (newState[id] = true));
-                  return newState;
+                setSelectedClassCodes((prev) => {
+                  const newCodes = allClassCodes.filter(
+                    (code) => !prev.includes(code),
+                  );
+                  return [...prev, ...newCodes];
                 });
               }
             }}
@@ -154,10 +154,12 @@ export function getClassColumns(
         );
       },
       cell: ({ row }) => {
-        if (!setSelectedRows || !selectedRows) return null;
+        if (!setSelectedClassCodes || !selectedClassCodes) return null;
 
-        const rowId = String(row.original.matchingId);
-        const isSelected = !!selectedRows[rowId];
+        const subject = row.original.subject;
+        const applicationFormId = row.original.applicationFormId;
+        const classCode = `[${subject}] ${applicationFormId}`;
+        const isSelected = selectedClassCodes.includes(classCode);
 
         return (
           <input
@@ -168,10 +170,13 @@ export function getClassColumns(
             onChange={(e) => {
               e.stopPropagation();
               e.preventDefault();
-              setSelectedRows((prev) => ({
-                ...prev,
-                [rowId]: !prev[rowId],
-              }));
+              setSelectedClassCodes((prev) => {
+                if (isSelected) {
+                  return prev.filter((code) => code !== classCode);
+                } else {
+                  return [...prev, classCode];
+                }
+              });
             }}
           />
         );
