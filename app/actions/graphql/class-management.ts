@@ -21,6 +21,7 @@ export const GET_CLASSLIST = gql`
       matchingId
       subject
       matchingStatus
+      classTime
       payPendingSessionCount
       maxRound
       totalClassTime
@@ -42,6 +43,7 @@ export const GET_CLASS_DETAIL = gql`
       matchingIds: $matchingIds
       matchingStatus: $matchingStatus
     ) {
+      classTime
       classManagement {
         schedule {
           classScheduleId
