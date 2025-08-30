@@ -211,14 +211,6 @@ export function getClassColumns(
         );
       },
     }),
-    columnHelper.accessor("parent.phoneNumber", {
-      header: "학부모 전화번호",
-      cell: (props) => props.getValue(),
-    }),
-    columnHelper.accessor("teacher.phoneNumber", {
-      header: "선생님 전화번호",
-      cell: (props) => props.getValue(),
-    }),
     columnHelper.display({
       id: "progressRound",
       header: "진행 회차",
@@ -230,6 +222,14 @@ export function getClassColumns(
     columnHelper.accessor("totalClassTime", {
       header: "선생님 진행 분",
       cell: (props) => `${props.getValue()}분`,
+    }),
+    columnHelper.accessor("parent.phoneNumber", {
+      header: "학부모 전화번호",
+      cell: (props) => props.getValue(),
+    }),
+    columnHelper.accessor("teacher.phoneNumber", {
+      header: "선생님 전화번호",
+      cell: (props) => props.getValue(),
     }),
     columnHelper.accessor("matchingStatus", {
       header: "과외 상태",
