@@ -2,13 +2,19 @@ import { AxiosError } from "axios";
 
 import { paymentHttpService } from "@/utils/httpService";
 
+interface PaymentResponse {
+  success: boolean;
+  message: string;
+  requestId: string;
+}
+
 export async function postPaymentRequest({
   classCodes,
 }: {
   classCodes: string[];
-}) {
+}): Promise<PaymentResponse> {
   try {
-    const response = await paymentHttpService.post<string>(
+    const response = await paymentHttpService.post<PaymentResponse>(
       `/payments/request/class-matching-ids`, // 실제 엔드포인트로 변경 필요
       {
         classMatchingIds: classCodes,

@@ -8,7 +8,7 @@ import { Class, useGetClassList } from "@/hooks/query/useGetClassList";
 import { CLASS_STATUS_OPTIONS } from "@/constants/matching";
 
 export default function ClassManagementHome() {
-  const { data } = useGetClassList({
+  const { data, refetch } = useGetClassList({
     matchingStatus: [...CLASS_STATUS_OPTIONS],
   });
 
@@ -61,6 +61,7 @@ export default function ClassManagementHome() {
           placeholder="수업코드, 카톡 이름, 과목, 선생님 닉네임으로 검색하세요"
           selectedMatchingIds={selectedMatchingIds}
           classItems={filteredData}
+          onPaymentSuccess={() => refetch()}
         />
         <ClassList
           classItems={filteredData}

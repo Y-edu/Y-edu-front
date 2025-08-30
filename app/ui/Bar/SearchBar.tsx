@@ -12,6 +12,7 @@ interface SearchBarProps {
   placeholder?: string;
   selectedMatchingIds?: number[];
   classItems?: Class[];
+  onPaymentSuccess?: () => void;
 }
 
 export function SearchBar({
@@ -19,6 +20,7 @@ export function SearchBar({
   placeholder = "검색어를 입력하세요",
   selectedMatchingIds = [],
   classItems = [],
+  onPaymentSuccess,
 }: SearchBarProps) {
   const [searchTerm, setSearchTerm] = useState("");
   const { isModalOpen, openModal, closeModal } = useModal();
@@ -54,8 +56,16 @@ export function SearchBar({
     try {
       // number 배열을 string 배열로 변환
       const classMatchingIds = selectedMatchingIds.map((id) => String(id));
-      await postPaymentRequest({ classCodes: classMatchingIds });
-      alert("결제 요청이 성공적으로 처리되었습니다.");
+      const result = await postPaymentRequest({ classCodes: classMatchingIds });
+      if (result.success) {
+        alert("결제 요청이 성공적으로 처리되었습니다.");
+
+        // 결제 성공 후 데이터 새로고침
+        if (onPaymentSuccess) {
+          onPaymentSuccess();
+        }
+      }
+
       closeModal();
     } catch (error) {
       alert(
