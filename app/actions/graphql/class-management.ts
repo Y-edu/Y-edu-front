@@ -21,6 +21,9 @@ export const GET_CLASSLIST = gql`
       matchingId
       subject
       matchingStatus
+      payPendingSessionCount
+      maxRound
+      totalClassTime
       parent {
         kakaoName
         phoneNumber
