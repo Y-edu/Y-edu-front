@@ -66,6 +66,10 @@ export function SearchBar({
         }
       }
 
+      if (!result.success) {
+        alert("결제 요청 실패");
+      }
+
       closeModal();
     } catch (error) {
       alert(
