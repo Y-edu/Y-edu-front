@@ -14,7 +14,7 @@ export default function ClassManagementHome() {
 
   const [allData, setAllData] = useState<Class[]>([]);
   const [filteredData, setFilteredData] = useState<Class[]>([]);
-  const [selectedClassCodes, setSelectedClassCodes] = useState<string[]>([]);
+  const [selectedMatchingIds, setSelectedMatchingIds] = useState<number[]>([]);
 
   useEffect(() => {
     if (data?.applicationFormByMatchingId) {
@@ -59,13 +59,14 @@ export default function ClassManagementHome() {
         <SearchBar
           onSearch={handleSearch}
           placeholder="수업코드, 카톡 이름, 과목, 선생님 닉네임으로 검색하세요"
-          selectedClassCodes={selectedClassCodes}
+          selectedMatchingIds={selectedMatchingIds}
+          classItems={filteredData}
         />
         <ClassList
           classItems={filteredData}
           setClassItems={setFilteredData}
-          selectedClassCodes={selectedClassCodes}
-          setSelectedClassCodes={setSelectedClassCodes} // 이 prop이 있으면 체크박스 모드
+          selectedMatchingIds={selectedMatchingIds}
+          setSelectedMatchingIds={setSelectedMatchingIds} // 이 prop이 있으면 체크박스 모드
           pagination
         />
       </div>

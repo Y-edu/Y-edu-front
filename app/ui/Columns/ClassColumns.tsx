@@ -108,23 +108,21 @@ function StatusCell({
 
 export function getClassColumns(
   onStatusChange: (rowIndex: number, newStatus: ClassStatus) => void,
-  selectedClassCodes?: string[],
-  setSelectedClassCodes?: (updater: (prev: string[]) => string[]) => void,
+  selectedMatchingIds?: number[],
+  setSelectedMatchingIds?: (updater: (prev: number[]) => number[]) => void,
 ) {
   return [
     columnHelper.display({
       id: "select",
       header: ({ table }) => {
-        if (!setSelectedClassCodes || !selectedClassCodes) return null;
+        if (!setSelectedMatchingIds || !selectedMatchingIds) return null;
 
-        const allClassCodes = table.getRowModel().rows.map((row) => {
-          const subject = row.original.subject;
-          const applicationFormId = row.original.applicationFormId;
-          return `[${subject}] ${applicationFormId}`;
-        });
+        const allMatchingIds = table
+          .getRowModel()
+          .rows.map((row) => row.original.matchingId);
         const isAllSelected =
-          allClassCodes.length > 0 &&
-          allClassCodes.every((code) => selectedClassCodes.includes(code));
+          allMatchingIds.length > 0 &&
+          allMatchingIds.every((id) => selectedMatchingIds.includes(id));
 
         return (
           <input
@@ -137,16 +135,16 @@ export function getClassColumns(
               e.preventDefault();
               if (isAllSelected) {
                 // 모두 선택 해제
-                setSelectedClassCodes((prev) =>
-                  prev.filter((code) => !allClassCodes.includes(code)),
+                setSelectedMatchingIds((prev) =>
+                  prev.filter((id) => !allMatchingIds.includes(id)),
                 );
               } else {
                 // 모두 선택
-                setSelectedClassCodes((prev) => {
-                  const newCodes = allClassCodes.filter(
-                    (code) => !prev.includes(code),
+                setSelectedMatchingIds((prev) => {
+                  const newIds = allMatchingIds.filter(
+                    (id) => !prev.includes(id),
                   );
-                  return [...prev, ...newCodes];
+                  return [...prev, ...newIds];
                 });
               }
             }}
@@ -154,12 +152,10 @@ export function getClassColumns(
         );
       },
       cell: ({ row }) => {
-        if (!setSelectedClassCodes || !selectedClassCodes) return null;
+        if (!setSelectedMatchingIds || !selectedMatchingIds) return null;
 
-        const subject = row.original.subject;
-        const applicationFormId = row.original.applicationFormId;
-        const classCode = `[${subject}] ${applicationFormId}`;
-        const isSelected = selectedClassCodes.includes(classCode);
+        const matchingId = row.original.matchingId;
+        const isSelected = selectedMatchingIds.includes(matchingId);
 
         return (
           <input
@@ -170,11 +166,11 @@ export function getClassColumns(
             onChange={(e) => {
               e.stopPropagation();
               e.preventDefault();
-              setSelectedClassCodes((prev) => {
+              setSelectedMatchingIds((prev) => {
                 if (isSelected) {
-                  return prev.filter((code) => code !== classCode);
+                  return prev.filter((id) => id !== matchingId);
                 } else {
-                  return [...prev, classCode];
+                  return [...prev, matchingId];
                 }
               });
             }}

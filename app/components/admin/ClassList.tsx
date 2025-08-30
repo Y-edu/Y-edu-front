@@ -13,16 +13,16 @@ export interface ClassListProps {
   classItems?: Class[];
   setClassItems: React.Dispatch<React.SetStateAction<Class[]>>;
   pagination?: boolean;
-  selectedClassCodes?: string[];
-  setSelectedClassCodes?: Dispatch<SetStateAction<string[]>>;
+  selectedMatchingIds?: number[];
+  setSelectedMatchingIds?: Dispatch<SetStateAction<number[]>>;
 }
 
 function ClassList({
   classItems,
   setClassItems,
   pagination = false,
-  selectedClassCodes,
-  setSelectedClassCodes,
+  selectedMatchingIds,
+  setSelectedMatchingIds,
 }: ClassListProps) {
   const router = useRouter();
 
@@ -36,8 +36,8 @@ function ClassList({
 
   const columns = getClassColumns(
     handleStatusChange,
-    selectedClassCodes,
-    setSelectedClassCodes,
+    selectedMatchingIds,
+    setSelectedMatchingIds,
   );
 
   // 행 클릭 핸들러 - 항상 상세페이지로 이동 (체크박스는 별도 처리)
