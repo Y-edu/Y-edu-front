@@ -59,6 +59,7 @@ export default function ClassManagementHome() {
         <SearchBar
           onSearch={handleSearch}
           placeholder="수업코드, 카톡 이름, 과목, 선생님 닉네임으로 검색하세요"
+          selectedClassCodes={selectedClassCodes}
         />
         <ClassList
           classItems={filteredData}
