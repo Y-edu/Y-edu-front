@@ -15,7 +15,7 @@ export async function postPaymentRequest({
 }): Promise<PaymentResponse> {
   try {
     const response = await paymentHttpService.post<PaymentResponse>(
-      `/payments/request/class-matching-ids`, // 실제 엔드포인트로 변경 필요
+      `/payments/request/class-matching-ids`,
       {
         classMatchingIds: classCodes,
       },
