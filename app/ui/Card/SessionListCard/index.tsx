@@ -153,7 +153,7 @@ export default function SessionListCard({
     >
       <div
         className={cn(
-          "flex items-center justify-between",
+          "flex items-start justify-between",
           isOpen ? "mb-1" : "mb-0",
         )}
       >
@@ -176,9 +176,13 @@ export default function SessionListCard({
                 { weekday: "short" },
               )}) ${time}`}
             </span>
-            {classMinute && classMinute > 0 && (
-              <span className="ml-[6px] text-gray-500">{`${classMinute}분 수업`}</span>
-            )}
+            {classMinute &&
+              classMinute > 0 &&
+              statusLabel !== "선생님 당일휴강" &&
+              statusLabel !== "휴강" &&
+              currentRound !== 0 && ( // 무료보강
+                <span className="ml-[6px] text-gray-500">{`${classMinute}분`}</span>
+              )}
           </div>
           {(statusLabel === "선생님 당일휴강" ||
             statusLabel === "학부모 당일휴강") && (
@@ -224,7 +228,7 @@ export default function SessionListCard({
                 handleActionClick(btn.value);
               }}
               className={cn(
-                { "mt-3": isOpen },
+                { "mt-3": isOpen || defaultOpen },
                 "h-11 flex-1 whitespace-normal px-0 text-[16px] font-[700]",
                 "max-[355px]:text-sm",
                 btn.variant === "primary"
