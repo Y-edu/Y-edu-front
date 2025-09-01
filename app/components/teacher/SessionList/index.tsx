@@ -116,26 +116,44 @@ export default function SessionList({ classId }: SessionListProps) {
         <div className="text-center text-gray-500">조회된 일정이 없습니다.</div>
       ) : (
         <>
-          {(isExpanded ? items : items.slice(0, 3)).map((session, idx) => (
-            <SessionListCard
-              classSessionId={session.id}
-              key={session.id}
-              date={session.date}
-              time={session.time}
-              classMinute={session.classMinute}
-              statusLabel={session.statusLabel}
-              actions={session.actions}
-              showMoneyReminder={session.showMoneyReminder}
-              initialOpen={idx < 3}
-              currentRound={session.currentRound}
-              maxRound={session.maxRound}
-              cancel={session.cancel}
-            />
-          ))}
+          {(isExpanded ? items : items.slice(0, 3)).map((session, idx) => {
+            const currentMonth = session.date.getMonth();
+            const prevMonth =
+              idx > 0
+                ? (isExpanded ? items : items.slice(0, 3))[
+                    idx - 1
+                  ].date.getMonth()
+                : null;
+
+            const showDivider = idx > 0 && currentMonth !== prevMonth;
+
+            return (
+              <div key={session.id}>
+                {showDivider && (
+                  <div className="my-5 border-t border-dashed border-gray-300" />
+                )}
+                <SessionListCard
+                  classSessionId={session.id}
+                  date={session.date}
+                  time={session.time}
+                  classMinute={session.classMinute}
+                  statusLabel={session.statusLabel}
+                  actions={session.actions}
+                  showMoneyReminder={session.showMoneyReminder}
+                  initialOpen={idx < 3}
+                  currentRound={session.currentRound}
+                  maxRound={session.maxRound}
+                  cancel={session.cancel}
+                />
+              </div>
+            );
+          })}
 
           {!isComplete && isPaused && (
             <div className="flex justify-center p-5 text-center text-sm leading-[21px] text-grey-400">
-              {`${lastCurrentRound}회차까지 완료 후 수업이 일시정지됐어요.`}
+              {lastCurrentRound
+                ? `${lastCurrentRound}회차까지 완료 후 수업이 일시정지됐어요.`
+                : "수업이 일시정지됐어요."}
               <br />
               수업 재개는 Y-Edu에 문의해 주세요.
             </div>
