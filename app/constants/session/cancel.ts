@@ -12,4 +12,8 @@ export const CANCEL_TEXT = {
   NOT_SAME_DAY_CANCEL: "당일 이전 합의된 휴강",
   SAME_DAY_CANCEL_ALERT: `당일 휴강은 취소할 수 없어요.\n그래도 진행할까요?`,
   SAME_DAY_CANCEL_SUCCESS: "당일휴강 처리 됐어요",
+  SAME_DAY_CANCEL_BY_TEACHER_GUIDE:
+    "선생님 사유로 당일 휴강 시, 무료 수업 1회를 추가로 진행해야합니다.\n다음 회차 수업이 무료회차로 진행되었어요.",
+  SAME_DAY_CANCEL_BY_PARENTS_GUIDE:
+    "학부모 사유로 당일 휴강 시, 해당 수업은 진행된 것으로 처리됩니다.\n해당 수업은 정산 시 진행 수업처럼 보수를 받을 수 있습니다.",
 } as const;
