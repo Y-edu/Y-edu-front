@@ -3,5 +3,5 @@
 import ErrorUI from "@/ui/ErrorUI";
 
 export default function ErrorPage() {
-  return <ErrorUI />;
+  return <ErrorUI errorType="parents" />;
 }

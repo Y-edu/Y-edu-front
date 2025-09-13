@@ -1,6 +1,15 @@
 import Link from "next/link";
 
-export default function ErrorUI() {
+export default function ErrorUI({
+  errorType = "parents",
+}: {
+  errorType?: "teacher" | "parents";
+}) {
+  const customerCenterUrl =
+    errorType === "parents"
+      ? "https://pf.kakao.com/_AFHjn/chat"
+      : "https://pf.kakao.com/_xaxcNaK";
+
   return (
     <div className="mt-44 flex size-full flex-col items-center justify-center">
       <div className="mb-5 flex size-10 items-center justify-center rounded-full border-2 border-red-400 text-xl text-red-400">
@@ -14,7 +23,7 @@ export default function ErrorUI() {
       </p>
       <Link
         className="flex h-8 w-28 items-center justify-center rounded-lg bg-descColor font-semibold text-white"
-        href="https://pf.kakao.com/_AFHjn/chat"
+        href={customerCenterUrl}
       >
         문의하기
       </Link>
