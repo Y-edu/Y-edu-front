@@ -180,7 +180,7 @@ export default function SessionListCard({
               )}) ${time}`}
             </span>
             {classMinute && classMinute > 0 && (
-              <span className="ml-[6px] text-gray-500">{`${classMinute}분 수업`}</span>
+              <span className="ml-[6px] text-gray-500">{`${classMinute}분`}</span>
             )}
           </div>
           {(statusLabel === "선생님 당일휴강" ||
