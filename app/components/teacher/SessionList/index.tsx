@@ -26,8 +26,7 @@ export default function SessionList({ classId }: SessionListProps) {
   const pathName = usePathname();
   const token = searchParams.get("token") ?? "";
   const showParam = searchParams.get("is-complete");
-  const initialShow = showParam === "true";
-  const [isComplete, setIsComplete] = useState(initialShow);
+  const [isComplete, setIsComplete] = useState(showParam === "true");
   const [sessions, setSessions] = useState<SessionResponse[]>([]);
   const [isExpanded, setIsExpanded] = useState(false);
 
@@ -39,6 +38,14 @@ export default function SessionList({ classId }: SessionListProps) {
     classId,
   );
   const { data: completedData } = useGetSessions(token, 0, 50, true, classId);
+
+  // URL 파라미터 변화에 따른 isComplete 상태 동기화
+  useEffect(() => {
+    const urlIsComplete = searchParams.get("is-complete") === "true";
+    if (urlIsComplete !== isComplete) {
+      setIsComplete(urlIsComplete);
+    }
+  }, [searchParams, isComplete]);
 
   useEffect(() => {
     if (!data) return;
