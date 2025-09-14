@@ -54,7 +54,7 @@ export default function MonthDurationNavigator(
   const currentDuration = monthDuration[currentMonth.toString()] || 0;
 
   return (
-    <div className="flex h-12 w-full items-center justify-between rounded-xl bg-grey-100 px-5 py-1">
+    <div className="flex h-16 w-full items-center justify-between rounded-xl bg-grey-100 px-5 py-1">
       <button
         onClick={goToPreviousMonth}
         disabled={!canGoPrevious}
@@ -67,9 +67,29 @@ export default function MonthDurationNavigator(
           height={20}
         />
       </button>
-      <div className="flex min-w-36 items-center justify-center gap-2 text-[#475569]">
-        <p className="font-semibold">{currentMonth}월 수업진행</p>
-        <p className="font-bold">{currentDuration}분</p>
+      <div className="flex min-w-36 flex-col items-center justify-center gap-0.5 text-[#475569]">
+        <div className="flex min-w-36 items-center justify-center gap-2">
+          <p className="font-semibold">{currentMonth}월</p>
+          <p className="font-bold">{currentDuration}분 진행</p>
+        </div>
+        <div className="group relative flex cursor-pointer items-center gap-0.5 text-primaryNormal">
+          <Image
+            src="/images/icon_exclamation.svg"
+            alt="exclamation"
+            width={12}
+            height={12}
+          />
+          <p className="text-xs">일부 휴강은 수업 진행에 포함되지 않아요.</p>
+
+          {/* 툴팁 말풍선 */}
+          <div className="absolute left-1/2 top-full z-20 mt-2 hidden w-64 -translate-x-1/2 rounded-lg bg-gray-800 px-3 py-2 text-xs text-white shadow-lg group-hover:block">
+            {/* 말풍선 화살표 */}
+            <div className="absolute bottom-full left-1/2 -translate-x-1/2 border-4 border-transparent border-b-gray-800" />
+            <div className="whitespace-pre-line text-center">
+              {`학부모 당일휴강: 수업진행 분에 포함\n무료보강: 수업진행 분에 미포함`}
+            </div>
+          </div>
+        </div>
       </div>
       <button
         onClick={goToNextMonth}
