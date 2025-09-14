@@ -7,8 +7,10 @@ import {
   patchSessionChange,
   patchSessionComplete,
   patchSessionRevertCancel,
+  CancelReason,
 } from "@/actions/patch-sessions";
 import { useGlobalSnackbar } from "@/providers/GlobalSnackBar";
+import { useGlobalModal } from "@/providers/GlobalModal";
 import { getErrorMessage } from "@/utils/getErrorMessage";
 import { getSchedules } from "@/actions/get-schedules";
 
@@ -26,6 +28,7 @@ export function useSessionMutations() {
   const searchParams = useSearchParams();
   const queryClient = useQueryClient();
   const toast = useGlobalSnackbar();
+  const modal = useGlobalModal();
 
   const changeMutation = useMutation({
     mutationFn: patchSessionChange,
@@ -41,9 +44,57 @@ export function useSessionMutations() {
   });
 
   const cancelMutation = useMutation({
-    mutationFn: patchSessionCancel,
-    onSuccess: () => {
+    mutationFn: ({
+      sessionId,
+      reason,
+      isTodayCancel,
+    }: {
+      sessionId: number;
+      reason: CancelReason;
+      isTodayCancel: boolean;
+    }) => patchSessionCancel({ sessionId, reason, isTodayCancel }),
+    onSuccess: async (data, variables) => {
       toast.success("휴강 처리 됐어요");
+
+      if (variables.isTodayCancel) {
+        if (variables.reason === "PARENT") {
+          // PARENT 사유일 때는 completeMutation과 동일하게 is-complete 페이지로 이동
+          const params = new URLSearchParams(searchParams.toString());
+          params.delete("sessionId");
+
+          const token = searchParams.get("token") ?? "";
+
+          let classId = searchParams.get("classId");
+          if (!classId && token) {
+            try {
+              const schedules = await getSchedules({ token });
+              const active = schedules.find((item) => item.send);
+              if (active?.applicationFormId) {
+                classId = active.applicationFormId;
+              }
+            } catch {
+              // 실패해도 무시
+            }
+          }
+          if (classId) {
+            params.set("classId", classId);
+          }
+
+          await queryClient.refetchQueries({ queryKey: ["sessions"] });
+          await queryClient.invalidateQueries({ queryKey: ["sessions-month"] });
+
+          params.set("is-complete", "true");
+          router.push(`/teacher/session-schedule?${params.toString()}`);
+
+          // 페이지 이동 후 모달 표시
+          setTimeout(() => {
+            modal.showParentsModal();
+          }, 500);
+        }
+        if (variables.reason === "TEACHER") {
+          modal.showTeacherModal();
+        }
+      }
     },
     onError: (error) => {
       toast.warning(getErrorMessage(error));
