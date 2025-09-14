@@ -28,6 +28,7 @@ export interface Class {
       classMinute: number;
     }[];
   };
+  classTime: number;
   parent: {
     kakaoName: string;
     phoneNumber: string;
@@ -43,6 +44,7 @@ export interface GetClassListResponse {
 }
 
 export interface ClassDetail {
+  classTime: number;
   classManagement: {
     firstDay: string;
     schedule: {
