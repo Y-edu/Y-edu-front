@@ -184,10 +184,23 @@ export default function SessionListCard({
                 <span className="ml-[6px] text-gray-500">{`${classMinute}분`}</span>
               )}
           </div>
+
+          {/* 무료보강일 때 안내문 표시 */}
+          {currentRound === 0 && (
+            <p className="mt-1 text-[14px] text-gray-500">
+              총 수업 진행 분에 포함되지 않아요
+            </p>
+          )}
+
           {(statusLabel === "선생님 당일휴강" ||
             statusLabel === "학부모 당일휴강") && (
             <span className="mt-1 text-[15px] font-semibold text-red-500">
               {statusLabel}
+              {statusLabel === "학부모 당일휴강" && (
+                <span className="ml-1 text-[15px] font-normal text-gray-500">
+                  (정산 시 포함)
+                </span>
+              )}
             </span>
           )}
         </div>
