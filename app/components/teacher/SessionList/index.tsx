@@ -7,7 +7,7 @@ import Image from "next/image";
 import { useGetSessions } from "@/hooks/query/useGetSessions";
 import { SessionResponse } from "@/actions/post-getSessions";
 import SessionListCard from "@/ui/Card/SessionListCard";
-import Select from "@/ui/Select";
+import Chip from "@/ui/Chip";
 import Button from "@/ui/Button";
 import IconDown from "@/icons/IconDown";
 import LoadingUI from "@/ui/LoadingUI";
@@ -66,18 +66,6 @@ export default function SessionList({ classId }: SessionListProps) {
     setSessions([]);
   };
 
-  const handleFilterChange = (value: string) => {
-    const next = value === "completed";
-    changeFilter(next);
-  };
-
-  const filterOptions = [
-    { value: "scheduled", label: "예정된 수업" },
-    { value: "completed", label: "완료된 수업" },
-  ];
-
-  const currentFilterValue = isComplete ? "completed" : "scheduled";
-
   const isInitialLoading = sessions.length === 0 && (isLoading || isFetching);
   const hasMore = items.length > 3 && !isExpanded;
 
@@ -89,11 +77,17 @@ export default function SessionList({ classId }: SessionListProps) {
     <div className="min-h-screen space-y-3 bg-gray-50 px-5 py-4">
       <section className="mb-4 flex items-center justify-between">
         <div className="flex gap-2">
-          <Select
-            options={filterOptions}
-            value={currentFilterValue}
-            onChange={handleFilterChange}
-            className="w-32"
+          <Chip
+            chipText="미완료"
+            isSelected={!isComplete}
+            onClick={() => changeFilter(false)}
+            className="shadow-md"
+          />
+          <Chip
+            chipText="완료"
+            isSelected={isComplete}
+            onClick={() => changeFilter(true)}
+            className="shadow-md"
           />
         </div>
         {!isPaused && (
@@ -101,7 +95,7 @@ export default function SessionList({ classId }: SessionListProps) {
             leftIcon={
               <Image src={Calender} width={16} height={16} alt="calender" />
             }
-            className="flex !w-fit items-center gap-1 !whitespace-pre-wrap rounded-full border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-md hover:bg-gray-50"
+            className="flex !w-fit items-center gap-1 !whitespace-pre-wrap rounded-full border border-gray-300 bg-white px-4 py-[10px] text-sm font-medium text-gray-700 shadow-md hover:bg-gray-50"
             onClick={() => {
               params.set("classId", classId);
               router.push(`/teacher/session-change?${params.toString()}`);
