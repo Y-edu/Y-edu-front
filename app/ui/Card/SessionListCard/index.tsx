@@ -62,6 +62,7 @@ export default function SessionListCard({
   const { sheetType, openSheet, closeSheet, isSheetOpen } = useBottomSheet();
   const [cancelReason, setCancelReason] = useState<CancelReason | null>(null);
   const { isModalOpen, openModal, closeModal } = useModal();
+
   const { mutate } = useSessionMutations().cancelMutation;
 
   const today = new Date();
@@ -82,12 +83,14 @@ export default function SessionListCard({
 
   const cancelSameDaySession = () => {
     if (!cancelReason) return;
+
+    closeModal();
+
     mutate({
       sessionId: classSessionId,
       reason: cancelReason,
       isTodayCancel: cancelReason !== "TOGETHER",
     });
-    closeModal();
   };
 
   const handleSameDayCancel = (reason: CancelReason) => {

@@ -32,15 +32,15 @@ export function Modal({
     <div className="fixed inset-0 z-10 flex items-center justify-center bg-black/50">
       <div
         ref={modalRef}
-        className="w-1/3 min-w-[335px] rounded-[20px] bg-white p-6 shadow-lg"
+        className="mx-4 w-full max-w-md rounded-[20px] bg-white p-6 shadow-lg sm:w-1/3 sm:min-w-[335px]"
       >
         {title && (
-          <h2 className="mb-2 whitespace-pre text-center text-lg font-semibold">
+          <h2 className="mb-2 whitespace-pre-wrap break-words text-center text-lg font-semibold">
             {title}
           </h2>
         )}
         {message && (
-          <p className="mb-5 whitespace-pre text-center text-sm font-medium text-gray-500">
+          <p className="mb-5 w-full whitespace-pre-wrap break-words text-center text-sm font-medium text-gray-500">
             {message}
           </p>
         )}
