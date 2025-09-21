@@ -62,7 +62,7 @@ export function useSessionList(data: SessionResponse[]): SessionItem[] {
       const isToday = classDay.getTime() === today.getTime();
       const isTodayOrPast = classDay.getTime() <= today.getTime();
       const isFuture = classDay.getTime() > today.getTime();
-      const isFreeSupplement = !cancel && currentRound === 0;
+      const isFreeSupplement = !cancel && currentRound === 0 && !complete;
       const showMoneyReminder = isTodayOrPast && !complete && !cancel;
 
       let statusLabel = "";

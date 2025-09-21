@@ -199,14 +199,13 @@ export function getClassColumns(
       id: "schedule",
       header: "수업시수",
       cell: (props) => {
+        const classTime = props.row.original.classTime;
+        if (!classTime) return "-";
+
         const scheduleList = props.row.original.classManagement.schedule;
-
-        if (!scheduleList?.length) return "-";
-
         return (
           <div className="flex flex-col gap-1">
-            주 {scheduleList.length}회{" "}
-            {scheduleList.reduce((acc, item) => acc + item.classMinute, 0)}분
+            주 {scheduleList?.length ?? 0}회 {classTime}
           </div>
         );
       },
