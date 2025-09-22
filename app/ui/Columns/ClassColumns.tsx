@@ -1,4 +1,4 @@
-import { createColumnHelper } from "@tanstack/react-table";
+import { createColumnHelper, RowSelectionState } from "@tanstack/react-table";
 import { useRef, useState, useEffect } from "react";
 
 import { Class, usePutClassStatus } from "@/hooks/query/useGetClassList";
@@ -17,34 +17,6 @@ const statusColors = {
   중단: "bg-red-100 text-red-800",
   일시중단: "bg-yellow-100 text-yellow-800",
 } as const;
-
-const dayMap: Record<string, string> = {
-  MON: "월",
-  TUE: "화",
-  WED: "수",
-  THU: "목",
-  FRI: "금",
-  SAT: "토",
-  SUN: "일",
-};
-
-function DayTimeCell({
-  scheduleList,
-}: {
-  scheduleList: Class["classManagement"]["schedule"];
-}) {
-  if (!scheduleList?.length) return "-";
-
-  return (
-    <div>
-      {scheduleList.map((item) => (
-        <div key={item.classScheduleId}>
-          {dayMap[item.day] || item.day} {item.start}
-        </div>
-      ))}
-    </div>
-  );
-}
 
 // 과외 상태 칩
 function StatusCell({
@@ -136,10 +108,86 @@ function StatusCell({
 
 export function getClassColumns(
   onStatusChange: (rowIndex: number, newStatus: ClassStatus) => void,
+  selectedRows?: RowSelectionState,
+  setSelectedRows?: (
+    updater: (prev: RowSelectionState) => RowSelectionState,
+  ) => void,
 ) {
   return [
-    columnHelper.accessor("applicationFormId", {
+    columnHelper.display({
+      id: "select",
+      header: ({ table }) => {
+        if (!setSelectedRows || !selectedRows) return null;
+
+        const allRowIds = table
+          .getRowModel()
+          .rows.map((row) => String(row.original.matchingId));
+        const isAllSelected =
+          allRowIds.length > 0 && allRowIds.every((id) => selectedRows[id]);
+
+        return (
+          <input
+            id="class-header-checkbox"
+            type="checkbox"
+            className="size-4"
+            checked={isAllSelected}
+            onChange={(e) => {
+              e.stopPropagation();
+              e.preventDefault();
+              if (isAllSelected) {
+                // 모두 선택 해제
+                setSelectedRows((prev) => {
+                  const newState = { ...prev };
+                  allRowIds.forEach((id) => delete newState[id]);
+                  return newState;
+                });
+              } else {
+                // 모두 선택
+                setSelectedRows((prev) => {
+                  const newState = { ...prev };
+                  allRowIds.forEach((id) => (newState[id] = true));
+                  return newState;
+                });
+              }
+            }}
+          />
+        );
+      },
+      cell: ({ row }) => {
+        if (!setSelectedRows || !selectedRows) return null;
+
+        const rowId = String(row.original.matchingId);
+        const isSelected = !!selectedRows[rowId];
+
+        return (
+          <input
+            id={`cell-checkbox-${row.id}`}
+            className="size-4"
+            type="checkbox"
+            checked={isSelected}
+            onChange={(e) => {
+              e.stopPropagation();
+              e.preventDefault();
+              setSelectedRows((prev) => ({
+                ...prev,
+                [rowId]: !prev[rowId],
+              }));
+            }}
+          />
+        );
+      },
+    }),
+    columnHelper.display({
+      id: "applicationSubject",
       header: "수업코드",
+      cell: (props) => {
+        const subject = props.row.original.subject;
+        const applicationFormId = props.row.original.applicationFormId;
+        return `[${subject}] ${applicationFormId}`;
+      },
+    }),
+    columnHelper.accessor("teacher.nickName", {
+      header: "선생님 닉네임",
       cell: (props) => props.getValue(),
     }),
     columnHelper.accessor("parent.kakaoName", {
@@ -161,23 +209,6 @@ export function getClassColumns(
           </div>
         );
       },
-    }),
-    columnHelper.display({
-      id: "dayTime",
-      header: "정규일정",
-      cell: (props) => (
-        <DayTimeCell
-          scheduleList={props.row.original.classManagement.schedule}
-        />
-      ),
-    }),
-    columnHelper.accessor("subject", {
-      header: "과목",
-      cell: (props) => props.getValue(),
-    }),
-    columnHelper.accessor("teacher.nickName", {
-      header: "선생님 닉네임",
-      cell: (props) => props.getValue(),
     }),
     columnHelper.accessor("parent.phoneNumber", {
       header: "학부모 전화번호",
