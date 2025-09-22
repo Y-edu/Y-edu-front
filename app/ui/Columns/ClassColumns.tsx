@@ -195,17 +195,51 @@ export function getClassColumns(
       cell: (props) => props.getValue() || "-",
     }),
     columnHelper.display({
+      id: "parentClassMinute",
+      header: "학부모 진행 분",
+      cell: (props) => {
+        const classManagement = props.row.original.classManagement;
+
+        if (!classManagement) return "-";
+
+        const { parentClassMinute, maxRoundNumber } = classManagement;
+
+        const numerator = parentClassMinute || 0;
+        const classTimeString = props.row.original.classTime;
+
+        // classTime: "n분" 형태의 문자열에서 숫자만 추출
+        const classTimeNumber = classTimeString
+          ? parseInt(classTimeString.replace(/[^0-9]/g, ""), 10)
+          : 0;
+
+        if (!maxRoundNumber || !classTimeNumber) {
+          return `${numerator}분 / -`;
+        }
+
+        const denominator = classTimeNumber * maxRoundNumber;
+
+        return `${numerator}분 / ${denominator}분`;
+      },
+    }),
+    columnHelper.accessor("classManagement.teacherClassMinute", {
+      header: "선생님 진행 분",
+      cell: (props) => {
+        const value = props.getValue();
+        return value ? `${value}분` : "-";
+      },
+    }),
+    columnHelper.display({
       id: "schedule",
       header: "수업시수",
       cell: (props) => {
-        const scheduleList = props.row.original.classManagement.schedule;
+        const classTime = props.row.original.classTime;
+        if (!classTime) return "-";
 
-        if (!scheduleList?.length) return "-";
+        const scheduleList = props.row.original.classManagement.schedule;
 
         return (
           <div className="flex flex-col gap-1">
-            주 {scheduleList.length}회{" "}
-            {scheduleList.reduce((acc, item) => acc + item.classMinute, 0)}분
+            주 {scheduleList?.length ?? 0}회 {classTime}
           </div>
         );
       },

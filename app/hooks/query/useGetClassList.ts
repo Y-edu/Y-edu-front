@@ -17,6 +17,7 @@ export interface Class {
   subject: string;
   matchingStatus: ClassStatus;
   matchingId: number;
+  classTime: string;
   classManagement: {
     schedule: {
       classScheduleId: number;
@@ -24,6 +25,9 @@ export interface Class {
       start: string;
       classMinute: number;
     }[];
+    teacherClassMinute: number;
+    parentClassMinute: number;
+    maxRoundNumber: number;
   };
   parent: {
     kakaoName: string;
@@ -40,6 +44,7 @@ export interface GetClassListResponse {
 }
 
 export interface ClassDetail {
+  classTime: string;
   classManagement: {
     firstDay: string;
     schedule: {
