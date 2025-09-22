@@ -51,6 +51,20 @@ export const GET_CLASS_DETAIL = gql`
           start
           classMinute
         }
+        parentPay
+        parentClassMinute
+        paidAt
+        teacherClassMinute
+        teacherPay
+        yEduCommission
+        notPaidRoundNumber
+        maxRoundNumber
+        classManagementId
+        sessions {
+          realClassMinute
+          date
+          roundNumber
+        }
       }
       teacher {
         phoneNumber

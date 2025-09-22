@@ -43,16 +43,31 @@ export interface GetClassListResponse {
   applicationFormByMatchingId: Class[];
 }
 
+export interface Session {
+  realClassMinute: number;
+  date: string;
+  roundNumber: number;
+}
+
 export interface ClassDetail {
   classTime: string;
   classManagement: {
-    firstDay: string;
     schedule: {
       classScheduleId: number;
       day: string;
       start: string;
       classMinute: number;
     }[];
+    parentPay: number;
+    parentClassMinute: number;
+    paidAt: string | null;
+    teacherClassMinute: number;
+    teacherPay: number;
+    yEduCommission: number;
+    notPaidRoundNumber: number;
+    maxRoundNumber: number;
+    classManagementId: number;
+    sessions: Session[];
   };
   teacher: {
     phoneNumber: string;
