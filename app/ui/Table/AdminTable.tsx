@@ -151,7 +151,9 @@ export default function AdminTable<TData>({
                   if (
                     target.tagName.toLowerCase() === "img" ||
                     target.tagName.toLowerCase() === "button" ||
-                    target.closest("button")
+                    target.tagName.toLowerCase() === "input" ||
+                    target.closest("button") ||
+                    target.closest("input")
                   ) {
                     return;
                   }

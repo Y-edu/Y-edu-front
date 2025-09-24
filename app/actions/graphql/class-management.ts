@@ -9,6 +9,7 @@ export const GET_CLASSLIST = gql`
       matchingStatus: $matchingStatus
       matchingIds: $matchingIds
     ) {
+      classTime
       classManagement {
         schedule {
           classScheduleId
@@ -16,6 +17,9 @@ export const GET_CLASSLIST = gql`
           start
           classMinute
         }
+        teacherClassMinute
+        parentClassMinute
+        maxRoundNumber
       }
       applicationFormId
       matchingId
@@ -39,12 +43,27 @@ export const GET_CLASS_DETAIL = gql`
       matchingIds: $matchingIds
       matchingStatus: $matchingStatus
     ) {
+      classTime
       classManagement {
         schedule {
           classScheduleId
           day
           start
           classMinute
+        }
+        parentPay
+        parentClassMinute
+        paidAt
+        teacherClassMinute
+        teacherPay
+        yEduCommission
+        notPaidRoundNumber
+        maxRoundNumber
+        classManagementId
+        sessions {
+          realClassMinute
+          date
+          roundNumber
         }
       }
       teacher {
