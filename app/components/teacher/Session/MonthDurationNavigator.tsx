@@ -1,57 +1,54 @@
 import Image from "next/image";
 import { useMemo, useState } from "react";
 
+import { useGetSessionsMonth } from "@/hooks/query/useGetSessionsMonth";
+
 interface MonthDurationNavigatorProps {
+  classId: number;
   defaultMonth: number;
-  monthDuration: {
-    [key: string]: number;
-  };
 }
 
-export default function MonthDurationNavigator(
-  props: MonthDurationNavigatorProps,
-) {
-  const { defaultMonth, monthDuration } = props;
+export default function MonthDurationNavigator({
+  classId,
+  defaultMonth,
+}: MonthDurationNavigatorProps) {
+  const { data, isLoading } = useGetSessionsMonth({
+    classMatchingId: classId,
+    monthCount: 2,
+  });
 
-  // monthDuration의 키들을 숫자로 변환하고 정렬
+  const monthDuration = useMemo(() => data?.months ?? {}, [data]);
+
   const availableMonths = useMemo(() => {
     return Object.keys(monthDuration)
       .map(Number)
       .sort((a, b) => a - b);
   }, [monthDuration]);
 
-  // 디폴트 월 (defaultMonth 있으면 사용하고, 없으면 그냥 가장 최근 월)
   const [currentMonth, setCurrentMonth] = useState(() => {
-    if (availableMonths.includes(defaultMonth)) {
-      return defaultMonth;
-    }
-    const maxMonth = Math.max(...availableMonths);
-    return maxMonth;
+    if (availableMonths.includes(defaultMonth)) return defaultMonth;
+    return Math.max(...availableMonths, defaultMonth);
   });
 
-  // 현재 월의 인덱스
   const currentIndex = availableMonths.indexOf(currentMonth);
+  const canGoPrevious = currentIndex > 0;
+  const canGoNext = currentIndex < availableMonths.length - 1;
 
-  // 이전 월로 이동
   const goToPreviousMonth = () => {
-    if (currentIndex > 0) {
+    if (canGoPrevious) {
       setCurrentMonth(availableMonths[currentIndex - 1]);
     }
   };
 
-  // 다음 월로 이동
   const goToNextMonth = () => {
-    if (currentIndex < availableMonths.length - 1) {
+    if (canGoNext) {
       setCurrentMonth(availableMonths[currentIndex + 1]);
     }
   };
 
-  // 화살표 활성화/비활성화 상태
-  const canGoPrevious = currentIndex > 0;
-  const canGoNext = currentIndex < availableMonths.length - 1;
+  const currentDuration = monthDuration[currentMonth.toString()] ?? 0;
 
-  // 현재 월의 데이터
-  const currentDuration = monthDuration[currentMonth.toString()] || 0;
+  if (isLoading) return null;
 
   return (
     <div className="flex h-12 w-full items-center justify-between rounded-xl bg-grey-100 px-5 py-1">
