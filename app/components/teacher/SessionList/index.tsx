@@ -72,18 +72,20 @@ export default function SessionList({ classId }: SessionListProps) {
             chipText="미완료"
             isSelected={!isComplete}
             onClick={() => changeFilter(false)}
+            className="shadow-md"
           />
           <Chip
             chipText="완료"
             isSelected={isComplete}
             onClick={() => changeFilter(true)}
+            className="shadow-md"
           />
         </div>
         <Button
           leftIcon={
-            <Image src={Calender} width={20} height={20} alt="calender" />
+            <Image src={Calender} width={16} height={16} alt="calender" />
           }
-          className="text-grey-700 w-fit cursor-pointer justify-normal gap-1 bg-transparent px-3 py-[6px] text-sm"
+          className="flex !w-fit items-center gap-1 !whitespace-pre-wrap rounded-full border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-md hover:bg-gray-50"
           onClick={() => {
             params.set("classId", classId);
             router.push(`/teacher/session-change?${params.toString()}`);
