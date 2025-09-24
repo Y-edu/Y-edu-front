@@ -102,6 +102,7 @@ export default function SessionList({ classId }: SessionListProps) {
             key={session.id}
             date={session.date}
             time={session.time}
+            classMinute={session.classMinute}
             statusLabel={session.statusLabel}
             actions={session.actions}
             showMoneyReminder={session.showMoneyReminder}
