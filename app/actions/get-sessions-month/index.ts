@@ -8,7 +8,7 @@ export type SessionsMonthParams =
       monthCount: number;
     }
   | {
-      classMatchingId: string;
+      classMatchingId: number;
       token?: never; // classMatchingId가 있을 때는 token 금지
       monthCount: number;
     };
