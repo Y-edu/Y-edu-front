@@ -7,11 +7,13 @@ import Radio from "@/ui/Radio";
 interface SessionReviewViewProps {
   homework: string;
   understanding: string;
+  classMinute: number;
 }
 
 export default function SessionReviewView({
   homework,
   understanding,
+  classMinute,
 }: SessionReviewViewProps) {
   const selectedItem = HOMEWORK_PROGRESS_LIST.find(
     (item) => item.label === homework,
@@ -19,9 +21,16 @@ export default function SessionReviewView({
 
   return (
     <div className="flex w-full flex-col">
+      <DivWithLabel label="수업 시간" className="mb-4">
+        <p className="whitespace-pre-wrap text-[16px] leading-6 text-gray-700">
+          {classMinute}분
+        </p>
+      </DivWithLabel>
+      {/* divider */}
+      <div className="-mx-5 border-t-8 border-gray-100" />
       <DivWithLabel
         label="아이가 숙제를 모두 완료했나요?"
-        className="mb-4 w-full"
+        className="mb-4 mt-5 w-full"
       >
         {selectedItem && (
           <div className="py-4">

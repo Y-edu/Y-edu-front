@@ -23,6 +23,7 @@ export interface SessionListCardProps {
   classSessionId: number;
   date: Date;
   time: string;
+  classMinute: number;
   statusLabel: string;
   actions: ActionButton[];
   showMoneyReminder?: boolean;
@@ -34,6 +35,7 @@ export default function SessionListCard({
   classSessionId,
   date,
   time,
+  classMinute,
   statusLabel,
   actions,
   showMoneyReminder,
@@ -101,13 +103,12 @@ export default function SessionListCard({
             </span>
           )}
           <span className="text-[16px] font-[600] text-gray-900">
-            {`${date.getMonth() + 1}.${date.getDate()} ${date.toLocaleDateString(
+            {`${date.getMonth() + 1}.${date.getDate()} (${date.toLocaleDateString(
               "ko-KR",
-              {
-                weekday: "long",
-              },
-            )} ${time}`}
+              { weekday: "short" },
+            )}) ${time}`}
           </span>
+          <span className="ml-[6px] text-gray-500">{`${classMinute}분`}</span>
         </div>
         <IconDown
           className={cn({

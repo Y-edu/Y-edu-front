@@ -18,6 +18,7 @@ export interface SessionItem {
   actions: ActionButton[];
   showMoneyReminder: boolean;
   complete: boolean;
+  classMinute: number;
 }
 
 export function useSessionList(data: SessionResponse[]): SessionItem[] {
@@ -32,6 +33,7 @@ export function useSessionList(data: SessionResponse[]): SessionItem[] {
         complete,
         classDate,
         classStart,
+        classMinute,
       } = session;
 
       // Date 객체 생성 및 시간 포맷
@@ -82,6 +84,7 @@ export function useSessionList(data: SessionResponse[]): SessionItem[] {
         actions,
         showMoneyReminder,
         complete,
+        classMinute,
       };
     });
 
