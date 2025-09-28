@@ -45,6 +45,18 @@ export default function ClassManagementDetailPage({
   const classDetail = detailData?.applicationFormByMatchingId?.[0];
   const classManagement = classDetail?.classManagement;
 
+  // 4주 기준 수업료 계산
+  const fourWeekFee =
+    classManagement?.schedule?.length && classDetail?.classTime
+      ? (
+          (classManagement.schedule.length *
+            Number(classDetail.classTime.replace("분", "")) *
+            4 *
+            600) /
+          10000
+        ).toFixed(1) + "만원"
+      : "-";
+
   // ClassSummaryCard용 데이터
   const summaryData = classManagement
     ? {
@@ -62,8 +74,9 @@ export default function ClassManagementDetailPage({
               .replace(/\. /g, "-")
               .replace(/\.$/, "")
           : "-",
-        parentPay: `${Math.floor(classManagement.parentPay / 10000)}만원`,
-        teacherPay: `${Math.floor(classManagement.teacherPay / 10000)}만원`,
+        parentPay: `${(classManagement.parentPay / 10000).toFixed(1)}만원`,
+        teacherPay: `${(classManagement.teacherPay / 10000).toFixed(1)}만원`,
+        fourWeekFee,
         changeTeacherRecord: "추후 구현", // TODO: 추후 구현
       }
     : null;
@@ -75,7 +88,7 @@ export default function ClassManagementDetailPage({
       .reverse()
       .map(
         (session) =>
-          `${session.date} ${session.realClassMinute}분 ${session.roundNumber}회차 완료`,
+          `[${session.roundNumber}회차] ${session.date.slice(5)} ${session.realClassMinute}분`,
       ) || [];
   const pastRecords: string[] = []; // "이전 4주 진행 기록"은 일단 빈 배열
 

@@ -183,7 +183,7 @@ export function getClassColumns(
       cell: (props) => {
         const subject = props.row.original.subject;
         const applicationFormId = props.row.original.applicationFormId;
-        return `[${subject}] ${applicationFormId}`;
+        return `[${subject.slice(0, 1)}] ${applicationFormId}`;
       },
     }),
     columnHelper.accessor("teacher.nickName", {
@@ -224,7 +224,7 @@ export function getClassColumns(
     columnHelper.accessor("classManagement.teacherClassMinute", {
       header: "선생님 진행 분",
       cell: (props) => {
-        const value = props.getValue();
+        const value = props.getValue() as number | null;
         return value ? `${value}분` : "-";
       },
     }),
