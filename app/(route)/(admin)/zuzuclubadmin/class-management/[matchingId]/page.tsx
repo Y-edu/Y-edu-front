@@ -48,13 +48,13 @@ export default function ClassManagementDetailPage({
   // 4주 기준 수업료 계산
   const fourWeekFee =
     classManagement?.schedule?.length && classDetail?.classTime
-      ? Math.floor(
+      ? (
           (classManagement.schedule.length *
             Number(classDetail.classTime.replace("분", "")) *
             4 *
             600) /
-            10000,
-        ) + "만원"
+          10000
+        ).toFixed(1) + "만원"
       : "-";
 
   // ClassSummaryCard용 데이터
@@ -74,8 +74,8 @@ export default function ClassManagementDetailPage({
               .replace(/\. /g, "-")
               .replace(/\.$/, "")
           : "-",
-        parentPay: `${Math.floor(classManagement.parentPay / 10000)}만원`,
-        teacherPay: `${Math.floor(classManagement.teacherPay / 10000)}만원`,
+        parentPay: `${(classManagement.parentPay / 10000).toFixed(1)}만원`,
+        teacherPay: `${(classManagement.teacherPay / 10000).toFixed(1)}만원`,
         fourWeekFee,
         changeTeacherRecord: "추후 구현", // TODO: 추후 구현
       }
