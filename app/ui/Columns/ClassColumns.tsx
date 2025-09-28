@@ -183,7 +183,7 @@ export function getClassColumns(
       cell: (props) => {
         const subject = props.row.original.subject;
         const applicationFormId = props.row.original.applicationFormId;
-        return `[${subject}] ${applicationFormId}`;
+        return `[${subject.slice(0, 1)}] ${applicationFormId}`;
       },
     }),
     columnHelper.accessor("teacher.nickName", {
