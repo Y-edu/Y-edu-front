@@ -7,13 +7,14 @@ interface ClassSummaryCardProps {
     paidAt: string;
     parentPay: string;
     teacherPay: string;
+    fourWeekFee: string;
     changeTeacherRecord: string;
   };
 }
 
 export default function ClassSummaryCard({ data }: ClassSummaryCardProps) {
   return (
-    <div className="grid grid-cols-6 gap-4 rounded-xl border bg-white p-4 shadow">
+    <div className="grid grid-cols-7 gap-4 rounded-xl border bg-white p-4 shadow">
       <div>
         <p className="mb-1 text-sm font-semibold text-primary">진행 회차</p>
         <p className="text-sm">{data.progressRound}</p>
@@ -35,6 +36,12 @@ export default function ClassSummaryCard({ data }: ClassSummaryCardProps) {
       <div>
         <p className="mb-1 text-sm font-semibold text-primary">지급할 보수</p>
         <p className="text-sm">{data.teacherPay}</p>
+      </div>
+      <div>
+        <p className="mb-1 text-sm font-semibold text-primary">
+          4주 기준 수업료
+        </p>
+        <p className="text-sm">{data.fourWeekFee}</p>
       </div>
       <div>
         <p className="mb-1 text-sm font-semibold text-primary">
