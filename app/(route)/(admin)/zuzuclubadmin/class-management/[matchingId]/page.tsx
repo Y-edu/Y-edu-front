@@ -75,7 +75,7 @@ export default function ClassManagementDetailPage({
               .replace(/\.$/, "")
           : "-",
         parentPay: `${(classManagement.parentPay / 10000).toFixed(1)}만원`,
-        teacherPay: `${(classManagement.teacherPay / 10000).toFixed(1)}만원`,
+        teacherPay: `${((classManagement.teacherClassMinute * 500) / 10000).toFixed(1)}만원`,
         fourWeekFee,
         changeTeacherRecord: "추후 구현", // TODO: 추후 구현
       }
