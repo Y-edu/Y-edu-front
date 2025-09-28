@@ -29,11 +29,11 @@ export default function ClassSummaryCard({ data }: ClassSummaryCardProps) {
         <p className="text-sm">{data.paidAt}</p>
       </div>
       <div>
-        <p className="mb-1 text-sm font-semibold text-primary">수업료</p>
+        <p className="mb-1 text-sm font-semibold text-primary">결제할 수업료</p>
         <p className="text-sm">{data.parentPay}</p>
       </div>
       <div>
-        <p className="mb-1 text-sm font-semibold text-primary">선생님 보수</p>
+        <p className="mb-1 text-sm font-semibold text-primary">지급할 보수</p>
         <p className="text-sm">{data.teacherPay}</p>
       </div>
       <div>
