@@ -33,16 +33,36 @@ export function getParentColumns(
       cell: ({ getValue }) => {
         const classes = getValue();
         if (!classes || classes.length === 0) return "-";
+
+        // 시간과 수업시간이 같은 클래스들을 그룹화
+        const groupedClasses = classes.reduce(
+          (groups, cls) => {
+            const hour = cls.startTime.split(":")[0];
+            const key = `${hour}시-${cls.classTime}분`;
+
+            if (!groups[key]) {
+              groups[key] = {
+                days: [],
+                hour: parseInt(hour, 10),
+                classTime: cls.classTime,
+              };
+            }
+            groups[key].days.push(cls.day);
+            return groups;
+          },
+          {} as Record<
+            string,
+            { days: string[]; hour: number; classTime: number }
+          >,
+        );
+
         return (
           <div className="flex flex-col space-y-1">
-            {classes.map((cls, idx) => {
-              const hour = cls.startTime.split(":")[0];
-              return (
-                <div key={idx}>
-                  {cls.day} {parseInt(hour, 10)}시부터 ({cls.classTime}분)
-                </div>
-              );
-            })}
+            {Object.values(groupedClasses).map((group, idx) => (
+              <div key={idx}>
+                {group.days.join(", ")} {group.hour}시 ({group.classTime}분)
+              </div>
+            ))}
           </div>
         );
       },
