@@ -75,7 +75,7 @@ export default function ClassManagementDetailPage({
       .reverse()
       .map(
         (session) =>
-          `${session.date} ${session.realClassMinute}분 ${session.roundNumber}회차 완료`,
+          `[${session.roundNumber}회차] ${session.date.slice(5)} ${session.realClassMinute}분`,
       ) || [];
   const pastRecords: string[] = []; // "이전 4주 진행 기록"은 일단 빈 배열
 
