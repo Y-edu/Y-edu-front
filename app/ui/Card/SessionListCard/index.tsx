@@ -108,7 +108,9 @@ export default function SessionListCard({
               { weekday: "short" },
             )}) ${time}`}
           </span>
-          <span className="ml-[6px] text-gray-500">{`${classMinute}분`}</span>
+          {statusLabel !== "휴강" && (
+            <span className="ml-[6px] text-gray-500">{`${classMinute}분`}</span>
+          )}
         </div>
         <IconDown
           className={cn({
