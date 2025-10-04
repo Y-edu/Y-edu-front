@@ -9,6 +9,7 @@ export const GET_CLASSLIST = gql`
       matchingStatus: $matchingStatus
       matchingIds: $matchingIds
     ) {
+      classCount
       classTime
       classManagement {
         schedule {
@@ -43,6 +44,7 @@ export const GET_CLASS_DETAIL = gql`
       matchingIds: $matchingIds
       matchingStatus: $matchingStatus
     ) {
+      classCount
       classTime
       classManagement {
         schedule {

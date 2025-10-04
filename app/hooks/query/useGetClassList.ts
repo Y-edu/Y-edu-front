@@ -17,6 +17,7 @@ export interface Class {
   subject: string;
   matchingStatus: ClassStatus;
   matchingId: number;
+  classCount: string;
   classTime: string;
   classManagement: {
     schedule: {
@@ -50,6 +51,7 @@ export interface Session {
 }
 
 export interface ClassDetail {
+  classCount: string;
   classTime: string;
   classManagement: {
     schedule: {

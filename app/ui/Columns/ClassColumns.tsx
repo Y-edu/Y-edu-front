@@ -233,13 +233,13 @@ export function getClassColumns(
       header: "수업시수",
       cell: (props) => {
         const classTime = props.row.original.classTime;
-        if (!classTime) return "-";
+        const classCount = props.row.original.classCount;
 
-        const scheduleList = props.row.original.classManagement.schedule;
+        if (!classTime) return "-";
 
         return (
           <div className="flex flex-col gap-1">
-            주 {scheduleList?.length ?? 0}회 {classTime}
+            {classCount || "주 null회"} {classTime}
           </div>
         );
       },
