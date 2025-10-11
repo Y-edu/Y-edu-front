@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import { usePostTokenSessions } from "@/hooks/mutation/usePostTokenSessions";
 import { useGlobalSnackbar } from "@/providers/GlobalSnackBar";
@@ -15,7 +15,7 @@ export default function TeacherSessionLogin() {
 
   const { mutate: postTokenSessions } = usePostTokenSessions();
 
-  const handleLogin = () => {
+  const handleLogin = useCallback(() => {
     setIsLoading(true);
     postTokenSessions(
       { name, phoneNumber },
@@ -26,6 +26,9 @@ export default function TeacherSessionLogin() {
               "조회된 수업 정보가 없습니다. 관리자에게 문의해 주세요.",
             );
           } else {
+            // 성공
+            localStorage.setItem("name", name);
+            localStorage.setItem("phoneNumber", phoneNumber);
             router.push(`/teacher/session-schedule?token=${data.token}`);
           }
           setIsLoading(false);
@@ -36,7 +39,17 @@ export default function TeacherSessionLogin() {
         },
       },
     );
-  };
+  }, [name, phoneNumber, postTokenSessions, toast, router]);
+
+  useEffect(() => {
+    const name = localStorage.getItem("name");
+    const phoneNumber = localStorage.getItem("phoneNumber");
+    if (name && phoneNumber) {
+      setName(name);
+      setPhoneNumber(phoneNumber);
+      handleLogin();
+    }
+  }, [router, handleLogin]);
 
   return (
     <div>
