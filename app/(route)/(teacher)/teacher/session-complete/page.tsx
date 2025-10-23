@@ -27,7 +27,11 @@ export default function SessionCompletePage() {
   const token = searchParams.get("token") ?? "";
   const classSessionId = searchParams.get("sessionId");
 
-  const { data: sessions } = useGetSessions(token, 0, 30);
+  const { data: sessions, isLoading: isSessionsLoading } = useGetSessions(
+    token,
+    0,
+    30,
+  );
   const { data, isLoading } = useGetSchedules({ token });
   const { data: sessionByToken } = useGetSessionByToken({ token: token ?? "" });
 
@@ -42,24 +46,30 @@ export default function SessionCompletePage() {
     : null;
 
   const activeSessionData = useMemo(() => {
-    if (sessionFromCache) {
-      return {
-        isComplete: sessionFromCache.complete,
-        classTime: {
-          start: sessionFromCache.classStart,
-          classMinute: sessionFromCache.classMinute,
-        },
-        sessionDate: sessionFromCache.classDate,
-        teacherId: sessionByToken?.teacherId,
-      };
+    // sessionId가 있는 경우: sessionFromCache만 사용 (sessionByToken은 임의의 세션 반환)
+    if (classSessionId) {
+      if (sessionFromCache) {
+        return {
+          isComplete: sessionFromCache.complete,
+          classTime: {
+            start: sessionFromCache.classStart,
+            classMinute: sessionFromCache.classMinute,
+          },
+          sessionDate: sessionFromCache.classDate,
+          teacherId: sessionByToken?.teacherId,
+        };
+      }
+      // sessionFromCache가 아직 로딩 중이면 null 반환 (잘못된 sessionByToken 사용 방지)
+      return null;
     }
 
+    // sessionId가 없는 경우에만 sessionByToken 사용
     if (sessionByToken?.sessionDate) {
       return sessionByToken;
     }
 
     return null;
-  }, [sessionFromCache, sessionByToken]);
+  }, [sessionFromCache, sessionByToken, classSessionId]);
 
   const isEmpty = !activeSessionData;
 
@@ -110,7 +120,7 @@ export default function SessionCompletePage() {
     }
   }, [activeSessionData]);
 
-  if (isLoading) {
+  if (isLoading || (classSessionId && isSessionsLoading)) {
     return <LoadingUI />;
   }
 
